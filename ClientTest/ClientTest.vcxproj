@@ -89,7 +89,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)/External Libraries/Box2D/include;$(SolutionDir)/External Libraries/SFML/include;$(SolutionDir)/External Libraries/Imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -149,6 +149,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="b2GLDraw.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="IGManager.cpp" />
     <ClCompile Include="IGWindow.cpp" />
@@ -158,6 +159,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="b2GLDraw.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="IGManager.h" />
     <ClInclude Include="IGWindow.h" />

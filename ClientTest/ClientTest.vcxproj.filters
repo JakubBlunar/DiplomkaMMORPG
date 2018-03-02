@@ -11,14 +11,17 @@
     <ClCompile Include="IGWindow.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="b2GLDraw.cpp">
+      <Filter>Libraries\Box2d Debug</Filter>
+    </ClCompile>
     <ClCompile Include="imgui-SFML.cpp">
-      <Filter>Libraries</Filter>
+      <Filter>Libraries\Imgui</Filter>
     </ClCompile>
     <ClCompile Include="imgui.cpp">
-      <Filter>Libraries</Filter>
+      <Filter>Libraries\Imgui</Filter>
     </ClCompile>
     <ClCompile Include="imgui_draw.cpp">
-      <Filter>Libraries</Filter>
+      <Filter>Libraries\Imgui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -30,6 +33,12 @@
     </Filter>
     <Filter Include="Libraries">
       <UniqueIdentifier>{a0ad4327-ff73-4e99-bebb-20af6f656411}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libraries\Box2d Debug">
+      <UniqueIdentifier>{3c7eee81-11d9-46df-907b-a43366835232}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libraries\Imgui">
+      <UniqueIdentifier>{39ba7372-ab4a-46ce-8bba-7bd54a63ef39}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -44,6 +53,9 @@
     </ClInclude>
     <ClInclude Include="json.hpp">
       <Filter>Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="b2GLDraw.h">
+      <Filter>Libraries\Box2d Debug</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
