@@ -4,6 +4,9 @@
 #include "b2GLDraw.h"
 #include <iostream>
 
+#define DEGTORAD 0.0174532925199432957f
+#define RADTODEG 57.295779513082320876f
+
 const float SCALE = 30.f;
 
 void CreateGround(b2World& World, float X, float Y);
@@ -72,7 +75,7 @@ void testBox2d()
 				Sprite.setTexture(BoxTexture);
 				Sprite.setOrigin(16.f, 16.f);
 				Sprite.setPosition(SCALE * BodyIterator->GetPosition().x, SCALE * BodyIterator->GetPosition().y);
-				Sprite.setRotation(BodyIterator->GetAngle() * 180 / b2_pi);
+				Sprite.setRotation(BodyIterator->GetAngle() * RADTODEG);
 				Window.draw(Sprite);
 				++BodyCount;
 			}
@@ -82,7 +85,7 @@ void testBox2d()
 				GroundSprite.setTexture(GroundTexture);
 				GroundSprite.setOrigin(680, 8.f);
 				GroundSprite.setPosition(BodyIterator->GetPosition().x * SCALE, BodyIterator->GetPosition().y * SCALE);
-				GroundSprite.setRotation(180 / b2_pi * BodyIterator->GetAngle());
+				GroundSprite.setRotation(BodyIterator->GetAngle() * RADTODEG);
 				Window.draw(GroundSprite);
 			}
 		}
