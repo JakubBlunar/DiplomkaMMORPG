@@ -6,8 +6,8 @@
 
 #define DEGTORAD 0.0174532925199432957f
 #define RADTODEG 57.295779513082320876f
-
-const float SCALE = 30.f;
+#define METTOPIX 30.f
+#define PIXTOMET 0.03333333333333333f
 
 void CreateGround(b2World& World, float X, float Y);
 void CreateBox(b2World& World, int MouseX, int MouseY);
@@ -74,7 +74,7 @@ void testBox2d()
 				sf::Sprite Sprite;
 				Sprite.setTexture(BoxTexture);
 				Sprite.setOrigin(16.f, 16.f);
-				Sprite.setPosition(SCALE * BodyIterator->GetPosition().x, SCALE * BodyIterator->GetPosition().y);
+				Sprite.setPosition(METTOPIX * BodyIterator->GetPosition().x, METTOPIX * BodyIterator->GetPosition().y);
 				Sprite.setRotation(BodyIterator->GetAngle() * RADTODEG);
 				Window.draw(Sprite);
 				++BodyCount;
@@ -84,7 +84,7 @@ void testBox2d()
 				sf::Sprite GroundSprite;
 				GroundSprite.setTexture(GroundTexture);
 				GroundSprite.setOrigin(680, 8.f);
-				GroundSprite.setPosition(BodyIterator->GetPosition().x * SCALE, BodyIterator->GetPosition().y * SCALE);
+				GroundSprite.setPosition(BodyIterator->GetPosition().x * METTOPIX, BodyIterator->GetPosition().y * METTOPIX);
 				GroundSprite.setRotation(BodyIterator->GetAngle() * RADTODEG);
 				Window.draw(GroundSprite);
 			}
@@ -97,12 +97,12 @@ void testBox2d()
 void CreateBox(b2World& World, int MouseX, int MouseY)
 {
 	b2BodyDef BodyDef;
-	BodyDef.position = b2Vec2(MouseX / SCALE, MouseY / SCALE);
+	BodyDef.position = b2Vec2(MouseX * PIXTOMET, MouseY * PIXTOMET);
 	BodyDef.type = b2_dynamicBody;
 	b2Body* Body = World.CreateBody(&BodyDef);
 
 	b2PolygonShape Shape;
-	Shape.SetAsBox((32.f / 2) / SCALE, (32.f / 2) / SCALE);
+	Shape.SetAsBox((32.f / 2) * PIXTOMET, (32.f / 2) * PIXTOMET);
 	b2FixtureDef FixtureDef;
 	FixtureDef.density = 1.f;
 	FixtureDef.friction = 0.7f;
@@ -113,12 +113,12 @@ void CreateBox(b2World& World, int MouseX, int MouseY)
 void CreateGround(b2World& World, float X, float Y)
 {
 	b2BodyDef BodyDef;
-	BodyDef.position = b2Vec2(X / SCALE, Y / SCALE);
+	BodyDef.position = b2Vec2(X * PIXTOMET, Y * PIXTOMET);
 	BodyDef.type = b2_staticBody;
 	b2Body* Body = World.CreateBody(&BodyDef);
 
 	b2PolygonShape Shape;
-	Shape.SetAsBox((1360 / 2) / SCALE, (16.f / 2) / SCALE);
+	Shape.SetAsBox((1360 / 2) * PIXTOMET, (16.f / 2) * PIXTOMET);
 	b2FixtureDef FixtureDef;
 	FixtureDef.density = 0.f;
 	FixtureDef.shape = &Shape;

@@ -31,7 +31,6 @@ void b2GLDraw::DrawCircle(const b2Vec2& center, float32 radius, const b2Color& c
 
 	glColor4f(color.r, color.g, color.b, 1);
 	glBegin(GL_LINE_LOOP);
-	GLfloat glVertices[vertexCount * 2];
 	for (int32 i = 0; i < k_segments; ++i) {
 		b2Vec2 v = center + radius * b2Vec2(cos(theta), sin(theta));
 		glVertex2f(v.x * 30, v.y * 30);
@@ -48,7 +47,6 @@ void b2GLDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const b2Vec
 
 	glColor4f(color.r, color.g, color.b, 0.5f);
 	glBegin(GL_TRIANGLE_FAN);
-	GLfloat glVertices[vertexCount * 2];
 	for (int32 i = 0; i < k_segments; ++i) {
 		b2Vec2 v = center + radius * b2Vec2(cos(theta), sin(theta));
 		glVertex2f(v.x * 30, v.y * 30);
