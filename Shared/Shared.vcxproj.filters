@@ -32,9 +32,6 @@
     <ClCompile Include="Shared.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="dllmain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PacketTypes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

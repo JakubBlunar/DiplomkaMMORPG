@@ -16,6 +16,9 @@ public:
 	sf::RenderWindow		mWindow;
 	sf::Color				bgColor;
 	ClientSettings*			clientSettings;
+
+	void					print(std::string message);
+
 private:
 	void					processEvents();
 	void					update(sf::Time elapsedTime);
@@ -24,7 +27,6 @@ private:
 	void					updateStatistics(sf::Time elapsedTime);
 	void					handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
 
-private:
 	sf::Thread*				recieveThread;
 	PacketManager*			packet_manager;
 
@@ -49,6 +51,8 @@ private:
 	sf::Vector2f		playerPosition() const;
 
 	sf::Vector2f lastMovement;
+
+	sf::Mutex consoleMutex;
 };
 
 #endif

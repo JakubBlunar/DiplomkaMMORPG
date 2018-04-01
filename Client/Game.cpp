@@ -4,6 +4,7 @@
 #include <imgui-SFML.h>
 #include "PacketManager.h"
 #include <limits.h>
+#include <iostream>
 
 const float Game::PlayerSpeed = 30.f;
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
@@ -157,8 +158,7 @@ void Game::updateStatistics(const sf::Time elapsedTime)
 		mStatisticsText.setString(
 			"Frames / Second = " + std::to_string(mStatisticsNumFrames) + "\n" +
 			"Time / Update = " + std::to_string(mStatisticsUpdateTime.asMicroseconds() / mStatisticsNumFrames) + "us\n" +
-			"Latency = " + std::to_string(packet_manager->statistics.latency())
-		);
+			"Latency = " + std::to_string(packet_manager->statistics.lastLatency) + "us");
 
 		mStatisticsUpdateTime -= sf::seconds(1.0f);
 		mStatisticsNumFrames = 0;
@@ -183,6 +183,15 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed) {
 
 }
 
+void Game::print(std::string message)
+{
+	consoleMutex.lock();
+	
+	std::cout << message << std::endl;
+
+	consoleMutex.unlock();
+}
+
 sf::Vector2f Game::playerPosition() const
 {
 	return mPlayer.getPosition();
@@ -198,7 +207,7 @@ void Game::sendPlayerPosition()
 
 		packet << pt::POSITION << position.x << position.y << movement.x << movement.y;
 
-		packet_manager->sendPacket(&packet, -1);
+		packet_manager->sendPacket(&packet);
 
 		lastMovement = movement;
 	}

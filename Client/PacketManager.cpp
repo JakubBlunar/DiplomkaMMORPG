@@ -4,20 +4,19 @@
 #include "PacketTypes.h"
 #include "Game.h"
 
-
 PacketManager::PacketManager(Game* g, const bool st) : game(nullptr), id(0)
 {
 	game = g;
 
 	if (socket.connect(g->clientSettings->host , g->clientSettings->port) != sf::Socket::Done)
 	{
-		std::cout << "An error ocurred connecting to server" << std::endl;
+		game->print("An error ocurred connecting to server");
 		connected = false;
 	}
 	else
 	{
 		connected = true;
-		std::cout << "connected" << std::endl;
+		game->print("connected");
 	}
 	
 	socket.setBlocking(false);
@@ -27,7 +26,7 @@ PacketManager::PacketManager(Game* g, const bool st) : game(nullptr), id(0)
 
 PacketManager::~PacketManager()
 {
-
+	delete latencyCheckThread;
 }
 
 bool PacketManager::isConnected() const
@@ -40,6 +39,20 @@ int PacketManager::getId() const
 	return id;
 }
 
+void PacketManager::latencyCheck()
+{
+	while (game->isRunning() && connected)
+	{
+		int id = rand() % INT32_MAX;
+
+		sf::Packet packet;
+		packet << pt::LATENCY << id;
+		sendPacket(&packet);
+		statistics.packetSend(id);
+		sf::sleep(sf::seconds(2));
+	}
+}
+
 
 void PacketManager::startRecieve()
 {
@@ -48,6 +61,9 @@ void PacketManager::startRecieve()
 
 	sf::Packet packet;
 
+	latencyCheckThread = new sf::Thread(&PacketManager::latencyCheck, this);
+	latencyCheckThread->launch();
+
 	while (game->isRunning() && connected)
 	{
 		if (selector.wait())
@@ -55,7 +71,7 @@ void PacketManager::startRecieve()
 			socketMutex.lock();
 			if (socket.receive(packet) == sf::Socket::Disconnected) {
 				connected = false;
-				std::cout << "Disconected from server" << std::endl;
+				game->print("Disconected from server");
 				break;
 			}
 
@@ -71,30 +87,31 @@ void PacketManager::startRecieve()
 				pt::PacketType pt = static_cast<pt::PacketType>(packetType);
 				switch (pt)
 				{
+				case pt::LATENCY:
+					int id;
+					if (packet >> id) {
+						auto duration = statistics.packetRecieve(id);
+						game->print(std::to_string(duration));
+					}
+					break;
 				default:
-					consoleMutex.lock();
-					std::cout << "I dont know recieve this packet type" << pt << std::endl;
-					consoleMutex.unlock();
+					game->print("Unknown packet type " + std::to_string(pt));
 					break;
 				}
 			}
 
 		}
-
 	}
 
+	latencyCheckThread->wait();
 }
 
-void PacketManager::sendPacket(sf::Packet* packet, const int id)
+void PacketManager::sendPacket(sf::Packet* packet)
 {
 	if (!connected)
 		return;
 
 	socketMutex.lock();
 	socket.send(*packet);
-
-	if (watchStatistics && id != -1)
-		statistics.packetSend(id);
-
 	socketMutex.unlock();
 }

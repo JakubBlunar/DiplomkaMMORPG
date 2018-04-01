@@ -120,27 +120,33 @@ void Server::recievePackets()
 							pt::PacketType pt = static_cast<pt::PacketType>(type);
 
 							sf::Packet resPacket;
-
+							int id;
 							switch (pt)
 							{
-							case pt::POSITION:
-								float x, y, velX, velY;
-								int id;
-								if (packet >> x >> y >> velX >> velY)
-								{
-									consoleMutex.lock();
-									std::cout << "Player(" << i << ")" << "[" << velX <<"," << velY <<"]" << std::endl;
-									consoleMutex.unlock();
-									for (unsigned int j= 0; j < sessions.size(); j++)
+								case pt::POSITION:
+									float x, y, velX, velY;
+									
+									if (packet >> x >> y >> velX >> velY)
 									{
-										if (i != j)
-											sessions[j]->socket->send(resPacket);
+										consoleMutex.lock();
+										std::cout << "Player(" << i << ")" << "[" << velX <<"," << velY <<"]" << std::endl;
+										consoleMutex.unlock();
+										for (unsigned int j= 0; j < sessions.size(); j++)
+										{
+											if (i != j)
+												sessions[j]->socket->send(resPacket);
+										}
 									}
-								}
-								break;
-							default:
-								playerSession->socket->send(wrongType);
-								break;
+									break;
+								case pt::LATENCY:
+									if (packet >> id) {
+										resPacket << pt::LATENCY << id;
+										playerSession->socket->send(resPacket);
+									}
+									break;
+								default:
+									playerSession->socket->send(wrongType);
+									break;
 							}
 							break;
 						}

@@ -32,6 +32,7 @@ long long PMStatistics::packetRecieve(const int id)
 
 	const auto duration = chrono::duration_cast<chrono::microseconds>(t2 - times[id]).count();
 	latencyCalc.update(duration);
+	lastLatency = duration;
 
 	times.erase(id);
 

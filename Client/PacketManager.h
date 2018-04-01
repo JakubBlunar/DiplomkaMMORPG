@@ -14,16 +14,18 @@ public:
 
 	sf::TcpSocket socket;
 	sf::Mutex socketMutex;
-	sf::Mutex consoleMutex;
 
 	void startRecieve();
-	void sendPacket(sf::Packet* packet, int id);
+	void sendPacket(sf::Packet* packet);
 
 	bool isConnected() const;
 	int getId() const;
 	PMStatistics statistics;
 	Game* game;
 private:
+	void latencyCheck();
+	sf::Thread* latencyCheckThread;
+
 	int id;
 	bool connected;
 	bool watchStatistics;

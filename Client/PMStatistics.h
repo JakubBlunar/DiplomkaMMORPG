@@ -13,6 +13,7 @@ class PMStatistics
 	sf::Mutex timesMutex;
 	std::map<int, std::chrono::high_resolution_clock::time_point> times;
 	RunningAverage latencyCalc;
+	
 public:
 	PMStatistics();
 	~PMStatistics();
@@ -23,6 +24,8 @@ public:
 	double latency() const;
 	double returnRatio() const;
 	void reset();
+
+	long long lastLatency;
 };
 
 #endif
