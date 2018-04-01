@@ -76,10 +76,8 @@ void Game::run()
 		updateStatistics(elapsedTime);
 		render();
 	}
-
+	
 	ImGui::SFML::Shutdown();
-	running = false;
-	recieveThread->wait();
 }
 
 void Game::processEvents()
@@ -90,6 +88,7 @@ void Game::processEvents()
 
 		if (event.type == sf::Event::Closed)
 		{
+			running = false;
 			mWindow.close();
 			break;
 		}
