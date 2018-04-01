@@ -4,7 +4,7 @@
 #include "PacketTypes.h"
 #include "Game.h"
 
-PacketManager::PacketManager(Game* g, const bool st) : game(nullptr), id(0)
+PacketManager::PacketManager(Game* g) : game(nullptr)
 {
 	game = g;
 
@@ -20,7 +20,6 @@ PacketManager::PacketManager(Game* g, const bool st) : game(nullptr), id(0)
 	}
 	
 	socket.setBlocking(false);
-	watchStatistics = st;
 }
 
 
@@ -34,11 +33,6 @@ bool PacketManager::isConnected() const
 	return connected;
 }
 
-int PacketManager::getId() const
-{
-	return id;
-}
-
 void PacketManager::latencyCheck()
 {
 	while (game->isRunning() && connected)
@@ -49,7 +43,7 @@ void PacketManager::latencyCheck()
 		packet << pt::LATENCY << id;
 		sendPacket(&packet);
 		statistics.packetSend(id);
-		sf::sleep(sf::seconds(2));
+		sf::sleep(sf::seconds(5));
 	}
 }
 
@@ -90,8 +84,7 @@ void PacketManager::startRecieve()
 				case pt::LATENCY:
 					int id;
 					if (packet >> id) {
-						auto duration = statistics.packetRecieve(id);
-						game->print(std::to_string(duration));
+						statistics.packetRecieve(id);
 					}
 					break;
 				default:

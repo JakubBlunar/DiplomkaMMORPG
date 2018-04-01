@@ -9,7 +9,7 @@ class Game;
 class PacketManager
 {
 public:
-	PacketManager(Game* g, bool statistics);
+	PacketManager(Game* g);
 	~PacketManager();
 
 	sf::TcpSocket socket;
@@ -19,16 +19,14 @@ public:
 	void sendPacket(sf::Packet* packet);
 
 	bool isConnected() const;
-	int getId() const;
+
 	PMStatistics statistics;
 	Game* game;
 private:
 	void latencyCheck();
 	sf::Thread* latencyCheckThread;
 
-	int id;
 	bool connected;
-	bool watchStatistics;
 };
 
 #endif

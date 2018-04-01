@@ -22,7 +22,7 @@ Game::Game(ClientSettings* clientSettings)
 	, mIsMovingLeft(false)
 {
 	this->clientSettings = clientSettings;
-	this->packet_manager = new PacketManager(this, true);
+	this->packet_manager = new PacketManager(this);
 
 	mWindow.setFramerateLimit(120);
 

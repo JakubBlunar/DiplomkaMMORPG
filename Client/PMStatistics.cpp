@@ -22,9 +22,6 @@ void PMStatistics::packetSend(const int id)
 
 long long PMStatistics::packetRecieve(const int id)
 {
-	if (id == 0)
-		return -1;
-
 	const auto t2 = chrono::high_resolution_clock::now();
 
 	timesMutex.lock();
