@@ -124,22 +124,32 @@
     <ClCompile Include="b2GLDraw.cpp" />
     <ClCompile Include="ClientSettings.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="IGManager.cpp" />
     <ClCompile Include="imgui-SFML.cpp" />
     <ClCompile Include="imgui.cpp" />
     <ClCompile Include="imgui_draw.cpp" />
+    <ClCompile Include="KeyboardManager.cpp" />
+    <ClCompile Include="LoginScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PacketManager.cpp" />
     <ClCompile Include="PMStatistics.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="b2GLDraw.h" />
     <ClInclude Include="ClientSettings.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="IGManager.h" />
     <ClInclude Include="INIReader.h" />
     <ClInclude Include="json.hpp" />
+    <ClInclude Include="KeyboardManager.h" />
+    <ClInclude Include="LoginScene.h" />
     <ClInclude Include="PacketManager.h" />
     <ClInclude Include="PMStatistics.h" />
     <ClInclude Include="RunningAverage.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -8,7 +8,7 @@ const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 
 Game::Game()
 	: igManager(this)
-	, mWindow(sf::VideoMode(1360, 768), "SFML Application", sf::Style::Close| sf::Style::Resize)
+	, window(sf::VideoMode(1360, 768), "SFML Application", sf::Style::Close| sf::Style::Resize)
 	, mPlayer()
 	, mFont()
 	, mStatisticsText()
@@ -20,7 +20,7 @@ Game::Game()
 	, mIsMovingLeft(false)
 	, running(false)
 {
-	mWindow.setFramerateLimit(120);
+	window.setFramerateLimit(120);
 
 	mPlayer.setFillColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));
 	mPlayer.setSize(sf::Vector2f(32.f, 64.f));
@@ -40,15 +40,15 @@ void Game::run()
 
 	igManager.OpenAll();
 
-	mWindow.setVerticalSyncEnabled(true);
-	ImGui::SFML::Init(mWindow);
-	mWindow.resetGLStates();
+	window.setVerticalSyncEnabled(true);
+	ImGui::SFML::Init(window);
+	window.resetGLStates();
 
 
 
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
-	while (mWindow.isOpen())
+	while (window.isOpen())
 	{
 		const sf::Time elapsedTime = clock.restart();
 		timeSinceLastUpdate += elapsedTime;
@@ -60,7 +60,7 @@ void Game::run()
 			update(TimePerFrame);
 		}
 
-		ImGui::SFML::Update(mWindow, timeSinceLastUpdate);
+		ImGui::SFML::Update(window, timeSinceLastUpdate);
 		updateStatistics(elapsedTime);
 		render();
 	}
@@ -72,12 +72,12 @@ void Game::run()
 void Game::processEvents()
 {
 	sf::Event event;
-	while (mWindow.pollEvent(event))
+	while (window.pollEvent(event))
 	{
 
 		if (event.type == sf::Event::Closed)
 		{
-			mWindow.close();
+			window.close();
 			break;
 		}
 
@@ -99,7 +99,7 @@ void Game::processEvents()
 			handlePlayerInput(event.key.code, false);
 			break;
 		case sf::Event::Resized:
-			mWindow.setView(sf::View(sf::FloatRect(0, 0, 1360, 768)));
+			window.setView(sf::View(sf::FloatRect(0, 0, 1360, 768)));
 		default: ;
 		}
 	}
@@ -125,15 +125,15 @@ void Game::update(sf::Time elapsedTime)
 
 void Game::render()
 {
-	mWindow.clear(bgColor);
+	window.clear(bgColor);
 
-	mWindow.draw(mPlayer);
+	window.draw(mPlayer);
 
 	igManager.drawAll();
-	ImGui::SFML::Render(mWindow);
+	ImGui::SFML::Render(window);
 
-	mWindow.draw(mStatisticsText);
-	mWindow.display();
+	window.draw(mStatisticsText);
+	window.display();
 }
 
 void Game::updateStatistics(const sf::Time elapsedTime)

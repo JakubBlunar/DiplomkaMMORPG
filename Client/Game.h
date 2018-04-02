@@ -4,6 +4,9 @@
 #include <SFML/Graphics.hpp>
 #include "PacketManager.h"
 #include "ClientSettings.h"
+#include "KeyboardManager.h"
+
+class SceneManager;
 
 class Game
 {
@@ -13,12 +16,15 @@ public:
 
 	bool					isRunning() const;
 
-	sf::RenderWindow		mWindow;
+	sf::RenderWindow		window;
 	sf::Color				bgColor;
 	ClientSettings*			clientSettings;
 
 	void					print(std::string message);
 
+	SceneManager*			sceneManager;
+	KeyboardManager*		keyboardManager;
+	bool					running;
 private:
 	void					processEvents();
 	void					update(sf::Time elapsedTime);
@@ -45,7 +51,7 @@ private:
 	bool					mIsMovingDown;
 	bool					mIsMovingRight;
 	bool					mIsMovingLeft;
-	bool					running;
+
 
 	void				sendPlayerPosition();
 	sf::Vector2f		playerPosition() const;

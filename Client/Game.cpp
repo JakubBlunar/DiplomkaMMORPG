@@ -5,12 +5,13 @@
 #include "PacketManager.h"
 #include <limits.h>
 #include <iostream>
+#include "SceneManager.h"
 
 const float Game::PlayerSpeed = 30.f;
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 
 Game::Game(ClientSettings* clientSettings)
-	: mWindow(sf::VideoMode(800, 600), "SFML Application", sf::Style::Close | sf::Style::Resize)
+	: window(sf::VideoMode(1360, 768), "SFML Application", sf::Style::Close | sf::Style::Resize)
 	, mPlayer()
 	, mFont()
 	, mStatisticsText()
@@ -23,8 +24,10 @@ Game::Game(ClientSettings* clientSettings)
 {
 	this->clientSettings = clientSettings;
 	this->packet_manager = new PacketManager(this);
+	this->sceneManager = new SceneManager();
+	this->keyboardManager = new KeyboardManager();
 
-	mWindow.setFramerateLimit(120);
+	window.setFramerateLimit(120);
 
 	mPlayer.setFillColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));
 	mPlayer.setRadius(15);
@@ -42,25 +45,16 @@ void Game::run()
 {
 	running = true;
 
-	/*IGChat* c = new IGChat();
-	IGConsole* con = new IGConsole();
-
-	igManager.addWindow("chat", c);
-	igManager.addWindow("console", con);
-
-	igManager.OpenAll();*/
-
-	mWindow.setVerticalSyncEnabled(true);
-	ImGui::SFML::Init(mWindow);
-	mWindow.resetGLStates();
+	window.setVerticalSyncEnabled(true);
+	ImGui::SFML::Init(window);
+	window.resetGLStates();
 
 	recieveThread = new sf::Thread(&PacketManager::startRecieve, packet_manager);
 	recieveThread->launch();
 
-
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
-	while (mWindow.isOpen())
+	while (window.isOpen() && running)
 	{
 		const sf::Time elapsedTime = clock.restart();
 		timeSinceLastUpdate += elapsedTime;
@@ -71,8 +65,8 @@ void Game::run()
 			processEvents();
 			update(TimePerFrame);
 		}
+		ImGui::SFML::Update(window, timeSinceLastUpdate);
 
-		ImGui::SFML::Update(mWindow, timeSinceLastUpdate);
 		updateStatistics(elapsedTime);
 		render();
 	}
@@ -83,13 +77,13 @@ void Game::run()
 void Game::processEvents()
 {
 	sf::Event event;
-	while (mWindow.pollEvent(event))
+	while (window.pollEvent(event))
 	{
 
 		if (event.type == sf::Event::Closed)
 		{
 			running = false;
-			mWindow.close();
+			window.close();
 			break;
 		}
 
@@ -103,14 +97,16 @@ void Game::processEvents()
 		switch (event.type)
 		{
 		case sf::Event::KeyPressed:
+			keyboardManager->handlePlayerInput(event.key.code, true);
 			handlePlayerInput(event.key.code, true);
 			break;
 
 		case sf::Event::KeyReleased:
+			keyboardManager->handlePlayerInput(event.key.code, false);
 			handlePlayerInput(event.key.code, false);
 			break;
 		case sf::Event::Resized:
-			mWindow.setView(sf::View(sf::FloatRect(0, 0, 800, 600)));
+			window.setView(sf::View(sf::FloatRect(0, 0, 1360, 768)));
 		default:;
 		}
 	}
@@ -118,6 +114,8 @@ void Game::processEvents()
 
 void Game::update(sf::Time elapsedTime)
 {
+	sceneManager->update(this, elapsedTime);
+
 	movement = sf::Vector2f(0.f, 0.f);
 	if (mIsMovingUp)
 		movement.y -= PlayerSpeed;
@@ -134,17 +132,20 @@ void Game::update(sf::Time elapsedTime)
 
 void Game::render()
 {
-	mWindow.clear(bgColor);
+	window.clear(bgColor);
 
 
-	mWindow.draw(mPlayer);
+	window.draw(mPlayer);
 
+	if (window.hasFocus()) {
+		sceneManager->render(this);
+	}
 
 	//igManager.drawAll();
-	ImGui::SFML::Render(mWindow);
+	ImGui::SFML::Render(window);
 
-	mWindow.draw(mStatisticsText);
-	mWindow.display();
+	window.draw(mStatisticsText);
+	window.display();
 }
 
 void Game::updateStatistics(const sf::Time elapsedTime)

@@ -13,7 +13,7 @@ public:
 	bool					isRunning() const;
 
 	IGManager				igManager;
-	sf::RenderWindow		mWindow;
+	sf::RenderWindow		window;
 	sf::Color				bgColor;
 private:
 	void					processEvents();

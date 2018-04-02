@@ -22,6 +22,30 @@
     <Filter Include="Libraries\Imgui">
       <UniqueIdentifier>{db8aa912-7177-4dfa-8325-2d721c0f41aa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Core">
+      <UniqueIdentifier>{6a369d62-8c37-4c1e-8c8d-95621cc961c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scenes">
+      <UniqueIdentifier>{d21529ad-e705-4c84-90e5-cc5e45ec075d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Core">
+      <UniqueIdentifier>{f1be2f19-144a-4a18-80e8-bfec8b17a4e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scenes">
+      <UniqueIdentifier>{2d289c17-20ed-4d69-91b5-9cd038ab0c94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scenes\IMGui">
+      <UniqueIdentifier>{bb26a2b0-9d36-47d2-a8ef-bf045884ad47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scenes\IMGui">
+      <UniqueIdentifier>{403e2922-f9c9-461c-9de8-d9c15af3277a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Events">
+      <UniqueIdentifier>{407df786-9485-4f46-8e12-5c179629fe2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Events">
+      <UniqueIdentifier>{8a57783b-1263-42b2-ae2f-65207f43b695}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -51,6 +75,21 @@
     <ClCompile Include="PMStatistics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="IGManager.cpp">
+      <Filter>Source Files\Scenes\IMGui</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginScene.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyboardManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="b2GLDraw.h">
@@ -75,6 +114,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RunningAverage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="IGManager.h">
+      <Filter>Header Files\Scenes\IMGui</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginScene.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyboardManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
