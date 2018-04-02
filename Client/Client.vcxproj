@@ -124,7 +124,9 @@
     <ClCompile Include="b2GLDraw.cpp" />
     <ClCompile Include="ClientSettings.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="IGLoginCredentials.cpp" />
     <ClCompile Include="IGManager.cpp" />
+    <ClCompile Include="IGWindow.cpp" />
     <ClCompile Include="imgui-SFML.cpp" />
     <ClCompile Include="imgui.cpp" />
     <ClCompile Include="imgui_draw.cpp" />
@@ -140,7 +142,9 @@
     <ClInclude Include="b2GLDraw.h" />
     <ClInclude Include="ClientSettings.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="IGLoginCredentials.h" />
     <ClInclude Include="IGManager.h" />
+    <ClInclude Include="IGWindow.h" />
     <ClInclude Include="INIReader.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="KeyboardManager.h" />

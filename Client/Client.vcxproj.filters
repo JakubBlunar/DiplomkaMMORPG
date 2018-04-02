@@ -90,6 +90,12 @@
     <ClCompile Include="KeyboardManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="IGWindow.cpp">
+      <Filter>Source Files\Scenes\IMGui</Filter>
+    </ClCompile>
+    <ClCompile Include="IGLoginCredentials.cpp">
+      <Filter>Source Files\Scenes\IMGui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="b2GLDraw.h">
@@ -130,6 +136,12 @@
     </ClInclude>
     <ClInclude Include="KeyboardManager.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IGWindow.h">
+      <Filter>Header Files\Scenes\IMGui</Filter>
+    </ClInclude>
+    <ClInclude Include="IGLoginCredentials.h">
+      <Filter>Header Files\Scenes\IMGui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -261,3 +261,4 @@ __pycache__/
 *.pyc
 
 !/ExternalLibraries/**
+*/imgui.ini

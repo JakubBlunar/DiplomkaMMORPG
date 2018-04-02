@@ -38,7 +38,6 @@ Game::Game(ClientSettings* clientSettings)
 	mStatisticsText.setPosition(5.f, 5.f);
 	mStatisticsText.setCharacterSize(12);
 	mStatisticsText.setFillColor(sf::Color::Blue);
-	bgColor = sf::Color::White;
 }
 
 void Game::run()
@@ -76,10 +75,10 @@ void Game::run()
 
 void Game::processEvents()
 {
+
 	sf::Event event;
 	while (window.pollEvent(event))
 	{
-
 		if (event.type == sf::Event::Closed)
 		{
 			running = false;
@@ -132,19 +131,18 @@ void Game::update(sf::Time elapsedTime)
 
 void Game::render()
 {
-	window.clear(bgColor);
-
-
-	window.draw(mPlayer);
+	window.clear(sf::Color::Black);
 
 	if (window.hasFocus()) {
 		sceneManager->render(this);
 	}
 
-	//igManager.drawAll();
 	ImGui::SFML::Render(window);
 
-	window.draw(mStatisticsText);
+	if (window.hasFocus()) {
+		window.draw(mStatisticsText);
+	}
+	
 	window.display();
 }
 

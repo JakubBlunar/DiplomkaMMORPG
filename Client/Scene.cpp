@@ -29,5 +29,5 @@ void Scene::update(Game * g, sf::Time elapsedTime)
 
 void Scene::render(Game * g)
 {
-
+	windowManager->drawAll(g);
 }

@@ -7,12 +7,10 @@
 
 class Scene
 {
-	IGManager* windowManager;
-
 protected:
 	Scene(std::string name);
 	~Scene();
-
+	IGManager* windowManager;
 public:
 	bool canChange;
 	std::string name;
