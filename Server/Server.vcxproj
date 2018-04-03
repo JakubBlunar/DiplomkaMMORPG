@@ -76,11 +76,12 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)/ExternalLibraries/Box2D/include;$(SolutionDir)/ExternalLibraries/SFML/include;$(SolutionDir)/ExternalLibraries/Imgui;$(SolutionDir)/ExternalLibraries/MysqlConnector/include;E:\boost_1_66_0;$(SolutionDir)/Shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)/ExternalLibraries/Box2D/include;$(SolutionDir)/ExternalLibraries/SFML/include;$(SolutionDir)/ExternalLibraries/Imgui;$(SolutionDir)/ExternalLibraries/MysqlConnector/include;E:\boost_1_66_0;$(SolutionDir)/Shared;$(SolutionDir)/ExternalLibraries/CryptLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>sfml-main-d.lib;sfml-system-d.lib;sfml-network-d.lib;Box2D.lib;mysqlcppconn.lib;Shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)/ExternalLibraries/Box2D/lib;$(SolutionDir)/ExternalLibraries/SFML/lib/Debug;$(SolutionDir)/ExternalLibraries/MysqlConnector/lib;E:\boost_1_66_0\stage\win32\lib;$(SolutionDir)/Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-main-d.lib;sfml-system-d.lib;sfml-network-d.lib;Box2D.lib;mysqlcppconn.lib;Shared.lib;cryptlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)/ExternalLibraries/Box2D/lib;$(SolutionDir)/ExternalLibraries/SFML/lib/Debug;$(SolutionDir)/ExternalLibraries/MysqlConnector/lib;E:\boost_1_66_0\stage\win32\lib;$(SolutionDir)/Debug;$(SolutionDir)/ExternalLibraries/CryptLib/Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -120,12 +121,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Crypto.cpp" />
+    <ClCompile Include="Database.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="ServerSettings.cpp" />
     <ClCompile Include="Session.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Crypto.h" />
+    <ClInclude Include="Database.h" />
     <ClInclude Include="INIReader.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="Server.h" />

@@ -2,6 +2,7 @@
 #include "PacketTypes.h"
 #include <iostream>
 #include "ServerSettings.h"
+#include "Database.h"
 
 Server::Server(ServerSettings* settings)
 {
@@ -17,6 +18,8 @@ Server::~Server()
 
 void Server::init()
 {
+	Database::initDatabase(serverSettings);
+
 	sessions.clear();
 	running = false;
 

@@ -4,6 +4,8 @@
 
 #include <string>
 
+using namespace std;
+
 class ServerSettings
 {
 public:
@@ -11,6 +13,11 @@ public:
 	~ServerSettings();
 	long port;
 	int max_threads;
+	string dbHost;
+	string dbUser;
+	string dbName;
+	string dbPassword;
+	
 };
 
 #endif // !SERVER_SETTINGS_H
