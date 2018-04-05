@@ -7,7 +7,7 @@
 #include "SFML\Network.hpp"
 
 #include "ServerSettings.h"
-#include "PacketTypes.h"
+#include "EventId.h"
 #include "Server.h"
 
 #include "Crypto.h"

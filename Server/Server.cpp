@@ -1,8 +1,10 @@
 #include "Server.h"
-#include "PacketTypes.h"
+#include "EventId.h"
 #include <iostream>
 #include "ServerSettings.h"
 #include "Database.h"
+
+#include "EventMovementChange.h"
 
 Server::Server(ServerSettings* settings)
 {
@@ -23,8 +25,8 @@ void Server::init()
 	sessions.clear();
 	running = false;
 
-	errorPacket << pt::ERR << "Error happend";
-	wrongType << pt::WRONGPACKETTYPE;
+	errorPacket << EventId::ERR << "Error happend";
+	wrongType << EventId::WRONGPACKETTYPE;
 	
 	for (int i = 0; i < serverSettings->max_threads; i++)
 	{
@@ -68,6 +70,35 @@ void Server::start()
 void Server::update()
 {
 
+}
+
+
+void Server::identifyPacket(EventId type, sf::Packet *packet, Session* playerSession) {
+	sf::Packet resPacket;
+	int id;
+
+	if (type == MOVEMENT) {
+		EventMovementChange* e = new EventMovementChange();
+		if (e->loadFromPacket(packet)) {
+			consoleMutex.lock();
+			std::cout << "Player("")" << "[" << e->velX << "," << e->velY << "]" << std::endl;
+			consoleMutex.unlock();
+
+			for (unsigned int j = 0; j < sessions.size(); j++)
+			{
+				if (playerSession != sessions[j])
+					sessions[j]->socket->send(resPacket);
+			}
+		}
+		delete e;
+	}
+
+	if (type == LATENCY) {
+		if (*packet >> id) {
+			resPacket << EventId::LATENCY << id;
+			playerSession->socket->send(resPacket);
+		}
+	}
 }
 
 void Server::recievePackets()
@@ -120,39 +151,10 @@ void Server::recievePackets()
 
 						if (packet >> type)
 						{
-							pt::PacketType pt = static_cast<pt::PacketType>(type);
-
-							sf::Packet resPacket;
-							int id;
-							switch (pt)
-							{
-								case pt::POSITION:
-									float x, y, velX, velY;
-									
-									if (packet >> x >> y >> velX >> velY)
-									{
-										consoleMutex.lock();
-										std::cout << "Player(" << i << ")" << "[" << velX <<"," << velY <<"]" << std::endl;
-										consoleMutex.unlock();
-										for (unsigned int j= 0; j < sessions.size(); j++)
-										{
-											if (i != j)
-												sessions[j]->socket->send(resPacket);
-										}
-									}
-									break;
-								case pt::LATENCY:
-									if (packet >> id) {
-										resPacket << pt::LATENCY << id;
-										playerSession->socket->send(resPacket);
-									}
-									break;
-								default:
-									playerSession->socket->send(wrongType);
-									break;
-							}
-							break;
+							EventId pt = static_cast<EventId>(type);
+							identifyPacket(pt, &packet, playerSession);
 						}
+						break;
 					case sf::Socket::Disconnected:
 					{
 						consoleMutex.lock();

@@ -5,6 +5,9 @@
 #include "PacketManager.h"
 #include "ClientSettings.h"
 #include "KeyboardManager.h"
+#include <queue>
+#include "GameEvent.h"
+#include "ClientEventActions.h"
 
 class SceneManager;
 
@@ -22,7 +25,9 @@ public:
 
 	SceneManager*			sceneManager;
 	KeyboardManager*		keyboardManager;
+	PacketManager*			packet_manager;
 	bool					running;
+	void addEvent(GameEvent * e);
 private:
 	void					processEvents();
 	void					update(sf::Time elapsedTime);
@@ -32,7 +37,6 @@ private:
 	void					handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
 
 	sf::Thread*				recieveThread;
-	PacketManager*			packet_manager;
 
 	sf::Mutex consoleMutex;
 	static const sf::Time	TimePerFrame;
@@ -52,6 +56,10 @@ private:
 	sf::Vector2f		playerPosition() const;
 	sf::Vector2f lastMovement;
 	
+	sf::Mutex					eventQueueMutex;
+	std::queue<GameEvent*>		eventQueue;
+
+	ClientEventActions*			eventActions;
 };
 
 #endif

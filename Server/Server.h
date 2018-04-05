@@ -6,6 +6,7 @@
 
 #include "SFML\Network.hpp"
 #include "ServerSettings.h"
+#include "EventId.h"
 
 class Server
 {
@@ -23,11 +24,12 @@ private:
 	std::vector<sf::Thread*> recieveThreads;
 
 	bool running;
-
+	
 	sf::Mutex consoleMutex;
 	sf::Mutex selectorMutex;
 
 	void recievePackets();
+	void identifyPacket(EventId type, sf::Packet *packet, Session* playerSession);
 
 	sf::Packet errorPacket;
 	sf::Packet wrongType;

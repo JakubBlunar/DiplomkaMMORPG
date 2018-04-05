@@ -1,11 +1,13 @@
 #include "Game.h"
-#include "PacketTypes.h"
+#include "EventId.h"
 #include <imgui.h>
 #include <imgui-SFML.h>
 #include "PacketManager.h"
 #include <limits.h>
 #include <iostream>
 #include "SceneManager.h"
+#include "EventMovementChange.h"
+#include "ClientEventActions.h"
 
 const float Game::PlayerSpeed = 30.f;
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
@@ -26,6 +28,7 @@ Game::Game(ClientSettings* clientSettings)
 	this->packet_manager = new PacketManager(this);
 	this->sceneManager = new SceneManager();
 	this->keyboardManager = new KeyboardManager();
+	this->eventActions = new ClientEventActions(this);
 
 	window.setFramerateLimit(120);
 
@@ -73,6 +76,13 @@ void Game::run()
 	ImGui::SFML::Shutdown();
 }
 
+void Game::addEvent(GameEvent* e)
+{
+	eventQueueMutex.lock();
+	eventQueue.push(e);
+	eventQueueMutex.unlock();
+}
+
 void Game::processEvents()
 {
 
@@ -113,6 +123,14 @@ void Game::processEvents()
 
 void Game::update(sf::Time elapsedTime)
 {
+	while (eventQueue.size() > 0) {
+		eventQueueMutex.lock();
+		GameEvent * e = eventQueue.front();
+		eventQueue.pop();
+		e->accept(eventActions);
+		eventQueueMutex.unlock();
+	}
+
 	sceneManager->update(this, elapsedTime);
 
 	movement = sf::Vector2f(0.f, 0.f);
@@ -199,15 +217,17 @@ sf::Vector2f Game::playerPosition() const
 void Game::sendPlayerPosition()
 {
 	sf::Vector2f position = playerPosition();
+	
+
 	if (lastMovement != movement)
 	{
-		sf::Packet packet;
-
-		packet << pt::POSITION << position.x << position.y << movement.x << movement.y;
-
-		packet_manager->sendPacket(&packet);
-
+		EventMovementChange* e = new EventMovementChange();
+		e->velX = movement.x;
+		e->velY = movement.y;
+		e->x = position.x;
+		e->y = position.y;
 		lastMovement = movement;
+		addEvent(e);
 	}
 
 }

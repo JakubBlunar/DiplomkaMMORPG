@@ -12,15 +12,16 @@ Database::Database(ServerSettings* settings)
 		stmt = con->createStatement();
 		stmt->execute(("USE " + settings->dbName).c_str());
 
+		cout << "Connected to database " << endl;
+		cout << "Host: " << settings->dbHost << endl;
+		cout << "User: " << settings->dbUser << endl;
+		cout << "Db: " << settings->dbName << endl << endl;
 		/*res = stmt->executeQuery("SELECT id, login, email, lastActivity from accounts;");
 		while (res->next()) {
 			std::cout << res->getString("id").c_str() << res->getString("login").c_str() << "  " << res->getString("lastActivity").c_str() << std::endl;
 		}*/
 	}
 	catch (sql::SQLException &e) {
-
-		std::cout << "# ERR: SQLException in " << __FILE__;
-		std::cout << "(" << __FUNCTION__ << ") on line " << __LINE__ << std::endl;
 		std::cout << "# ERR: " << e.what();
 		std::cout << " (MySQL error code: " << e.getErrorCode();
 		std::cout << ", SQLState: " << e.getSQLStateCStr() << " )" << std::endl;

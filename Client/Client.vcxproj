@@ -122,6 +122,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="b2GLDraw.cpp" />
+    <ClCompile Include="ClientEventActions.cpp" />
     <ClCompile Include="ClientSettings.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="IGLoginCredentials.cpp" />
@@ -140,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="b2GLDraw.h" />
+    <ClInclude Include="ClientEventActions.h" />
     <ClInclude Include="ClientSettings.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="IGLoginCredentials.h" />

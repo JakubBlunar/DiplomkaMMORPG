@@ -1,14 +1,14 @@
 #include "PacketManager.h"
 #include <SFML/Network/SocketSelector.hpp>
 #include <iostream>
-#include "PacketTypes.h"
+#include "EventId.h"
 #include "Game.h"
 
 PacketManager::PacketManager(Game* g) : game(nullptr)
 {
 	game = g;
 
-	if (socket.connect(g->clientSettings->host , g->clientSettings->port) != sf::Socket::Done)
+	if (socket.connect(g->clientSettings->host , static_cast<short>(g->clientSettings->port)) != sf::Socket::Done)
 	{
 		game->print("An error ocurred connecting to server");
 		connected = false;
@@ -40,7 +40,7 @@ void PacketManager::latencyCheck()
 		int id = rand() % INT32_MAX;
 
 		sf::Packet packet;
-		packet << pt::LATENCY << id;
+		packet << EventId::LATENCY << id;
 		sendPacket(&packet);
 		statistics.packetSend(id);
 		sf::sleep(sf::seconds(5));
@@ -72,16 +72,15 @@ void PacketManager::startRecieve()
 			socketMutex.unlock();
 
 			int packetType;
-			float x, y, velX, velY;
 
 			if (packet >> packetType)
 			{
 				//const auto duration = statistics.packetRecieve(id);
 
-				pt::PacketType pt = static_cast<pt::PacketType>(packetType);
+				EventId pt = static_cast<EventId>(packetType);
 				switch (pt)
 				{
-				case pt::LATENCY:
+				case EventId::LATENCY:
 					int id;
 					if (packet >> id) {
 						statistics.packetRecieve(id);
