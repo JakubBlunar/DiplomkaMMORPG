@@ -2,7 +2,7 @@
 #define GAMEEVENT_H
 
 #include "EventId.h"
-#include "SFML\Network.hpp"
+#include "SFML/Network.hpp"
 
 class EventVisitor;
 
@@ -13,10 +13,14 @@ protected:
 public:
 	GameEvent();
 
-	EventId getId();
+	EventId getId() ;
 	virtual void accept(EventVisitor*) = 0;
 	virtual bool loadFromPacket(sf::Packet* p) = 0;
 	virtual sf::Packet* toPacket() = 0;
+	virtual std::string toString() const
+	{
+		return std::to_string(id);
+	}
 };
 
 #endif

@@ -1,5 +1,6 @@
 #include "IGLoginCredentials.h"
 #include "Game.h"
+#include "EventDispatcher.h"
 
 
 IGLoginCredentials::IGLoginCredentials()
@@ -47,7 +48,9 @@ void IGLoginCredentials::render(Game* game)
 		std::string name = std::string(buffLogin);
 		std::string password = std::string(buffPassword);
 		memset(buffPassword, 0, sizeof(buffPassword));
-		game->print(name + " " + password);
+
+		EventLoginRequest* req = new EventLoginRequest(name, password);
+		EventDispatcher<EventLoginRequest>::dispatchEvent(req);
 	}
 
 	ImGui::PopItemWidth();

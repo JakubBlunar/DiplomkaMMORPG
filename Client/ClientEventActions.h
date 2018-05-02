@@ -13,7 +13,9 @@ public:
 	~ClientEventActions();
 
 
-	void visit(EventMovementChange* e);
+	void visit(EventMovementChange* e) override;
+	void visit(EventLoginRequest* e) override;
+	void visit(EventLoginResponse* e) override;
 };
 
 #endif // !CLIENT_EVENT_ACTIONS_H

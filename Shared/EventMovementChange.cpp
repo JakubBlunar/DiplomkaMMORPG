@@ -9,12 +9,13 @@ EventMovementChange::EventMovementChange()
 
 void EventMovementChange::accept(EventVisitor* v)
 {
-	v->visit(this);
+	if(v)
+		v->visit(this);
 }
 
 bool EventMovementChange::loadFromPacket(sf::Packet* p)
 {
-	if (*p >> x >> y >> velX >> velY)
+	if (*p >> playerId >> x >> y >> velX >> velY )
 	{
 		return true;
 	}
@@ -24,6 +25,6 @@ bool EventMovementChange::loadFromPacket(sf::Packet* p)
 sf::Packet* EventMovementChange::toPacket()
 {
 	sf::Packet* p = new sf::Packet();
-	*p << id << x << y << velX << velY;
+	*p << id << playerId <<  x << y << velX << velY;
 	return p;
 }

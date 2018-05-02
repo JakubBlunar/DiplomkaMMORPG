@@ -10,6 +10,7 @@ public:
 	EventMovementChange();
 
 	float x, y, velX, velY;
+	int playerId;
 
 	void accept(class EventVisitor* v);
 	bool loadFromPacket(sf::Packet* p);

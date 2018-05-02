@@ -5,6 +5,7 @@
 #include "Database.h"
 
 #include "EventMovementChange.h"
+#include "EventLoginRequest.h"
 
 Server::Server(ServerSettings* settings)
 {
@@ -34,6 +35,7 @@ void Server::init()
 		recieveThreads.push_back(t);
 	}
 
+	managers.push_back(&authManager);
 }
 
 void Server::start()
@@ -48,9 +50,7 @@ void Server::start()
 		recieveThreads[i]->launch();
 	}
 
-	std::cout << "server started on port " << serverSettings->port << std::endl;
-
-
+	print("server started on port " + std::to_string(serverSettings->port));
 
 	while (running) {
 		
@@ -72,6 +72,14 @@ void Server::update()
 
 }
 
+void Server::print(const std::string& message)
+{
+	consoleMutex.lock();
+
+	std::cout << message << std::endl;
+
+	consoleMutex.unlock();
+}
 
 void Server::identifyPacket(EventId type, sf::Packet *packet, Session* playerSession) {
 	sf::Packet resPacket;
@@ -80,15 +88,24 @@ void Server::identifyPacket(EventId type, sf::Packet *packet, Session* playerSes
 	if (type == MOVEMENT) {
 		EventMovementChange* e = new EventMovementChange();
 		if (e->loadFromPacket(packet)) {
-			consoleMutex.lock();
-			std::cout << "Player("")" << "[" << e->velX << "," << e->velY << "]" << std::endl;
-			consoleMutex.unlock();
+			
+			print("Player(" + to_string(e->playerId) +") [" + to_string(e->velX) + "," + to_string(e->velY) + "]");
+
+			sf::Packet * p = e->toPacket();
 
 			for (unsigned int j = 0; j < sessions.size(); j++)
 			{
 				if (playerSession != sessions[j])
-					sessions[j]->socket->send(resPacket);
+					sessions[j]->socket->send(*p);
 			}
+		}
+		delete e;
+	}
+
+	if (type == LOGINREQUEST) {
+		EventLoginRequest* e = new EventLoginRequest();
+		if (e->loadFromPacket(packet)) {
+			authManager.handleEvent(e, playerSession, this);
 		}
 		delete e;
 	}
@@ -121,13 +138,12 @@ void Server::recievePackets()
 					sessions.push_back(playerSession);
 
 					selector.add(*client);
-					consoleMutex.lock();
-					std::cout << "new connection received from " << client->getRemoteAddress() << std::endl;
-					consoleMutex.unlock();
+					
+					print("new connection received from " + client->getRemoteAddress().toString());
 				}
 				else
 				{
-					std::cout << "error : server has no connection" << std::endl;
+					print("error : server has no connection");
 					delete client;
 				}
 			}
@@ -157,9 +173,7 @@ void Server::recievePackets()
 						break;
 					case sf::Socket::Disconnected:
 					{
-						consoleMutex.lock();
-						std::cout << "disconnect from " << playerSession->socket->getRemoteAddress() << std::endl;
-						consoleMutex.unlock();
+						print("disconnect from " + playerSession->socket->getRemoteAddress().toString());
 
 						selector.remove(*playerSession->socket);
 						playerSession->socket->disconnect();

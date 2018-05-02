@@ -121,18 +121,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AuthManager.cpp" />
     <ClCompile Include="Crypto.cpp" />
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Manager.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="ServerSettings.cpp" />
     <ClCompile Include="Session.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AuthManager.h" />
     <ClInclude Include="Crypto.h" />
     <ClInclude Include="Database.h" />
     <ClInclude Include="INIReader.h" />
     <ClInclude Include="json.hpp" />
+    <ClInclude Include="Manager.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="ServerSettings.h" />
     <ClInclude Include="Session.h" />

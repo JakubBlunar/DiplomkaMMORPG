@@ -17,6 +17,7 @@ public:
 	string dbUser;
 	string dbName;
 	string dbPassword;
+	bool logsEnabled;
 	
 };
 

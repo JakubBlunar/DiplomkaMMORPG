@@ -8,11 +8,12 @@
 #include "SceneManager.h"
 #include "EventMovementChange.h"
 #include "ClientEventActions.h"
+#include "EventDispatcher.h"
 
 const float Game::PlayerSpeed = 30.f;
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 
-Game::Game(ClientSettings* clientSettings)
+Game::Game()
 	: window(sf::VideoMode(1360, 768), "SFML Application", sf::Style::Close | sf::Style::Resize)
 	, mPlayer()
 	, mFont()
@@ -24,7 +25,6 @@ Game::Game(ClientSettings* clientSettings)
 	, mIsMovingRight(false)
 	, mIsMovingLeft(false)
 {
-	this->clientSettings = clientSettings;
 	this->packet_manager = new PacketManager(this);
 	this->sceneManager = new SceneManager();
 	this->keyboardManager = new KeyboardManager();
@@ -41,6 +41,7 @@ Game::Game(ClientSettings* clientSettings)
 	mStatisticsText.setPosition(5.f, 5.f);
 	mStatisticsText.setCharacterSize(12);
 	mStatisticsText.setFillColor(sf::Color::Blue);
+	subscribe();
 }
 
 void Game::run()
@@ -76,11 +77,9 @@ void Game::run()
 	ImGui::SFML::Shutdown();
 }
 
-void Game::addEvent(GameEvent* e)
+void Game::handleEvent(GameEvent* event)
 {
-	eventQueueMutex.lock();
-	eventQueue.push(e);
-	eventQueueMutex.unlock();
+	event->accept(eventActions);
 }
 
 void Game::processEvents()
@@ -123,14 +122,7 @@ void Game::processEvents()
 
 void Game::update(sf::Time elapsedTime)
 {
-	while (eventQueue.size() > 0) {
-		eventQueueMutex.lock();
-		GameEvent * e = eventQueue.front();
-		eventQueue.pop();
-		e->accept(eventActions);
-		eventQueueMutex.unlock();
-	}
-
+	ClientSettings::instance()->eventsMutex.lock();
 	sceneManager->update(this, elapsedTime);
 
 	movement = sf::Vector2f(0.f, 0.f);
@@ -145,6 +137,7 @@ void Game::update(sf::Time elapsedTime)
 
 	mPlayer.move(movement * elapsedTime.asSeconds());
 	sendPlayerPosition();
+	ClientSettings::instance()->eventsMutex.unlock();
 }
 
 void Game::render()
@@ -199,7 +192,7 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed) {
 
 }
 
-void Game::print(std::string message)
+void Game::print(const std::string& message)
 {
 	consoleMutex.lock();
 	
@@ -216,18 +209,25 @@ sf::Vector2f Game::playerPosition() const
 
 void Game::sendPlayerPosition()
 {
-	sf::Vector2f position = playerPosition();
-	
+	const sf::Vector2f position = playerPosition();
 
 	if (lastMovement != movement)
 	{
 		EventMovementChange* e = new EventMovementChange();
+		e->playerId = 2;
 		e->velX = movement.x;
 		e->velY = movement.y;
 		e->x = position.x;
 		e->y = position.y;
 		lastMovement = movement;
-		addEvent(e);
+		EventDispatcher<EventMovementChange>::dispatchEvent(e);
 	}
 
+}
+
+void Game::subscribe()
+{
+	EventDispatcher<EventMovementChange>::addSubscriber(this);
+	EventDispatcher<EventLoginRequest>::addSubscriber(this);
+	EventDispatcher<EventLoginResponse>::addSubscriber(this);
 }

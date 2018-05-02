@@ -9,7 +9,10 @@ enum EventId
 	WRONGPACKETTYPE = 2,
 	POSITION = 3,
 	MOVEMENT = 4,
-	LATENCY = 5
+	LATENCY = 5,
+	LOGINREQUEST = 6,
+	LOGINRESPONSE = 7,
+
 };
 
 #endif // !EVENT_ID_H

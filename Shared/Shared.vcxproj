@@ -150,6 +150,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="EventLoginRequest.h" />
+    <ClInclude Include="EventLoginResponse.h" />
     <ClInclude Include="EventMovementChange.h" />
     <ClInclude Include="EventVisitor.h" />
     <ClInclude Include="GameEvent.h" />
@@ -158,6 +160,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="EventLoginRequest.cpp" />
+    <ClCompile Include="EventLoginResponse.cpp" />
     <ClCompile Include="EventMovementChange.cpp" />
     <ClCompile Include="EventVisitor.cpp" />
     <ClCompile Include="GameEvent.cpp" />

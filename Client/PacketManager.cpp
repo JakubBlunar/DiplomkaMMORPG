@@ -3,12 +3,14 @@
 #include <iostream>
 #include "EventId.h"
 #include "Game.h"
+#include "EventLoginResponse.h"
+#include "EventDispatcher.h"
 
-PacketManager::PacketManager(Game* g) : game(nullptr)
+PacketManager::PacketManager(Game* g) : game(nullptr), latencyCheckThread(nullptr)
 {
 	game = g;
-
-	if (socket.connect(g->clientSettings->host , static_cast<short>(g->clientSettings->port)) != sf::Socket::Done)
+	ClientSettings* settings = ClientSettings::instance();
+	if (socket.connect(settings->host, static_cast<short>(settings->port)) != sf::Socket::Done)
 	{
 		game->print("An error ocurred connecting to server");
 		connected = false;
@@ -18,7 +20,7 @@ PacketManager::PacketManager(Game* g) : game(nullptr)
 		connected = true;
 		game->print("connected");
 	}
-	
+
 	socket.setBlocking(false);
 }
 
@@ -72,7 +74,7 @@ void PacketManager::startRecieve()
 			socketMutex.unlock();
 
 			int packetType;
-
+			GameEvent* e;
 			if (packet >> packetType)
 			{
 				//const auto duration = statistics.packetRecieve(id);
@@ -84,6 +86,16 @@ void PacketManager::startRecieve()
 					int id;
 					if (packet >> id) {
 						statistics.packetRecieve(id);
+					}
+					break;
+				case LOGINRESPONSE:
+					e = new EventLoginResponse(false);
+					if(e->loadFromPacket(&packet))
+					{
+						EventDispatcher<EventLoginResponse>::dispatchEvent(e);
+					}else
+					{
+						game->print("Error while parsing packet " + std::to_string(pt));
 					}
 					break;
 				default:

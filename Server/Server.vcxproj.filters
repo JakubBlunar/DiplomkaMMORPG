@@ -22,6 +22,12 @@
     <Filter Include="Source Files\Database">
       <UniqueIdentifier>{244cca55-f6ff-4be3-8089-b1cbec78dc37}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Managers">
+      <UniqueIdentifier>{d4a32210-8323-4090-8584-9641c6e041cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Managers">
+      <UniqueIdentifier>{7b1d6c77-555a-445f-abba-4daeb04f1bbd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -41,6 +47,12 @@
     </ClCompile>
     <ClCompile Include="Crypto.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AuthManager.cpp">
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager.cpp">
+      <Filter>Source Files\Managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -64,6 +76,12 @@
     </ClInclude>
     <ClInclude Include="Crypto.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AuthManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager.h">
+      <Filter>Header Files\Managers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

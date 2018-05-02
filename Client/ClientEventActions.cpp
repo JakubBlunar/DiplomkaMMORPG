@@ -4,7 +4,7 @@
 #include "SFML\Network.hpp"
 #include "EventMovementChange.h"
 #include "PacketManager.h"
-#include <iostream>
+#include "EventLoginResponse.h"
 
 ClientEventActions::ClientEventActions(Game * g)
 {
@@ -20,4 +20,16 @@ void ClientEventActions::visit(EventMovementChange * e)
 	sf::Packet* packet = e->toPacket();
 	game->packet_manager->sendPacket(packet);
 	delete packet;
+}
+
+void ClientEventActions::visit(EventLoginRequest* e)
+{
+	sf::Packet* packet = e->toPacket();
+	game->packet_manager->sendPacket(packet);
+	delete packet;
+}
+
+void ClientEventActions::visit(EventLoginResponse* e)
+{
+	game->print(e->toString());
 }

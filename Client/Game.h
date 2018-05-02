@@ -8,30 +8,32 @@
 #include <queue>
 #include "GameEvent.h"
 #include "ClientEventActions.h"
+#include "Subscriber.h"
 
 class SceneManager;
 
-class Game
+class Game:
+	public Subscriber
 {
 public:
-	Game(ClientSettings* settings);
+	Game();
 	void					run();
 	bool					isRunning() const;
 
 	sf::RenderWindow		window;
-	ClientSettings*			clientSettings;
 
-	void					print(std::string message);
+	void					print(const std::string& message);
 
 	SceneManager*			sceneManager;
 	KeyboardManager*		keyboardManager;
 	PacketManager*			packet_manager;
 	bool					running;
-	void addEvent(GameEvent * e);
+	void handleEvent(GameEvent* event) override;
 private:
 	void					processEvents();
 	void					update(sf::Time elapsedTime);
 	void					render();
+	void					subscribe();
 
 	void					updateStatistics(sf::Time elapsedTime);
 	void					handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
@@ -54,6 +56,8 @@ private:
 	bool					mIsMovingLeft;
 	void				sendPlayerPosition();
 	sf::Vector2f		playerPosition() const;
+	
+private:
 	sf::Vector2f lastMovement;
 	
 	sf::Mutex					eventQueueMutex;

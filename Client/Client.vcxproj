@@ -138,11 +138,13 @@
     <ClCompile Include="PMStatistics.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="Subscriber.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="b2GLDraw.h" />
     <ClInclude Include="ClientEventActions.h" />
     <ClInclude Include="ClientSettings.h" />
+    <ClInclude Include="EventDispatcher.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="IGLoginCredentials.h" />
     <ClInclude Include="IGManager.h" />
@@ -156,6 +158,7 @@
     <ClInclude Include="RunningAverage.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="Subscriber.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

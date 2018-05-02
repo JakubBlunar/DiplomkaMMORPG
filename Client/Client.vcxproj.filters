@@ -99,6 +99,9 @@
     <ClCompile Include="ClientEventActions.cpp">
       <Filter>Source Files\Events</Filter>
     </ClCompile>
+    <ClCompile Include="Subscriber.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="b2GLDraw.h">
@@ -148,6 +151,12 @@
     </ClInclude>
     <ClInclude Include="ClientEventActions.h">
       <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="EventDispatcher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Subscriber.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

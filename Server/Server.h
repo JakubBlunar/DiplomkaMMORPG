@@ -7,6 +7,7 @@
 #include "SFML\Network.hpp"
 #include "ServerSettings.h"
 #include "EventId.h"
+#include "AuthManager.h"
 
 class Server
 {
@@ -15,16 +16,22 @@ public:
 	~Server();
 	void init();
 	void start();
-private:
+	void print(const std::string& message);
+
 	ServerSettings* serverSettings;
-	void update();
 	std::vector<Session*> sessions;
+
+	AuthManager authManager;
+	vector<Manager*> managers;
+private:
+	void update();
+	
 	sf::TcpListener listener;
 	sf::SocketSelector selector;
 	std::vector<sf::Thread*> recieveThreads;
 
 	bool running;
-	
+
 	sf::Mutex consoleMutex;
 	sf::Mutex selectorMutex;
 

@@ -3,14 +3,11 @@
 #include <iostream>
 
 #include "INIReader.h"
-#include "SFML\System.hpp"
-#include "SFML\Network.hpp"
+#include "SFML/System.hpp"
+#include "SFML/Network.hpp"
 
 #include "ServerSettings.h"
-#include "EventId.h"
 #include "Server.h"
-
-#include "Crypto.h"
 
 ServerSettings* initSettings() {
 	INIReader reader("config.ini");
@@ -29,6 +26,8 @@ ServerSettings* initSettings() {
 	settings->dbName = reader.Get("database", "database", "");
 	settings->dbUser = reader.Get("database", "user", "");
 	settings->dbPassword = reader.Get("database", "password", "");
+
+	settings->logsEnabled = reader.GetBoolean("server", "logs", false);
 	return settings;
 }
 
