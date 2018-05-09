@@ -17,8 +17,10 @@ public:
 	void drawAll(Game* g);
 
 	void Open(std::string n);
+	void close(std::string n);
 	void OpenAll();
 
+	bool isVisible(std::string n);
 	bool AnyWindowFocused();
 
 private:

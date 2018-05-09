@@ -16,8 +16,8 @@ public:
 	~SceneManager();
 		
 	void changeScene(std::string name);
-	void render(Game* g);
-	void update(Game* g, sf::Time elapsedTime);
+	void render(Game* g) const;
+	void update(Game* g, sf::Time elapsedTime) const;
 };
 
 #endif

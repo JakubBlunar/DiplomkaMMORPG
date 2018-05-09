@@ -125,6 +125,8 @@
     <ClCompile Include="ClientEventActions.cpp" />
     <ClCompile Include="ClientSettings.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GamePlayScene.cpp" />
+    <ClCompile Include="IGGameMenu.cpp" />
     <ClCompile Include="IGLoginCredentials.cpp" />
     <ClCompile Include="IGManager.cpp" />
     <ClCompile Include="IGWindow.cpp" />
@@ -134,8 +136,10 @@
     <ClCompile Include="KeyboardManager.cpp" />
     <ClCompile Include="LoginScene.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="PacketManager.cpp" />
     <ClCompile Include="PMStatistics.cpp" />
+    <ClCompile Include="ResourceHolder.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Subscriber.cpp" />
@@ -146,6 +150,8 @@
     <ClInclude Include="ClientSettings.h" />
     <ClInclude Include="EventDispatcher.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GamePlayScene.h" />
+    <ClInclude Include="IGGameMenu.h" />
     <ClInclude Include="IGLoginCredentials.h" />
     <ClInclude Include="IGManager.h" />
     <ClInclude Include="IGWindow.h" />
@@ -153,8 +159,10 @@
     <ClInclude Include="json.hpp" />
     <ClInclude Include="KeyboardManager.h" />
     <ClInclude Include="LoginScene.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="PacketManager.h" />
     <ClInclude Include="PMStatistics.h" />
+    <ClInclude Include="ResourceHolder.h" />
     <ClInclude Include="RunningAverage.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />

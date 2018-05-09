@@ -56,8 +56,6 @@ int main() {
 	EventDispatcher<EventMovementChange>::addSubscriber(&c);
 
 	g->run();
-
-	system("pause");
 	return EXIT_SUCCESS;
 }
 

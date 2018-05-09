@@ -39,6 +39,24 @@ void IGManager::drawAll(Game* game)
 	}
 }
 
+void IGManager::close(std::string n)
+{
+	IGWindow* w = getWindow(n);
+	if (w != nullptr)
+	{
+		w->close();
+	}
+}
+
+bool IGManager::isVisible(std::string n)
+{
+	const auto it = windows.find(n);
+	if (it != windows.end())
+		return it->second->isOpened();
+
+	return false;
+}
+
 void IGManager::Open(std::string n)
 {
 	IGWindow* w = getWindow(n);

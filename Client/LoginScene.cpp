@@ -16,17 +16,17 @@ LoginScene::~LoginScene()
 
 }
 
-void LoginScene::beforeChange(Game * g)
+void LoginScene::beforeChange(Game* g)
 {
 	Scene::beforeChange(g);
 }
 
-void LoginScene::afterChange(Game * g)
+void LoginScene::afterChange(Game* g)
 {
 	Scene::afterChange(g);
 }
 
-void LoginScene::update(Game * g, sf::Time elapsedTime)
+void LoginScene::update(Game* g, sf::Time elapsedTime)
 {
 	Scene::update(g, elapsedTime);
 

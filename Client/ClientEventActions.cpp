@@ -5,6 +5,7 @@
 #include "EventMovementChange.h"
 #include "PacketManager.h"
 #include "EventLoginResponse.h"
+#include "SceneManager.h"
 
 ClientEventActions::ClientEventActions(Game * g)
 {
@@ -32,4 +33,12 @@ void ClientEventActions::visit(EventLoginRequest* e)
 void ClientEventActions::visit(EventLoginResponse* e)
 {
 	game->print(e->toString());
+	if (e->status)
+	{
+		game->sceneManager->changeScene("gamePlay");
+	}else
+	{
+		//show popup
+	}
+	
 }
