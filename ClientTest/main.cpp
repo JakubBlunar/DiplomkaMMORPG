@@ -4,14 +4,14 @@
 #include "b2GLDraw.h"
 #include <iostream>
 
-#include <mysql_connection.h>
-#include <cppconn\driver.h>
-#include <cppconn\statement.h>
+#include <mysql.h>
 
-#define EXAMPLE_HOST "tcp://127.0.0.1:3306"
+
+#define EXAMPLE_HOST "localhost"
 #define EXAMPLE_USER "root"
 #define EXAMPLE_PASS "usbw"
 #define EXAMPLE_DB "world"
+#define EXAMPLE_PORT 3306
 
 #define DEGTORAD 0.0174532925199432957f
 #define RADTODEG 57.295779513082320876f
@@ -138,42 +138,41 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-	string url(argc >= 2 ? argv[1] : EXAMPLE_HOST);
-	const string user(argc >= 3 ? argv[2] : EXAMPLE_USER);
-	const string pass(argc >= 4 ? argv[3] : EXAMPLE_PASS);
-	const string database(argc >= 5 ? argv[4] : EXAMPLE_DB);
+	const char* url = EXAMPLE_HOST;
+	const char* user = EXAMPLE_USER;
+	const char* pass = EXAMPLE_PASS;
+	const char* database = EXAMPLE_DB;
+	unsigned int port = EXAMPLE_PORT;
+	char* unix_socket = nullptr;
+	unsigned int flag = 0;
 
-	try {
-		sql::Driver* driver;
-		sql::Connection *con;
-		sql::Statement *stmt;
-		sql::ResultSet  *res;
+	MYSQL* conn = mysql_init(nullptr);
 
-		driver = get_driver_instance();
-
-		con = driver->connect(EXAMPLE_HOST, EXAMPLE_USER, EXAMPLE_PASS);
-		stmt = con->createStatement();
-		stmt->execute("USE " EXAMPLE_DB);
-
-		res = stmt->executeQuery("SELECT id, login, email, lastActivity from accounts;");
-		while (res->next()) {
-			cout << res->getString("id").c_str() << res->getString("login").c_str() << "  " << res->getString("lastActivity").c_str() << endl;
-		}
-		delete res;
-		delete stmt;
-		delete con;
-	}
-	catch (sql::SQLException &e) {
-
-		cout << "# ERR: SQLException in " << __FILE__;
-		cout << "(" << __FUNCTION__ << ") on line " << __LINE__ << endl;
-		cout << "# ERR: " << e.what();
-		cout << " (MySQL error code: " << e.getErrorCode();
-		cout << ", SQLState: " << e.getSQLStateCStr() << " )" << endl;
-
+	if(!mysql_real_connect(conn, url, user,pass, database, port, unix_socket, flag ))
+	{
+		cout << "CANNOT CONNECT TO DATABASE" << mysql_error(conn) << endl;
 		system("pause");
-		return EXIT_FAILURE;
+		return 1;
 	}
+
+	cout << "Conected" << endl;
+
+	mysql_query(conn, "SELECT * FROM accounts;");
+	auto* res = mysql_store_result(conn);
+	if (res)
+	{
+		MYSQL_ROW row;
+		while ((row = mysql_fetch_row(res)))
+		{
+			int id = strtol(row[0], nullptr, 10);
+			string name(row[1]);
+
+			cout << id << name << endl;
+		}
+		mysql_free_result(res);
+	}
+
+	mysql_close(conn);
 
 	//Game g;
 	//g.run();

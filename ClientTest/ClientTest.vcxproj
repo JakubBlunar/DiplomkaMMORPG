@@ -88,15 +88,15 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)/ExternalLibraries/Box2D/include;$(SolutionDir)/ExternalLibraries/SFML/include;$(SolutionDir)/ExternalLibraries/Imgui;$(SolutionDir)/ExternalLibraries/MysqlConnector/include;E:\boost_1_66_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)/ExternalLibraries/Box2D/include;$(SolutionDir)/ExternalLibraries/SFML/include;$(SolutionDir)/ExternalLibraries/Imgui;$(SolutionDir)/ExternalLibraries/MySQL/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)/ExternalLibraries/Box2D/lib;$(SolutionDir)/ExternalLibraries/SFML/lib/Debug;$(SolutionDir)/ExternalLibraries/MysqlConnector/lib;E:\boost_1_66_0\stage\win32\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-main-d.lib;sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;sfml-audio-d.lib;sfml-network-d.lib;opengl32.lib;Box2D.lib;mysqlcppconn.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)/ExternalLibraries/Box2D/lib;$(SolutionDir)/ExternalLibraries/SFML/lib/Debug;$(SolutionDir)/ExternalLibraries/MySQL/Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-main-d.lib;sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;sfml-audio-d.lib;sfml-network-d.lib;opengl32.lib;Box2D.lib;libmysql.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
