@@ -257,11 +257,11 @@
     <ClInclude Include="PositionComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Globals.h">
-      <Filter>Libraries\Box2d Debug</Filter>
-    </ClInclude>
     <ClInclude Include="b2GLDraw.h">
       <Filter>Libraries\Box2d Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Globals.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

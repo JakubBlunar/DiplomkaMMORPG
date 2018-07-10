@@ -10,12 +10,8 @@
 #include "EventMovementChange.h"
 #include <thread>
 #include "Field.h"
-#include "Matrix.h"
+#include "Globals.h"
 
-#define DEGTORAD 0.0174532925199432957f
-#define RADTODEG 57.295779513082320876f
-#define METTOPIX 30.f
-#define PIXTOMET 0.03333333333333333f
 
 void CreateGround(b2World& World, float X, float Y);
 void CreateBox(b2World& World, int MouseX, int MouseY);
