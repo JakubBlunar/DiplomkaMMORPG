@@ -138,7 +138,9 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-	const char* url = EXAMPLE_HOST;
+	testBox2d();
+	/*
+	 *		const char* url = EXAMPLE_HOST;
 	const char* user = EXAMPLE_USER;
 	const char* pass = EXAMPLE_PASS;
 	const char* database = EXAMPLE_DB;
@@ -176,7 +178,7 @@ int main(int argc, char** argv)
 
 	//Game g;
 	//g.run();
-
+	*/
 	system("pause");
 	return EXIT_SUCCESS;
 }

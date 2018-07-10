@@ -9,6 +9,8 @@
 #include "GameEvent.h"
 #include "ClientEventActions.h"
 #include "Subscriber.h"
+#include "Map.h"
+#include "Camera.h"
 
 class SceneManager;
 
@@ -28,6 +30,10 @@ public:
 	KeyboardManager*		keyboardManager;
 	PacketManager*			packet_manager;
 	bool					running;
+
+	Map* getMap() const;
+	Camera* getCamera();
+
 	void handleEvent(GameEvent* event) override;
 private:
 	void					processEvents();
@@ -56,6 +62,8 @@ private:
 	bool					mIsMovingLeft;
 	void				sendPlayerPosition();
 	sf::Vector2f		playerPosition() const;
+
+
 	
 private:
 	sf::Vector2f lastMovement;
@@ -64,6 +72,9 @@ private:
 	std::queue<GameEvent*>		eventQueue;
 
 	ClientEventActions*			eventActions;
+
+	Map * gameMap;
+	Camera camera;
 };
 
 #endif

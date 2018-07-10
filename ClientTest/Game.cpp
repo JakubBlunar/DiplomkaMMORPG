@@ -2,6 +2,7 @@
 
 #include <imgui-SFML.h>
 #include "IGWindow.h"
+#include "../Client/Map.h"
 
 const float Game::PlayerSpeed = 30.f;
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
@@ -31,6 +32,7 @@ Game::Game()
 	mStatisticsText.setPosition(5.f, 5.f);
 	mStatisticsText.setCharacterSize(12);
 	mStatisticsText.setFillColor(sf::Color::Blue);
+	bgColor = sf::Color::White;
 	bgColor = sf::Color::White;
 }
 

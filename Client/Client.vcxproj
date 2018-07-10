@@ -122,8 +122,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="b2GLDraw.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ClientEventActions.cpp" />
     <ClCompile Include="ClientSettings.cpp" />
+    <ClCompile Include="Field.cpp" />
+    <ClCompile Include="FieldLayer.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GamePlayScene.cpp" />
     <ClCompile Include="IGGameMenu.cpp" />
@@ -137,8 +140,10 @@
     <ClCompile Include="LoginScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="PacketManager.cpp" />
     <ClCompile Include="PMStatistics.cpp" />
+    <ClCompile Include="RenderSprite.cpp" />
     <ClCompile Include="ResourceHolder.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
@@ -146,9 +151,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="b2GLDraw.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="ClientEventActions.h" />
     <ClInclude Include="ClientSettings.h" />
     <ClInclude Include="EventDispatcher.h" />
+    <ClInclude Include="Field.h" />
+    <ClInclude Include="FieldLayer.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GamePlayScene.h" />
     <ClInclude Include="IGGameMenu.h" />
@@ -160,8 +168,10 @@
     <ClInclude Include="KeyboardManager.h" />
     <ClInclude Include="LoginScene.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="Matrix.h" />
     <ClInclude Include="PacketManager.h" />
     <ClInclude Include="PMStatistics.h" />
+    <ClInclude Include="RenderSprite.h" />
     <ClInclude Include="ResourceHolder.h" />
     <ClInclude Include="RunningAverage.h" />
     <ClInclude Include="Scene.h" />

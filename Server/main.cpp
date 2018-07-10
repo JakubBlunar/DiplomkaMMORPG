@@ -34,7 +34,6 @@ ServerSettings* initSettings() {
 int main() {
 	ServerSettings* settings = initSettings();
 	if (settings == nullptr) {
-		system("pause");
 		return EXIT_FAILURE;
 	}
 
@@ -43,7 +42,6 @@ int main() {
 	s->init();
 	s->start();
 
-	system("pause");
 	return EXIT_SUCCESS;
 }
 

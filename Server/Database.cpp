@@ -26,7 +26,6 @@ Database::Database(ServerSettings* settings)
 		std::cout << " (MySQL error code: " << e.getErrorCode();
 		std::cout << ", SQLState: " << e.getSQLStateCStr() << " )" << std::endl;
 
-		system("pause");
 		exit(EXIT_FAILURE);
 	}
 

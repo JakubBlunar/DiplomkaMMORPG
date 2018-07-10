@@ -1,6 +1,6 @@
 #include "GamePlayScene.h"
 #include "IGGameMenu.h"
-
+#include "Camera.h"
 
 GamePlayScene::GamePlayScene(std::string name) : Scene(name)
 {
@@ -50,6 +50,29 @@ void GamePlayScene::render(Game * g)
 {
 	g->window.clear(sf::Color(220, 220, 220));
 
+	Map* map = g->getMap();
+
+	int width = map->getWidth();
+	int height = map->getHeight();
+
+	for(int i = 0; i < map->getWidth(); i++)
+	{
+		for(int j = 0; j < map->getHeight(); j++)
+		{
+			Field* field = map->getField(i, j);
+			std::vector<RenderSprite*>* layers = field->getLayers();
+
+			for(int k = 0; k < layers->size(); k++)
+			{
+				RenderSprite* layer = layers->at(k);
+				layer->setPosition(i*32, j*32);
+				g->window.draw(*layer);
+			}
+
+		}
+	}
+	
+
 	sf::Font mFont;
 	mFont.loadFromFile("Data/Sansation.ttf");
 	sf::Text text;
@@ -60,6 +83,8 @@ void GamePlayScene::render(Game * g)
 	text.setFillColor(sf::Color::Black);
 
 	g->window.draw(text);
+
+	g->window.setView(*g->getCamera()->getView());
 
 	Scene::render(g);
 }

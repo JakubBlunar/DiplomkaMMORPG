@@ -3,7 +3,6 @@
 #include <imgui.h>
 #include <imgui-SFML.h>
 #include "PacketManager.h"
-#include <limits.h>
 #include <iostream>
 #include "SceneManager.h"
 #include "EventMovementChange.h"
@@ -42,6 +41,8 @@ Game::Game()
 	mStatisticsText.setCharacterSize(12);
 	mStatisticsText.setFillColor(sf::Color::Blue);
 	subscribe();
+
+	gameMap = new Map();
 }
 
 void Game::run()
@@ -74,8 +75,21 @@ void Game::run()
 		render();
 	}
 	
+	window.setView(*camera.getView());
+
 	ImGui::SFML::Shutdown();
 }
+
+Map * Game::getMap() const
+{
+	return gameMap;
+}
+
+Camera* Game::getCamera()
+{
+	return &camera;
+}
+
 
 void Game::handleEvent(GameEvent* event)
 {
@@ -108,13 +122,23 @@ void Game::processEvents()
 			keyboardManager->handlePlayerInput(event.key.code, true);
 			handlePlayerInput(event.key.code, true);
 			break;
-
 		case sf::Event::KeyReleased:
 			keyboardManager->handlePlayerInput(event.key.code, false);
 			handlePlayerInput(event.key.code, false);
 			break;
 		case sf::Event::Resized:
-			window.setView(sf::View(sf::FloatRect(0, 0, 1360, 768)));
+			window.setView(*camera.getView());
+			break;
+		case sf::Event::MouseWheelScrolled:
+			if(sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
+			{
+				camera.adjustScale(event.mouseWheelScroll.delta * -0.02);
+			}
+			if(sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt))
+			{
+				camera.adjustRotation(event.mouseWheelScroll.delta * 10);
+			}
+			break;
 		default:;
 		}
 	}
@@ -124,6 +148,7 @@ void Game::update(sf::Time elapsedTime)
 {
 	ClientSettings::instance()->eventsMutex.lock();
 	sceneManager->update(this, elapsedTime);
+	camera.update(elapsedTime, this);
 
 	movement = sf::Vector2f(0.f, 0.f);
 	if (mIsMovingUp)

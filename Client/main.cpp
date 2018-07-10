@@ -9,7 +9,13 @@
 #include "EventDispatcher.h"
 #include "EventMovementChange.h"
 #include <thread>
+#include "Field.h"
+#include "Matrix.h"
 
+#define DEGTORAD 0.0174532925199432957f
+#define RADTODEG 57.295779513082320876f
+#define METTOPIX 30.f
+#define PIXTOMET 0.03333333333333333f
 
 bool initSettings() {
 	INIReader reader("config.ini");

@@ -46,6 +46,24 @@
     <Filter Include="Header Files\Events">
       <UniqueIdentifier>{8a57783b-1263-42b2-ae2f-65207f43b695}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Core\Map">
+      <UniqueIdentifier>{a29497ed-efbb-43b5-b3bf-781cc8d1269e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Core\Map">
+      <UniqueIdentifier>{e9e11760-66ac-4750-848f-97f627729e2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tools">
+      <UniqueIdentifier>{c6b76064-69f8-4e6d-9bf7-3de4c121a3c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools">
+      <UniqueIdentifier>{9ae3f3b6-e98a-4132-adf5-f550d32bcd4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities">
+      <UniqueIdentifier>{f8b50458-c2a5-4d69-b34b-83304263cb85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entities">
+      <UniqueIdentifier>{3e55c048-a94f-408e-b16d-d32a8ec16d52}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -63,16 +81,10 @@
     <ClCompile Include="imgui-SFML.cpp">
       <Filter>Libraries\Imgui</Filter>
     </ClCompile>
-    <ClCompile Include="ClientSettings.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PacketManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PMStatistics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
@@ -109,9 +121,30 @@
       <Filter>Source Files\Scenes\IMGui</Filter>
     </ClCompile>
     <ClCompile Include="Map.cpp">
-      <Filter>Source Files\Core</Filter>
+      <Filter>Source Files\Core\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Field.cpp">
+      <Filter>Source Files\Core\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientSettings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FieldLayer.cpp">
+      <Filter>Source Files\Core\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix.cpp">
+      <Filter>Source Files\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSprite.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ResourceHolder.cpp">
+      <Filter>Source Files\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="PMStatistics.cpp">
+      <Filter>Source Files\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -132,12 +165,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PacketManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PMStatistics.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RunningAverage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SceneManager.h">
@@ -177,9 +204,30 @@
       <Filter>Header Files\Scenes\IMGui</Filter>
     </ClInclude>
     <ClInclude Include="Map.h">
+      <Filter>Header Files\Core\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="FieldLayer.h">
+      <Filter>Header Files\Core\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Field.h">
+      <Filter>Header Files\Core\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix.h">
+      <Filter>Header Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSprite.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="ResourceHolder.h">
+      <Filter>Header Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="RunningAverage.h">
+      <Filter>Header Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="PMStatistics.h">
+      <Filter>Header Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
