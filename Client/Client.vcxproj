@@ -125,6 +125,8 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ClientEventActions.cpp" />
     <ClCompile Include="ClientSettings.cpp" />
+    <ClCompile Include="Component.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="FieldLayer.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -142,7 +144,9 @@
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="PacketManager.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="PMStatistics.cpp" />
+    <ClCompile Include="PositionComponent.cpp" />
     <ClCompile Include="RenderSprite.cpp" />
     <ClCompile Include="ResourceHolder.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -154,11 +158,14 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ClientEventActions.h" />
     <ClInclude Include="ClientSettings.h" />
+    <ClInclude Include="Component.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="EventDispatcher.h" />
     <ClInclude Include="Field.h" />
     <ClInclude Include="FieldLayer.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GamePlayScene.h" />
+    <ClInclude Include="Globals.h" />
     <ClInclude Include="IGGameMenu.h" />
     <ClInclude Include="IGLoginCredentials.h" />
     <ClInclude Include="IGManager.h" />
@@ -170,7 +177,9 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="PacketManager.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="PMStatistics.h" />
+    <ClInclude Include="PositionComponent.h" />
     <ClInclude Include="RenderSprite.h" />
     <ClInclude Include="ResourceHolder.h" />
     <ClInclude Include="RunningAverage.h" />

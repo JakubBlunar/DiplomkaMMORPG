@@ -2,6 +2,11 @@
 #include "IGGameMenu.h"
 #include "Camera.h"
 
+#define DEGTORAD 0.0174532925199432957f
+#define RADTODEG 57.295779513082320876f
+#define METTOPIX 30.f
+#define PIXTOMET 0.03333333333333333f
+
 GamePlayScene::GamePlayScene(std::string name) : Scene(name)
 {
 	escPressed = false;
@@ -62,16 +67,34 @@ void GamePlayScene::render(Game * g)
 			Field* field = map->getField(i, j);
 			std::vector<RenderSprite*>* layers = field->getLayers();
 
-			for(int k = 0; k < layers->size(); k++)
+			for(unsigned int k = 0; k < layers->size(); k++)
 			{
 				RenderSprite* layer = layers->at(k);
-				layer->setPosition(i*32, j*32);
+				layer->setPosition(i*32.f, j*32.f);
 				g->window.draw(*layer);
 			}
 
 		}
 	}
+
+	Map* m = g->getMap();
+	b2World * w = m->getB2World();
+
+	sf::Texture BoxTexture;
+	BoxTexture.loadFromFile("box.png");
 	
+	for (b2Body* BodyIterator = w->GetBodyList(); BodyIterator != 0; BodyIterator = BodyIterator->GetNext())
+	{
+		sf::Sprite Sprite;
+		Sprite.setTexture(BoxTexture);
+		Sprite.setOrigin(0,0);
+		b2Vec2 position = BodyIterator->GetPosition();
+		Sprite.setPosition(METTOPIX * BodyIterator->GetPosition().x, METTOPIX * BodyIterator->GetPosition().y);
+		Sprite.setRotation(BodyIterator->GetAngle() * RADTODEG);
+		g->window.draw(Sprite);
+
+	
+	}
 
 	sf::Font mFont;
 	mFont.loadFromFile("Data/Sansation.ttf");
@@ -85,6 +108,9 @@ void GamePlayScene::render(Game * g)
 	g->window.draw(text);
 
 	g->window.setView(*g->getCamera()->getView());
+
+
+	w->DrawDebugData();
 
 	Scene::render(g);
 }

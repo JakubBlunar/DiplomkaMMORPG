@@ -13,7 +13,15 @@ KeyboardManager::~KeyboardManager()
 
 void KeyboardManager::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 {
-	keys[key] = isPressed;
+	if(isPressed)
+	{
+		keys[key] = isPressed;
+	} else
+	{
+		std::map<sf::Keyboard::Key, bool>::iterator iter = keys.find(key);
+		if(iter != keys.end())
+			keys.erase(iter);
+	}
 }
 
 bool KeyboardManager::isKeyPressed(sf::Keyboard::Key key)

@@ -9,20 +9,15 @@
 #include "ClientEventActions.h"
 #include "EventDispatcher.h"
 
-const float Game::PlayerSpeed = 30.f;
+
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 
 Game::Game()
 	: window(sf::VideoMode(1360, 768), "SFML Application", sf::Style::Close | sf::Style::Resize)
-	, mPlayer()
 	, mFont()
 	, mStatisticsText()
 	, mStatisticsUpdateTime()
 	, mStatisticsNumFrames(0)
-	, mIsMovingUp(false)
-	, mIsMovingDown(false)
-	, mIsMovingRight(false)
-	, mIsMovingLeft(false)
 {
 	this->packet_manager = new PacketManager(this);
 	this->sceneManager = new SceneManager();
@@ -42,7 +37,7 @@ Game::Game()
 	mStatisticsText.setFillColor(sf::Color::Blue);
 	subscribe();
 
-	gameMap = new Map();
+	gameMap = new Map(this);
 }
 
 void Game::run()
@@ -120,11 +115,9 @@ void Game::processEvents()
 		{
 		case sf::Event::KeyPressed:
 			keyboardManager->handlePlayerInput(event.key.code, true);
-			handlePlayerInput(event.key.code, true);
 			break;
 		case sf::Event::KeyReleased:
 			keyboardManager->handlePlayerInput(event.key.code, false);
-			handlePlayerInput(event.key.code, false);
 			break;
 		case sf::Event::Resized:
 			window.setView(*camera.getView());
@@ -132,11 +125,11 @@ void Game::processEvents()
 		case sf::Event::MouseWheelScrolled:
 			if(sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
 			{
-				camera.adjustScale(event.mouseWheelScroll.delta * -0.02);
+				camera.adjustScale(event.mouseWheelScroll.delta * -0.02f);
 			}
 			if(sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt))
 			{
-				camera.adjustRotation(event.mouseWheelScroll.delta * 10);
+				camera.adjustRotation(event.mouseWheelScroll.delta * 10.f);
 			}
 			break;
 		default:;
@@ -147,21 +140,10 @@ void Game::processEvents()
 void Game::update(sf::Time elapsedTime)
 {
 	ClientSettings::instance()->eventsMutex.lock();
+	gameMap->update(elapsedTime, this);
 	sceneManager->update(this, elapsedTime);
 	camera.update(elapsedTime, this);
-
-	movement = sf::Vector2f(0.f, 0.f);
-	if (mIsMovingUp)
-		movement.y -= PlayerSpeed;
-	if (mIsMovingDown)
-		movement.y += PlayerSpeed;
-	if (mIsMovingLeft)
-		movement.x -= PlayerSpeed;
-	if (mIsMovingRight)
-		movement.x += PlayerSpeed;
-
-	mPlayer.move(movement * elapsedTime.asSeconds());
-	sendPlayerPosition();
+	
 	ClientSettings::instance()->eventsMutex.unlock();
 }
 
@@ -204,19 +186,6 @@ bool Game::isRunning() const
 	return running;
 }
 
-void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed) {
-	
-	if (key == sf::Keyboard::W)
-		mIsMovingUp = isPressed;
-	else if (key == sf::Keyboard::S)
-		mIsMovingDown = isPressed;
-	else if (key == sf::Keyboard::A)
-		mIsMovingLeft = isPressed;
-	else if (key == sf::Keyboard::D)
-		mIsMovingRight = isPressed;
-
-}
-
 void Game::print(const std::string& message)
 {
 	consoleMutex.lock();
@@ -231,7 +200,7 @@ sf::Vector2f Game::playerPosition() const
 	return mPlayer.getPosition();
 }
 
-
+/*
 void Game::sendPlayerPosition()
 {
 	const sf::Vector2f position = playerPosition();
@@ -249,6 +218,7 @@ void Game::sendPlayerPosition()
 	}
 
 }
+*/
 
 void Game::subscribe()
 {

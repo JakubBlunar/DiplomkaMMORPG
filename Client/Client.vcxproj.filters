@@ -64,13 +64,16 @@
     <Filter Include="Header Files\Entities">
       <UniqueIdentifier>{3e55c048-a94f-408e-b16d-d32a8ec16d52}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Entities\Components">
+      <UniqueIdentifier>{7fd96c72-b996-4026-a9d5-25c4f60a3216}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities\Components">
+      <UniqueIdentifier>{135a0ed8-9e69-43ad-8eda-cddf5dbb06f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="b2GLDraw.cpp">
-      <Filter>Libraries\Box2d Debug</Filter>
     </ClCompile>
     <ClCompile Include="imgui.cpp">
       <Filter>Libraries\Imgui</Filter>
@@ -147,11 +150,23 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Source Files\Entities\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="PositionComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="b2GLDraw.cpp">
+      <Filter>Libraries\Box2d Debug</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="b2GLDraw.h">
-      <Filter>Libraries\Box2d Debug</Filter>
-    </ClInclude>
     <ClInclude Include="json.hpp">
       <Filter>Libraries</Filter>
     </ClInclude>
@@ -229,6 +244,24 @@
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Header Files\Entities\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="PositionComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Globals.h">
+      <Filter>Libraries\Box2d Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="b2GLDraw.h">
+      <Filter>Libraries\Box2d Debug</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
