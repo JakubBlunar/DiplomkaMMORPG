@@ -4,7 +4,6 @@
 #include "Field.h"
 #include "Matrix.h"
 #include "Player.h"
-#include "../ClientTest/b2GLDraw.h"
 
 class Game;
 

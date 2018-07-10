@@ -2,6 +2,7 @@
 #include "IGGameMenu.h"
 #include "Camera.h"
 #include "Globals.h"
+#include "Box2D/Box2D.h"
 
 GamePlayScene::GamePlayScene(std::string name) : Scene(name)
 {

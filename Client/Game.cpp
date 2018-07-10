@@ -8,13 +8,13 @@
 #include "EventMovementChange.h"
 #include "ClientEventActions.h"
 #include "EventDispatcher.h"
+#include "ResourceHolder.h"
 
 
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 
 Game::Game()
 	: window(sf::VideoMode(1360, 768), "SFML Application", sf::Style::Close | sf::Style::Resize)
-	, mFont()
 	, mStatisticsText()
 	, mStatisticsUpdateTime()
 	, mStatisticsNumFrames(0)
@@ -30,8 +30,7 @@ Game::Game()
 	mPlayer.setRadius(15);
 	mPlayer.setPosition(100.f, 100.f);
 
-	mFont.loadFromFile("Data/Sansation.ttf");
-	mStatisticsText.setFont(mFont);
+	mStatisticsText.setFont(ResourceHolder<sf::Font>::instance()->get("Sansation.ttf"));
 	mStatisticsText.setPosition(5.f, 5.f);
 	mStatisticsText.setCharacterSize(12);
 	mStatisticsText.setFillColor(sf::Color::Blue);

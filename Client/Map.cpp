@@ -1,6 +1,7 @@
 #include "Map.h"
 #include "Game.h"
 #include "Globals.h"
+#include "b2GLDraw.h"
 
 void Map::addRectangle(int x, int y)
 {

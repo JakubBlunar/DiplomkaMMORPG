@@ -11,6 +11,8 @@
 #include <thread>
 #include "Field.h"
 #include "Globals.h"
+#include <Box2D/Box2D.h>
+#include "b2GLDraw.h"
 
 
 void CreateGround(b2World& World, float X, float Y);
