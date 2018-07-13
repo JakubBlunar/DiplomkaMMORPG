@@ -1,5 +1,7 @@
 #pragma once
 #include "Scene.h"
+#include "VisibleObjectsCast.h"
+
 class GamePlayScene :
 	public Scene
 {
@@ -14,5 +16,15 @@ public:
 
 private:
 	bool escPressed;
+	sf::Texture BoxTexture;
+	sf::Font mFont;
+	
+	VisibleObjectsCast queryCallback;
+	b2AABB aabb;
+
+	sf::Text nameOfScene;
+
+	bool drawDebugData;
+	bool fonePressed;
 };
 

@@ -159,11 +159,14 @@
     <ClCompile Include="Component.cpp">
       <Filter>Source Files\Entities\Components</Filter>
     </ClCompile>
-    <ClCompile Include="PositionComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="b2GLDraw.cpp">
       <Filter>Libraries\Box2d Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="PositionComponent.cpp">
+      <Filter>Source Files\Entities\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Box2DTools.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -254,13 +257,19 @@
     <ClInclude Include="Component.h">
       <Filter>Header Files\Entities\Components</Filter>
     </ClInclude>
-    <ClInclude Include="PositionComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="b2GLDraw.h">
       <Filter>Libraries\Box2d Debug</Filter>
     </ClInclude>
     <ClInclude Include="Globals.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PositionComponent.h">
+      <Filter>Header Files\Entities\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Box2DTools.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VisibleObjectsCast.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

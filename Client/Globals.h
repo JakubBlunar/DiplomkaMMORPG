@@ -6,4 +6,6 @@
 #define METTOPIX 30.f
 #define PIXTOMET 0.03333333333333333f
 
+#define FIELD_SIZE 32.f
+
 #endif // GLOBALS_H_INCLUDED

@@ -14,9 +14,11 @@ class Map
 	b2World* world;
 	Player* player;
 	std::vector<Player*> players;
+	std::vector<Entity *> entities;
 
 	b2Draw* debugDrawInstance;
-	void addRectangle(int x, int y);
+	void addPlayer(Player* player);
+	void removePlayer(Player* player);
 public:
 	Map(Game* g);
 	~Map();

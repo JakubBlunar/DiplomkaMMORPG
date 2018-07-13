@@ -62,6 +62,16 @@ void Camera::adjustRotation(float delta)
 	rotation += delta;
 }
 
+sf::Vector2f Camera::getResolution() const
+{
+	return resolution;
+}
+
+sf::Vector2f Camera::getOffset() const
+{
+	return offset;
+}
+
 sf::View* Camera::getView()
 {
 	return &view;

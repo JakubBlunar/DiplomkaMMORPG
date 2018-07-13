@@ -14,6 +14,7 @@ public:
 	void handleEvent(GameEvent* event) override;
 	void update(sf::Time elapsedTime, Map* map) override;
 
+	EntityType getType() override;
 private:
 	bool playerControlled;
 	PositionComponent* positionComponent;

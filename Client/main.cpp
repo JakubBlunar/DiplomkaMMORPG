@@ -27,7 +27,7 @@ void testBox2d()
 	b2World World(Gravity);
 	World.SetAllowSleeping(true);
 
-	b2GLDraw debugDrawInstance;
+	SFMLDebugDraw debugDrawInstance(Window);
 	World.SetDebugDraw(&debugDrawInstance);
 	uint32 flags = 0;
 	flags += b2Draw::e_shapeBit;

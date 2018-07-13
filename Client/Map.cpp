@@ -2,28 +2,14 @@
 #include "Game.h"
 #include "Globals.h"
 #include "b2GLDraw.h"
+#include "Box2DTools.h"
 
-void Map::addRectangle(int x, int y)
-{
-	b2BodyDef BodyDef;
-	BodyDef.position = b2Vec2(x * PIXTOMET, y * PIXTOMET);
-	BodyDef.type = b2_dynamicBody;
-	b2Body* Body = world->CreateBody(&BodyDef);
-
-	b2PolygonShape Shape;
-	Shape.SetAsBox((32.f / 2) * PIXTOMET, (32.f / 2) * PIXTOMET);
-	b2FixtureDef FixtureDef;
-	FixtureDef.density = 1.f;
-	FixtureDef.friction = 0.7f;
-	FixtureDef.shape = &Shape;
-	Body->CreateFixture(&FixtureDef);
-}
 
 Map::Map(Game* g)
 {
 	init();
 
-	debugDrawInstance = new b2GLDraw();
+	debugDrawInstance = new SFMLDebugDraw(g->window);
 	world = new b2World(b2Vec2(0.f, 0.f));
 	world->SetAllowSleeping(true);
 
@@ -32,14 +18,12 @@ Map::Map(Game* g)
 	flags += b2Draw::e_shapeBit;
 	flags += b2Draw::e_jointBit;
 	flags += b2Draw::e_aabbBit;
-	flags += b2Draw::e_pairBit;
-	flags += b2Draw::e_centerOfMassBit;
+	//flags += b2Draw::e_pairBit;
+	//flags += b2Draw::e_centerOfMassBit;
 	debugDrawInstance->SetFlags(flags);
 
-	addRectangle(64, 0);
-	addRectangle(0, 0);
-	addRectangle(32, 32);
-
+	Player *p = new Player(true);
+	addPlayer(p);
 }
 
 
@@ -50,8 +34,8 @@ Map::~Map()
 
 void Map::init()
 {
-	width = 7;
-	height = 5;
+	width = 255;
+	height = 255;
 
 	fields = new Matrix<Field>(width, height);
 	for (int i = 0; i < width; i++)
@@ -65,7 +49,11 @@ void Map::init()
 
 void Map::update(sf::Time elapsedTime, Game* game)
 {
-	world->Step(1 / 60.f, 8, 3);
+	world->Step(elapsedTime.asSeconds(), 8, 3);
+	for (Entity* entity : entities)
+	{
+		entity->update(elapsedTime, this);
+	}
 }
 
 Field* Map::getField(int x, int y) const
@@ -88,3 +76,18 @@ b2World* Map::getB2World() const
 	return world;
 }
 
+
+void Map::addPlayer(Player* player)
+{
+	players.push_back(player);
+	entities.push_back(player);
+	sf::Vector2f position = player->getPosition();
+	Box2DTools::addDynamicCircle(position.x, position.y, player, this);
+}
+
+void Map::removePlayer(Player* player)
+{
+	world->DestroyBody(player->getBody());
+	entities.erase(std::remove(entities.begin(), entities.end(), player), entities.end());
+	players.erase(std::remove(players.begin(), players.end(), player), players.end());
+}

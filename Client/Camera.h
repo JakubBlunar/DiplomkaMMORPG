@@ -16,12 +16,15 @@ public:
 	void update(sf::Time elapsedTime, Game* g);
 	void adjustScale(float delta);
 	void adjustRotation(float delta);
+	sf::Vector2f getResolution() const;
+	sf::Vector2f getOffset() const;
 	sf::View* getView(); 
 private:
 	sf::Vector2f resolution;
 	sf::Vector2f offset;
 	float scale;
 	float rotation;
+
 
 	sf::View view;
 };

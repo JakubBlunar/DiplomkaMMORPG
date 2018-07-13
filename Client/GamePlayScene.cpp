@@ -1,13 +1,29 @@
 #include "GamePlayScene.h"
+#include <utility>
 #include "IGGameMenu.h"
 #include "Camera.h"
 #include "Globals.h"
 #include "Box2D/Box2D.h"
+#include "ResourceHolder.h"
+#include "VisibleObjectsCast.h"
+#include "Globals.h"
 
-GamePlayScene::GamePlayScene(std::string name) : Scene(name)
+GamePlayScene::GamePlayScene(std::string name) : Scene(std::move(name))
 {
 	escPressed = false;
+	fonePressed = false;
+	drawDebugData = true;
+
 	windowManager->addWindow("GameMenu", new IGGameMenu());
+
+	BoxTexture.loadFromFile("box.png");
+	mFont = ResourceHolder<sf::Font>::instance()->get("Sansation.ttf");
+
+	nameOfScene.setString("Game play screen");
+	nameOfScene.setFont(mFont);
+	nameOfScene.setPosition(50, 50);
+	nameOfScene.setCharacterSize(20);
+	nameOfScene.setFillColor(sf::Color::Black);
 }
 
 
@@ -33,19 +49,21 @@ void GamePlayScene::update(Game * g, sf::Time elapsedTime)
 		if(!escPressed)
 		{
 			if (windowManager->isVisible("GameMenu"))
-			{
 				windowManager->close("GameMenu");
-			}
 			else
-			{
 				windowManager->Open("GameMenu");
-			}
 		}	
 		escPressed = true;
 	}else
-	{
 		escPressed = false;
-	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F1))
+	{
+		if(!fonePressed)
+			drawDebugData = !drawDebugData;
+		fonePressed = true;
+	}else
+		fonePressed = false;
 }
 
 void GamePlayScene::render(Game * g)
@@ -57,9 +75,30 @@ void GamePlayScene::render(Game * g)
 	int width = map->getWidth();
 	int height = map->getHeight();
 
-	for(int i = 0; i < map->getWidth(); i++)
+	sf::Vector2f offset = g->getCamera()->getOffset();
+	sf::Vector2f resolution = g->getCamera()->getResolution();
+
+	int fromX = (int) (offset.x / FIELD_SIZE) - 1;
+	int toX = (int) (fromX + (resolution.x / FIELD_SIZE) + 2);
+
+	int fromY = (int) (offset.y / FIELD_SIZE) - 1;
+	int toY = (int) (fromY + (resolution.y / FIELD_SIZE) + 2);
+	
+	if(fromX < 0)
+		fromX = 0;
+
+	if (toX > width)
+		toX = width;
+
+	if(fromY < 0)
+		fromY = 0;
+
+	if (toY > height)
+		toY = height;
+
+	for(int i = fromX; i < toX; i++)
 	{
-		for(int j = 0; j < map->getHeight(); j++)
+		for(int j = fromY; j < toY; j++)
 		{
 			Field* field = map->getField(i, j);
 			std::vector<RenderSprite*>* layers = field->getLayers();
@@ -67,47 +106,33 @@ void GamePlayScene::render(Game * g)
 			for(unsigned int k = 0; k < layers->size(); k++)
 			{
 				RenderSprite* layer = layers->at(k);
-				layer->setPosition(i*32.f, j*32.f);
+				layer->setPosition(i*FIELD_SIZE, j*FIELD_SIZE);
 				g->window.draw(*layer);
 			}
-
 		}
 	}
 
-	Map* m = g->getMap();
-	b2World * w = m->getB2World();
+	b2World * w = map->getB2World();
 
-	sf::Texture BoxTexture;
-	BoxTexture.loadFromFile("box.png");
-	
-	for (b2Body* BodyIterator = w->GetBodyList(); BodyIterator != 0; BodyIterator = BodyIterator->GetNext())
-	{
+	aabb.lowerBound = b2Vec2(offset.x * PIXTOMET, offset.y * PIXTOMET);
+	aabb.upperBound = b2Vec2((offset.x + resolution.x) * PIXTOMET, (offset.y + resolution.y) * PIXTOMET);
+	queryCallback.foundBodies.clear();
+	w->QueryAABB( &queryCallback, aabb );
+	  
+	for (unsigned int i = 0; i < queryCallback.foundBodies.size(); i++) {
 		sf::Sprite Sprite;
 		Sprite.setTexture(BoxTexture);
 		Sprite.setOrigin(0,0);
-		b2Vec2 position = BodyIterator->GetPosition();
-		Sprite.setPosition(METTOPIX * BodyIterator->GetPosition().x, METTOPIX * BodyIterator->GetPosition().y);
-		Sprite.setRotation(BodyIterator->GetAngle() * RADTODEG);
-		g->window.draw(Sprite);
-
-	
+		b2Vec2 position = queryCallback.foundBodies[i]->GetPosition();
+		Sprite.setPosition(METTOPIX * position.x, METTOPIX * position.y);
+		g->window.draw(Sprite);	  
 	}
 
-	sf::Font mFont;
-	mFont.loadFromFile("Data/Sansation.ttf");
-	sf::Text text;
-	text.setString("Game play screen");
-	text.setFont(mFont);
-	text.setPosition(50, 50);
-	text.setCharacterSize(20);
-	text.setFillColor(sf::Color::Black);
-
-	g->window.draw(text);
-
+	g->window.draw(nameOfScene);
 	g->window.setView(*g->getCamera()->getView());
-
-
-	w->DrawDebugData();
+	
+	if(drawDebugData)
+		w->DrawDebugData();
 
 	Scene::render(g);
 }
