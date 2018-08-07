@@ -9,7 +9,8 @@ class Map;
 
 enum class EntityType
 {
-	PLAYER
+	PLAYER,
+	GAMEOBJECT
 };
 
 class Entity: Subscriber
@@ -24,11 +25,15 @@ public:
 	virtual EntityType getType() = 0;
 
 	sf::Vector2f getPosition() const;
+	sf::Vector2f getSize() const;
+	long long getId() const;
 
 protected:
-	Entity();
+	Entity(long long id);
 	std::vector<Component *> components;
 	b2Body* body;
+	std::string name;
+	long long id;
 };
 
 

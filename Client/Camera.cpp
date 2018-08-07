@@ -4,7 +4,7 @@
 #define MIN_SCALE 0.8f
 #define MAX_SCALE 1.3f
 Camera::Camera():
-	resolution(1360, 768),
+	resolution(900, 508),
 	offset(0, 0),
 	scale(1),
 	rotation(0)

@@ -13,6 +13,14 @@ class VisibleObjectsCast : public b2QueryCallback {
           foundBodies.push_back( fixture->GetBody() ); 
           return true;
       }
+
+	  void sortBodies()
+      {
+          std::sort(foundBodies.begin(), foundBodies.end(), [](b2Body* p1, b2Body* p2)
+	      {
+			  return p1->GetPosition().y < p2->GetPosition().y;
+	      });
+      }
   };
 
 #endif

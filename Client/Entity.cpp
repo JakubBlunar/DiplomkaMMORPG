@@ -2,11 +2,10 @@
 #include "PositionComponent.h"
 
 
-Entity::Entity(): body(nullptr)
+Entity::Entity(long long id): body(nullptr)
 {
-
+	this->id = id;
 }
-
 
 Entity::~Entity()
 {
@@ -51,4 +50,19 @@ sf::Vector2f Entity::getPosition() const
 		return positionComponent->getPosition();
 	}
 	return sf::Vector2f(-10000, -10000);
+}
+
+sf::Vector2f Entity::getSize() const
+{
+	PositionComponent* positionComponent = (PositionComponent*)getComponent(ComponentType::POSITION);
+	if(positionComponent != nullptr)
+	{
+		return positionComponent->getPosition();
+	}
+	return sf::Vector2f(0, 0);
+}
+
+long long Entity::getId() const
+{
+	return id;
 }

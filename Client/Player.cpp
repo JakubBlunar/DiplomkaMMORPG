@@ -3,12 +3,14 @@
 #include "Globals.h"
 
 
-Player::Player(bool playerControlled) {
+Player::Player(long long id, bool playerControlled) : Entity(id)
+{
 	this->playerControlled = playerControlled;
-
+	lastMovement = sf::Vector2f(0,0);
 	positionComponent = new PositionComponent();
 	components.push_back(positionComponent);
 	positionComponent->setSpeed(32);
+	positionComponent->setSize(sf::Vector2f(32.f, 32.f));
 }
 
 Player::~Player()
@@ -43,7 +45,13 @@ void Player::update(sf::Time elapsedTime, Map * map)
 			direction.x += 1;
 		}
 		positionComponent->setMovementDirection(direction);
-		body->SetLinearVelocity(b2Vec2(positionComponent->getMovement().x * PIXTOMET, positionComponent->getMovement().y * PIXTOMET));
+		sf::Vector2f movement = positionComponent->getMovement();
+
+		if(lastMovement != movement)
+		{
+			lastMovement = movement;
+			body->SetLinearVelocity(b2Vec2(movement.x * PIXTOMET, movement.y * PIXTOMET));
+		}		
 	}
 }
 

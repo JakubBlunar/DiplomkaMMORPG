@@ -8,7 +8,7 @@ class Player :
 	public Entity
 {
 public:
-	Player(bool playerControlled);
+	Player(long long id, bool playerControlled);
 	~Player();
 
 	void handleEvent(GameEvent* event) override;
@@ -18,6 +18,7 @@ public:
 private:
 	bool playerControlled;
 	PositionComponent* positionComponent;
+	sf::Vector2f lastMovement;
 };
 
 #endif

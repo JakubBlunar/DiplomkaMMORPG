@@ -5,10 +5,10 @@
 #include "Map.h"
 #include "Entity.h"
 
-void Box2DTools::addDynamicBox(float x, float y, Entity* entity, Map* map)
+void Box2DTools::addBox(b2BodyType bodyType, float x, float y, Entity* entity, Map* map)
 {
     b2BodyDef bodyDef;
-	bodyDef.type = b2_dynamicBody;
+	bodyDef.type = bodyType;
 	bodyDef.position.Set(x*PIXTOMET, y*PIXTOMET);
 	bodyDef.angle = 0;
 	bodyDef.fixedRotation = true;
@@ -23,10 +23,10 @@ void Box2DTools::addDynamicBox(float x, float y, Entity* entity, Map* map)
 	entity->setBody(bodyBox);
 }
 
-void Box2DTools::addDynamicBox(float x, float y, float width, float height, Entity* entity, Map* map)
+void Box2DTools::addBox(b2BodyType bodyType, float x, float y, float width, float height, Entity* entity, Map* map)
 {
     b2BodyDef bodyDef;
-	bodyDef.type = b2_dynamicBody;
+	bodyDef.type = bodyType;
 	bodyDef.position.Set(x*PIXTOMET, y*PIXTOMET);
 	bodyDef.angle = 0;
 	bodyDef.fixedRotation = true;
@@ -76,10 +76,10 @@ void Box2DTools::addStaticBox(float x, float y, float width, float height, Entit
 
 }
 
-void Box2DTools::addDynamicCircle(float x, float y, Entity* entity, Map* map)
+void Box2DTools::addCircle(b2BodyType bodyType, float x, float y, Entity* entity, Map* map)
 {
     b2BodyDef bodyDef;
-	bodyDef.type = b2_dynamicBody;
+	bodyDef.type = bodyType;
 	bodyDef.position.Set(x*PIXTOMET, y*PIXTOMET);
 	bodyDef.angle = 0;
 	bodyDef.fixedRotation = true;
@@ -94,10 +94,10 @@ void Box2DTools::addDynamicCircle(float x, float y, Entity* entity, Map* map)
     entity->setBody(bdCircle);
 }
 
-void Box2DTools::addDynamicCircle(float x, float y, float radius, Entity* entity, Map* map)
+void Box2DTools::addCircle(b2BodyType bodyType, float x, float y, float radius, Entity* entity, Map* map)
 {
     b2BodyDef bodyDef;
-	bodyDef.type = b2_dynamicBody;
+	bodyDef.type = bodyType;
 	bodyDef.position.Set(x*PIXTOMET, y*PIXTOMET);
 	bodyDef.angle = 0;
 	bodyDef.fixedRotation = true;

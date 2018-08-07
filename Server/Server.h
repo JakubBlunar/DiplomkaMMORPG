@@ -9,6 +9,8 @@
 #include "EventId.h"
 #include "AuthManager.h"
 
+class ServerTasks;
+
 class Server
 {
 public:
@@ -40,5 +42,6 @@ private:
 
 	sf::Packet errorPacket;
 	sf::Packet wrongType;
+	ServerTasks* tasks;
 };
 #endif // !SERVER_H

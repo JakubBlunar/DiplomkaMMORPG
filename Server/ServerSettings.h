@@ -17,6 +17,7 @@ public:
 	string dbUser;
 	string dbName;
 	string dbPassword;
+	unsigned int dbPort;
 	bool logsEnabled;
 	
 };

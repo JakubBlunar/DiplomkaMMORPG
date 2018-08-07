@@ -9,6 +9,7 @@ class Entity;
 enum class ComponentType
 {
 	POSITION = 0,
+	RENDER = 1
 };
 
 class Component

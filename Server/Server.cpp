@@ -6,11 +6,14 @@
 
 #include "EventMovementChange.h"
 #include "EventLoginRequest.h"
+#include "ServerTasks.h"
 
-Server::Server(ServerSettings* settings)
+Server::Server(ServerSettings* settings):
+	running(false)
 {
 	serverSettings = settings;
 	sessions.reserve(2000);
+	tasks = new ServerTasks(this);
 }
 
 
@@ -44,11 +47,12 @@ void Server::start()
 	listener.listen(static_cast<short>(serverSettings->port));
 	selector.add(listener);
 
-
 	for (unsigned int i = 0; i < recieveThreads.size(); i++)
 	{
 		recieveThreads[i]->launch();
 	}
+
+	tasks->startTasks();
 
 	print("server started on port " + std::to_string(serverSettings->port));
 
@@ -65,6 +69,7 @@ void Server::start()
 	}
 
 	running = false;
+	Database::i()->disconnect();
 }
 
 void Server::update()
@@ -84,7 +89,6 @@ void Server::print(const std::string& message)
 void Server::identifyPacket(EventId type, sf::Packet *packet, Session* playerSession) {
 	sf::Packet resPacket;
 	int id;
-
 	if (type == MOVEMENT) {
 		EventMovementChange* e = new EventMovementChange();
 		if (e->loadFromPacket(packet)) {
@@ -100,6 +104,7 @@ void Server::identifyPacket(EventId type, sf::Packet *packet, Session* playerSes
 			}
 		}
 		delete e;
+		return;
 	}
 
 	if (type == LOGINREQUEST) {
@@ -108,6 +113,7 @@ void Server::identifyPacket(EventId type, sf::Packet *packet, Session* playerSes
 			authManager.handleEvent(e, playerSession, this);
 		}
 		delete e;
+		return;
 	}
 
 	if (type == LATENCY) {
@@ -161,30 +167,31 @@ void Server::recievePackets()
 					sf::Packet packet;
 					switch (playerSession->socket->receive(packet))
 					{
-					case sf::Socket::Done:
-					{
-						int type;
-
-						if (packet >> type)
+						case sf::Socket::Done:
 						{
-							EventId pt = static_cast<EventId>(type);
-							identifyPacket(pt, &packet, playerSession);
+							int type;
+
+							if (packet >> type)
+							{
+								EventId pt = static_cast<EventId>(type);
+								identifyPacket(pt, &packet, playerSession);
+							}
+							break;
 						}
-						break;
-					case sf::Socket::Disconnected:
-					{
-						print("disconnect from " + playerSession->socket->getRemoteAddress().toString());
+						case sf::Socket::Disconnected:
+						{
+							print("disconnect from " + playerSession->socket->getRemoteAddress().toString());
 
-						selector.remove(*playerSession->socket);
-						playerSession->socket->disconnect();
+							selector.remove(*playerSession->socket);
+							playerSession->socket->disconnect();
 
-						sessions.erase(sessions.begin() + i);
-						i--;
-						break;
-					}
-					default:
-						break;
-					}
+							sessions.erase(sessions.begin() + i);
+							i--;
+							break;
+						}
+						default:
+							break;
+						
 					}
 				}
 				

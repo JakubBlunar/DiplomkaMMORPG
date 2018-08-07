@@ -4,6 +4,7 @@
 #include "Field.h"
 #include "Matrix.h"
 #include "Player.h"
+#include "GameObject.h"
 
 class Game;
 
@@ -14,11 +15,15 @@ class Map
 	b2World* world;
 	Player* player;
 	std::vector<Player*> players;
-	std::vector<Entity *> entities;
+	std::vector<Entity*> entities;
 
 	b2Draw* debugDrawInstance;
 	void addPlayer(Player* player);
 	void removePlayer(Player* player);
+	void addGameObject(GameObject* gameObject);
+	void removeGameObject(GameObject* gameObject);
+
+
 public:
 	Map(Game* g);
 	~Map();

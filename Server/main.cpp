@@ -26,7 +26,8 @@ ServerSettings* initSettings() {
 	settings->dbName = reader.Get("database", "database", "");
 	settings->dbUser = reader.Get("database", "user", "");
 	settings->dbPassword = reader.Get("database", "password", "");
-
+	settings->dbPort = reader.GetInteger("database", "port", 3306);
+	
 	settings->logsEnabled = reader.GetBoolean("server", "logs", false);
 	return settings;
 }

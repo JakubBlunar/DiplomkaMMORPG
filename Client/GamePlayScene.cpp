@@ -118,14 +118,31 @@ void GamePlayScene::render(Game * g)
 	aabb.upperBound = b2Vec2((offset.x + resolution.x) * PIXTOMET, (offset.y + resolution.y) * PIXTOMET);
 	queryCallback.foundBodies.clear();
 	w->QueryAABB( &queryCallback, aabb );
-	  
+	
+	queryCallback.sortBodies();
+
+
 	for (unsigned int i = 0; i < queryCallback.foundBodies.size(); i++) {
-		sf::Sprite Sprite;
-		Sprite.setTexture(BoxTexture);
-		Sprite.setOrigin(0,0);
-		b2Vec2 position = queryCallback.foundBodies[i]->GetPosition();
-		Sprite.setPosition(METTOPIX * position.x, METTOPIX * position.y);
-		g->window.draw(Sprite);	  
+		Entity* entity = (Entity*) queryCallback.foundBodies[i]->GetUserData();
+		RenderComponent* renderComponent = (RenderComponent*)entity->getComponent(ComponentType::RENDER);
+		if (renderComponent != nullptr)
+		{	
+			AnimatedSprite* sprite = renderComponent->getCurrentAnimation();
+			sprite->setOrigin(0,0);
+			b2Vec2 position = queryCallback.foundBodies[i]->GetPosition();
+			sf::Vector2i renderOffset = renderComponent->getOffset();
+			sprite->setPosition(METTOPIX * position.x + renderOffset.x, METTOPIX * position.y + renderOffset.y);
+
+			g->window.draw(*sprite);
+		}else
+		{
+			sf::Sprite Sprite;
+			Sprite.setTexture(BoxTexture);
+			Sprite.setOrigin(0,0);
+			b2Vec2 position = queryCallback.foundBodies[i]->GetPosition();
+			Sprite.setPosition(METTOPIX * position.x, METTOPIX * position.y);
+			g->window.draw(Sprite);
+		}
 	}
 
 	g->window.draw(nameOfScene);

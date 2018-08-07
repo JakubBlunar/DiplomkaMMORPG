@@ -4,13 +4,13 @@
 #include "Entity.h"
 
 PositionComponent::PositionComponent():
-	isMovingUp(false), 
+	isMovingUp(false),
 	isMovingDown(false),
 	isMovingRight(false),
 	isMovingLeft(false),
-	speed(0)
+	speed(0),
+	size(sf::Vector2f(0, 0))
 {
-
 }
 
 
@@ -75,4 +75,24 @@ sf::Vector2f PositionComponent::getMovement() const
 void PositionComponent::setSpeed(float speed)
 {
 	this->speed = speed;
+}
+
+sf::Vector2f PositionComponent::getSize() const
+{
+	return size;
+}
+
+void PositionComponent::setSize(sf::Vector2f size)
+{
+	this->size = size;
+}
+
+void PositionComponent::setBodyType(BodyType type)
+{
+	this->bodyType = type;
+}
+
+BodyType PositionComponent::getBodyType() const
+{
+	return bodyType;
 }

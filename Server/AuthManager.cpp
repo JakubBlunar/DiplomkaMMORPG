@@ -14,7 +14,7 @@ AuthManager::~AuthManager()
 {
 }
 
-void AuthManager::handleEvent(EventLoginRequest * event, Session * playerSession, Server * s) const
+void AuthManager::handleEvent(EventLoginRequest* event, Session * playerSession, Server * s) const
 {
 	
 	if(s->serverSettings->logsEnabled)
