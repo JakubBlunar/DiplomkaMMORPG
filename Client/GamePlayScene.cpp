@@ -106,7 +106,7 @@ void GamePlayScene::render(Game * g)
 			for(unsigned int k = 0; k < layers->size(); k++)
 			{
 				RenderSprite* layer = layers->at(k);
-				layer->setPosition(i*FIELD_SIZE, j*FIELD_SIZE);
+				layer->setPosition(i*FIELD_SIZE + 16, j*FIELD_SIZE + 16);
 				g->window.draw(*layer);
 			}
 		}
@@ -125,10 +125,12 @@ void GamePlayScene::render(Game * g)
 	for (unsigned int i = 0; i < queryCallback.foundBodies.size(); i++) {
 		Entity* entity = (Entity*) queryCallback.foundBodies[i]->GetUserData();
 		RenderComponent* renderComponent = (RenderComponent*)entity->getComponent(ComponentType::RENDER);
-		if (renderComponent != nullptr)
-		{	
+		PositionComponent* positionComponent = (PositionComponent*)entity->getComponent(ComponentType::POSITION);
+		if (renderComponent && positionComponent)
+		{
+			
 			AnimatedSprite* sprite = renderComponent->getCurrentAnimation();
-			sprite->setOrigin(0,0);
+
 			b2Vec2 position = queryCallback.foundBodies[i]->GetPosition();
 			sf::Vector2i renderOffset = renderComponent->getOffset();
 			sprite->setPosition(METTOPIX * position.x + renderOffset.x, METTOPIX * position.y + renderOffset.y);
@@ -136,12 +138,16 @@ void GamePlayScene::render(Game * g)
 			g->window.draw(*sprite);
 		}else
 		{
-			sf::Sprite Sprite;
-			Sprite.setTexture(BoxTexture);
-			Sprite.setOrigin(0,0);
-			b2Vec2 position = queryCallback.foundBodies[i]->GetPosition();
-			Sprite.setPosition(METTOPIX * position.x, METTOPIX * position.y);
-			g->window.draw(Sprite);
+			if(entity->getType() == EntityType::PLAYER)
+			{
+				sf::Sprite Sprite;
+				Sprite.setTexture(BoxTexture);
+
+				b2Vec2 position = queryCallback.foundBodies[i]->GetPosition();
+				Sprite.setPosition(METTOPIX * position.x, METTOPIX * position.y);
+				g->window.draw(Sprite);
+			}
+			
 		}
 	}
 

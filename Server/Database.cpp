@@ -1,6 +1,7 @@
 #include "Database.h"
 #include "ServerSettings.h"
 #include <iostream>
+#include <spdlog/spdlog.h>
 
 Database *Database::s_instance = 0;
 
@@ -18,8 +19,7 @@ Database::Database(ServerSettings* settings):
 
 	if(!mysql_real_connect(conn, url, user,pass, database, port, unix_socket, flag ))
 	{
-		cout << "CANNOT CONNECT TO DATABASE" << mysql_error(conn) << endl;
-		system("pause");
+		spdlog::get("log")->error("CANNOT CONNECT TO DATABASE {}", mysql_error(conn));
 		exit(EXIT_FAILURE);
 	}
 
@@ -36,7 +36,7 @@ MYSQL_RES* Database::executeQuery(std::string query)
 	if (mysql_query(conn, query.c_str()))
 	{
 		dbMutex.unlock();
-	    cerr << mysql_error(conn) << endl;
+		spdlog::get("log")->error("QUERY: {} ERR: {}", query, mysql_error(conn));
 		return nullptr;
 	}
 

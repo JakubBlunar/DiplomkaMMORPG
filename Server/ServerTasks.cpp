@@ -1,6 +1,6 @@
 #include "ServerTasks.h"
 #include "Database.h"
-#include <iostream>
+#include "../Client/Player.h"
 
 ServerTasks::ServerTasks(Server* server):
 	fetchOnlineThread(&ServerTasks::fetchOnline, this)
@@ -8,7 +8,6 @@ ServerTasks::ServerTasks(Server* server):
 	this->isRunning = false;
 	this->server = server;
 }
-
 
 ServerTasks::~ServerTasks()
 {
@@ -34,7 +33,10 @@ void ServerTasks::fetchOnline()
 
 	while (isRunning)
 	{
-		
+		for_each(server->sessions.begin(), server->sessions.end(), [] (Session* session)
+		{
+			
+		});
 		sf::sleep(sf::seconds(120));
 	}
 }

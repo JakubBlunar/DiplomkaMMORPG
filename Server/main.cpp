@@ -9,6 +9,9 @@
 #include "ServerSettings.h"
 #include "Server.h"
 
+#include "spdlog/async.h" 
+#include "spdlog/sinks/basic_file_sink.h"
+#include "spdlog/sinks/stdout_color_sinks.h" //support for stdout logging
 ServerSettings* initSettings() {
 	INIReader reader("config.ini");
 
@@ -32,7 +35,26 @@ ServerSettings* initSettings() {
 	return settings;
 }
 
+void initLogger()
+{
+	auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
+    console_sink->set_level(spdlog::level::trace);
+
+    auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>("logs.log", false);
+    file_sink->set_level(spdlog::level::info);
+	 
+	
+	std::vector<spdlog::sink_ptr> sinks;
+	sinks.push_back(console_sink);
+	sinks.push_back(file_sink);
+	auto logger = std::make_shared<spdlog::logger>("log", begin(sinks), end(sinks));
+	logger->set_level(spdlog::level::trace);
+	register_logger(logger);
+}
+
 int main() {
+	initLogger();
+
 	ServerSettings* settings = initSettings();
 	if (settings == nullptr) {
 		return EXIT_FAILURE;
@@ -42,7 +64,7 @@ int main() {
 
 	s->init();
 	s->start();
-
+	spdlog::drop_all(); 
 	return EXIT_SUCCESS;
 }
 

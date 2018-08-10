@@ -10,7 +10,16 @@ class Map;
 enum class EntityType
 {
 	PLAYER,
-	GAMEOBJECT
+	GAMEOBJECT,
+	COLLIDER,
+};
+
+enum class EntityCategory {
+    BOUNDARY =     0x0001,
+    PLAYER =       0x0002,
+    ENEMY_PLAYER = 0x0004,
+    GAME_OBJECT =  0x0008,
+    SENSOR =       0x0010
 };
 
 class Entity: Subscriber
@@ -22,7 +31,9 @@ public:
 	Component* getComponent(ComponentType type) const;
 	virtual void setBody(b2Body * body);
 	virtual b2Body* getBody();
+
 	virtual EntityType getType() = 0;
+	virtual EntityCategory getEntityCategory() = 0;
 
 	sf::Vector2f getPosition() const;
 	sf::Vector2f getSize() const;

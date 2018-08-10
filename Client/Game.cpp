@@ -156,6 +156,8 @@ void Game::render()
 	ImGui::SFML::Render(window);
 
 	if (window.hasFocus()) {
+		sf::Vector2f cameraOffset = camera.getOffset();
+		mStatisticsText.setPosition(cameraOffset.x + 5, cameraOffset.y + 5);
 		window.draw(mStatisticsText);
 	}
 	

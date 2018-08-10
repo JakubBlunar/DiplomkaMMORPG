@@ -19,6 +19,7 @@ public:
 
 	RenderComponent* getRenderComponent() const;
 	PositionComponent* getPositionComponent() const;
+	EntityCategory getEntityCategory() override;
 private:
 	PositionComponent* positionComponent;
 	RenderComponent* renderComponent;

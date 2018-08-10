@@ -60,7 +60,7 @@ void Server::start()
 		
 		//update world box2d send events
 
-
+		sf::sleep(sf::seconds(1));
 	}
 
 	for (auto &thread : recieveThreads)

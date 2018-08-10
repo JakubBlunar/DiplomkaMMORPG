@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "GameObject.h"
 
+class Collider;
 class Game;
 
 class Map
@@ -21,6 +22,7 @@ class Map
 	void addPlayer(Player* player);
 	void removePlayer(Player* player);
 	void addGameObject(GameObject* gameObject);
+	void addCollider(Collider * gameObject);
 	void removeGameObject(GameObject* gameObject);
 
 

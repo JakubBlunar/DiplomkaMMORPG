@@ -30,7 +30,8 @@ void GameObject::handleEvent(GameEvent* event)
 
 void GameObject::update(sf::Time elapsedTime, Map* map)
 {
-	body->SetLinearVelocity(b2Vec2(0, 0));
+	Entity::update(elapsedTime, map);
+
 }
 
 void GameObject::loadFromJson(const std::string& file)
@@ -94,4 +95,9 @@ RenderComponent* GameObject::getRenderComponent() const
 PositionComponent* GameObject::getPositionComponent() const
 {
 	return positionComponent;
+}
+
+EntityCategory GameObject::getEntityCategory()
+{
+	return EntityCategory::GAME_OBJECT;
 }

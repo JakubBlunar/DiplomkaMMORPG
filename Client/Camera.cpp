@@ -5,7 +5,7 @@
 #define MAX_SCALE 1.3f
 Camera::Camera():
 	resolution(900, 508),
-	offset(0, 0),
+	offset(16, 16),
 	scale(1),
 	rotation(0)
 {

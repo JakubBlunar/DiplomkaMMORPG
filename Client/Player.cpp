@@ -9,6 +9,7 @@ Player::Player(long long id, bool playerControlled) : Entity(id)
 	lastMovement = sf::Vector2f(0,0);
 	positionComponent = new PositionComponent();
 	components.push_back(positionComponent);
+	positionComponent->setPosition(sf::Vector2f(48.f,48.f));
 	positionComponent->setSpeed(32);
 	positionComponent->setSize(sf::Vector2f(32.f, 32.f));
 }
@@ -60,3 +61,9 @@ EntityType Player::getType()
 	return EntityType::PLAYER;
 }
 
+EntityCategory Player::getEntityCategory()
+{
+	if (playerControlled)
+		return EntityCategory::PLAYER;
+	return EntityCategory::ENEMY_PLAYER;
+}

@@ -57,7 +57,7 @@ sf::Vector2f Entity::getSize() const
 	PositionComponent* positionComponent = (PositionComponent*)getComponent(ComponentType::POSITION);
 	if(positionComponent != nullptr)
 	{
-		return positionComponent->getPosition();
+		return positionComponent->getSize();
 	}
 	return sf::Vector2f(0, 0);
 }

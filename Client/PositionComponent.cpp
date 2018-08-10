@@ -21,7 +21,7 @@ PositionComponent::~PositionComponent()
 void PositionComponent::update(sf::Time elapsedTime, Entity* entity, Map* map)
 {
 	b2Vec2 position = entity->getBody()->GetPosition();
-	this->position = sf::Vector2f(position.x * METTOPIX, position.y);
+	this->position = sf::Vector2f(position.x * METTOPIX, position.y * METTOPIX);
 }
 
 ComponentType PositionComponent::getType()
