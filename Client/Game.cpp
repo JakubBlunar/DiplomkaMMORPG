@@ -23,11 +23,7 @@ Game::Game()
 	this->keyboardManager = new KeyboardManager();
 	this->eventActions = new ClientEventActions(this);
 
-	window.setFramerateLimit(120);
-
-	mPlayer.setFillColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));
-	mPlayer.setRadius(15);
-	mPlayer.setPosition(100.f, 100.f);
+	window.setFramerateLimit(60);
 
 	mStatisticsText.setFont(ResourceHolder<sf::Font>::instance()->get("Sansation.ttf"));
 	mStatisticsText.setPosition(5.f, 5.f);
@@ -36,6 +32,12 @@ Game::Game()
 	subscribe();
 
 	gameMap = new Map(this);
+	account = new Account();
+
+	Player* p = new Player(1, true);
+	account->setPlayerEntity(p);
+	gameMap->addPlayer(p);
+
 }
 
 void Game::run()
@@ -67,8 +69,6 @@ void Game::run()
 		updateStatistics(elapsedTime);
 		render();
 	}
-	
-	window.setView(*camera.getView());
 
 	ImGui::SFML::Shutdown();
 }
@@ -83,6 +83,11 @@ Camera* Game::getCamera()
 	return &camera;
 }
 
+
+Account* Game::getAccount() const
+{
+	return account;
+}
 
 void Game::handleEvent(GameEvent* event)
 {
@@ -194,13 +199,13 @@ void Game::print(const std::string& message)
 
 	consoleMutex.unlock();
 }
-
+/*
 sf::Vector2f Game::playerPosition() const
 {
 	return mPlayer.getPosition();
 }
 
-/*
+
 void Game::sendPlayerPosition()
 {
 	const sf::Vector2f position = playerPosition();

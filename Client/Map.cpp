@@ -48,9 +48,6 @@ void Map::init()
 		}
 	}
 
-	Player *p = new Player(1, true);
-	addPlayer(p);
-
 	GameObject* gameObject = new GameObject(1, "GameObjects/largeTree");
 	addGameObject(gameObject);
 

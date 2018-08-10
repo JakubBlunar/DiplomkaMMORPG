@@ -19,11 +19,7 @@ class Map
 	std::vector<Entity*> entities;
 
 	b2Draw* debugDrawInstance;
-	void addPlayer(Player* player);
-	void removePlayer(Player* player);
-	void addGameObject(GameObject* gameObject);
-	void addCollider(Collider * gameObject);
-	void removeGameObject(GameObject* gameObject);
+	
 
 
 public:
@@ -33,6 +29,12 @@ public:
 	void init();
 
 	void update(sf::Time elapsedTime, Game* game);
+
+	void addPlayer(Player* player);
+	void removePlayer(Player* player);
+	void addGameObject(GameObject* gameObject);
+	void addCollider(Collider * collider);
+	void removeGameObject(GameObject* gameObject);
 
 	Field* getField(int x, int y) const;
 	int getWidth() const;

@@ -11,6 +11,7 @@
 #include "Subscriber.h"
 #include "Map.h"
 #include "Camera.h"
+#include "Account.h"
 
 class SceneManager;
 
@@ -33,8 +34,10 @@ public:
 
 	Map* getMap() const;
 	Camera* getCamera();
-
+	Account* getAccount() const;
+	
 	void handleEvent(GameEvent* event) override;
+
 private:
 	void					processEvents();
 	void					update(sf::Time elapsedTime);
@@ -42,7 +45,6 @@ private:
 	void					subscribe();
 
 	void					updateStatistics(sf::Time elapsedTime);
-	void					handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
 
 	sf::Thread*				recieveThread;
 
@@ -50,27 +52,21 @@ private:
 	static const sf::Time	TimePerFrame;
 
 
-	sf::CircleShape			mPlayer;
 	sf::Font				mFont;
 	sf::Text				mStatisticsText;
 	sf::Time				mStatisticsUpdateTime;
 	std::size_t				mStatisticsNumFrames;
 
 	//void				sendPlayerPosition();
-	sf::Vector2f		playerPosition() const;
-
-
-	
-private:
-	sf::Vector2f lastMovement;
 	
 	sf::Mutex					eventQueueMutex;
 	std::queue<GameEvent*>		eventQueue;
 
 	ClientEventActions*			eventActions;
 
-	Map * gameMap;
+	Map* gameMap;
 	Camera camera;
+	Account* account;
 };
 
 #endif
