@@ -6,7 +6,7 @@ class GamePlayScene :
 	public Scene
 {
 public:
-	GamePlayScene(std::string name);
+	GamePlayScene(SceneType sceneType);
 	~GamePlayScene();
 
 	void beforeChange(Game* g) override;
@@ -26,5 +26,6 @@ private:
 
 	bool drawDebugData;
 	bool fonePressed;
+	sf::Sprite Sprite;
 };
 

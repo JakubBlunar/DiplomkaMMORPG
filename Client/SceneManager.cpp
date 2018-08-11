@@ -5,12 +5,12 @@
 
 SceneManager::SceneManager()
 {
-	LoginScene* logS = new LoginScene("login");
-	scenes.insert(std::pair<std::string, Scene*>(logS->name, logS));
+	LoginScene* logS = new LoginScene(SceneType::LOGIN);
+	scenes.insert(std::pair<SceneType, Scene*>(SceneType::LOGIN, logS));
 	actualScene = logS;
 
-	GamePlayScene* gpS = new GamePlayScene("gamePlay");
-	scenes.insert(std::pair<std::string, Scene*>(gpS->name, gpS));
+	GamePlayScene* gpS = new GamePlayScene(SceneType::GAMEPLAY);
+	scenes.insert(std::pair<SceneType, Scene*>(SceneType::GAMEPLAY, gpS));
 	actualScene = gpS;
 }
 
@@ -19,9 +19,14 @@ SceneManager::~SceneManager()
 {
 }
 
-void SceneManager::changeScene(std::string name)
+SceneType SceneManager::getTypeOfActualScene() const
 {
-	const auto exists = scenes.find(name);
+	return actualScene->getType();
+}
+
+void SceneManager::changeScene(SceneType sceneType)
+{
+	const auto exists = scenes.find(sceneType);
 	if (exists != scenes.end())
 	{	
 		actualScene = exists->second;

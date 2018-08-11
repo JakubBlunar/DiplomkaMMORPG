@@ -3,7 +3,7 @@
 
 #include "SFML/Graphics.hpp"
 
-LoginScene::LoginScene(std::string name): Scene(name)
+LoginScene::LoginScene(SceneType sceneType): Scene(sceneType)
 {
 	IGLoginCredentials* credWindow = new IGLoginCredentials();
 

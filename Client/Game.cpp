@@ -12,11 +12,9 @@
 
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 
-Game::Game()
-	: window(sf::VideoMode(1360, 768), "SFML Application", sf::Style::Close | sf::Style::Resize)
-	, mStatisticsText()
-	, mStatisticsUpdateTime()
-	, mStatisticsNumFrames(0)
+Game::Game(): 
+	window(sf::VideoMode(1360, 768), "SFML Application", sf::Style::Resize | sf::Style::Close),
+	mStatisticsNumFrames(0)
 {
 	this->packet_manager = new PacketManager(this);
 	this->sceneManager = new SceneManager();
@@ -30,6 +28,8 @@ Game::Game()
 	mStatisticsText.setCharacterSize(12);
 	mStatisticsText.setFillColor(sf::Color::Blue);
 	subscribe();
+
+
 
 	gameMap = new Map(this);
 	account = new Account();
@@ -128,11 +128,11 @@ void Game::processEvents()
 		case sf::Event::MouseWheelScrolled:
 			if(sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
 			{
-				camera.adjustScale(event.mouseWheelScroll.delta * -0.02f);
+				camera.adjustScale(event.mouseWheelScroll.delta * -0.02f, this);
 			}
 			if(sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt))
 			{
-				camera.adjustRotation(event.mouseWheelScroll.delta * 10.f);
+				camera.adjustRotation(event.mouseWheelScroll.delta * 10.f, this);
 			}
 			break;
 		default:;
@@ -152,7 +152,7 @@ void Game::update(sf::Time elapsedTime)
 
 void Game::render()
 {
-	window.clear(sf::Color::Black);
+	window.clear();
 
 	if (window.hasFocus()) {
 		sceneManager->render(this);

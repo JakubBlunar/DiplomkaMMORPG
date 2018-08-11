@@ -14,8 +14,8 @@ public:
 	~Camera();
 
 	void update(sf::Time elapsedTime, Game* g);
-	void adjustScale(float delta);
-	void adjustRotation(float delta);
+	void adjustScale(float delta, Game* g);
+	void adjustRotation(float delta, Game* g);
 	sf::Vector2f getResolution() const;
 	sf::Vector2f getOffset() const;
 	sf::View* getView(); 
@@ -24,7 +24,8 @@ private:
 	sf::Vector2f offset;
 	float scale;
 	float rotation;
-
+	sf::FloatRect playerBorders;
+	sf::FloatRect lastView;
 
 	sf::View view;
 };

@@ -4,18 +4,19 @@
 #include <map>
 #include <string>
 #include "Game.h"
-
-class Scene;
+#include "Scene.h"
 
 class SceneManager
 {
-	std::map<std::string, Scene*> scenes;
+	std::map<SceneType, Scene*> scenes;
 	Scene* actualScene;
 public:
 	SceneManager();
 	~SceneManager();
-		
-	void changeScene(std::string name);
+
+	SceneType getTypeOfActualScene() const;
+
+	void changeScene(SceneType sceneType);
 	void render(Game* g) const;
 	void update(Game* g, sf::Time elapsedTime) const;
 };

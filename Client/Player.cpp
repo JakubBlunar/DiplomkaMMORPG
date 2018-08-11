@@ -10,7 +10,7 @@ Player::Player(long long id, bool playerControlled) : Entity(id)
 	positionComponent = new PositionComponent();
 	components.push_back(positionComponent);
 	positionComponent->setPosition(sf::Vector2f(120,120.f));
-	positionComponent->setSpeed(32);
+	positionComponent->setSpeed(70);
 	positionComponent->setSize(sf::Vector2f(32.f, 32.f));
 }
 

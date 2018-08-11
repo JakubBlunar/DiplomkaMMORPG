@@ -35,7 +35,7 @@ void ClientEventActions::visit(EventLoginResponse* e)
 	game->print(e->toString());
 	if (e->status)
 	{
-		game->sceneManager->changeScene("gamePlay");
+		game->sceneManager->changeScene(SceneType::GAMEPLAY);
 	}else
 	{
 		//show popup

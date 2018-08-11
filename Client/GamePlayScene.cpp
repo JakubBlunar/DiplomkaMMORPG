@@ -7,8 +7,17 @@
 #include "ResourceHolder.h"
 #include "VisibleObjectsCast.h"
 #include "Globals.h"
+#include <iostream>
+#include <emmintrin.h>
 
-GamePlayScene::GamePlayScene(std::string name) : Scene(std::move(name))
+/*
+inline int roundNumber(float f)
+{
+    return _mm_cvtt_ss2si(_mm_load_ss(&f));
+}
+*/
+
+GamePlayScene::GamePlayScene(SceneType sceneType) : Scene(sceneType)
 {
 	escPressed = false;
 	fonePressed = false;
@@ -17,6 +26,7 @@ GamePlayScene::GamePlayScene(std::string name) : Scene(std::move(name))
 	windowManager->addWindow("GameMenu", new IGGameMenu());
 
 	BoxTexture.loadFromFile("box.png");
+	BoxTexture.setSmooth(true);
 	mFont = ResourceHolder<sf::Font>::instance()->get("Sansation.ttf");
 
 	nameOfScene.setString("Game play screen");
@@ -24,6 +34,9 @@ GamePlayScene::GamePlayScene(std::string name) : Scene(std::move(name))
 	nameOfScene.setPosition(50, 50);
 	nameOfScene.setCharacterSize(20);
 	nameOfScene.setFillColor(sf::Color::Black);
+
+	Sprite.setTexture(BoxTexture);
+	Sprite.setTextureRect(sf::IntRect(0,0,32,32));
 }
 
 
@@ -133,18 +146,16 @@ void GamePlayScene::render(Game * g)
 
 			b2Vec2 position = queryCallback.foundBodies[i]->GetPosition();
 			sf::Vector2i renderOffset = renderComponent->getOffset();
-			sprite->setPosition(METTOPIX * position.x + renderOffset.x, METTOPIX * position.y + renderOffset.y);
+			sprite->setPosition(ceilNumber(METTOPIX * position.x + renderOffset.x), ceilNumber(METTOPIX * position.y + renderOffset.y));
 
 			g->window.draw(*sprite);
 		}else
 		{
 			if(entity->getType() == EntityType::PLAYER)
 			{
-				sf::Sprite Sprite;
-				Sprite.setTexture(BoxTexture);
-
 				b2Vec2 position = queryCallback.foundBodies[i]->GetPosition();
-				Sprite.setPosition(METTOPIX * position.x, METTOPIX * position.y);
+				Sprite.setPosition(ceilNumber(METTOPIX * position.x), ceilNumber(METTOPIX * position.y));
+				//std::cout << Sprite.getPosition().x << "-" <<Sprite.getPosition().y << std::endl; 
 				g->window.draw(Sprite);
 			}
 			
@@ -152,7 +163,6 @@ void GamePlayScene::render(Game * g)
 	}
 
 	g->window.draw(nameOfScene);
-	g->window.setView(*g->getCamera()->getView());
 	
 	if(drawDebugData)
 		w->DrawDebugData();

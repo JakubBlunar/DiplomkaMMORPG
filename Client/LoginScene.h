@@ -8,7 +8,7 @@ class LoginScene :
 	public Scene
 {
 public:
-	LoginScene(std::string name);
+	LoginScene(SceneType sceneType);
 	~LoginScene();
 
 	void beforeChange(Game* g) override;

@@ -90,7 +90,7 @@ void Map::init()
 
 void Map::update(sf::Time elapsedTime, Game* game)
 {
-	world->Step(elapsedTime.asSeconds(), 8, 3);
+	world->Step(elapsedTime.asSeconds(), 6, 2);
 	for (Entity* entity : entities)
 	{
 		entity->update(elapsedTime, this);
@@ -124,7 +124,7 @@ void Map::addPlayer(Player* player)
 	entities.push_back(player);
 	sf::Vector2f position = player->getPosition();
 	sf::Vector2f size = player->getSize();
-	Box2DTools::addBox(b2_dynamicBody, position.x, position.y, size.x, size.y, player, this);
+	Box2DTools::addCircle(b2_dynamicBody, position.x, position.y, size.x, player, this);
 }
 
 void Map::removePlayer(Player* player)

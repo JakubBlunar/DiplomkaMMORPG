@@ -9,7 +9,7 @@ void Box2DTools::addBox(b2BodyType bodyType, float x, float y, Entity* entity, M
 {
     b2BodyDef bodyDef;
 	bodyDef.type = bodyType;
-	bodyDef.position.Set(x*PIXTOMET, y*PIXTOMET);
+	bodyDef.position.Set(x*PIXTOMET + 16, y*PIXTOMET + 16);
 	bodyDef.angle = 0;
 	bodyDef.fixedRotation = true;
 	b2Body* bodyBox = map->getB2World()->CreateBody(&bodyDef);
@@ -27,7 +27,7 @@ void Box2DTools::addBox(b2BodyType bodyType, float x, float y, float width, floa
 {
     b2BodyDef bodyDef;
 	bodyDef.type = bodyType;
-	bodyDef.position.Set(x*PIXTOMET, y*PIXTOMET);
+	bodyDef.position.Set(x*PIXTOMET + (width / 2) * PIXTOMET, y*PIXTOMET + (height / 2) * PIXTOMET);
 	bodyDef.angle = 0;
 	bodyDef.fixedRotation = true;
 	b2Body* bodyBox = map->getB2World()->CreateBody(&bodyDef);
@@ -62,7 +62,7 @@ void Box2DTools::addStaticBox(float x, float y, Entity* entity, Map* map)
 void Box2DTools::addStaticBox(float x, float y, float width, float height, Entity* entity, Map* map)
 {
     b2BodyDef bodyDef;
-	bodyDef.position.Set(x*PIXTOMET, y*PIXTOMET);
+	bodyDef.position.Set(x*PIXTOMET + (width / 2) * PIXTOMET, y*PIXTOMET + (height / 2) * PIXTOMET);
 	bodyDef.angle = 0;
 	bodyDef.fixedRotation = true;
 	b2Body* bodyBox = map->getB2World()->CreateBody(&bodyDef);
@@ -80,7 +80,7 @@ void Box2DTools::addCircle(b2BodyType bodyType, float x, float y, Entity* entity
 {
     b2BodyDef bodyDef;
 	bodyDef.type = bodyType;
-	bodyDef.position.Set(x*PIXTOMET, y*PIXTOMET);
+	bodyDef.position.Set(x*PIXTOMET + 16, y*PIXTOMET + 16);
 	bodyDef.angle = 0;
 	bodyDef.fixedRotation = true;
     b2Body *bdCircle = map->getB2World()->CreateBody(&bodyDef);
@@ -98,7 +98,7 @@ void Box2DTools::addCircle(b2BodyType bodyType, float x, float y, float radius, 
 {
     b2BodyDef bodyDef;
 	bodyDef.type = bodyType;
-	bodyDef.position.Set(x*PIXTOMET, y*PIXTOMET);
+	bodyDef.position.Set(x*PIXTOMET + (radius / 2.0f) * PIXTOMET, y*PIXTOMET + (radius / 2.0f) * PIXTOMET);
 	bodyDef.angle = 0;
 	bodyDef.fixedRotation = true;
     b2Body *bdCircle = map->getB2World()->CreateBody(&bodyDef);

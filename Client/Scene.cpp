@@ -1,8 +1,8 @@
 #include "Scene.h"
 
-Scene::Scene(std::string name)
+Scene::Scene(SceneType sceneType)
 {
-	this->name = name;
+	this->type = sceneType;
 	windowManager = new IGManager();
 }
 
@@ -10,6 +10,11 @@ Scene::Scene(std::string name)
 Scene::~Scene()
 {
 	delete windowManager;
+}
+
+SceneType Scene::getType() const
+{
+	return type;
 }
 
 void Scene::beforeChange(Game * g)

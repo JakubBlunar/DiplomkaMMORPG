@@ -8,4 +8,6 @@
 
 #define FIELD_SIZE 32.f
 
+#define ceilNumber(x) ((float)(long)(x))
+
 #endif // GLOBALS_H_INCLUDED

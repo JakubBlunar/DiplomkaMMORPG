@@ -1,7 +1,6 @@
 #include "RenderComponent.h"
 #include <cassert>
 
-
 RenderComponent::RenderComponent()
 {
 	currentAnimation = new AnimatedSprite(sf::seconds(1000000000000), true, false);
