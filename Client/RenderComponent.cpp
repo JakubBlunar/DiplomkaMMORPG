@@ -3,7 +3,7 @@
 
 RenderComponent::RenderComponent()
 {
-	currentAnimation = new AnimatedSprite(sf::seconds(1000000000000), true, false);
+	currentAnimation = new AnimatedSprite(sf::seconds(1000000000000.f), true, false);
 }
 
 

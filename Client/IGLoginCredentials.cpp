@@ -53,6 +53,8 @@ void IGLoginCredentials::render(Game* game, IGManager* manager)
 
 			if(!name.empty() && !password.empty())
 			{
+				IGPopup* popup = new IGPopup("", "Logging in...", sf::Vector2f(250, 50), "");
+				manager->pushPopup(popup);
 				EventLoginRequest* req = new EventLoginRequest(name, password);
 				EventDispatcher<EventLoginRequest>::dispatchEvent(req);	
 			}

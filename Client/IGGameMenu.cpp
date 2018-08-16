@@ -19,7 +19,7 @@ void IGGameMenu::render(Game* g, IGManager* manager)
 	ImGui::SetNextWindowSize(size, ImGuiCond_Always);
 	ImGui::SetNextWindowPos(position);
 	ImGui::SetNextWindowPosCenter(centeredPosition);
-
+	
 	if (!ImGui::Begin("GameMenu", &visible, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove))
 	{
 		focused = false;

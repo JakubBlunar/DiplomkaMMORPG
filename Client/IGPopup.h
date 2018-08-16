@@ -1,6 +1,7 @@
 #pragma once
 #include "IGWindow.h"
 #include <functional>
+#include <SFML/System/Vector2.hpp>
 
 class IGPopup :
 	public IGWindow

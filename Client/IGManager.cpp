@@ -2,10 +2,11 @@
 #include <string>
 #include "IGWindow.h"
 #include <imgui.h>
+#include "Game.h"
 
 IGManager::IGManager()
 {
-	IGManagerSetupImGuiStyle(true, 0.9f);
+	IGManagerSetupImGuiStyle(false, 0.9f);
 }
 
 
@@ -114,6 +115,15 @@ bool IGManager::isShowingPopup() const
 	return !popups.empty();
 }
 
+IGPopup * IGManager::getActualPopup() const
+{
+	if(!popups.empty())
+	{
+		return popups.front();
+	}
+	return nullptr;
+}
+
 void IGManager::IGManagerSetupImGuiStyle(bool bStyleDark_, float alpha_)
 {
 	ImGuiStyle& style = ImGui::GetStyle();
@@ -124,7 +134,7 @@ void IGManager::IGManagerSetupImGuiStyle(bool bStyleDark_, float alpha_)
 	style.Colors[ImGuiCol_TextDisabled] = ImVec4(0.60f, 0.60f, 0.60f, 1.00f);
 	style.Colors[ImGuiCol_WindowBg] = ImVec4(0.94f, 0.94f, 0.94f, 0.94f);
 	style.Colors[ImGuiCol_ChildWindowBg] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
-	style.Colors[ImGuiCol_PopupBg] = ImVec4(1.00f, 1.00f, 1.00f, 0.94f);
+	style.Colors[ImGuiCol_PopupBg] = ImVec4(1.00f, 1.00f, 1.00f, 1.f);
 	style.Colors[ImGuiCol_Border] = ImVec4(0.00f, 0.00f, 0.00f, 0.39f);
 	style.Colors[ImGuiCol_BorderShadow] = ImVec4(1.00f, 1.00f, 1.00f, 0.10f);
 	style.Colors[ImGuiCol_FrameBg] = ImVec4(1.00f, 1.00f, 1.00f, 0.94f);

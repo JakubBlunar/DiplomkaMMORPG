@@ -57,7 +57,7 @@ int Database::executeModify(std::string query)
 	}
 
 	dbMutex.unlock();
-	return mysql_affected_rows(conn);
+	return (int)mysql_affected_rows(conn);
 }
 
 void Database::disconnect()

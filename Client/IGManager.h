@@ -4,6 +4,7 @@
 #include <map>
 #include "IGPopup.h"
 #include <queue>
+#include <SFML/Graphics/RectangleShape.hpp>
 
 class IGWindow;
 class Game;
@@ -27,9 +28,13 @@ public:
 
 	void pushPopup(IGPopup* popup);
 	bool isShowingPopup() const;
+	IGPopup* getActualPopup() const;
+
 private:
 	std::map<std::string, IGWindow*> windows;
 	std::queue<IGPopup*> popups;
+
+	sf::RectangleShape overlay;
 
 	static void IGManagerSetupImGuiStyle(bool bStyleDark_, float alpha_);
 };

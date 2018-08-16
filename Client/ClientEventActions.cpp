@@ -40,8 +40,13 @@ void ClientEventActions::visit(EventLoginResponse* e)
 		game->sceneManager->changeScene(SceneType::GAMEPLAY);
 	}else
 	{
+		IGManager* manager = game->sceneManager->getActualScene()->getWindowManager();
+		if(manager->getActualPopup())
+		{
+			manager->getActualPopup()->close();
+		}
 		IGPopup* popup = new IGPopup("Error", "Can't login with entered credentials", sf::Vector2f(550, 180), "Ok");
-		game->sceneManager->getActualScene()->getWindowManager()->pushPopup(popup);
+		manager->pushPopup(popup);
 	}
 	
 }
