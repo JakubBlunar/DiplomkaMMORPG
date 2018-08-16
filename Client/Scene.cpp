@@ -17,6 +17,11 @@ SceneType Scene::getType() const
 	return type;
 }
 
+IGManager * Scene::getWindowManager() const
+{
+	return windowManager;
+}
+
 void Scene::beforeChange(Game * g)
 {
 	canChange = false;

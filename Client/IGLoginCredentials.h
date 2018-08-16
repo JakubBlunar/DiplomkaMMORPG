@@ -7,7 +7,7 @@ public:
 	IGLoginCredentials();
 	~IGLoginCredentials();
 
-	void render(Game* g) override;
+	void render(Game* g, IGManager* manager) override;
 	void beforeRender(Game* g) override;
 private:
 	char buffLogin[256];

@@ -7,7 +7,7 @@ public:
 	IGGameMenu();
 	~IGGameMenu();
 protected:
-	void render(Game* g) override;
+	void render(Game* g, IGManager* manager) override;
 	void beforeRender(Game * game) override;
 };
 

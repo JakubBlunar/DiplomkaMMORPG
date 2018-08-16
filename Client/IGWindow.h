@@ -5,6 +5,7 @@
 #include <vector>
 #include <imgui.h>
 
+class IGManager;
 class Game;
 
 class IGWindow
@@ -14,7 +15,7 @@ public:
 	IGWindow(const bool visible, const float alpha);
 	virtual ~IGWindow();
 
-	void draw(Game* g);
+	void draw(Game* g, IGManager* manager);
 
 	void open();
 	void close();
@@ -28,7 +29,7 @@ protected:
 	virtual void beforeRender(Game* g);
 	virtual void afterRender(Game* g);
 
-	virtual void render(Game* g) = 0;
+	virtual void render(Game* g, IGManager* manager) = 0;
 
 	bool alpha;
 	bool visible;

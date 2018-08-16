@@ -6,7 +6,6 @@ Account::Account():
 
 }
 
-
 Account::~Account()
 {
 }

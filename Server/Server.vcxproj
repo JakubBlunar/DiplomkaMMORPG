@@ -121,6 +121,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Account.cpp" />
     <ClCompile Include="AuthManager.cpp" />
     <ClCompile Include="Crypto.cpp" />
     <ClCompile Include="Database.cpp" />
@@ -132,6 +133,7 @@
     <ClCompile Include="ServerTasks.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Account.h" />
     <ClInclude Include="AuthManager.h" />
     <ClInclude Include="Crypto.h" />
     <ClInclude Include="Database.h" />

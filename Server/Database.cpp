@@ -33,6 +33,7 @@ Database::Database(ServerSettings* settings):
 MYSQL_RES* Database::executeQuery(std::string query)
 {
 	dbMutex.lock();
+	spdlog::get("log")->info("EXECUTING QUERY: {}", query);
 	if (mysql_query(conn, query.c_str()))
 	{
 		dbMutex.unlock();
@@ -42,6 +43,21 @@ MYSQL_RES* Database::executeQuery(std::string query)
 
 	dbMutex.unlock();
 	return mysql_store_result(conn);
+}
+
+int Database::executeModify(std::string query)
+{
+	dbMutex.lock();
+	spdlog::get("log")->info("EXECUTING QUERY: {}", query);
+	if (mysql_query(conn, query.c_str()))
+	{
+		dbMutex.unlock();
+		spdlog::get("log")->error("QUERY: {} ERR: {}", query, mysql_error(conn));
+		return 0;
+	}
+
+	dbMutex.unlock();
+	return mysql_affected_rows(conn);
 }
 
 void Database::disconnect()

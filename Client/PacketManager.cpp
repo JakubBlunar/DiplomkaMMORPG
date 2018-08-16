@@ -89,7 +89,7 @@ void PacketManager::startRecieve()
 					}
 					break;
 				case LOGINRESPONSE:
-					e = new EventLoginResponse(false);
+					e = new EventLoginResponse(false, "");
 					if(e->loadFromPacket(&packet))
 					{
 						EventDispatcher<EventLoginResponse>::dispatchEvent(e);

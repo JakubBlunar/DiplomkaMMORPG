@@ -20,7 +20,7 @@ public:
 		return s_instance;
 	}
 
-	string hashWithSha256(string text);
+	string hashWithSha256(string text) const;
 	
 };
 

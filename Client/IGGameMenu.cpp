@@ -13,7 +13,7 @@ IGGameMenu::~IGGameMenu()
 {
 }
 
-void IGGameMenu::render(Game* g)
+void IGGameMenu::render(Game* g, IGManager* manager)
 {
 
 	ImGui::SetNextWindowSize(size, ImGuiCond_Always);

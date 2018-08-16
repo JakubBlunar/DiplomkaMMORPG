@@ -1,5 +1,4 @@
 #include "GamePlayScene.h"
-#include <utility>
 #include "IGGameMenu.h"
 #include "Camera.h"
 #include "Globals.h"
@@ -8,14 +7,6 @@
 #include "VisibleObjectsCast.h"
 #include "Globals.h"
 #include <iostream>
-#include <emmintrin.h>
-
-/*
-inline int roundNumber(float f)
-{
-    return _mm_cvtt_ss2si(_mm_load_ss(&f));
-}
-*/
 
 GamePlayScene::GamePlayScene(SceneType sceneType) : Scene(sceneType)
 {
@@ -116,7 +107,8 @@ void GamePlayScene::render(Game * g)
 			Field* field = map->getField(i, j);
 			std::vector<RenderSprite*>* layers = field->getLayers();
 
-			for(unsigned int k = 0; k < layers->size(); k++)
+			auto layerSize = layers->size();
+			for(unsigned int k = 0; k < layerSize; k++)
 			{
 				RenderSprite* layer = layers->at(k);
 				layer->setPosition(i*FIELD_SIZE + 16, j*FIELD_SIZE + 16);
@@ -134,14 +126,13 @@ void GamePlayScene::render(Game * g)
 	
 	queryCallback.sortBodies();
 
-
-	for (unsigned int i = 0; i < queryCallback.foundBodies.size(); i++) {
+	auto bodySize = queryCallback.foundBodies.size();
+	for (unsigned int i = 0; i < bodySize; i++) {
 		Entity* entity = (Entity*) queryCallback.foundBodies[i]->GetUserData();
 		RenderComponent* renderComponent = (RenderComponent*)entity->getComponent(ComponentType::RENDER);
 		PositionComponent* positionComponent = (PositionComponent*)entity->getComponent(ComponentType::POSITION);
 		if (renderComponent && positionComponent)
 		{
-			
 			AnimatedSprite* sprite = renderComponent->getCurrentAnimation();
 
 			b2Vec2 position = queryCallback.foundBodies[i]->GetPosition();

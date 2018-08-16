@@ -1,7 +1,7 @@
 #include "IGLoginCredentials.h"
 #include "Game.h"
 #include "EventDispatcher.h"
-
+#include "IGManager.h"
 
 IGLoginCredentials::IGLoginCredentials()
 {
@@ -16,7 +16,7 @@ IGLoginCredentials::~IGLoginCredentials()
 
 }
 
-void IGLoginCredentials::render(Game* game)
+void IGLoginCredentials::render(Game* game, IGManager* manager)
 {
 	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(100, 100, 0, 0));
 
@@ -45,12 +45,18 @@ void IGLoginCredentials::render(Game* game)
 	ImGui::InputText("##Password", buffPassword, sizeof(buffPassword), ImGuiInputTextFlags_Password);
 
 	if (ImGui::Button("Login")) {
-		std::string name = std::string(buffLogin);
-		std::string password = std::string(buffPassword);
-		memset(buffPassword, 0, sizeof(buffPassword));
+		if(!manager->isShowingPopup())
+		{
+			std::string name = std::string(buffLogin);
+			std::string password = std::string(buffPassword);
+			memset(buffPassword, 0, sizeof(buffPassword));
 
-		EventLoginRequest* req = new EventLoginRequest(name, password);
-		EventDispatcher<EventLoginRequest>::dispatchEvent(req);
+			if(!name.empty() && !password.empty())
+			{
+				EventLoginRequest* req = new EventLoginRequest(name, password);
+				EventDispatcher<EventLoginRequest>::dispatchEvent(req);	
+			}
+		}
 	}
 
 	ImGui::PopItemWidth();

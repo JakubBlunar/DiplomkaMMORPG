@@ -19,7 +19,8 @@ IGWindow::~IGWindow()
 {
 }
 
-void IGWindow::draw(Game* g)
+
+void IGWindow::draw(Game* g, IGManager* manager)
 {
 	if (!visible)
 	{
@@ -27,7 +28,7 @@ void IGWindow::draw(Game* g)
 	}
 
 	beforeRender(g);
-	render(g);
+	render(g, manager);
 	afterRender(g);
 }
 

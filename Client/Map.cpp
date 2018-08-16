@@ -10,8 +10,6 @@
 
 Map::Map(Game* game)
 {
-	
-
 	debugDrawInstance = new SFMLDebugDraw(game->window);
 	world = new b2World(b2Vec2(0.f, 0.f));
 	world->SetAllowSleeping(true);

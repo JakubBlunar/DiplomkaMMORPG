@@ -6,6 +6,7 @@
 #include "PacketManager.h"
 #include "EventLoginResponse.h"
 #include "SceneManager.h"
+#include <iostream>
 
 ClientEventActions::ClientEventActions(Game * g)
 {
@@ -35,10 +36,12 @@ void ClientEventActions::visit(EventLoginResponse* e)
 	game->print(e->toString());
 	if (e->status)
 	{
+
 		game->sceneManager->changeScene(SceneType::GAMEPLAY);
 	}else
 	{
-		//show popup
+		IGPopup* popup = new IGPopup("Error", "Can't login with entered credentials", sf::Vector2f(550, 180), "Ok");
+		game->sceneManager->getActualScene()->getWindowManager()->pushPopup(popup);
 	}
 	
 }

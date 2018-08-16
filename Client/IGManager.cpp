@@ -35,8 +35,26 @@ void IGManager::drawAll(Game* game)
 {
 	for (std::pair<std::string, IGWindow*> window : windows)
 	{
-		window.second->draw(game);
+		window.second->draw(game, this);
 	}
+
+	if(!popups.empty())
+	{
+		IGPopup * popup = popups.front();
+		if(!popup->isOpened())
+		{
+			popups.pop();
+			delete popup;
+			if(!popups.empty())
+			{
+				popups.front()->draw(game, this);
+			}
+		}else
+		{
+			popup->draw(game, this);
+		}
+	}
+	
 }
 
 void IGManager::close(std::string n)
@@ -84,6 +102,16 @@ bool IGManager::AnyWindowFocused()
 		}
 	}
 	return false;
+}
+
+void IGManager::pushPopup(IGPopup * popup)
+{
+	popups.push(popup);
+}
+
+bool IGManager::isShowingPopup() const
+{
+	return !popups.empty();
 }
 
 void IGManager::IGManagerSetupImGuiStyle(bool bStyleDark_, float alpha_)

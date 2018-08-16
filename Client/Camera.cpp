@@ -36,6 +36,11 @@ void Camera::update(sf::Time elapsedTime, Game* g)
 
 	if(g->sceneManager->getTypeOfActualScene() == SceneType::GAMEPLAY)
 	{
+		if(offset.y < 16)
+		{
+			offset.y = 16;
+		}
+
 		PositionComponent* p = (PositionComponent*) g->getAccount()->getPlayerEntity()->getComponent(ComponentType::POSITION);
 		sf::Vector2f position = p->getPosition();
 

@@ -189,6 +189,9 @@
     <ClCompile Include="Account.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="IGPopup.cpp">
+      <Filter>Source Files\Scenes\IMGui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="json.hpp">
@@ -313,6 +316,9 @@
     </ClInclude>
     <ClInclude Include="Account.h">
       <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="IGPopup.h">
+      <Filter>Header Files\Scenes\IMGui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

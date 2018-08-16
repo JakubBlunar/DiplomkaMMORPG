@@ -140,6 +140,7 @@
     <ClCompile Include="IGGameMenu.cpp" />
     <ClCompile Include="IGLoginCredentials.cpp" />
     <ClCompile Include="IGManager.cpp" />
+    <ClCompile Include="IGPopup.cpp" />
     <ClCompile Include="IGWindow.cpp" />
     <ClCompile Include="imgui-SFML.cpp" />
     <ClCompile Include="imgui.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="IGGameMenu.h" />
     <ClInclude Include="IGLoginCredentials.h" />
     <ClInclude Include="IGManager.h" />
+    <ClInclude Include="IGPopup.h" />
     <ClInclude Include="IGWindow.h" />
     <ClInclude Include="INIReader.h" />
     <ClInclude Include="json.hpp" />

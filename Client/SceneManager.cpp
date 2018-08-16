@@ -11,7 +11,6 @@ SceneManager::SceneManager()
 
 	GamePlayScene* gpS = new GamePlayScene(SceneType::GAMEPLAY);
 	scenes.insert(std::pair<SceneType, Scene*>(SceneType::GAMEPLAY, gpS));
-	actualScene = gpS;
 }
 
 
@@ -22,6 +21,11 @@ SceneManager::~SceneManager()
 SceneType SceneManager::getTypeOfActualScene() const
 {
 	return actualScene->getType();
+}
+
+Scene* SceneManager::getActualScene() const
+{
+	return actualScene;
 }
 
 void SceneManager::changeScene(SceneType sceneType)

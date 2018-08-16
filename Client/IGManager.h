@@ -2,6 +2,8 @@
 #define IMGUIMANAGER_H
 #include <string>
 #include <map>
+#include "IGPopup.h"
+#include <queue>
 
 class IGWindow;
 class Game;
@@ -14,7 +16,7 @@ public:
 
 	void addWindow(std::string s, IGWindow* w);
 	IGWindow* getWindow(std::string s);
-	void drawAll(Game* g);
+	void drawAll(Game* game);
 
 	void Open(std::string n);
 	void close(std::string n);
@@ -23,8 +25,11 @@ public:
 	bool isVisible(std::string n);
 	bool AnyWindowFocused();
 
+	void pushPopup(IGPopup* popup);
+	bool isShowingPopup() const;
 private:
 	std::map<std::string, IGWindow*> windows;
+	std::queue<IGPopup*> popups;
 
 	static void IGManagerSetupImGuiStyle(bool bStyleDark_, float alpha_);
 };

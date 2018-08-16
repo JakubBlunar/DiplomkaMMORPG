@@ -23,6 +23,7 @@ public:
 	sf::FloatRect playerBorders;
 
 	SceneType getType() const;
+	IGManager* getWindowManager() const;
 
 	virtual void beforeChange(Game* g);
 	virtual void afterChange(Game* g);

@@ -6,7 +6,7 @@ class EventLoginResponse :
 	public GameEvent
 {
 public:
-	EventLoginResponse(bool status);
+	EventLoginResponse(bool status, std::string account);
 	~EventLoginResponse();
 
 	void accept(EventVisitor*) override;
@@ -15,7 +15,7 @@ public:
 	std::string toString() const override;
 
 	bool status;
-
+	std::string account;
 
 
 };

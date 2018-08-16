@@ -15,7 +15,7 @@ public:
 	~SceneManager();
 
 	SceneType getTypeOfActualScene() const;
-
+	Scene* getActualScene() const;
 	void changeScene(SceneType sceneType);
 	void render(Game* g) const;
 	void update(Game* g, sf::Time elapsedTime) const;
