@@ -2,11 +2,12 @@
 #include "EventLoginResponse.h"
 
 
-EventLoginResponse::EventLoginResponse(bool status, std::string account)
+EventLoginResponse::EventLoginResponse()
 {
 	this->id = EventId::LOGINRESPONSE;
-	this->status = status;
-	this->account = account;
+	this->status = false;
+	this->account = "";
+	this->message = "";
 }
 
 
@@ -21,7 +22,7 @@ void EventLoginResponse::accept(EventVisitor *v)
 
 bool EventLoginResponse::loadFromPacket(sf::Packet* p)
 {
-	if(*p >> status >> account)
+	if(*p >> status >> message >> account)
 	{
 		return true;
 	}
@@ -31,11 +32,11 @@ bool EventLoginResponse::loadFromPacket(sf::Packet* p)
 sf::Packet* EventLoginResponse::toPacket()
 {
 	sf::Packet* p = new sf::Packet();
-	*p << id << status << account;
+	*p << id << status << message << account;
 	return p;
 }
 
 std::string EventLoginResponse::toString() const
 {
-	return "Login Response Status(" + std::to_string(status) + ")" + " Account: " + account;
+	return "Login Response Status(" + std::to_string(status) + ") Message:" + message + " Account: " + account;
 }

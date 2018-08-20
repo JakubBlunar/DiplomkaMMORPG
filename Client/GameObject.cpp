@@ -47,8 +47,8 @@ void GameObject::loadFromJson(const std::string& file)
 	{
 		BodyType bodyType = static_cast<BodyType>(position["bodyType"].get<json::number_integer_t>());
 		positionComponent->setBodyType(bodyType);
-		float width = position["width"].get<json::number_integer_t>();
-		float height = position["height"].get<json::number_integer_t>();
+		float width = position["width"].get<json::number_float_t>();
+		float height = position["height"].get<json::number_float_t>();
 		positionComponent->setSize(sf::Vector2f(width, height));
 
 
@@ -68,15 +68,15 @@ void GameObject::loadFromJson(const std::string& file)
 
 		std::string textureFile = render["texture"].get<json::string_t>();
 
-		Animation idleAnimation;
-	    idleAnimation.setSpriteSheet(ResourceHolder<sf::Texture>::instance()->get(textureFile));
-	    idleAnimation.addFrame(sf::IntRect(spriteOffsetX, spriteOffsetY, width, height));
+		Animation* idleAnimation = new Animation();
+	    idleAnimation->setSpriteSheet(ResourceHolder<sf::Texture>::instance()->get(textureFile));
+	    idleAnimation->addFrame(sf::IntRect(spriteOffsetX, spriteOffsetY, width, height));
 
 		renderComponent->setSize(sf::Vector2i(width, height));
 		renderComponent->setOffset(sf::Vector2i(renderOffsetX, renderOffsetY));
 
 		std::string animationName = "iddle";
-		renderComponent->addAnimation(animationName, &idleAnimation);
+		renderComponent->addAnimation(animationName, idleAnimation);
 		renderComponent->changeAnimation("iddle");
 	}else
 		throw "cannot load gameObject from file " + file;

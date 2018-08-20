@@ -33,11 +33,11 @@ void IGLoginCredentials::render(Game* game, IGManager* manager)
 
 	ImGui::PushItemWidth(-1);
 
-	ImGui::SetWindowFontScale(3);
+	ImGui::SetWindowFontScale(0.3f);
 	ImGui::Text("Log into your account");
 
 
-	ImGui::SetWindowFontScale(2);
+	ImGui::SetWindowFontScale(0.2f);
 	ImGui::TextColored(ImVec4(0, 0, 0, 1), "Account Name:");
 	ImGui::InputText("##Account name", buffLogin, sizeof(buffLogin));
 
@@ -64,7 +64,6 @@ void IGLoginCredentials::render(Game* game, IGManager* manager)
 	ImGui::PopItemWidth();
 
 	focused = ImGui::IsWindowFocused();
-	ImGui::SetWindowFontScale(1);
 
 	ImGui::End(); // end window
 

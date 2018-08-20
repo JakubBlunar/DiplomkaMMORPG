@@ -28,16 +28,6 @@ Game::Game():
 	mStatisticsText.setCharacterSize(12);
 	mStatisticsText.setFillColor(sf::Color::Blue);
 	subscribe();
-
-
-
-	gameMap = new Map(this);
-	account = new Account();
-
-	Player* p = new Player(1, true);
-	account->setPlayerEntity(p);
-	gameMap->addPlayer(p);
-
 }
 
 void Game::run()
@@ -45,7 +35,14 @@ void Game::run()
 	running = true;
 
 	window.setVerticalSyncEnabled(true);
-	ImGui::SFML::Init(window);
+	ImGui::SFML::Init(window, false);
+
+	ImGuiIO& io = ImGui::GetIO();
+	io.Fonts->Clear(); // clear fonts if you loaded some before (even if only default one was loaded)
+	io.Fonts->AddFontFromFileTTF("Data/ProggyTiny.ttf", 100);
+
+	ImGui::SFML::UpdateFontTexture();
+
 	window.resetGLStates();
 
 	recieveThread = new sf::Thread(&PacketManager::startRecieve, packet_manager);
@@ -78,6 +75,11 @@ Map * Game::getMap() const
 	return gameMap;
 }
 
+void Game::changeMap(Map* map)
+{
+	this->gameMap = map;
+}
+
 Camera* Game::getCamera()
 {
 	return &camera;
@@ -87,6 +89,11 @@ Camera* Game::getCamera()
 Account* Game::getAccount() const
 {
 	return account;
+}
+
+void Game::setAccount(Account * account)
+{
+	this->account = account;
 }
 
 void Game::handleEvent(GameEvent* event)
@@ -143,7 +150,11 @@ void Game::processEvents()
 void Game::update(sf::Time elapsedTime)
 {
 	ClientSettings::instance()->eventsMutex.lock();
-	gameMap->update(elapsedTime, this);
+	if(gameMap)
+	{	
+		gameMap->update(elapsedTime, this);
+	}
+
 	sceneManager->update(this, elapsedTime);
 	camera.update(elapsedTime, this);
 	
@@ -230,4 +241,5 @@ void Game::subscribe()
 	EventDispatcher<EventMovementChange>::addSubscriber(this);
 	EventDispatcher<EventLoginRequest>::addSubscriber(this);
 	EventDispatcher<EventLoginResponse>::addSubscriber(this);
+	EventDispatcher<EventCharacterChooseResponse>::addSubscriber(this);
 }

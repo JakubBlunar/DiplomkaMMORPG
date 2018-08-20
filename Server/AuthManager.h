@@ -1,6 +1,7 @@
 #pragma once
 #include "EventLoginRequest.h"
 #include "Manager.h"
+#include "EventCharacterChoose.h"
 
 class Server;
 class Session;
@@ -12,5 +13,6 @@ public:
 	~AuthManager();
 
 	void handleEvent(EventLoginRequest* event, Session* playerSession, Server* s) const;
+	void handleEvent(EventCharacterChoose* event, Session* playerSession, Server* s) const;
 };
 

@@ -3,12 +3,16 @@
 
 #include "Entity.h"
 #include "PositionComponent.h"
+#include "../Client/json.hpp"
+#include "RenderComponent.h"
+
+using json = nlohmann::json;
 
 class Player :
 	public Entity
 {
 public:
-	Player(long long id, bool playerControlled);
+	Player(bool playerControlled);
 	~Player();
 
 	void handleEvent(GameEvent* event) override;
@@ -16,9 +20,13 @@ public:
 
 	EntityType getType() override;
 	EntityCategory getEntityCategory() override;
+
+	void loadFromJson(json jsonData);
 private:
 	bool playerControlled;
 	PositionComponent* positionComponent;
+	RenderComponent* renderComponent;
+
 	sf::Vector2f lastMovement;
 };
 

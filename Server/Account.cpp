@@ -2,12 +2,22 @@
 #include <mysql.h>
 #include "Database.h"
 #include "Crypto.h"
-#include "../Client/json.hpp"
+#include "../Server/json.hpp"
 
 using json = nlohmann::json;
 
 s::Account::Account(): id(-1)
 {
+}
+
+Character* s::Account::getCharacter() const
+{
+	return character;
+}
+
+void s::Account::setCharacter(Character* character)
+{
+	this->character = character;
 }
 
 bool s::Account::checkPassword(std::string password) const
@@ -20,7 +30,7 @@ bool s::Account::checkPassword(std::string password) const
 	return false;
 }
 
-void s::Account::save()
+bool s::Account::save() const
 {
 	char* escaped = nullptr;
 	
@@ -33,18 +43,25 @@ void s::Account::save()
 
 	bool success =  Database::i()->executeModify(query) > 0;
 
-
+	return success;
 }
 
 std::string s::Account::toJsonString()
 {
-	json json({});
+	json data({});
 
-	json["id"] = this->id;
-	json["email"] = this->email;
-	json["login"] = this->login;
+	data["id"] = this->id;
+	data["email"] = this->email;
+	data["login"] = this->login;
 
-	return json.dump();
+	json charactersJson = json::array();
+	std::for_each(characters->begin(), characters->end(), [&charactersJson](Character* ch)
+	{
+		charactersJson.push_back(ch->toJson());
+	});
+	data["characters"] = charactersJson;
+
+	return data.dump();
 }
 
 s::Account* s::Account::getById(int id)
@@ -93,6 +110,8 @@ s::Account * s::Account::getByLogin(std::string login)
 	account->password = row[3];
 
 	mysql_free_result(res);
+
+	account->characters = Character::getAccountCharacters(account->id);
 
 	return account;
 }

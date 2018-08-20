@@ -39,16 +39,5 @@ void LoginScene::render(Game * g)
 {
 	g->window.clear(sf::Color::Green);
 
-	sf::Font mFont;
-	mFont.loadFromFile("Data/Sansation.ttf");
-	sf::Text text;
-	text.setString("Login screen");
-	text.setFont(mFont);
-	text.setPosition(50, 50);
-	text.setCharacterSize(20);
-	text.setFillColor(sf::Color::Black);
-
-	g->window.draw(text);
-
 	Scene::render(g);
 }

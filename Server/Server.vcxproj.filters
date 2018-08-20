@@ -72,6 +72,9 @@
     <ClCompile Include="Account.cpp">
       <Filter>Source Files\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="Character.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INIReader.h">
@@ -105,6 +108,9 @@
       <Filter>Header Files\Tools</Filter>
     </ClInclude>
     <ClInclude Include="Account.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Character.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
   </ItemGroup>

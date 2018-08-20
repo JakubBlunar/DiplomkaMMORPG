@@ -7,7 +7,8 @@
 
 enum class SceneType {
 	LOGIN,
-	GAMEPLAY
+	GAMEPLAY,
+	CHARACTER_CHOOSE
 };
 
 class Scene

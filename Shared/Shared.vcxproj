@@ -150,6 +150,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CharacterConstants.h" />
+    <ClInclude Include="EventCharacterChoose.h" />
+    <ClInclude Include="EventCharacterChooseResponse.h" />
     <ClInclude Include="EventLoginRequest.h" />
     <ClInclude Include="EventLoginResponse.h" />
     <ClInclude Include="EventMovementChange.h" />
@@ -160,6 +163,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="EventCharacterChoose.cpp" />
+    <ClCompile Include="EventCharacterChooseResponse.cpp" />
     <ClCompile Include="EventLoginRequest.cpp" />
     <ClCompile Include="EventLoginResponse.cpp" />
     <ClCompile Include="EventMovementChange.cpp" />

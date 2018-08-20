@@ -7,6 +7,8 @@
 #include "EventMovementChange.h"
 #include "EventLoginRequest.h"
 #include "ServerTasks.h"
+#include <spdlog/spdlog.h>
+#include "EventCharacterChoose.h"
 
 Server::Server(ServerSettings* settings):
 	running(false)
@@ -54,7 +56,7 @@ void Server::start()
 
 	tasks->startTasks();
 
-	print("server started on port " + std::to_string(serverSettings->port));
+	spdlog::get("log")->info("server started on port: {}", serverSettings->port);
 
 	while (running) {
 		
@@ -89,38 +91,50 @@ void Server::print(const std::string& message)
 void Server::identifyPacket(EventId type, sf::Packet *packet, Session* playerSession) {
 	sf::Packet resPacket;
 	int id;
-	if (type == MOVEMENT) {
-		EventMovementChange* e = new EventMovementChange();
-		if (e->loadFromPacket(packet)) {
-			
-			print("Player(" + to_string(e->playerId) +") [" + to_string(e->velX) + "," + to_string(e->velY) + "]");
+	switch (type) {
+		case MOVEMENT: {
+			EventMovementChange* e = new EventMovementChange();
+			if (e->loadFromPacket(packet)) {
+				
+				spdlog::get("log")->info("Player({}) [{}, {}]", e->playerId, e->velX, e->velY);
 
-			sf::Packet * p = e->toPacket();
+				sf::Packet * p = e->toPacket();
 
-			for (unsigned int j = 0; j < sessions.size(); j++)
-			{
-				if (playerSession != sessions[j])
-					sessions[j]->socket->send(*p);
+				for (unsigned int j = 0; j < sessions.size(); j++)
+				{
+					if (playerSession != sessions[j])
+						sessions[j]->socket->send(*p);
+				}
 			}
+			delete e;
+			break;
 		}
-		delete e;
-		return;
-	}
-
-	if (type == LOGINREQUEST) {
-		EventLoginRequest* e = new EventLoginRequest();
-		if (e->loadFromPacket(packet)) {
-			authManager.handleEvent(e, playerSession, this);
+		case LOGINREQUEST: {
+			EventLoginRequest* e = new EventLoginRequest();
+			if (e->loadFromPacket(packet)) {
+				authManager.handleEvent(e, playerSession, this);
+			}
+			delete e;
+			break;
 		}
-		delete e;
-		return;
-	}
-
-	if (type == LATENCY) {
-		if (*packet >> id) {
-			resPacket << EventId::LATENCY << id;
-			playerSession->socket->send(resPacket);
+		case LATENCY: {
+			if (*packet >> id) {
+				resPacket << EventId::LATENCY << id;
+				playerSession->socket->send(resPacket);
+			}
+			break;
 		}
+		case CHARACTER_CHOOSE:
+			{
+				EventCharacterChoose* e = new EventCharacterChoose();
+				if(e->loadFromPacket(packet))
+				{
+					authManager.handleEvent(e, playerSession, this);
+				}
+			}
+			break;
+		default:
+			spdlog::get("log")->info("Cannot handle packet type {}", type);
 	}
 }
 
@@ -145,7 +159,24 @@ void Server::recievePackets()
 
 					selector.add(*client);
 					
-					print("new connection received from " + client->getRemoteAddress().toString());
+					spdlog::get("log")->info("new connection received from {}", client->getRemoteAddress().toString());
+
+					/*sf::sleep(sf::seconds(0.5f));
+					EventLoginRequest e("kubik2405", "123456");
+					sf::Packet* tempPacket = e.toPacket();
+					int id;
+					*tempPacket >> id;
+					identifyPacket(LOGINREQUEST, tempPacket, playerSession);
+					delete tempPacket;
+
+					EventCharacterChoose ec;
+					ec.characterId = 1;
+					tempPacket = ec.toPacket();
+					*tempPacket >> id;
+					identifyPacket(CHARACTER_CHOOSE, tempPacket, playerSession);
+					delete tempPacket;
+
+					*/
 				}
 				else
 				{
@@ -180,7 +211,7 @@ void Server::recievePackets()
 						}
 						case sf::Socket::Disconnected:
 						{
-							print("disconnect from " + playerSession->socket->getRemoteAddress().toString());
+							spdlog::get("log")->info("disconnect from ", playerSession->socket->getRemoteAddress().toString());
 
 							selector.remove(*playerSession->socket);
 							playerSession->socket->disconnect();

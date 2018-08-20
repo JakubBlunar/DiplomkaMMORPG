@@ -127,6 +127,7 @@
     <ClCompile Include="b2GLDraw.cpp" />
     <ClCompile Include="Box2DTools.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CharacterChooseScene.cpp" />
     <ClCompile Include="ClientEventActions.cpp" />
     <ClCompile Include="ClientSettings.cpp" />
     <ClCompile Include="Collider.cpp" />
@@ -137,6 +138,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GamePlayScene.cpp" />
+    <ClCompile Include="IGAvailableCharacters.cpp" />
     <ClCompile Include="IGGameMenu.cpp" />
     <ClCompile Include="IGLoginCredentials.cpp" />
     <ClCompile Include="IGManager.cpp" />
@@ -169,6 +171,7 @@
     <ClInclude Include="b2GLDraw.h" />
     <ClInclude Include="Box2DTools.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CharacterChooseScene.h" />
     <ClInclude Include="ClientEventActions.h" />
     <ClInclude Include="ClientSettings.h" />
     <ClInclude Include="Collider.h" />
@@ -181,6 +184,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GamePlayScene.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="IGAvailableCharacters.h" />
     <ClInclude Include="IGGameMenu.h" />
     <ClInclude Include="IGLoginCredentials.h" />
     <ClInclude Include="IGManager.h" />

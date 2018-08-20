@@ -387,11 +387,13 @@ namespace ImGui
 	void Image(const sf::Sprite& sprite, const sf::Vector2f& size,
 		const sf::Color& tintColor, const sf::Color& borderColor)
 	{
+		
 		const sf::Texture* texturePtr = sprite.getTexture();
 		// sprite without texture cannot be drawn
 		if (!texturePtr) { return; }
 
-		Image(*texturePtr, size, tintColor, borderColor);
+		Image(*texturePtr, sprite.getGlobalBounds(), tintColor, borderColor);
+		//Image(*texturePtr, size, tintColor, borderColor);
 	}
 
 	/////////////// Image Button Overloads

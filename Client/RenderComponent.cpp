@@ -45,8 +45,11 @@ void RenderComponent::changeAnimation(std::string animationName)
 		currentAnimation->stop();
 	
 	Animation* animation = found->second;
+	currentAnimation->setFrameTime(animation->getFrameTime());
 	currentAnimation->setAnimation(*animation);
 	currentAnimation->play();
+	
+
 }
 
 sf::Vector2i RenderComponent::getSize() const

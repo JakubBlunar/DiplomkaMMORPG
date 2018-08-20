@@ -16,6 +16,7 @@ public:
 	void visit(EventMovementChange* e) override;
 	void visit(EventLoginRequest* e) override;
 	void visit(EventLoginResponse* e) override;
+	void visit(EventCharacterChooseResponse* e) override;
 };
 
 #endif // !CLIENT_EVENT_ACTIONS_H

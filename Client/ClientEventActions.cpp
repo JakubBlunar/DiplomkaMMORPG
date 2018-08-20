@@ -36,8 +36,11 @@ void ClientEventActions::visit(EventLoginResponse* e)
 	game->print(e->toString());
 	if (e->status)
 	{
-
-		game->sceneManager->changeScene(SceneType::GAMEPLAY);
+		json jsonData = json::parse(e->account);
+		Account* account = new Account();
+		account->initFromJson(jsonData);
+		game->setAccount(account);
+		game->sceneManager->changeScene(SceneType::CHARACTER_CHOOSE);
 	}else
 	{
 		IGManager* manager = game->sceneManager->getActualScene()->getWindowManager();
@@ -45,8 +48,33 @@ void ClientEventActions::visit(EventLoginResponse* e)
 		{
 			manager->getActualPopup()->close();
 		}
-		IGPopup* popup = new IGPopup("Error", "Can't login with entered credentials", sf::Vector2f(550, 180), "Ok");
+		IGPopup* popup = new IGPopup("Error", e->message, sf::Vector2f(550, 180), "Ok");
 		manager->pushPopup(popup);
 	}
 	
+}
+
+void ClientEventActions::visit(EventCharacterChooseResponse* e)
+{
+	game->print(e->toString());
+	if(e->success)
+	{
+		json characterData = json::parse(e->characterData);
+		game->print("Character DATA: " + characterData.dump());
+		Player* p = new Player(true);
+		p->loadFromJson(characterData);
+
+		Map* map = new Map(game);
+
+		game->getAccount()->setPlayerEntity(p);
+		map->addPlayer(p);
+		game->changeMap(map);
+
+		game->sceneManager->changeScene(SceneType::GAMEPLAY);
+	}else
+	{
+		IGManager* manager = game->sceneManager->getActualScene()->getWindowManager();
+		IGPopup* popup = new IGPopup("Error", e->message, sf::Vector2f(550, 180), "Ok");
+		manager->pushPopup(popup);
+	}
 }

@@ -27,7 +27,7 @@ void ServerTasks::finish()
 
 void ServerTasks::fetchOnline()
 {
-	sf::sleep(sf::seconds(10));
+	sf::sleep(sf::seconds(60));
 	Database* database = Database::i();
 	database->executeQuery("DELETE from onlinePlayers;");
 

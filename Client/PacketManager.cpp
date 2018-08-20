@@ -89,10 +89,20 @@ void PacketManager::startRecieve()
 					}
 					break;
 				case LOGINRESPONSE:
-					e = new EventLoginResponse(false, "");
+					e = new EventLoginResponse();
 					if(e->loadFromPacket(&packet))
 					{
 						EventDispatcher<EventLoginResponse>::dispatchEvent(e);
+					}else
+					{
+						game->print("Error while parsing packet " + std::to_string(pt));
+					}
+					break;
+				case CHARACTER_CHOOSE_RESPONSE:
+					e = new EventCharacterChooseResponse();
+					if(e->loadFromPacket(&packet))
+					{
+						EventDispatcher<EventCharacterChooseResponse>::dispatchEvent(e);
 					}else
 					{
 						game->print("Error while parsing packet " + std::to_string(pt));

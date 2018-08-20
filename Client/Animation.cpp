@@ -1,6 +1,6 @@
 #include "Animation.h"
 
-Animation::Animation() : texture(NULL)
+Animation::Animation() : texture(nullptr), frameTime(sf::seconds(5000000000.f))
 {
 
 }
@@ -28,4 +28,14 @@ std::size_t Animation::getSize() const
 const sf::IntRect& Animation::getFrame(std::size_t n) const
 {
     return frames[n];
+}
+
+void Animation::setFrameTime(sf::Time time)
+{
+	this->frameTime = time;
+}
+
+sf::Time Animation::getFrameTime() const
+{
+	return frameTime;
 }

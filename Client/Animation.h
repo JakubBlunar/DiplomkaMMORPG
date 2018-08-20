@@ -5,6 +5,7 @@
 #include <vector>
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/Texture.hpp>
+#include <SFML/System/Time.hpp>
 
 class Animation
 {
@@ -16,10 +17,13 @@ public:
     const sf::Texture* getSpriteSheet() const;
     std::size_t getSize() const;
     const sf::IntRect& getFrame(std::size_t n) const;
-
+	void setFrameTime(sf::Time time);
+	sf::Time getFrameTime() const;
+	
 private:
     std::vector<sf::IntRect> frames;
     const sf::Texture* texture;
+	sf::Time frameTime;
 };
 
 #endif

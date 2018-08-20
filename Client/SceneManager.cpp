@@ -2,6 +2,7 @@
 #include "LoginScene.h"
 #include "Scene.h"
 #include "GamePlayScene.h"
+#include "CharacterChooseScene.h"
 
 SceneManager::SceneManager()
 {
@@ -11,6 +12,9 @@ SceneManager::SceneManager()
 
 	GamePlayScene* gpS = new GamePlayScene(SceneType::GAMEPLAY);
 	scenes.insert(std::pair<SceneType, Scene*>(SceneType::GAMEPLAY, gpS));
+
+	CharacterChooseScene* ccs = new CharacterChooseScene(SceneType::CHARACTER_CHOOSE);
+	scenes.insert(std::pair<SceneType, Scene*>(SceneType::CHARACTER_CHOOSE, ccs));
 }
 
 

@@ -33,8 +33,12 @@ public:
 	bool					running;
 
 	Map* getMap() const;
+	void changeMap(Map* map);
+
 	Camera* getCamera();
 	Account* getAccount() const;
+
+	void setAccount(Account* account);
 	
 	void handleEvent(GameEvent* event) override;
 

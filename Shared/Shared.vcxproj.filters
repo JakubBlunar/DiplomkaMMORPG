@@ -45,6 +45,15 @@
     <ClInclude Include="EventLoginResponse.h">
       <Filter>Header Files\Events</Filter>
     </ClInclude>
+    <ClInclude Include="CharacterConstants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EventCharacterChoose.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="EventCharacterChooseResponse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -64,6 +73,12 @@
     </ClCompile>
     <ClCompile Include="EventLoginResponse.cpp">
       <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="EventCharacterChoose.cpp">
+      <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="EventCharacterChooseResponse.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

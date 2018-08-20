@@ -42,7 +42,7 @@ void IGPopup::render(Game* g, IGManager* manager)
     { 
 		ImGui::PushItemWidth(-1);
 
-		ImGui::SetWindowFontScale(2);
+		ImGui::SetWindowFontScale(0.2f);
 		if(!title.empty())
 		{
 			ImGui::Text(title.c_str());

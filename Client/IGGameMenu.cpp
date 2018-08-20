@@ -4,7 +4,7 @@
 
 IGGameMenu::IGGameMenu()
 {
-	size = sf::Vector2f(250, 250);
+	size = sf::Vector2f(250, 260);
 	centeredPosition = true;
 }
 
@@ -29,7 +29,7 @@ void IGGameMenu::render(Game* g, IGManager* manager)
 
 	ImGui::PushItemWidth(-1);
 
-	ImGui::SetWindowFontScale(2);
+	ImGui::SetWindowFontScale(0.3);
 	ImGui::Text("Game Menu");
 
 	if (ImGui::Button("Settings", sf::Vector2f(ImGui::GetWindowWidth() * 0.935f, 40))) {
@@ -49,6 +49,7 @@ void IGGameMenu::render(Game* g, IGManager* manager)
 	bool open = true;
 	if (ImGui::BeginPopupModal("ExitPrompt", &open, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize))
 	{
+		ImGui::SetWindowFontScale(0.2);
 		ImGui::Text("Do you realy wish to end game?");
 		ImGui::NewLine();
 		
