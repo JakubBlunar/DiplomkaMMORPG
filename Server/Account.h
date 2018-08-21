@@ -1,10 +1,13 @@
-#ifndef ACCOUNT_H
-#define ACCOUNT_H
+#ifndef S_ACCOUNT_H
+#define S_ACCOUNT_H
 #include <string>
-#include <mysql.h>
-#include "Database.h"
 #include <vector>
-#include "Character.h"
+
+namespace s
+{
+	class Character;
+	class Session;
+}
 
 namespace s
 {
@@ -12,7 +15,7 @@ namespace s
 	{
 	private:
 		Character* character;
-
+		Session* session;
 	public:
 		Account();
 
@@ -30,6 +33,9 @@ namespace s
 		bool save() const;
 
 		std::string toJsonString();
+
+		void setSession(Session* session);
+		Session* getSession() const;
 
 		static Account* getById(int id);
 		static Account* getByLogin(std::string login);

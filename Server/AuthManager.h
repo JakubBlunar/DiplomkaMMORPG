@@ -1,18 +1,26 @@
-#pragma once
+#ifndef AUTH_MANAGER_H
+#define AUTH_MANAGER_H
+
 #include "EventLoginRequest.h"
 #include "Manager.h"
 #include "EventCharacterChoose.h"
 
-class Server;
-class Session;
-
-class AuthManager: public Manager
+namespace s
 {
-public:
-	AuthManager();
-	~AuthManager();
+	class Session;
+}
 
-	void handleEvent(EventLoginRequest* event, Session* playerSession, Server* s) const;
-	void handleEvent(EventCharacterChoose* event, Session* playerSession, Server* s) const;
-};
+namespace s {
 
+	class AuthManager: public Manager
+	{
+	public:
+		AuthManager();
+		~AuthManager();
+
+		void handleEvent(EventLoginRequest* event, s::Session* playerSession, s::Server* s) const;
+		void handleEvent(EventCharacterChoose* event, s::Session* playerSession, s::Server* s) const;
+	};
+
+}
+#endif

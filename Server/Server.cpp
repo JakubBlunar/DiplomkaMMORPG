@@ -9,22 +9,24 @@
 #include "ServerTasks.h"
 #include <spdlog/spdlog.h>
 #include "EventCharacterChoose.h"
+#include "ServerTasks.h"
 
-Server::Server(ServerSettings* settings):
+
+s::Server::Server(ServerSettings* settings):
 	running(false)
 {
 	serverSettings = settings;
 	sessions.reserve(2000);
-	tasks = new ServerTasks(this);
+	tasks = new s::ServerTasks(this);
 }
 
 
-Server::~Server()
+s::Server::~Server()
 {
 	delete serverSettings;
 }
 
-void Server::init()
+void s::Server::init()
 {
 	Database::initDatabase(serverSettings);
 
@@ -41,9 +43,10 @@ void Server::init()
 	}
 
 	managers.push_back(&authManager);
+	managers.push_back(&mapsManager);
 }
 
-void Server::start()
+void s::Server::start()
 {
 	running = true;
 	listener.listen(static_cast<short>(serverSettings->port));
@@ -58,11 +61,19 @@ void Server::start()
 
 	spdlog::get("log")->info("server started on port: {}", serverSettings->port);
 
-	while (running) {
-		
-		//update world box2d send events
 
-		sf::sleep(sf::seconds(1));
+	sf::Clock clock;
+	sf::Time timePerFrame = sf::seconds(1.f / 60.f);
+	sf::Time timeSinceLastUpdate = sf::Time::Zero;
+	while (running)
+	{
+		const sf::Time elapsedTime = clock.restart();
+		timeSinceLastUpdate += elapsedTime;
+		while (timeSinceLastUpdate > timePerFrame)
+		{
+			timeSinceLastUpdate -= timePerFrame;
+		}
+		update(elapsedTime);
 	}
 
 	for (auto &thread : recieveThreads)
@@ -74,12 +85,17 @@ void Server::start()
 	Database::i()->disconnect();
 }
 
-void Server::update()
+void s::Server::update(sf::Time elapsedTime)
 {
-
+	Server* s = this;
+	std::for_each(managers.begin(), managers.end(), [elapsedTime, s](Manager* m)
+	{
+		if(m->isDynamic())
+			m->update(elapsedTime, s);
+	});
 }
 
-void Server::print(const std::string& message)
+void s::Server::print(const std::string& message)
 {
 	consoleMutex.lock();
 
@@ -88,7 +104,7 @@ void Server::print(const std::string& message)
 	consoleMutex.unlock();
 }
 
-void Server::identifyPacket(EventId type, sf::Packet *packet, Session* playerSession) {
+void s::Server::identifyPacket(EventId type, sf::Packet *packet, Session* playerSession) {
 	sf::Packet resPacket;
 	int id;
 	switch (type) {
@@ -138,7 +154,7 @@ void Server::identifyPacket(EventId type, sf::Packet *packet, Session* playerSes
 	}
 }
 
-void Server::recievePackets()
+void s::Server::recievePackets()
 {
 	while (running)
 	{
@@ -161,7 +177,7 @@ void Server::recievePackets()
 					
 					spdlog::get("log")->info("new connection received from {}", client->getRemoteAddress().toString());
 
-					/*sf::sleep(sf::seconds(0.5f));
+					sf::sleep(sf::seconds(0.5f));
 					EventLoginRequest e("kubik2405", "123456");
 					sf::Packet* tempPacket = e.toPacket();
 					int id;
@@ -170,13 +186,11 @@ void Server::recievePackets()
 					delete tempPacket;
 
 					EventCharacterChoose ec;
-					ec.characterId = 1;
+					ec.characterId = 2;
 					tempPacket = ec.toPacket();
 					*tempPacket >> id;
 					identifyPacket(CHARACTER_CHOOSE, tempPacket, playerSession);
 					delete tempPacket;
-
-					*/
 				}
 				else
 				{

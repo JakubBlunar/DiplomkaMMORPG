@@ -1,9 +1,9 @@
 #include "ServerSettings.h"
 
-ServerSettings::ServerSettings()
+s::ServerSettings::ServerSettings()
 {
 }
 
-ServerSettings::~ServerSettings()
+s::ServerSettings::~ServerSettings()
 {
 }

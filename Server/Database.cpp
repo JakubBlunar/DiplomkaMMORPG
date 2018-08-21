@@ -3,9 +3,9 @@
 #include <iostream>
 #include <spdlog/spdlog.h>
 
-Database *Database::s_instance = 0;
+s::Database * s::Database::s_instance = 0;
 
-Database::Database(ServerSettings* settings):
+s::Database::Database(s::ServerSettings* settings):
 	conn(mysql_init(nullptr))
 {
 
@@ -30,7 +30,7 @@ Database::Database(ServerSettings* settings):
 	cout << "Port: " << settings->dbPort << endl << endl;
 }
 
-MYSQL_RES* Database::executeQuery(std::string query)
+MYSQL_RES* s::Database::executeQuery(std::string query)
 {
 	dbMutex.lock();
 	spdlog::get("log")->info("EXECUTING QUERY: {}", query);
@@ -45,7 +45,7 @@ MYSQL_RES* Database::executeQuery(std::string query)
 	return mysql_store_result(conn);
 }
 
-int Database::executeModify(std::string query)
+int s::Database::executeModify(std::string query)
 {
 	dbMutex.lock();
 	spdlog::get("log")->info("EXECUTING QUERY: {}", query);
@@ -60,7 +60,7 @@ int Database::executeModify(std::string query)
 	return (int)mysql_affected_rows(conn);
 }
 
-void Database::disconnect()
+void s::Database::disconnect()
 {
 	dbMutex.lock();
 	mysql_close(conn);

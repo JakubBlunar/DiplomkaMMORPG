@@ -1,15 +1,25 @@
 #ifndef MANAGER_H
 #define MANAGER_H
+#include <SFML/System/Time.hpp>
 
-class Manager
+namespace s
 {
-protected:
-	Manager();
-	~Manager();
+	class Server;
+}
 
-public:
-	bool dynamic;
-	virtual void update() {}
-};
+namespace s
+{
+	class Manager
+	{
+	protected:
+		Manager();
+		~Manager();
+		bool dynamic;
+	public:
+		bool isDynamic() const;
+		virtual void update(sf::Time elapsedTime, Server* s) {}
+	};
+}
+
 
 #endif

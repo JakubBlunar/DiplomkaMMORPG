@@ -5,16 +5,26 @@
 
 using json = nlohmann::json;
 
-Character::Character()
+s::Character::Character()
 {
 }
 
 
-Character::~Character()
+s::Character::~Character()
 {
 }
 
-bool Character::save() const
+void s::Character::setAccount(s::Account* account)
+{
+	this->account = account;
+}
+
+s::Account * s::Character::getAccount() const
+{
+	return account;
+}
+
+bool s::Character::save() const
 {
 	std::string query = "UPDATE characters SET ";
 	query.append("name='" + Database::escapeString(name)+"'");
@@ -26,7 +36,7 @@ bool Character::save() const
 	return success;
 }
 
-json Character::toJson() const
+json s::Character::toJson() const
 {
 	json json({});
 
@@ -38,7 +48,7 @@ json Character::toJson() const
 	return json;
 }
 
-Character* Character::getCharacterById(int characterId)
+s::Character* s::Character::getCharacterById(int characterId)
 {
 	std::string query = "SELECT id, name, faction, type FROM characters WHERE id='" + Database::escapeString(std::to_string(characterId)) + "';";
 
@@ -63,7 +73,7 @@ Character* Character::getCharacterById(int characterId)
 	return character;
 }
 
-std::vector<Character*>* Character::getAccountCharacters(int accountId)
+std::vector<s::Character*>* s::Character::getAccountCharacters(int accountId)
 {
 	std::vector<Character*>* characters = new std::vector<Character*>();
 	std::string query = "SELECT id FROM characters WHERE accountId='" + Database::escapeString(std::to_string(accountId)) + "';";

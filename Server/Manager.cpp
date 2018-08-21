@@ -2,12 +2,17 @@
 
 
 
-Manager::Manager()
+s::Manager::Manager()
 {
 	dynamic = false;
 }
 
 
-Manager::~Manager()
+s::Manager::~Manager()
 {
+}
+
+bool s::Manager::isDynamic() const
+{
+	return dynamic;
 }

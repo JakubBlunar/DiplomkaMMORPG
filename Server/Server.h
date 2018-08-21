@@ -8,40 +8,50 @@
 #include "ServerSettings.h"
 #include "EventId.h"
 #include "AuthManager.h"
+#include "MapsManager.h"
 
-class ServerTasks;
+namespace s
+{
+	class ServerTasks;
+}
 
+
+namespace s
+{
 class Server
 {
-public:
-	Server(ServerSettings* settings);
-	~Server();
-	void init();
-	void start();
-	void print(const std::string& message);
+	public:
+		Server(ServerSettings* settings);
+		~Server();
+		void init();
+		void start();
+		void print(const std::string& message);
 
-	ServerSettings* serverSettings;
-	std::vector<Session*> sessions;
+		ServerSettings* serverSettings;
+		std::vector<Session*> sessions;
 
-	AuthManager authManager;
-	vector<Manager*> managers;
-private:
-	void update();
-	
-	sf::TcpListener listener;
-	sf::SocketSelector selector;
-	std::vector<sf::Thread*> recieveThreads;
+		AuthManager authManager;
+		MapsManager mapsManager;
 
-	bool running;
+		vector<Manager*> managers;
+	private:
+		void update(sf::Time elapsedTime);
+		
+		sf::TcpListener listener;
+		sf::SocketSelector selector;
+		std::vector<sf::Thread*> recieveThreads;
 
-	sf::Mutex consoleMutex;
-	sf::Mutex selectorMutex;
+		bool running;
 
-	void recievePackets();
-	void identifyPacket(EventId type, sf::Packet *packet, Session* playerSession);
+		sf::Mutex consoleMutex;
+		sf::Mutex selectorMutex;
 
-	sf::Packet errorPacket;
-	sf::Packet wrongType;
-	ServerTasks* tasks;
-};
+		void recievePackets();
+		void identifyPacket(EventId type, sf::Packet *packet, Session* playerSession);
+
+		sf::Packet errorPacket;
+		sf::Packet wrongType;
+		ServerTasks* tasks;
+	};
+}
 #endif // !SERVER_H

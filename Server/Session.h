@@ -2,21 +2,29 @@
 #define SESSION_H
 
 #include "SFML\Network.hpp"
-#include "Account.h"
-
-class Session
+namespace s
 {
-	s::Account* account = nullptr;
-public:
-	Session();
-	~Session();
-	sf::TcpSocket* socket;
+	class Account;
+}
 
-	bool isUserLoggedIn() const;
 
-	s::Account* getAccount() const;
-	void setAccount(s::Account* account);
-};
+namespace s
+{
+	class Session
+	{
+		Account* account = nullptr;
+	public:
+		Session();
+		~Session();
+		sf::TcpSocket* socket;
+
+		bool isUserLoggedIn() const;
+
+		Account* getAccount() const;
+		void setAccount(s::Account* account);
+	};
+
+}
 
 #endif // !SESSION_H
 

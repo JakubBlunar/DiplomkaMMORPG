@@ -6,20 +6,24 @@
 
 using namespace std;
 
-class ServerSettings
+namespace s
 {
-public:
-	ServerSettings();
-	~ServerSettings();
-	long port;
-	int max_threads;
-	string dbHost;
-	string dbUser;
-	string dbName;
-	string dbPassword;
-	unsigned int dbPort;
-	bool logsEnabled;
-	
-};
+	class ServerSettings
+	{
+	public:
+		ServerSettings();
+		~ServerSettings();
+		long port;
+		int max_threads;
+		string dbHost;
+		string dbUser;
+		string dbName;
+		string dbPassword;
+		unsigned int dbPort;
+		bool logsEnabled;
+		
+	};
+}
+
 
 #endif // !SERVER_SETTINGS_H

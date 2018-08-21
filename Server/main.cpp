@@ -12,7 +12,8 @@
 #include "spdlog/async.h" 
 #include "spdlog/sinks/basic_file_sink.h"
 #include "spdlog/sinks/stdout_color_sinks.h" //support for stdout logging
-ServerSettings* initSettings() {
+
+s::ServerSettings* initSettings() {
 	INIReader reader("config.ini");
 
 	if (reader.ParseError() < 0) {
@@ -20,7 +21,7 @@ ServerSettings* initSettings() {
 		return nullptr;
 	}
 
-	ServerSettings* settings = new ServerSettings();
+	s::ServerSettings* settings = new s::ServerSettings();
 
 	settings->port = reader.GetInteger("connection", "port", 55001);
 	settings->max_threads = reader.GetInteger("server", "max_thread_count", 1);
@@ -55,12 +56,12 @@ void initLogger()
 int main() {
 	initLogger();
 
-	ServerSettings* settings = initSettings();
+	s::ServerSettings* settings = initSettings();
 	if (settings == nullptr) {
 		return EXIT_FAILURE;
 	}
 
-	Server* s = new Server(settings);
+	s::Server* s = new s::Server(settings);
 
 	s->init();
 	s->start();

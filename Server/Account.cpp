@@ -3,6 +3,7 @@
 #include "Database.h"
 #include "Crypto.h"
 #include "../Server/json.hpp"
+#include "Character.h"
 
 using json = nlohmann::json;
 
@@ -10,7 +11,7 @@ s::Account::Account(): id(-1)
 {
 }
 
-Character* s::Account::getCharacter() const
+s::Character* s::Account::getCharacter() const
 {
 	return character;
 }
@@ -64,6 +65,16 @@ std::string s::Account::toJsonString()
 	return data.dump();
 }
 
+void s::Account::setSession(Session * session)
+{
+	this->session = session;
+}
+
+s::Session* s::Account::getSession() const
+{
+	return session;
+}
+
 s::Account* s::Account::getById(int id)
 {
 	std::string query = "SELECT id, login, email, password FROM accounts WHERE id=" + std::to_string(id) + ";";
@@ -112,6 +123,10 @@ s::Account * s::Account::getByLogin(std::string login)
 	mysql_free_result(res);
 
 	account->characters = Character::getAccountCharacters(account->id);
+	for_each(account->characters->begin(), account->characters->end(), [account](Character* character)
+	{
+		character->setAccount(account);
+	});
 
 	return account;
 }

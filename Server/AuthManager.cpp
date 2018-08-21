@@ -5,18 +5,19 @@
 #include "EventCharacterChoose.h"
 #include "Account.h"
 #include "EventCharacterChooseResponse.h"
+#include "Character.h"
 
-AuthManager::AuthManager()
+s::AuthManager::AuthManager()
 {
 	dynamic = false;
 }
 
 
-AuthManager::~AuthManager()
+s::AuthManager::~AuthManager()
 {
 }
 
-void AuthManager::handleEvent(EventLoginRequest* event, Session * playerSession, Server * s) const
+void s::AuthManager::handleEvent(EventLoginRequest* event, s::Session * playerSession, s::Server * s) const
 {
 	spdlog::get("log")->info("EVENT: {}", event->toString());
 
@@ -24,7 +25,7 @@ void AuthManager::handleEvent(EventLoginRequest* event, Session * playerSession,
 	std::string accData;
 	std::string message;
 
-	auto find = std::find_if(s->sessions.begin(), s->sessions.end(), [event](Session* sess)->bool
+	auto find = std::find_if(s->sessions.begin(), s->sessions.end(), [event](s::Session* sess)->bool
 	{
 		s::Account* account = sess->getAccount();
 		if(!account)
@@ -42,6 +43,7 @@ void AuthManager::handleEvent(EventLoginRequest* event, Session * playerSession,
 				result = true;
 				accData = account->toJsonString();
 				playerSession->setAccount(account);
+				account->setSession(playerSession);
 			}else
 			{
 				message = "Password does not match";
@@ -66,7 +68,7 @@ void AuthManager::handleEvent(EventLoginRequest* event, Session * playerSession,
 }
 
 
-void AuthManager::handleEvent(EventCharacterChoose* event, Session * playerSession, Server * s) const
+void s::AuthManager::handleEvent(EventCharacterChoose* event, s::Session * playerSession, s::Server * s) const
 {
 	spdlog::get("log")->info("EVENT: {}", event->toString());
 
@@ -79,7 +81,7 @@ void AuthManager::handleEvent(EventCharacterChoose* event, Session * playerSessi
 	{
 		if(!account->getCharacter())
 		{
-			auto character = std::find_if(account->characters->begin(), account->characters->end(), [event](Character* character)->bool
+			auto character = std::find_if(account->characters->begin(), account->characters->end(), [event](s::Character* character)->bool
 			{
 				if(character->id == event->characterId)
 				{

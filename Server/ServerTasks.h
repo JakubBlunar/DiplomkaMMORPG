@@ -4,19 +4,23 @@
 #include <SFML/System/Thread.hpp>
 #include "Server.h"
 
-class ServerTasks
+namespace s
 {
-public:
-	ServerTasks(Server* server);
-	~ServerTasks();
-	void startTasks();
-	void finish();
+	class ServerTasks
+	{
+	public:
+		ServerTasks(Server* server);
+		~ServerTasks();
+		void startTasks();
+		void finish();
 
-	bool isRunning;
-	Server* server;
+		bool isRunning;
+		Server* server;
 
-	void fetchOnline();
-    sf::Thread fetchOnlineThread;
-};
+		void fetchOnline();
+	    sf::Thread fetchOnlineThread;
+	};
+}
+
 
 #endif
