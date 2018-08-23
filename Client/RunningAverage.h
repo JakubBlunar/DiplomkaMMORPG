@@ -3,19 +3,16 @@
 
 #include "SFML\System.hpp"
 
-class RunningAverage
-{
+class RunningAverage {
 	double val;
 	size_t n;
 	sf::Mutex addMutex;
 public:
-	RunningAverage()
-	{
+	RunningAverage() {
 		reset();
 	}
 
-	double update(double valIn)
-	{
+	double update(double valIn) {
 		addMutex.lock();
 		const double scaling = 1. / static_cast<double>(n + 1);
 		val = valIn * scaling + val * (1. - scaling);
@@ -24,18 +21,15 @@ public:
 		return val;
 	}
 
-	double get() const
-	{
+	double get() const {
 		return val;
 	}
 
-	size_t count() const
-	{
+	size_t count() const {
 		return n;
 	}
 
-	void reset()
-	{
+	void reset() {
 		addMutex.lock();
 		val = 0.;
 		n = 0;

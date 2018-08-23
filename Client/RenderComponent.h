@@ -8,8 +8,7 @@
 #include "AnimatedSprite.h"
 
 class RenderComponent :
-	public Component
-{
+	public Component {
 public:
 	RenderComponent();
 	~RenderComponent();

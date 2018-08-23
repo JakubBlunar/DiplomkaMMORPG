@@ -3,16 +3,13 @@
 #include <string>
 #include <vector>
 
-namespace s
-{
+namespace s {
 	class Character;
 	class Session;
 }
 
-namespace s
-{
-	class Account
-	{
+namespace s {
+	class Account {
 	private:
 		Character* character;
 		Session* session;
@@ -28,7 +25,7 @@ namespace s
 
 		Character* getCharacter() const;
 		void setCharacter(Character* character);
-		
+
 		bool checkPassword(std::string password) const;
 		bool save() const;
 

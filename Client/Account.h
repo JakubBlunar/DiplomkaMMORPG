@@ -6,8 +6,7 @@
 
 using json = nlohmann::json;
 
-class Account
-{
+class Account {
 public:
 	Account();
 	~Account();

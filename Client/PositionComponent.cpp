@@ -9,90 +9,75 @@ PositionComponent::PositionComponent():
 	isMovingRight(false),
 	isMovingLeft(false),
 	speed(0),
-	size(sf::Vector2f(0, 0))
-{
+	size(sf::Vector2f(0, 0)) {
 }
 
 
-PositionComponent::~PositionComponent()
-{
+PositionComponent::~PositionComponent() {
 }
 
-void PositionComponent::update(sf::Time elapsedTime, Entity* entity, Map* map)
-{
+void PositionComponent::update(sf::Time elapsedTime, Entity* entity, Map* map) {
 	b2Vec2 position = entity->getBody()->GetPosition();
 	this->position = sf::Vector2f(ceilNumber(position.x * METTOPIX), ceilNumber(position.y * METTOPIX));
 }
 
-ComponentType PositionComponent::getType()
-{
+ComponentType PositionComponent::getType() {
 	return ComponentType::POSITION;
 }
 
-void PositionComponent::setMovementDirection(sf::Vector2f direction)
-{
+void PositionComponent::setMovementDirection(sf::Vector2f direction) {
 	this->movement = sf::Vector2f(direction.x * speed, direction.y * speed);
-	if (movement.y > 0)
-	{
+	if (movement.y > 0) {
 		isMovingDown = true;
-	}else if(movement.y < 0 )
-	{
+	}
+	else if (movement.y < 0) {
 		isMovingUp = true;
-	}else
-	{
+	}
+	else {
 		isMovingUp = false;
 		isMovingDown = false;
 	}
 
-	if (movement.x > 0)
-	{
+	if (movement.x > 0) {
 		isMovingRight = true;
-	}else if(movement.x < 0 )
-	{
+	}
+	else if (movement.x < 0) {
 		isMovingLeft = true;
-	}else
-	{
+	}
+	else {
 		isMovingLeft = false;
 		isMovingRight = false;
 	}
 }
 
-void PositionComponent::setPosition(sf::Vector2f position)
-{
+void PositionComponent::setPosition(sf::Vector2f position) {
 	this->position = position;
 }
 
-sf::Vector2f PositionComponent::getPosition() const
-{
+sf::Vector2f PositionComponent::getPosition() const {
 	return position;
 }
 
-sf::Vector2f PositionComponent::getMovement() const
-{
+sf::Vector2f PositionComponent::getMovement() const {
 	return movement;
 }
 
-void PositionComponent::setSpeed(float speed)
-{
+void PositionComponent::setSpeed(float speed) {
 	this->speed = speed;
 }
 
-sf::Vector2f PositionComponent::getSize() const
-{
+sf::Vector2f PositionComponent::getSize() const {
 	return size;
 }
 
-void PositionComponent::setSize(sf::Vector2f size)
-{
+void PositionComponent::setSize(sf::Vector2f size) {
 	this->size = size;
 }
 
-void PositionComponent::setBodyType(BodyType type)
-{
+void PositionComponent::setBodyType(BodyType type) {
 	this->bodyType = type;
 }
 
-BodyType PositionComponent::getBodyType() const
-{
+BodyType PositionComponent::getBodyType() const {
 	return bodyType;
 }

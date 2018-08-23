@@ -3,15 +3,11 @@
 #include "EventVisitor.h"
 
 
-
-GameEvent::GameEvent()
-{
+GameEvent::GameEvent() {
 	id = EventId::WRONGPACKETTYPE;
 }
 
 // ReSharper disable once CppMemberFunctionMayBeConst
-EventId GameEvent::getId()
-{
+EventId GameEvent::getId() {
 	return id;
 }
-

@@ -2,9 +2,9 @@
 #define EVENT_CHARACTER_CHOOSE_RESPONSE
 
 #include "GameEvent.h"
+
 class EventCharacterChooseResponse :
-	public GameEvent
-{
+	public GameEvent {
 public:
 	EventCharacterChooseResponse();
 	~EventCharacterChooseResponse();

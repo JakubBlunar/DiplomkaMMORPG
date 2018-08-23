@@ -6,19 +6,17 @@
 class Map;
 class Entity;
 
-enum class ComponentType
-{
+enum class ComponentType {
 	POSITION = 0,
 	RENDER = 1
 };
 
-class Component
-{
+class Component {
 public:
 	virtual ~Component();
 	virtual void update(sf::Time elapsedTime, Entity* entity, Map* map) = 0;
 	virtual ComponentType getType() = 0;
-protected: 
+protected:
 	Component();
 };
 

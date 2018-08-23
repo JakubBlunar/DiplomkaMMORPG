@@ -5,15 +5,13 @@
 #include "Manager.h"
 #include "EventCharacterChoose.h"
 
-namespace s
-{
+namespace s {
 	class Session;
 }
 
 namespace s {
 
-	class AuthManager: public Manager
-	{
+	class AuthManager : public Manager {
 	public:
 		AuthManager();
 		~AuthManager();

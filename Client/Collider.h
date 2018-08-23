@@ -4,8 +4,7 @@
 #include "Entity.h"
 #include "PositionComponent.h"
 
-class Collider: public Entity
-{
+class Collider : public Entity {
 public:
 	explicit Collider(long long id);
 	~Collider();

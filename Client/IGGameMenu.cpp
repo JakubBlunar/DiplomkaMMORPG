@@ -2,26 +2,23 @@
 #include "Game.h"
 
 
-IGGameMenu::IGGameMenu()
-{
+IGGameMenu::IGGameMenu() {
 	size = sf::Vector2f(250, 260);
 	centeredPosition = true;
 }
 
 
-IGGameMenu::~IGGameMenu()
-{
+IGGameMenu::~IGGameMenu() {
 }
 
-void IGGameMenu::render(Game* g, IGManager* manager)
-{
+void IGGameMenu::render(Game* g, IGManager* manager) {
 
 	ImGui::SetNextWindowSize(size, ImGuiCond_Always);
 	ImGui::SetNextWindowPos(position);
 	ImGui::SetNextWindowPosCenter(centeredPosition);
-	
-	if (!ImGui::Begin("GameMenu", &visible, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove))
-	{
+
+	if (!ImGui::Begin("GameMenu", &visible,
+	                  ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove)) {
 		focused = false;
 		ImGui::End();
 		return;
@@ -29,7 +26,7 @@ void IGGameMenu::render(Game* g, IGManager* manager)
 
 	ImGui::PushItemWidth(-1);
 
-	ImGui::SetWindowFontScale(0.3);
+	ImGui::SetWindowFontScale(0.3f);
 	ImGui::Text("Game Menu");
 
 	if (ImGui::Button("Settings", sf::Vector2f(ImGui::GetWindowWidth() * 0.935f, 40))) {
@@ -47,19 +44,17 @@ void IGGameMenu::render(Game* g, IGManager* manager)
 	}
 
 	bool open = true;
-	if (ImGui::BeginPopupModal("ExitPrompt", &open, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize))
-	{
-		ImGui::SetWindowFontScale(0.2);
+	if (ImGui::BeginPopupModal("ExitPrompt", &open, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize)) {
+		ImGui::SetWindowFontScale(0.2f);
 		ImGui::Text("Do you realy wish to end game?");
 		ImGui::NewLine();
-		
+
 		ImGui::SameLine();
 		if (ImGui::Button("Cancel"))
 			ImGui::CloseCurrentPopup();
 
 		ImGui::SameLine();
-		if (ImGui::Button("Exit"))
-		{
+		if (ImGui::Button("Exit")) {
 			g->running = false;
 		}
 		ImGui::EndPopup();
@@ -78,8 +73,7 @@ void IGGameMenu::render(Game* g, IGManager* manager)
 	ImGui::End(); // end window
 }
 
-void IGGameMenu::beforeRender(Game * game)
-{
+void IGGameMenu::beforeRender(Game* game) {
 	IGWindow::beforeRender(game);
 
 	float left = game->window.getView().getViewport().left + game->window.getView().getViewport().width / 2.0f;

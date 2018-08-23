@@ -9,20 +9,21 @@
 
 using json = nlohmann::json;
 
-namespace s
-{
+namespace s {
 	class Account;
+	class Map;
 }
 
-namespace s
-{
-	class Character
-	{
+namespace s {
+	class Character {
+		Map* actualMap;
 		Account* account;
 	public:
 		Character();
 		~Character();
 
+		Map* getMap() const;
+		void setMap(Map* map);
 		void setAccount(Account* account);
 		Account* getAccount() const;
 
@@ -32,7 +33,6 @@ namespace s
 		CharacterFaction faction;
 
 		sf::Vector2f movement;
-
 		sf::Vector2f position;
 		int mapId;
 
@@ -47,4 +47,4 @@ namespace s
 }
 
 
-#endif 
+#endif

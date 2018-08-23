@@ -6,14 +6,13 @@
 #include <map>
 #include "RunningAverage.h"
 
-class PMStatistics
-{
+class PMStatistics {
 	size_t recieved;
 	size_t sended;
 	sf::Mutex timesMutex;
 	std::map<int, std::chrono::high_resolution_clock::time_point> times;
 	RunningAverage latencyCalc;
-	
+
 public:
 	PMStatistics();
 	~PMStatistics();

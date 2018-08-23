@@ -1,43 +1,35 @@
 #include "Scene.h"
 
-Scene::Scene(SceneType sceneType)
-{
+Scene::Scene(SceneType sceneType) {
 	this->type = sceneType;
 	windowManager = new IGManager();
 }
 
 
-Scene::~Scene()
-{
+Scene::~Scene() {
 	delete windowManager;
 }
 
-SceneType Scene::getType() const
-{
+SceneType Scene::getType() const {
 	return type;
 }
 
-IGManager * Scene::getWindowManager() const
-{
+IGManager* Scene::getWindowManager() const {
 	return windowManager;
 }
 
-void Scene::beforeChange(Game * g)
-{
+void Scene::beforeChange(Game* g) {
 	canChange = false;
 }
 
-void Scene::afterChange(Game * g)
-{
+void Scene::afterChange(Game* g) {
 	canChange = true;
 }
 
-void Scene::update(Game * g, sf::Time elapsedTime)
-{
+void Scene::update(Game* g, sf::Time elapsedTime) {
 
 }
 
-void Scene::render(Game * g)
-{
+void Scene::render(Game* g) {
 	windowManager->drawAll(g);
 }

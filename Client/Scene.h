@@ -11,8 +11,7 @@ enum class SceneType {
 	CHARACTER_CHOOSE
 };
 
-class Scene
-{
+class Scene {
 protected:
 	Scene(SceneType sceneType);
 	~Scene();
@@ -32,4 +31,4 @@ public:
 	virtual void render(Game* g);
 };
 
-#endif 
+#endif

@@ -3,8 +3,7 @@
 
 #include "GameEvent.h"
 
-class Subscriber
-{
+class Subscriber {
 public:
 	virtual void handleEvent(GameEvent* event) = 0;
 protected:

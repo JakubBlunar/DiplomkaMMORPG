@@ -3,17 +3,15 @@
 
 #include "Manager.h"
 #include <map>
+#include <vector>
 
-namespace s
-{
+namespace s {
 	class Map;
 }
 
-namespace s
-{
+namespace s {
 	class MapsManager :
-		public Manager
-	{
+		public Manager {
 
 	public:
 		MapsManager();
@@ -23,6 +21,8 @@ namespace s
 
 		Map* getMap(int id);
 		void update(sf::Time elapsedTime, Server* s) override;
+		void init();
+		void read_directory(std::string pattern, std::vector<std::string>& v) const;
 	};
 
 }

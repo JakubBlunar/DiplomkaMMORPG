@@ -6,8 +6,7 @@
 #include "Game.h"
 #include "Scene.h"
 
-class SceneManager
-{
+class SceneManager {
 	std::map<SceneType, Scene*> scenes;
 	Scene* actualScene;
 public:

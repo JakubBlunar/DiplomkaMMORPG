@@ -15,22 +15,21 @@
 
 class SceneManager;
 
-class Game:
-	public Subscriber
-{
+class Game :
+	public Subscriber {
 public:
 	Game();
-	void					run();
-	bool					isRunning() const;
+	void run();
+	bool isRunning() const;
 
-	sf::RenderWindow		window;
+	sf::RenderWindow window;
 
-	void					print(const std::string& message);
+	void print(const std::string& message);
 
-	SceneManager*			sceneManager;
-	KeyboardManager*		keyboardManager;
-	PacketManager*			packet_manager;
-	bool					running;
+	SceneManager* sceneManager;
+	KeyboardManager* keyboardManager;
+	PacketManager* packet_manager;
+	bool running;
 
 	Map* getMap() const;
 	void changeMap(Map* map);
@@ -39,34 +38,34 @@ public:
 	Account* getAccount() const;
 
 	void setAccount(Account* account);
-	
+
 	void handleEvent(GameEvent* event) override;
 
 private:
-	void					processEvents();
-	void					update(sf::Time elapsedTime);
-	void					render();
-	void					subscribe();
+	void processEvents();
+	void update(sf::Time elapsedTime);
+	void render();
+	void subscribe();
 
-	void					updateStatistics(sf::Time elapsedTime);
+	void updateStatistics(sf::Time elapsedTime);
 
-	sf::Thread*				recieveThread;
+	sf::Thread* recieveThread;
 
 	sf::Mutex consoleMutex;
-	static const sf::Time	TimePerFrame;
+	static const sf::Time TimePerFrame;
 
 
-	sf::Font				mFont;
-	sf::Text				mStatisticsText;
-	sf::Time				mStatisticsUpdateTime;
-	std::size_t				mStatisticsNumFrames;
+	sf::Font mFont;
+	sf::Text mStatisticsText;
+	sf::Time mStatisticsUpdateTime;
+	std::size_t mStatisticsNumFrames;
 
 	//void				sendPlayerPosition();
-	
-	sf::Mutex					eventQueueMutex;
-	std::queue<GameEvent*>		eventQueue;
 
-	ClientEventActions*			eventActions;
+	sf::Mutex eventQueueMutex;
+	std::queue<GameEvent*> eventQueue;
+
+	ClientEventActions* eventActions;
 
 	Map* gameMap;
 	Camera camera;

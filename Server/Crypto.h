@@ -7,13 +7,11 @@ using namespace std;
 
 typedef unsigned char byte;
 
-class Crypto
-{
-	static Crypto *s_instance;
+class Crypto {
+	static Crypto* s_instance;
 	Crypto();
 public:
-	static Crypto *i()
-	{
+	static Crypto* i() {
 		if (!s_instance) {
 			s_instance = new Crypto();
 		}
@@ -21,7 +19,7 @@ public:
 	}
 
 	string hashWithSha256(string text) const;
-	
+
 };
 
 #endif // ! CRYPTO_H

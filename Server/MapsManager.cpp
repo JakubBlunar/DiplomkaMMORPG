@@ -1,31 +1,59 @@
 #include "MapsManager.h"
 #include "Map.h"
+#include <spdlog/spdlog.h>
+#include <windows.h>
+#include <regex>
 
-
-s::MapsManager::MapsManager()
-{
-
+s::MapsManager::MapsManager() {
+	dynamic = true;
 }
 
 
-s::MapsManager::~MapsManager()
-{
+s::MapsManager::~MapsManager() {
 }
 
-s::Map* s::MapsManager::getMap(int id)
-{
+s::Map* s::MapsManager::getMap(int id) {
 	auto it = maps.find(id);
-	if (it != maps.end())
-	{
+	if (it != maps.end()) {
 		return it->second;
 	}
 	return nullptr;
 }
 
-void s::MapsManager::update(sf::Time elapsedTime, s::Server * s)
-{
-	for (std::map<int, s::Map*>::iterator it = maps.begin(); it != maps.end(); ++it)
-	{
+void s::MapsManager::update(sf::Time elapsedTime, s::Server* s) {
+	for (std::map<int, s::Map*>::iterator it = maps.begin(); it != maps.end(); ++it) {
 		it->second->update(elapsedTime, s);
+	}
+}
+
+void s::MapsManager::init() {
+	spdlog::get("log")->info("Started loading maps");
+
+	std::vector<std::string> files;
+	string directory = "./Data/Maps/*.json";
+
+	read_directory(directory, files);
+	for (const std::string& f : files) {
+		string file = f;
+
+		file = std::regex_replace(file, std::regex("\\.json"), "");
+		Map* m = new Map();
+		m->loadFromJson("Maps/" + file);
+
+		maps.insert(std::make_pair(m->getId(), m));
+	}
+
+	spdlog::get("log")->info("Loading maps done");
+}
+
+void s::MapsManager::read_directory(const std::string pattern, std::vector<std::string>& v) const {
+	WIN32_FIND_DATA data;
+	HANDLE hFind;
+	if ((hFind = FindFirstFile(pattern.c_str(), &data)) != INVALID_HANDLE_VALUE) {
+		do {
+			v.push_back(data.cFileName);
+		}
+		while (FindNextFile(hFind, &data) != 0);
+		FindClose(hFind);
 	}
 }

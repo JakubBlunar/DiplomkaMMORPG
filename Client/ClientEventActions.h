@@ -5,11 +5,10 @@
 
 class Game;
 
-class ClientEventActions : public EventVisitor
-{
+class ClientEventActions : public EventVisitor {
 	Game* game;
 public:
-	ClientEventActions(Game *g);
+	ClientEventActions(Game* g);
 	~ClientEventActions();
 
 

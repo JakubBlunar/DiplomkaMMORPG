@@ -1,8 +1,8 @@
 #pragma once
 #include "IGWindow.h"
+
 class IGLoginCredentials :
-	public IGWindow
-{
+	public IGWindow {
 public:
 	IGLoginCredentials();
 	~IGLoginCredentials();
@@ -13,4 +13,3 @@ private:
 	char buffLogin[256];
 	char buffPassword[256];
 };
-

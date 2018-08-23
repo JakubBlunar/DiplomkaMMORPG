@@ -4,27 +4,23 @@
 #include <imgui.h>
 #include "Game.h"
 
-IGManager::IGManager()
-{
+IGManager::IGManager() {
 	IGManagerSetupImGuiStyle(false, 0.9f);
 }
 
 
-IGManager::~IGManager()
-{
+IGManager::~IGManager() {
 }
 
-void IGManager::addWindow(std::string s, IGWindow* w)
-{
-	IGWindow * temp = getWindow(s);
+void IGManager::addWindow(std::string s, IGWindow* w) {
+	IGWindow* temp = getWindow(s);
 	if (temp != nullptr)
 		delete temp;
 
 	windows.insert(std::pair<std::string, IGWindow*>(s, w));
 }
 
-IGWindow* IGManager::getWindow(const std::string s)
-{
+IGWindow* IGManager::getWindow(const std::string s) {
 	const auto it = windows.find(s);
 	if (it != windows.end())
 		return it->second;
@@ -32,43 +28,35 @@ IGWindow* IGManager::getWindow(const std::string s)
 	return nullptr;
 }
 
-void IGManager::drawAll(Game* game)
-{
-	for (std::pair<std::string, IGWindow*> window : windows)
-	{
+void IGManager::drawAll(Game* game) {
+	for (std::pair<std::string, IGWindow*> window : windows) {
 		window.second->draw(game, this);
 	}
 
-	if(!popups.empty())
-	{
-		IGPopup * popup = popups.front();
-		if(!popup->isOpened())
-		{
+	if (!popups.empty()) {
+		IGPopup* popup = popups.front();
+		if (!popup->isOpened()) {
 			popups.pop();
 			delete popup;
-			if(!popups.empty())
-			{
+			if (!popups.empty()) {
 				popups.front()->draw(game, this);
 			}
-		}else
-		{
+		}
+		else {
 			popup->draw(game, this);
 		}
 	}
-	
+
 }
 
-void IGManager::close(std::string n)
-{
+void IGManager::close(std::string n) {
 	IGWindow* w = getWindow(n);
-	if (w != nullptr)
-	{
+	if (w != nullptr) {
 		w->close();
 	}
 }
 
-bool IGManager::isVisible(std::string n)
-{
+bool IGManager::isVisible(std::string n) {
 	const auto it = windows.find(n);
 	if (it != windows.end())
 		return it->second->isOpened();
@@ -76,56 +64,44 @@ bool IGManager::isVisible(std::string n)
 	return false;
 }
 
-void IGManager::Open(std::string n)
-{
+void IGManager::Open(std::string n) {
 	IGWindow* w = getWindow(n);
-	if (w != nullptr)
-	{
+	if (w != nullptr) {
 		w->open();
 	}
 }
 
-void IGManager::OpenAll()
-{
-	for (std::pair<std::string, IGWindow*> window : windows)
-	{
+void IGManager::OpenAll() {
+	for (std::pair<std::string, IGWindow*> window : windows) {
 		Open(window.first);
 	}
 }
 
-bool IGManager::AnyWindowFocused()
-{
-	for (std::pair<std::string, IGWindow*> window : windows)
-	{
-		if (window.second->isFocused())
-		{
+bool IGManager::AnyWindowFocused() {
+	for (std::pair<std::string, IGWindow*> window : windows) {
+		if (window.second->isFocused()) {
 			return true;
 		}
 	}
 	return false;
 }
 
-void IGManager::pushPopup(IGPopup * popup)
-{
+void IGManager::pushPopup(IGPopup* popup) {
 	popups.push(popup);
 }
 
-bool IGManager::isShowingPopup() const
-{
+bool IGManager::isShowingPopup() const {
 	return !popups.empty();
 }
 
-IGPopup * IGManager::getActualPopup() const
-{
-	if(!popups.empty())
-	{
+IGPopup* IGManager::getActualPopup() const {
+	if (!popups.empty()) {
 		return popups.front();
 	}
 	return nullptr;
 }
 
-void IGManager::IGManagerSetupImGuiStyle(bool bStyleDark_, float alpha_)
-{
+void IGManager::IGManagerSetupImGuiStyle(bool bStyleDark_, float alpha_) {
 	ImGuiStyle& style = ImGui::GetStyle();
 
 	style.Alpha = 1.0f;
@@ -173,32 +149,25 @@ void IGManager::IGManagerSetupImGuiStyle(bool bStyleDark_, float alpha_)
 	style.Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.26f, 0.59f, 0.98f, 0.35f);
 	style.Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(0.20f, 0.20f, 0.20f, 0.35f);
 
-	if (bStyleDark_)
-	{
-		for (int i = 0; i <= ImGuiCol_COUNT; i++)
-		{
+	if (bStyleDark_) {
+		for (int i = 0; i <= ImGuiCol_COUNT; i++) {
 			ImVec4& col = style.Colors[i];
 			float H, S, V;
 			ImGui::ColorConvertRGBtoHSV(col.x, col.y, col.z, H, S, V);
 
-			if (S < 0.1f)
-			{
+			if (S < 0.1f) {
 				V = 1.0f - V;
 			}
 			ImGui::ColorConvertHSVtoRGB(H, S, V, col.x, col.y, col.z);
-			if (col.w < 1.00f)
-			{
+			if (col.w < 1.00f) {
 				col.w *= alpha_;
 			}
 		}
 	}
-	else
-	{
-		for (int i = 0; i <= ImGuiCol_COUNT; i++)
-		{
+	else {
+		for (int i = 0; i <= ImGuiCol_COUNT; i++) {
 			ImVec4& col = style.Colors[i];
-			if (col.w < 1.00f)
-			{
+			if (col.w < 1.00f) {
 				col.x *= alpha_;
 				col.y *= alpha_;
 				col.z *= alpha_;
@@ -207,4 +176,3 @@ void IGManager::IGManagerSetupImGuiStyle(bool bStyleDark_, float alpha_)
 		}
 	}
 }
-

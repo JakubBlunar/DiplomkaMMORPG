@@ -1,18 +1,14 @@
 #include "Manager.h"
 
 
-
-s::Manager::Manager()
-{
+s::Manager::Manager() {
 	dynamic = false;
 }
 
 
-s::Manager::~Manager()
-{
+s::Manager::~Manager() {
 }
 
-bool s::Manager::isDynamic() const
-{
+bool s::Manager::isDynamic() const {
 	return dynamic;
 }

@@ -9,8 +9,9 @@
 class Collider;
 class Game;
 
-class Map
-{
+class Map {
+	Game* game;
+
 	int width, height;
 	Matrix<Field>* fields;
 	b2World* world;
@@ -19,8 +20,7 @@ class Map
 	std::vector<Entity*> entities;
 
 	b2Draw* debugDrawInstance;
-	
-
+	int id;
 
 public:
 	Map(Game* g);
@@ -33,12 +33,14 @@ public:
 	void addPlayer(Player* player);
 	void removePlayer(Player* player);
 	void addGameObject(GameObject* gameObject);
-	void addCollider(Collider * collider);
+	void addCollider(Collider* collider);
 	void removeGameObject(GameObject* gameObject);
+
+	void loadFromFile(int id);
+
 
 	Field* getField(int x, int y) const;
 	int getWidth() const;
 	int getHeight() const;
 	b2World* getB2World() const;
 };
-

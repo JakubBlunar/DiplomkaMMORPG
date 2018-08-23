@@ -4,10 +4,9 @@
 #include "RenderComponent.h"
 
 class GameObject :
-	public Entity
-{
+	public Entity {
 public:
-	
+
 	GameObject(long long id, std::string file);
 	~GameObject();
 
@@ -24,4 +23,3 @@ private:
 	PositionComponent* positionComponent;
 	RenderComponent* renderComponent;
 };
-

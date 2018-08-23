@@ -1,8 +1,8 @@
 #pragma once
 #include "GameEvent.h"
+
 class EventCharacterChoose :
-	public GameEvent
-{
+	public GameEvent {
 public:
 	EventCharacterChoose();
 	~EventCharacterChoose();
@@ -14,4 +14,3 @@ public:
 	sf::Packet* toPacket() override;
 	std::string toString() const override;
 };
-

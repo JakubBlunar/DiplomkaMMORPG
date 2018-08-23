@@ -9,8 +9,7 @@
 class IGWindow;
 class Game;
 
-class IGManager
-{
+class IGManager {
 public:
 	IGManager();
 	~IGManager();

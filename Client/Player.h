@@ -9,8 +9,7 @@
 using json = nlohmann::json;
 
 class Player :
-	public Entity
-{
+	public Entity {
 public:
 	Player(bool playerControlled);
 	~Player();

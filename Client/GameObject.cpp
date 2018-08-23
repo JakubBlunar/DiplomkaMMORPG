@@ -5,8 +5,7 @@
 #include "ResourceHolder.h"
 
 
-GameObject::GameObject(long long id, std::string file) : Entity(id)
-{
+GameObject::GameObject(long long id, std::string file) : Entity(id) {
 	positionComponent = new PositionComponent();
 	components.push_back(positionComponent);
 	positionComponent->setSpeed(0);
@@ -19,23 +18,19 @@ GameObject::GameObject(long long id, std::string file) : Entity(id)
 }
 
 
-GameObject::~GameObject()
-{
+GameObject::~GameObject() {
 }
 
-void GameObject::handleEvent(GameEvent* event)
-{
+void GameObject::handleEvent(GameEvent* event) {
 
 }
 
-void GameObject::update(sf::Time elapsedTime, Map* map)
-{
+void GameObject::update(sf::Time elapsedTime, Map* map) {
 	Entity::update(elapsedTime, map);
 
 }
 
-void GameObject::loadFromJson(const std::string& file)
-{
+void GameObject::loadFromJson(const std::string& file) {
 
 	json jsonFile = JsonLoader::instance()->loadJson(file);
 
@@ -43,8 +38,7 @@ void GameObject::loadFromJson(const std::string& file)
 	this->name = jsonFile.value("name", "Undefined name");
 
 	json position = jsonFile["position"].get<json::object_t>();
-	if (position.is_object())
-	{
+	if (position.is_object()) {
 		BodyType bodyType = static_cast<BodyType>(position["bodyType"].get<json::number_integer_t>());
 		positionComponent->setBodyType(bodyType);
 		float width = position["width"].get<json::number_float_t>();
@@ -52,13 +46,13 @@ void GameObject::loadFromJson(const std::string& file)
 		positionComponent->setSize(sf::Vector2f(width, height));
 
 
-	}else
+	}
+	else
 		throw "cannot load gameObject from file " + file;
-	
-	
+
+
 	json render = jsonFile["render"].get<json::object_t>();
-	if (render.is_object())
-	{	
+	if (render.is_object()) {
 		int width = render["width"].get<json::number_integer_t>();
 		int height = render["height"].get<json::number_integer_t>();
 		int renderOffsetX = render["renderOffsetX"].get<json::number_integer_t>();
@@ -69,8 +63,8 @@ void GameObject::loadFromJson(const std::string& file)
 		std::string textureFile = render["texture"].get<json::string_t>();
 
 		Animation* idleAnimation = new Animation();
-	    idleAnimation->setSpriteSheet(ResourceHolder<sf::Texture>::instance()->get(textureFile));
-	    idleAnimation->addFrame(sf::IntRect(spriteOffsetX, spriteOffsetY, width, height));
+		idleAnimation->setSpriteSheet(ResourceHolder<sf::Texture>::instance()->get(textureFile));
+		idleAnimation->addFrame(sf::IntRect(spriteOffsetX, spriteOffsetY, width, height));
 
 		renderComponent->setSize(sf::Vector2i(width, height));
 		renderComponent->setOffset(sf::Vector2i(renderOffsetX, renderOffsetY));
@@ -78,26 +72,23 @@ void GameObject::loadFromJson(const std::string& file)
 		std::string animationName = "iddle";
 		renderComponent->addAnimation(animationName, idleAnimation);
 		renderComponent->changeAnimation("iddle");
-	}else
+	}
+	else
 		throw "cannot load gameObject from file " + file;
 }
 
-EntityType GameObject::getType()
-{
+EntityType GameObject::getType() {
 	return EntityType::GAMEOBJECT;
 }
 
-RenderComponent* GameObject::getRenderComponent() const
-{
+RenderComponent* GameObject::getRenderComponent() const {
 	return renderComponent;
 }
 
-PositionComponent* GameObject::getPositionComponent() const
-{
+PositionComponent* GameObject::getPositionComponent() const {
 	return positionComponent;
 }
 
-EntityCategory GameObject::getEntityCategory()
-{
+EntityCategory GameObject::getEntityCategory() {
 	return EntityCategory::GAME_OBJECT;
 }

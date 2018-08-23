@@ -2,9 +2,9 @@
 #define EVENT_LOGIN_RESPONSE_H
 
 #include "GameEvent.h"
+
 class EventLoginResponse :
-	public GameEvent
-{
+	public GameEvent {
 public:
 	EventLoginResponse();
 	~EventLoginResponse();

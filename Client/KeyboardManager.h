@@ -4,8 +4,7 @@
 #include "SFML\Graphics.hpp"
 #include <map>
 
-class KeyboardManager
-{
+class KeyboardManager {
 	std::map<sf::Keyboard::Key, bool> keys;
 public:
 	KeyboardManager();

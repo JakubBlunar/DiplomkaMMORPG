@@ -12,10 +12,9 @@
 
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 
-Game::Game(): 
+Game::Game():
 	window(sf::VideoMode(1360, 768), "SFML Application", sf::Style::Resize | sf::Style::Close),
-	mStatisticsNumFrames(0)
-{
+	mStatisticsNumFrames(0) {
 	this->packet_manager = new PacketManager(this);
 	this->sceneManager = new SceneManager();
 	this->keyboardManager = new KeyboardManager();
@@ -30,8 +29,7 @@ Game::Game():
 	subscribe();
 }
 
-void Game::run()
-{
+void Game::run() {
 	running = true;
 
 	window.setVerticalSyncEnabled(true);
@@ -50,12 +48,10 @@ void Game::run()
 
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
-	while (window.isOpen() && running)
-	{
+	while (window.isOpen() && running) {
 		const sf::Time elapsedTime = clock.restart();
 		timeSinceLastUpdate += elapsedTime;
-		while (timeSinceLastUpdate > TimePerFrame)
-		{
+		while (timeSinceLastUpdate > TimePerFrame) {
 			timeSinceLastUpdate -= TimePerFrame;
 
 			processEvents();
@@ -70,45 +66,36 @@ void Game::run()
 	ImGui::SFML::Shutdown();
 }
 
-Map * Game::getMap() const
-{
+Map* Game::getMap() const {
 	return gameMap;
 }
 
-void Game::changeMap(Map* map)
-{
+void Game::changeMap(Map* map) {
 	this->gameMap = map;
 }
 
-Camera* Game::getCamera()
-{
+Camera* Game::getCamera() {
 	return &camera;
 }
 
 
-Account* Game::getAccount() const
-{
+Account* Game::getAccount() const {
 	return account;
 }
 
-void Game::setAccount(Account * account)
-{
+void Game::setAccount(Account* account) {
 	this->account = account;
 }
 
-void Game::handleEvent(GameEvent* event)
-{
+void Game::handleEvent(GameEvent* event) {
 	event->accept(eventActions);
 }
 
-void Game::processEvents()
-{
+void Game::processEvents() {
 
 	sf::Event event;
-	while (window.pollEvent(event))
-	{
-		if (event.type == sf::Event::Closed)
-		{
+	while (window.pollEvent(event)) {
+		if (event.type == sf::Event::Closed) {
 			running = false;
 			window.close();
 			break;
@@ -121,8 +108,7 @@ void Game::processEvents()
 			continue;
 		}*/
 
-		switch (event.type)
-		{
+		switch (event.type) {
 		case sf::Event::KeyPressed:
 			keyboardManager->handlePlayerInput(event.key.code, true);
 			break;
@@ -133,36 +119,28 @@ void Game::processEvents()
 			window.setView(*camera.getView());
 			break;
 		case sf::Event::MouseWheelScrolled:
-			if(sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
-			{
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl)) {
 				camera.adjustScale(event.mouseWheelScroll.delta * -0.02f, this);
 			}
-			if(sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt))
-			{
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt)) {
 				camera.adjustRotation(event.mouseWheelScroll.delta * 10.f, this);
 			}
 			break;
-		default:;
+		default: ;
 		}
 	}
 }
 
-void Game::update(sf::Time elapsedTime)
-{
+void Game::update(sf::Time elapsedTime) {
 	ClientSettings::instance()->eventsMutex.lock();
-	if(gameMap)
-	{	
-		gameMap->update(elapsedTime, this);
-	}
 
 	sceneManager->update(this, elapsedTime);
 	camera.update(elapsedTime, this);
-	
+
 	ClientSettings::instance()->eventsMutex.unlock();
 }
 
-void Game::render()
-{
+void Game::render() {
 	window.clear();
 
 	if (window.hasFocus()) {
@@ -176,17 +154,15 @@ void Game::render()
 		mStatisticsText.setPosition(cameraOffset.x + 5, cameraOffset.y + 5);
 		window.draw(mStatisticsText);
 	}
-	
+
 	window.display();
 }
 
-void Game::updateStatistics(const sf::Time elapsedTime)
-{
+void Game::updateStatistics(const sf::Time elapsedTime) {
 	mStatisticsUpdateTime += elapsedTime;
 	mStatisticsNumFrames += 1;
 
-	if (mStatisticsUpdateTime >= sf::seconds(1.0f))
-	{
+	if (mStatisticsUpdateTime >= sf::seconds(1.0f)) {
 		mStatisticsText.setString(
 			"Frames / Second = " + std::to_string(mStatisticsNumFrames) + "\n" +
 			"Time / Update = " + std::to_string(mStatisticsUpdateTime.asMicroseconds() / mStatisticsNumFrames) + "us\n" +
@@ -197,19 +173,18 @@ void Game::updateStatistics(const sf::Time elapsedTime)
 	}
 }
 
-bool Game::isRunning() const
-{
+bool Game::isRunning() const {
 	return running;
 }
 
-void Game::print(const std::string& message)
-{
+void Game::print(const std::string& message) {
 	consoleMutex.lock();
-	
+
 	std::cout << message << std::endl;
 
 	consoleMutex.unlock();
 }
+
 /*
 sf::Vector2f Game::playerPosition() const
 {
@@ -236,8 +211,7 @@ void Game::sendPlayerPosition()
 }
 */
 
-void Game::subscribe()
-{
+void Game::subscribe() {
 	EventDispatcher<EventMovementChange>::addSubscriber(this);
 	EventDispatcher<EventLoginRequest>::addSubscriber(this);
 	EventDispatcher<EventLoginResponse>::addSubscriber(this);

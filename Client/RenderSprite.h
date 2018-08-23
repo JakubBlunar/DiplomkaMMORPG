@@ -5,8 +5,7 @@
 
 #include <string>
 
-class RenderSprite: public sf::Sprite
-{
+class RenderSprite : public sf::Sprite {
 public:
 	void load(std::string textureName, sf::Vector2i size, sf::Vector2i position);
 };

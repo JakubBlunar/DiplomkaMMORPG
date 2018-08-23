@@ -1,4 +1,3 @@
-
 #ifndef ANIMATION_H
 #define ANIMATION_H
 
@@ -7,22 +6,21 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/System/Time.hpp>
 
-class Animation
-{
+class Animation {
 public:
-    Animation();
+	Animation();
 
-    void addFrame(sf::IntRect rect);
-    void setSpriteSheet(const sf::Texture& texture);
-    const sf::Texture* getSpriteSheet() const;
-    std::size_t getSize() const;
-    const sf::IntRect& getFrame(std::size_t n) const;
+	void addFrame(sf::IntRect rect);
+	void setSpriteSheet(const sf::Texture& texture);
+	const sf::Texture* getSpriteSheet() const;
+	std::size_t getSize() const;
+	const sf::IntRect& getFrame(std::size_t n) const;
 	void setFrameTime(sf::Time time);
 	sf::Time getFrameTime() const;
-	
+
 private:
-    std::vector<sf::IntRect> frames;
-    const sf::Texture* texture;
+	std::vector<sf::IntRect> frames;
+	const sf::Texture* texture;
 	sf::Time frameTime;
 };
 

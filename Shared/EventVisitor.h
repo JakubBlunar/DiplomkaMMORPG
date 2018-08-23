@@ -8,8 +8,7 @@
 class EventLoginResponse;
 class EventMovementChange;
 
-class EventVisitor
-{
+class EventVisitor {
 public:
 	EventVisitor();
 

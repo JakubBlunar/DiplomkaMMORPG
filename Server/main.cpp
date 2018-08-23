@@ -1,5 +1,3 @@
-
-
 #include <iostream>
 
 #include "INIReader.h"
@@ -9,7 +7,7 @@
 #include "ServerSettings.h"
 #include "Server.h"
 
-#include "spdlog/async.h" 
+#include "spdlog/async.h"
 #include "spdlog/sinks/basic_file_sink.h"
 #include "spdlog/sinks/stdout_color_sinks.h" //support for stdout logging
 
@@ -31,20 +29,19 @@ s::ServerSettings* initSettings() {
 	settings->dbUser = reader.Get("database", "user", "");
 	settings->dbPassword = reader.Get("database", "password", "");
 	settings->dbPort = reader.GetInteger("database", "port", 3306);
-	
+
 	settings->logsEnabled = reader.GetBoolean("server", "logs", false);
 	return settings;
 }
 
-void initLogger()
-{
+void initLogger() {
 	auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
-    console_sink->set_level(spdlog::level::trace);
+	console_sink->set_level(spdlog::level::trace);
 
-    auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>("logs.log", false);
-    file_sink->set_level(spdlog::level::info);
-	 
-	
+	auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>("logs.log", false);
+	file_sink->set_level(spdlog::level::info);
+
+
 	std::vector<spdlog::sink_ptr> sinks;
 	sinks.push_back(console_sink);
 	sinks.push_back(file_sink);
@@ -65,7 +62,6 @@ int main() {
 
 	s->init();
 	s->start();
-	spdlog::drop_all(); 
+	spdlog::drop_all();
 	return EXIT_SUCCESS;
 }
-

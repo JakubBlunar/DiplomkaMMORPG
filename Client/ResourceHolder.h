@@ -7,34 +7,31 @@
 #include <cassert>
 
 template <typename Resource>
-class ResourceHolder
-{
-	
+class ResourceHolder {
+
 public:
 	void load(const std::string& filename);
 	Resource& get(const std::string& filename);
 
-    ResourceHolder(const ResourceHolder&) = delete;
-    ResourceHolder& operator= (const ResourceHolder) = delete;
+	ResourceHolder(const ResourceHolder&) = delete;
+	ResourceHolder& operator=(const ResourceHolder) = delete;
 
-	static ResourceHolder* instance()
-	{
-	    static ResourceHolder instance;
-	    return &instance;
+	static ResourceHolder* instance() {
+		static ResourceHolder instance;
+		return &instance;
 	}
+
 private:
 	std::map<std::string, std::unique_ptr<Resource>> mResourceMap;
 	ResourceHolder();
 };
 
 template <typename Resource>
-ResourceHolder<Resource>::ResourceHolder()
-{
+ResourceHolder<Resource>::ResourceHolder() {
 }
 
 template <typename Resource>
-void ResourceHolder<Resource>::load(const std::string& filename)
-{
+void ResourceHolder<Resource>::load(const std::string& filename) {
 	std::unique_ptr<Resource> resource(new Resource());
 
 	if (!resource->loadFromFile("Data/" + filename))
@@ -45,11 +42,9 @@ void ResourceHolder<Resource>::load(const std::string& filename)
 }
 
 template <typename Resource>
-Resource& ResourceHolder<Resource>::get(const std::string& filename)
-{
+Resource& ResourceHolder<Resource>::get(const std::string& filename) {
 	auto found = mResourceMap.find(filename);
-	if(found == mResourceMap.end())
-	{
+	if (found == mResourceMap.end()) {
 		load(filename);
 		found = mResourceMap.find(filename);
 	}

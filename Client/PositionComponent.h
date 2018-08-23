@@ -4,15 +4,13 @@
 #include "Component.h"
 #include <SFML/System/Vector2.hpp>
 
-enum class BodyType
-{
+enum class BodyType {
 	RECTANGLE = 0,
 	CIRCLE = 1,
 };
 
 class PositionComponent :
-	public Component
-{
+	public Component {
 public:
 	PositionComponent();
 	~PositionComponent();

@@ -3,29 +3,26 @@
 #include "EventDispatcher.h"
 #include "IGManager.h"
 
-IGLoginCredentials::IGLoginCredentials()
-{
+IGLoginCredentials::IGLoginCredentials() {
 	memset(buffLogin, 0, sizeof(buffLogin));
 	memset(buffPassword, 0, sizeof(buffPassword));
 	setSize(sf::Vector2f(450, 250));
 }
 
 
-IGLoginCredentials::~IGLoginCredentials()
-{
+IGLoginCredentials::~IGLoginCredentials() {
 
 }
 
-void IGLoginCredentials::render(Game* game, IGManager* manager)
-{
+void IGLoginCredentials::render(Game* game, IGManager* manager) {
 	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(100, 100, 0, 0));
 
 	ImGui::SetNextWindowSize(size, ImGuiCond_Always);
 	ImGui::SetNextWindowPos(position);
 	ImGui::SetNextWindowPosCenter(centeredPosition);
 
-	if (!ImGui::Begin("Login", &visible, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove))
-	{
+	if (!ImGui::Begin("Login", &visible,
+	                  ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove)) {
 		focused = false;
 		ImGui::End();
 		return;
@@ -45,18 +42,16 @@ void IGLoginCredentials::render(Game* game, IGManager* manager)
 	ImGui::InputText("##Password", buffPassword, sizeof(buffPassword), ImGuiInputTextFlags_Password);
 
 	if (ImGui::Button("Login")) {
-		if(!manager->isShowingPopup())
-		{
+		if (!manager->isShowingPopup()) {
 			std::string name = std::string(buffLogin);
 			std::string password = std::string(buffPassword);
 			memset(buffPassword, 0, sizeof(buffPassword));
 
-			if(!name.empty() && !password.empty())
-			{
+			if (!name.empty() && !password.empty()) {
 				IGPopup* popup = new IGPopup("", "Logging in...", sf::Vector2f(250, 50), "");
 				manager->pushPopup(popup);
 				EventLoginRequest* req = new EventLoginRequest(name, password);
-				EventDispatcher<EventLoginRequest>::dispatchEvent(req);	
+				EventDispatcher<EventLoginRequest>::dispatchEvent(req);
 			}
 		}
 	}
@@ -70,8 +65,7 @@ void IGLoginCredentials::render(Game* game, IGManager* manager)
 	ImGui::PopStyleColor();
 }
 
-void IGLoginCredentials::beforeRender(Game * game)
-{
+void IGLoginCredentials::beforeRender(Game* game) {
 	IGWindow::beforeRender(game);
 
 	float left = game->window.getView().getViewport().left + game->window.getView().getViewport().width / 2.0f;
@@ -79,4 +73,3 @@ void IGLoginCredentials::beforeRender(Game * game)
 	setPosition(sf::Vector2f(left, top), true);
 
 }
-

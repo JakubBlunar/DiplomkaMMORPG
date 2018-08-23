@@ -6,8 +6,7 @@
 
 class Game;
 
-class PacketManager
-{
+class PacketManager {
 public:
 	PacketManager(Game* g);
 	~PacketManager();

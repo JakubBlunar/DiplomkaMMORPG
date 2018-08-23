@@ -1,8 +1,6 @@
 #pragma once
-class FieldLayer
-{
+class FieldLayer {
 public:
 	FieldLayer();
 	~FieldLayer();
 };
-

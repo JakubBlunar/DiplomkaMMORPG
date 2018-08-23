@@ -7,29 +7,27 @@
 
 class Map;
 
-enum class EntityType
-{
+enum class EntityType {
 	PLAYER,
 	GAMEOBJECT,
 	COLLIDER,
 };
 
 enum class EntityCategory {
-    BOUNDARY =     0x0001,
-    PLAYER =       0x0002,
-    ENEMY_PLAYER = 0x0004,
-    GAME_OBJECT =  0x0008,
-    SENSOR =       0x0010
+	BOUNDARY = 0x0001,
+	PLAYER = 0x0002,
+	ENEMY_PLAYER = 0x0004,
+	GAME_OBJECT = 0x0008,
+	SENSOR = 0x0010
 };
 
-class Entity: Subscriber
-{
+class Entity : Subscriber {
 public:
 	virtual ~Entity();
 
 	virtual void update(sf::Time elapsedTime, Map* map);
 	Component* getComponent(ComponentType type) const;
-	virtual void setBody(b2Body * body);
+	virtual void setBody(b2Body* body);
 	virtual b2Body* getBody();
 
 	virtual EntityType getType() = 0;

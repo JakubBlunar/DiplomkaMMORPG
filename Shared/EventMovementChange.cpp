@@ -2,29 +2,24 @@
 #include "EventMovementChange.h"
 
 
-EventMovementChange::EventMovementChange()
-{
+EventMovementChange::EventMovementChange() {
 	id = EventId::MOVEMENT;
 }
 
-void EventMovementChange::accept(EventVisitor* v)
-{
-	if(v)
+void EventMovementChange::accept(EventVisitor* v) {
+	if (v)
 		v->visit(this);
 }
 
-bool EventMovementChange::loadFromPacket(sf::Packet* p)
-{
-	if (*p >> playerId >> x >> y >> velX >> velY )
-	{
+bool EventMovementChange::loadFromPacket(sf::Packet* p) {
+	if (*p >> playerId >> x >> y >> velX >> velY) {
 		return true;
 	}
 	return false;
 }
 
-sf::Packet* EventMovementChange::toPacket()
-{
+sf::Packet* EventMovementChange::toPacket() {
 	sf::Packet* p = new sf::Packet();
-	*p << id << playerId <<  x << y << velX << velY;
+	*p << id << playerId << x << y << velX << velY;
 	return p;
 }

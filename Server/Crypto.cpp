@@ -4,25 +4,21 @@
 #include <cryptopp/sha.h>
 #include <cryptopp/base64.h>
 
-Crypto *Crypto::s_instance = nullptr;
+Crypto* Crypto::s_instance = nullptr;
 
-Crypto::Crypto()
-{
+Crypto::Crypto() {
 
 }
 
-string Crypto::hashWithSha256(string text) const
-{
+string Crypto::hashWithSha256(string text) const {
 	std::string passwordHash;
 	CryptoPP::SHA256 hash;
 	CryptoPP::StringSource stringSource(text, true,
-		new CryptoPP::HashFilter(hash,
-			new CryptoPP::HexEncoder(
-				new CryptoPP::StringSink(passwordHash)
-			)
-		)
+	                                    new CryptoPP::HashFilter(hash,
+	                                                             new CryptoPP::HexEncoder(
+		                                                             new CryptoPP::StringSink(passwordHash)
+	                                                             )
+	                                    )
 	);
 	return passwordHash;
 }
-
-

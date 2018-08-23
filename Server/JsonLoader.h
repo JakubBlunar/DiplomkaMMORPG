@@ -4,21 +4,18 @@
 #include "json.hpp"
 using json = nlohmann::json;
 
-namespace s
-{
-	class JsonLoader
-	{
+namespace s {
+	class JsonLoader {
 	public:
 		json loadJson(std::string filename);
 		std::map<std::string, json> loadedFiles;
 
-	    JsonLoader(const JsonLoader&) = delete;
-	    JsonLoader& operator= (const JsonLoader) = delete;
+		JsonLoader(const JsonLoader&) = delete;
+		JsonLoader& operator=(const JsonLoader) = delete;
 
-		static JsonLoader* instance()
-		{
-		    static JsonLoader instance;
-		    return &instance;
+		static JsonLoader* instance() {
+			static JsonLoader instance;
+			return &instance;
 		}
 
 	private:

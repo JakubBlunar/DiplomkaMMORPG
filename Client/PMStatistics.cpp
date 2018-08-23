@@ -2,26 +2,22 @@
 
 using namespace std;
 
-PMStatistics::PMStatistics() :recieved(0), sended(0)
-{
+PMStatistics::PMStatistics() : recieved(0), sended(0) {
 	latencyCalc.reset();
 }
 
 
-PMStatistics::~PMStatistics()
-{
+PMStatistics::~PMStatistics() {
 }
 
-void PMStatistics::packetSend(const int id)
-{
+void PMStatistics::packetSend(const int id) {
 	timesMutex.lock();
 	sended++;
 	times[id] = chrono::high_resolution_clock::now();
 	timesMutex.unlock();
 }
 
-long long PMStatistics::packetRecieve(const int id)
-{
+long long PMStatistics::packetRecieve(const int id) {
 	const auto t2 = chrono::high_resolution_clock::now();
 
 	timesMutex.lock();
@@ -38,18 +34,15 @@ long long PMStatistics::packetRecieve(const int id)
 	return duration;
 }
 
-double PMStatistics::latency() const
-{
+double PMStatistics::latency() const {
 	return latencyCalc.get();
 }
 
-double PMStatistics::returnRatio() const
-{
+double PMStatistics::returnRatio() const {
 	return recieved / static_cast<double>(sended);
 }
 
-void PMStatistics::reset()
-{
+void PMStatistics::reset() {
 	latencyCalc.reset();
 	sended = 0;
 	recieved = 0;

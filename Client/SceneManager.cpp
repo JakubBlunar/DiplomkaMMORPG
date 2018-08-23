@@ -4,8 +4,7 @@
 #include "GamePlayScene.h"
 #include "CharacterChooseScene.h"
 
-SceneManager::SceneManager()
-{
+SceneManager::SceneManager() {
 	LoginScene* logS = new LoginScene(SceneType::LOGIN);
 	scenes.insert(std::pair<SceneType, Scene*>(SceneType::LOGIN, logS));
 	actualScene = logS;
@@ -18,35 +17,28 @@ SceneManager::SceneManager()
 }
 
 
-SceneManager::~SceneManager()
-{
+SceneManager::~SceneManager() {
 }
 
-SceneType SceneManager::getTypeOfActualScene() const
-{
+SceneType SceneManager::getTypeOfActualScene() const {
 	return actualScene->getType();
 }
 
-Scene* SceneManager::getActualScene() const
-{
+Scene* SceneManager::getActualScene() const {
 	return actualScene;
 }
 
-void SceneManager::changeScene(SceneType sceneType)
-{
+void SceneManager::changeScene(SceneType sceneType) {
 	const auto exists = scenes.find(sceneType);
-	if (exists != scenes.end())
-	{	
+	if (exists != scenes.end()) {
 		actualScene = exists->second;
 	}
 }
 
-void SceneManager::render(Game * g) const
-{
+void SceneManager::render(Game* g) const {
 	actualScene->render(g);
 }
 
-void SceneManager::update(Game * g, sf::Time elapsedTime) const
-{
+void SceneManager::update(Game* g, sf::Time elapsedTime) const {
 	actualScene->update(g, elapsedTime);
 }

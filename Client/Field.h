@@ -5,8 +5,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include "RenderSprite.h"
 
-class Field
-{
+class Field {
 	std::vector<RenderSprite*> layers;
 public:
 	Field();

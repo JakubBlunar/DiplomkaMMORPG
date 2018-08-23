@@ -6,17 +6,14 @@
 #include "EventLoginResponse.h"
 #include "EventDispatcher.h"
 
-PacketManager::PacketManager(Game* g) : game(nullptr), latencyCheckThread(nullptr)
-{
+PacketManager::PacketManager(Game* g) : game(nullptr), latencyCheckThread(nullptr) {
 	game = g;
 	ClientSettings* settings = ClientSettings::instance();
-	if (socket.connect(settings->host, static_cast<short>(settings->port)) != sf::Socket::Done)
-	{
+	if (socket.connect(settings->host, static_cast<short>(settings->port)) != sf::Socket::Done) {
 		game->print("An error ocurred connecting to server");
 		connected = false;
 	}
-	else
-	{
+	else {
 		connected = true;
 		game->print("connected");
 	}
@@ -25,20 +22,16 @@ PacketManager::PacketManager(Game* g) : game(nullptr), latencyCheckThread(nullpt
 }
 
 
-PacketManager::~PacketManager()
-{
+PacketManager::~PacketManager() {
 	delete latencyCheckThread;
 }
 
-bool PacketManager::isConnected() const
-{
+bool PacketManager::isConnected() const {
 	return connected;
 }
 
-void PacketManager::latencyCheck()
-{
-	while (game->isRunning() && connected)
-	{
+void PacketManager::latencyCheck() {
+	while (game->isRunning() && connected) {
 		int id = rand() % INT32_MAX;
 
 		sf::Packet packet;
@@ -50,8 +43,7 @@ void PacketManager::latencyCheck()
 }
 
 
-void PacketManager::startRecieve()
-{
+void PacketManager::startRecieve() {
 	sf::SocketSelector selector;
 	selector.add(socket);
 
@@ -60,10 +52,8 @@ void PacketManager::startRecieve()
 	latencyCheckThread = new sf::Thread(&PacketManager::latencyCheck, this);
 	latencyCheckThread->launch();
 
-	while (game->isRunning() && connected)
-	{
-		if (selector.wait())
-		{
+	while (game->isRunning() && connected) {
+		if (selector.wait()) {
 			socketMutex.lock();
 			if (socket.receive(packet) == sf::Socket::Disconnected) {
 				connected = false;
@@ -75,13 +65,11 @@ void PacketManager::startRecieve()
 
 			int packetType;
 			GameEvent* e;
-			if (packet >> packetType)
-			{
+			if (packet >> packetType) {
 				//const auto duration = statistics.packetRecieve(id);
 
 				EventId pt = static_cast<EventId>(packetType);
-				switch (pt)
-				{
+				switch (pt) {
 				case EventId::LATENCY:
 					int id;
 					if (packet >> id) {
@@ -90,21 +78,19 @@ void PacketManager::startRecieve()
 					break;
 				case LOGINRESPONSE:
 					e = new EventLoginResponse();
-					if(e->loadFromPacket(&packet))
-					{
+					if (e->loadFromPacket(&packet)) {
 						EventDispatcher<EventLoginResponse>::dispatchEvent(e);
-					}else
-					{
+					}
+					else {
 						game->print("Error while parsing packet " + std::to_string(pt));
 					}
 					break;
 				case CHARACTER_CHOOSE_RESPONSE:
 					e = new EventCharacterChooseResponse();
-					if(e->loadFromPacket(&packet))
-					{
+					if (e->loadFromPacket(&packet)) {
 						EventDispatcher<EventCharacterChooseResponse>::dispatchEvent(e);
-					}else
-					{
+					}
+					else {
 						game->print("Error while parsing packet " + std::to_string(pt));
 					}
 					break;
@@ -120,8 +106,7 @@ void PacketManager::startRecieve()
 	latencyCheckThread->wait();
 }
 
-void PacketManager::sendPacket(sf::Packet* packet)
-{
+void PacketManager::sendPacket(sf::Packet* packet) {
 	if (!connected)
 		return;
 

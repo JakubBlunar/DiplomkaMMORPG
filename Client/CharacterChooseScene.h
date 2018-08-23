@@ -3,9 +3,9 @@
 
 
 #include "Scene.h"
+
 class CharacterChooseScene :
-	public Scene
-{
+	public Scene {
 public:
 	virtual ~CharacterChooseScene() = default;
 	CharacterChooseScene(SceneType sceneType);

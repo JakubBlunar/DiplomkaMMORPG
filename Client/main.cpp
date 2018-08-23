@@ -1,4 +1,3 @@
-
 #include "ClientSettings.h"
 #include "INIReader.h"
 #include <iostream>
@@ -18,8 +17,7 @@
 void CreateGround(b2World& World, float X, float Y);
 void CreateBox(b2World& World, int MouseX, int MouseY);
 
-void testBox2d()
-{
+void testBox2d() {
 	sf::RenderWindow Window(sf::VideoMode(1360, 768, 32), "Test", sf::Style::Close);
 	Window.setFramerateLimit(60);
 
@@ -44,19 +42,15 @@ void testBox2d()
 
 	CreateGround(World, 680.f, 768.f);
 
-	while (Window.isOpen())
-	{
+	while (Window.isOpen()) {
 		sf::Event event;
-		while (Window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-			{
+		while (Window.pollEvent(event)) {
+			if (event.type == sf::Event::Closed) {
 				Window.close();
 				break;
 			}
 			int mouseX, mouseY;
-			switch (event.type)
-			{
+			switch (event.type) {
 			case sf::Event::MouseButtonPressed:
 				std::cout << std::to_string(event.key.code) << std::endl;
 				mouseX = sf::Mouse::getPosition(Window).x;
@@ -67,16 +61,14 @@ void testBox2d()
 				Window.setView(sf::View(sf::FloatRect(0, 0, 1360, 768)));
 			}
 		}
-	
+
 		World.Step(1 / 60.f, 8, 3);
 
 		Window.clear(sf::Color::White);
 
 		int BodyCount = 0;
-		for (b2Body* BodyIterator = World.GetBodyList(); BodyIterator != 0; BodyIterator = BodyIterator->GetNext())
-		{
-			if (BodyIterator->GetType() == b2_dynamicBody)
-			{
+		for (b2Body* BodyIterator = World.GetBodyList(); BodyIterator != 0; BodyIterator = BodyIterator->GetNext()) {
+			if (BodyIterator->GetType() == b2_dynamicBody) {
 				sf::Sprite Sprite;
 				Sprite.setTexture(BoxTexture);
 				Sprite.setOrigin(16.f, 16.f);
@@ -85,8 +77,7 @@ void testBox2d()
 				Window.draw(Sprite);
 				++BodyCount;
 			}
-			else
-			{
+			else {
 				sf::Sprite GroundSprite;
 				GroundSprite.setTexture(GroundTexture);
 				GroundSprite.setOrigin(680, 8.f);
@@ -100,8 +91,7 @@ void testBox2d()
 	}
 }
 
-void CreateBox(b2World& World, int MouseX, int MouseY)
-{
+void CreateBox(b2World& World, int MouseX, int MouseY) {
 	b2BodyDef BodyDef;
 	BodyDef.position = b2Vec2(MouseX * PIXTOMET, MouseY * PIXTOMET);
 	BodyDef.type = b2_dynamicBody;
@@ -116,8 +106,7 @@ void CreateBox(b2World& World, int MouseX, int MouseY)
 	Body->CreateFixture(&FixtureDef);
 }
 
-void CreateGround(b2World& World, float X, float Y)
-{
+void CreateGround(b2World& World, float X, float Y) {
 	b2BodyDef BodyDef;
 	BodyDef.position = b2Vec2(X * PIXTOMET, Y * PIXTOMET);
 	BodyDef.type = b2_staticBody;
@@ -154,16 +143,15 @@ bool initSettings() {
 	return true;
 }
 
-class MovementChangeWriter : public Subscriber
-{
+class MovementChangeWriter : public Subscriber {
 	void handleEvent(GameEvent* event) override;
 
 };
 
-void MovementChangeWriter::handleEvent(GameEvent * event)
-{	
-	EventMovementChange *e = (EventMovementChange *) event;
-	std::cout << "Handling event with id= "<< std::to_string(event->getId()) << " [" << e->velX << "," << e->velY << "]" << std::endl;
+void MovementChangeWriter::handleEvent(GameEvent* event) {
+	EventMovementChange* e = (EventMovementChange *)event;
+	std::cout << "Handling event with id= " << std::to_string(event->getId()) << " [" << e->velX << "," << e->velY << "]"
+		<< std::endl;
 }
 
 int main() {
@@ -185,4 +173,3 @@ int main() {
 	g->run();
 	return EXIT_SUCCESS;
 }
-

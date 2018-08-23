@@ -3,8 +3,7 @@
 #include "VisibleObjectsCast.h"
 
 class GamePlayScene :
-	public Scene
-{
+	public Scene {
 public:
 	GamePlayScene(SceneType sceneType);
 	~GamePlayScene();
@@ -18,7 +17,7 @@ private:
 	bool escPressed;
 	sf::Texture BoxTexture;
 	sf::Font mFont;
-	
+
 	VisibleObjectsCast queryCallback;
 	b2AABB aabb;
 
@@ -28,4 +27,3 @@ private:
 	bool fonePressed;
 	sf::Sprite Sprite;
 };
-

@@ -2,9 +2,9 @@
 #define IG_AVAILABLE_CHARACTERS_H
 
 #include "IGWindow.h"
+
 class IGAvailableCharacters :
-	public IGWindow
-{
+	public IGWindow {
 public:
 	IGAvailableCharacters();
 	~IGAvailableCharacters();

@@ -4,8 +4,7 @@
 #include "GameEvent.h"
 
 class EventMovementChange :
-	public GameEvent
-{
+	public GameEvent {
 public:
 	EventMovementChange();
 

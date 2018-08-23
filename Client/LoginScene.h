@@ -5,8 +5,7 @@
 #include "Scene.h"
 
 class LoginScene :
-	public Scene
-{
+	public Scene {
 public:
 	LoginScene(SceneType sceneType);
 	~LoginScene();

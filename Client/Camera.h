@@ -7,8 +7,7 @@
 
 class Game;
 
-class Camera
-{
+class Camera {
 public:
 	Camera();
 	~Camera();
@@ -18,7 +17,7 @@ public:
 	void adjustRotation(float delta, Game* g);
 	sf::Vector2f getResolution() const;
 	sf::Vector2f getOffset() const;
-	sf::View* getView(); 
+	sf::View* getView();
 private:
 	sf::Vector2f resolution;
 	sf::Vector2f offset;

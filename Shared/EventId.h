@@ -3,8 +3,7 @@
 #ifndef EVENT_ID_H
 #define EVENT_ID_H
 
-enum EventId
-{
+enum EventId {
 	ERR = 1,
 	WRONGPACKETTYPE = 2,
 	POSITION = 3,

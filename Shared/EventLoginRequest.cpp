@@ -2,46 +2,38 @@
 #include "EventLoginRequest.h"
 
 
-EventLoginRequest::EventLoginRequest()
-{
+EventLoginRequest::EventLoginRequest() {
 	id = LOGINREQUEST;
 }
 
-EventLoginRequest::EventLoginRequest(std::string name, std::string password)
-{
+EventLoginRequest::EventLoginRequest(std::string name, std::string password) {
 	id = EventId::LOGINREQUEST;
 	this->name = name;
 	this->password = password;
 }
 
 
-EventLoginRequest::~EventLoginRequest()
-{
+EventLoginRequest::~EventLoginRequest() {
 
 }
 
-void EventLoginRequest::accept(EventVisitor* v)
-{
+void EventLoginRequest::accept(EventVisitor* v) {
 	v->visit(this);
 }
 
-bool EventLoginRequest::loadFromPacket(sf::Packet * p)
-{
-	if (*p >> name >> password)
-	{
+bool EventLoginRequest::loadFromPacket(sf::Packet* p) {
+	if (*p >> name >> password) {
 		return true;
 	}
 	return false;
 }
 
-sf::Packet * EventLoginRequest::toPacket()
-{
+sf::Packet* EventLoginRequest::toPacket() {
 	sf::Packet* p = new sf::Packet();
 	*p << id << name << password;
 	return p;
 }
 
-std::string EventLoginRequest::toString() const
-{
+std::string EventLoginRequest::toString() const {
 	return "Login request " + name + " " + password;
 }

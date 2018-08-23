@@ -2,16 +2,14 @@
 #define SESSION_H
 
 #include "SFML\Network.hpp"
-namespace s
-{
+
+namespace s {
 	class Account;
 }
 
 
-namespace s
-{
-	class Session
-	{
+namespace s {
+	class Session {
 		Account* account = nullptr;
 	public:
 		Session();
@@ -27,4 +25,3 @@ namespace s
 }
 
 #endif // !SESSION_H
-

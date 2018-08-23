@@ -3,11 +3,10 @@
 #include <iostream>
 #include <spdlog/spdlog.h>
 
-s::Database * s::Database::s_instance = 0;
+s::Database* s::Database::s_instance = 0;
 
 s::Database::Database(s::ServerSettings* settings):
-	conn(mysql_init(nullptr))
-{
+	conn(mysql_init(nullptr)) {
 
 	const char* url = settings->dbHost.c_str();
 	const char* user = settings->dbUser.c_str();
@@ -17,8 +16,7 @@ s::Database::Database(s::ServerSettings* settings):
 	char* unix_socket = nullptr;
 	unsigned int flag = 0;
 
-	if(!mysql_real_connect(conn, url, user,pass, database, port, unix_socket, flag ))
-	{
+	if (!mysql_real_connect(conn, url, user, pass, database, port, unix_socket, flag)) {
 		spdlog::get("log")->error("CANNOT CONNECT TO DATABASE {}", mysql_error(conn));
 		exit(EXIT_FAILURE);
 	}
@@ -30,12 +28,10 @@ s::Database::Database(s::ServerSettings* settings):
 	cout << "Port: " << settings->dbPort << endl << endl;
 }
 
-MYSQL_RES* s::Database::executeQuery(std::string query)
-{
+MYSQL_RES* s::Database::executeQuery(std::string query) {
 	dbMutex.lock();
 	spdlog::get("log")->info("EXECUTING QUERY: {}", query);
-	if (mysql_query(conn, query.c_str()))
-	{
+	if (mysql_query(conn, query.c_str())) {
 		dbMutex.unlock();
 		spdlog::get("log")->error("QUERY: {} ERR: {}", query, mysql_error(conn));
 		return nullptr;
@@ -45,12 +41,10 @@ MYSQL_RES* s::Database::executeQuery(std::string query)
 	return mysql_store_result(conn);
 }
 
-int s::Database::executeModify(std::string query)
-{
+int s::Database::executeModify(std::string query) {
 	dbMutex.lock();
 	spdlog::get("log")->info("EXECUTING QUERY: {}", query);
-	if (mysql_query(conn, query.c_str()))
-	{
+	if (mysql_query(conn, query.c_str())) {
 		dbMutex.unlock();
 		spdlog::get("log")->error("QUERY: {} ERR: {}", query, mysql_error(conn));
 		return 0;
@@ -60,10 +54,8 @@ int s::Database::executeModify(std::string query)
 	return (int)mysql_affected_rows(conn);
 }
 
-void s::Database::disconnect()
-{
+void s::Database::disconnect() {
 	dbMutex.lock();
 	mysql_close(conn);
 	dbMutex.unlock();
 }
-

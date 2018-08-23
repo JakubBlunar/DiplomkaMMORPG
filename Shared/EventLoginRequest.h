@@ -3,8 +3,7 @@
 #include "GameEvent.h"
 
 class EventLoginRequest :
-	public GameEvent
-{
+	public GameEvent {
 public:
 	EventLoginRequest();
 	EventLoginRequest(std::string name, std::string password);
@@ -17,4 +16,3 @@ public:
 	sf::Packet* toPacket() override;
 	std::string toString() const override;
 };
-

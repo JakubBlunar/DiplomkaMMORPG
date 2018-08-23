@@ -4,10 +4,8 @@
 #include <SFML/System/Thread.hpp>
 #include "Server.h"
 
-namespace s
-{
-	class ServerTasks
-	{
+namespace s {
+	class ServerTasks {
 	public:
 		ServerTasks(Server* server);
 		~ServerTasks();
@@ -18,7 +16,7 @@ namespace s
 		Server* server;
 
 		void fetchOnline();
-	    sf::Thread fetchOnlineThread;
+		sf::Thread fetchOnlineThread;
 	};
 }
 

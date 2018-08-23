@@ -10,16 +10,13 @@
 #include "AuthManager.h"
 #include "MapsManager.h"
 
-namespace s
-{
+namespace s {
 	class ServerTasks;
 }
 
 
-namespace s
-{
-class Server
-{
+namespace s {
+	class Server {
 	public:
 		Server(ServerSettings* settings);
 		~Server();
@@ -36,7 +33,7 @@ class Server
 		vector<Manager*> managers;
 	private:
 		void update(sf::Time elapsedTime);
-		
+
 		sf::TcpListener listener;
 		sf::SocketSelector selector;
 		std::vector<sf::Thread*> recieveThreads;
@@ -47,7 +44,7 @@ class Server
 		sf::Mutex selectorMutex;
 
 		void recievePackets();
-		void identifyPacket(EventId type, sf::Packet *packet, Session* playerSession);
+		void identifyPacket(EventId type, sf::Packet* packet, Session* playerSession);
 
 		sf::Packet errorPacket;
 		sf::Packet wrongType;

@@ -1,4 +1,3 @@
-
 #ifndef SERVER_SETTINGS_H
 #define SERVER_SETTINGS_H
 
@@ -6,10 +5,8 @@
 
 using namespace std;
 
-namespace s
-{
-	class ServerSettings
-	{
+namespace s {
+	class ServerSettings {
 	public:
 		ServerSettings();
 		~ServerSettings();
@@ -21,7 +18,7 @@ namespace s
 		string dbPassword;
 		unsigned int dbPort;
 		bool logsEnabled;
-		
+
 	};
 }
 

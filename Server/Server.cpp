@@ -13,21 +13,18 @@
 
 
 s::Server::Server(ServerSettings* settings):
-	running(false)
-{
+	running(false) {
 	serverSettings = settings;
 	sessions.reserve(2000);
 	tasks = new s::ServerTasks(this);
 }
 
 
-s::Server::~Server()
-{
+s::Server::~Server() {
 	delete serverSettings;
 }
 
-void s::Server::init()
-{
+void s::Server::init() {
 	Database::initDatabase(serverSettings);
 
 	sessions.clear();
@@ -35,25 +32,24 @@ void s::Server::init()
 
 	errorPacket << EventId::ERR << "Error happend";
 	wrongType << EventId::WRONGPACKETTYPE;
-	
-	for (int i = 0; i < serverSettings->max_threads; i++)
-	{
+
+	for (int i = 0; i < serverSettings->max_threads; i++) {
 		sf::Thread* t = new sf::Thread(&Server::recievePackets, this);
 		recieveThreads.push_back(t);
 	}
+
+	mapsManager.init();
 
 	managers.push_back(&authManager);
 	managers.push_back(&mapsManager);
 }
 
-void s::Server::start()
-{
+void s::Server::start() {
 	running = true;
 	listener.listen(static_cast<short>(serverSettings->port));
 	selector.add(listener);
 
-	for (unsigned int i = 0; i < recieveThreads.size(); i++)
-	{
+	for (unsigned int i = 0; i < recieveThreads.size(); i++) {
 		recieveThreads[i]->launch();
 	}
 
@@ -65,19 +61,16 @@ void s::Server::start()
 	sf::Clock clock;
 	sf::Time timePerFrame = sf::seconds(1.f / 60.f);
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
-	while (running)
-	{
+	while (running) {
 		const sf::Time elapsedTime = clock.restart();
 		timeSinceLastUpdate += elapsedTime;
-		while (timeSinceLastUpdate > timePerFrame)
-		{
+		while (timeSinceLastUpdate > timePerFrame) {
 			timeSinceLastUpdate -= timePerFrame;
 		}
 		update(elapsedTime);
 	}
 
-	for (auto &thread : recieveThreads)
-	{
+	for (auto& thread : recieveThreads) {
 		thread->wait();
 	}
 
@@ -85,18 +78,15 @@ void s::Server::start()
 	Database::i()->disconnect();
 }
 
-void s::Server::update(sf::Time elapsedTime)
-{
+void s::Server::update(sf::Time elapsedTime) {
 	Server* s = this;
-	std::for_each(managers.begin(), managers.end(), [elapsedTime, s](Manager* m)
-	{
-		if(m->isDynamic())
+	std::for_each(managers.begin(), managers.end(), [elapsedTime, s](Manager* m) {
+		if (m->isDynamic())
 			m->update(elapsedTime, s);
 	});
 }
 
-void s::Server::print(const std::string& message)
-{
+void s::Server::print(const std::string& message) {
 	consoleMutex.lock();
 
 	std::cout << message << std::endl;
@@ -104,68 +94,60 @@ void s::Server::print(const std::string& message)
 	consoleMutex.unlock();
 }
 
-void s::Server::identifyPacket(EventId type, sf::Packet *packet, Session* playerSession) {
+void s::Server::identifyPacket(EventId type, sf::Packet* packet, Session* playerSession) {
 	sf::Packet resPacket;
 	int id;
 	switch (type) {
-		case MOVEMENT: {
-			EventMovementChange* e = new EventMovementChange();
-			if (e->loadFromPacket(packet)) {
-				
-				spdlog::get("log")->info("Player({}) [{}, {}]", e->playerId, e->velX, e->velY);
+	case MOVEMENT: {
+		EventMovementChange* e = new EventMovementChange();
+		if (e->loadFromPacket(packet)) {
 
-				sf::Packet * p = e->toPacket();
+			spdlog::get("log")->info("Player({}) [{}, {}]", e->playerId, e->velX, e->velY);
 
-				for (unsigned int j = 0; j < sessions.size(); j++)
-				{
-					if (playerSession != sessions[j])
-						sessions[j]->socket->send(*p);
-				}
+			sf::Packet* p = e->toPacket();
+
+			for (unsigned int j = 0; j < sessions.size(); j++) {
+				if (playerSession != sessions[j])
+					sessions[j]->socket->send(*p);
 			}
-			delete e;
-			break;
 		}
-		case LOGINREQUEST: {
-			EventLoginRequest* e = new EventLoginRequest();
-			if (e->loadFromPacket(packet)) {
-				authManager.handleEvent(e, playerSession, this);
-			}
-			delete e;
-			break;
+		delete e;
+		break;
+	}
+	case LOGINREQUEST: {
+		EventLoginRequest* e = new EventLoginRequest();
+		if (e->loadFromPacket(packet)) {
+			authManager.handleEvent(e, playerSession, this);
 		}
-		case LATENCY: {
-			if (*packet >> id) {
-				resPacket << EventId::LATENCY << id;
-				playerSession->socket->send(resPacket);
-			}
-			break;
+		delete e;
+		break;
+	}
+	case LATENCY: {
+		if (*packet >> id) {
+			resPacket << EventId::LATENCY << id;
+			playerSession->socket->send(resPacket);
 		}
-		case CHARACTER_CHOOSE:
-			{
-				EventCharacterChoose* e = new EventCharacterChoose();
-				if(e->loadFromPacket(packet))
-				{
-					authManager.handleEvent(e, playerSession, this);
-				}
-			}
-			break;
-		default:
-			spdlog::get("log")->info("Cannot handle packet type {}", type);
+		break;
+	}
+	case CHARACTER_CHOOSE: {
+		EventCharacterChoose* e = new EventCharacterChoose();
+		if (e->loadFromPacket(packet)) {
+			authManager.handleEvent(e, playerSession, this);
+		}
+	}
+	break;
+	default:
+		spdlog::get("log")->info("Cannot handle packet type {}", type);
 	}
 }
 
-void s::Server::recievePackets()
-{
-	while (running)
-	{
+void s::Server::recievePackets() {
+	while (running) {
 		selectorMutex.lock();
-		if (selector.wait())
-		{
-			if (selector.isReady(listener))
-			{
+		if (selector.wait()) {
+			if (selector.isReady(listener)) {
 				sf::TcpSocket* client = new sf::TcpSocket;
-				if (listener.accept(*client) == sf::Socket::Done)
-				{
+				if (listener.accept(*client) == sf::Socket::Done) {
 
 					Session* playerSession = new Session();
 					playerSession->socket = client;
@@ -174,7 +156,7 @@ void s::Server::recievePackets()
 					sessions.push_back(playerSession);
 
 					selector.add(*client);
-					
+
 					spdlog::get("log")->info("new connection received from {}", client->getRemoteAddress().toString());
 
 					sf::sleep(sf::seconds(0.5f));
@@ -192,54 +174,46 @@ void s::Server::recievePackets()
 					identifyPacket(CHARACTER_CHOOSE, tempPacket, playerSession);
 					delete tempPacket;
 				}
-				else
-				{
+				else {
 					print("error : server has no connection");
 					delete client;
 				}
 			}
-			else
-			{
-				for (unsigned int i = 0; i < sessions.size(); i++)
-				{
+			else {
+				for (unsigned int i = 0; i < sessions.size(); i++) {
 					Session* playerSession = sessions[i];
 
-					if (!selector.isReady(*playerSession->socket))
-					{
+					if (!selector.isReady(*playerSession->socket)) {
 						continue;
 					}
 
 					sf::Packet packet;
-					switch (playerSession->socket->receive(packet))
-					{
-						case sf::Socket::Done:
-						{
-							int type;
+					switch (playerSession->socket->receive(packet)) {
+					case sf::Socket::Done: {
+						int type;
 
-							if (packet >> type)
-							{
-								EventId pt = static_cast<EventId>(type);
-								identifyPacket(pt, &packet, playerSession);
-							}
-							break;
+						if (packet >> type) {
+							EventId pt = static_cast<EventId>(type);
+							identifyPacket(pt, &packet, playerSession);
 						}
-						case sf::Socket::Disconnected:
-						{
-							spdlog::get("log")->info("disconnect from ", playerSession->socket->getRemoteAddress().toString());
+						break;
+					}
+					case sf::Socket::Disconnected: {
+						spdlog::get("log")->info("disconnect from ", playerSession->socket->getRemoteAddress().toString());
 
-							selector.remove(*playerSession->socket);
-							playerSession->socket->disconnect();
+						selector.remove(*playerSession->socket);
+						playerSession->socket->disconnect();
 
-							sessions.erase(sessions.begin() + i);
-							i--;
-							break;
-						}
-						default:
-							break;
-						
+						sessions.erase(sessions.begin() + i);
+						i--;
+						break;
+					}
+					default:
+						break;
+
 					}
 				}
-				
+
 			}
 		}
 		selectorMutex.unlock();

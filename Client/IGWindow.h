@@ -8,8 +8,7 @@
 class IGManager;
 class Game;
 
-class IGWindow
-{
+class IGWindow {
 public:
 	IGWindow();
 	IGWindow(const bool visible, const float alpha);
@@ -47,22 +46,20 @@ private:
 };
 
 
-static auto vector_getter = [](void* vec, int idx, const char** out_text)
-{
+static auto vector_getter = [](void* vec, int idx, const char** out_text) {
 	auto& vector = *static_cast<std::vector<std::string>*>(vec);
 	if (idx < 0 || idx >= static_cast<int>(vector.size())) { return false; }
 	*out_text = vector.at(idx).c_str();
 	return true;
 };
 
-inline bool ListBox(const char* label, int* currIndex, std::vector<std::string>& values, int maxLength = -1)
-{
+inline bool ListBox(const char* label, int* currIndex, std::vector<std::string>& values, int maxLength = -1) {
 	if (maxLength == -1)
 		maxLength = values.size();
 
 	if (values.empty()) { return false; }
 	return ImGui::ListBox(label, currIndex, vector_getter,
-		static_cast<void*>(&values), values.size(), maxLength);
+	                      static_cast<void*>(&values), values.size(), maxLength);
 }
 
 #endif

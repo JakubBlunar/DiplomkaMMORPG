@@ -2,19 +2,20 @@
 #include "Game.h"
 #include "SceneManager.h"
 
-IGPopup::IGPopup(std::string title, std::string text, sf::Vector2f size, std::string buttonText)
-{
+IGPopup::IGPopup(std::string title, std::string text, sf::Vector2f size, std::string buttonText) {
 	this->title = title;
 	this->text = text;
 	this->buttonText = buttonText;
-	onButtonClick = [](){ };
+	onButtonClick = []() {
+	};
 	setAlpha(1);
 	setSize(size);
 	open();
 }
 
-IGPopup::IGPopup(std::string title, std::string text, sf::Vector2f size, std::string buttonText, std::function<void()> onButtonClick = [](){ })
-{
+IGPopup::IGPopup(std::string title, std::string text, sf::Vector2f size, std::string buttonText,
+                 std::function<void()> onButtonClick = []() {
+                 }) {
 	this->title = title;
 	this->text = text;
 	this->buttonText = buttonText;
@@ -24,13 +25,11 @@ IGPopup::IGPopup(std::string title, std::string text, sf::Vector2f size, std::st
 	open();
 }
 
-IGPopup::~IGPopup()
-{
+IGPopup::~IGPopup() {
 
 }
 
-void IGPopup::render(Game* g, IGManager* manager)
-{
+void IGPopup::render(Game* g, IGManager* manager) {
 	ImGui::OpenPopup("popup");
 
 	ImGui::SetNextWindowSize(size, ImGuiCond_Always);
@@ -38,21 +37,19 @@ void IGPopup::render(Game* g, IGManager* manager)
 	ImGui::SetNextWindowPosCenter(centeredPosition);
 	ImGui::SetNextWindowFocus();
 
-    if (ImGui::BeginPopupModal("popup", &visible, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove))
-    { 
+	if (ImGui::BeginPopupModal("popup", &visible,
+	                           ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove)) {
 		ImGui::PushItemWidth(-1);
 
 		ImGui::SetWindowFontScale(0.2f);
-		if(!title.empty())
-		{
+		if (!title.empty()) {
 			ImGui::Text(title.c_str());
 			ImGui::NewLine();
 		}
 
 		ImGui::TextWrapped(text.c_str());
 
-		if(!buttonText.empty())
-		{
+		if (!buttonText.empty()) {
 			ImGui::NewLine();
 			if (ImGui::Button(buttonText.c_str(), sf::Vector2f(ImGui::GetWindowWidth() * 0.97f, 40))) {
 				close();
@@ -66,13 +63,12 @@ void IGPopup::render(Game* g, IGManager* manager)
 		focused = ImGui::IsWindowFocused();
 		ImGui::SetWindowFontScale(1);
 
-        ImGui::EndPopup();
-    }
+		ImGui::EndPopup();
+	}
 
 }
 
-void IGPopup::beforeRender(Game* g)
-{
+void IGPopup::beforeRender(Game* g) {
 	IGWindow::beforeRender(g);
 
 	float left = g->window.getView().getViewport().left + g->window.getView().getViewport().width / 2.0f;
