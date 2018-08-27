@@ -9,7 +9,7 @@ Entity::Entity(long long id): body(nullptr) {
 Entity::~Entity() {
 }
 
-void Entity::update(sf::Time elapsedTime, Map* map) {
+void Entity::update(sf::Time elapsedTime, Map* map, Game* g) {
 	for (Component* component : components) {
 		component->update(elapsedTime, this, map);
 	}

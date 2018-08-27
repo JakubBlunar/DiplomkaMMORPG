@@ -6,34 +6,60 @@
 #include "JsonLoader.h"
 #include "ResourceHolder.h"
 #include <iostream>
-
+#include "EventMovementChange.h"
+#include "EventDispatcher.h"
+#include "Map.h"
+#include "Game.h"
+#include "Subscriber.h"
 
 Player::Player(bool playerControlled) : Entity(0) {
 	this->playerControlled = playerControlled;
 	lastMovement = sf::Vector2f(0, 0);
 	positionComponent = new PositionComponent();
 	components.push_back(positionComponent);
-	positionComponent->setPosition(sf::Vector2f(120, 120.f));
-	positionComponent->setSpeed(70);
 	positionComponent->setSize(sf::Vector2f(32.f, 32.f));
 
 	renderComponent = new RenderComponent();
 	components.push_back(renderComponent);
+
+	EventDispatcher<EventMovementChange>::addSubscriber(this);
 }
 
 Player::~Player() {
+	EventDispatcher<EventMovementChange>::removeSubscriber(this);
 	components.clear();
 	delete positionComponent;
 }
 
 void Player::handleEvent(GameEvent* event) {
+	switch (event->getId()) {
+		case MOVEMENT: {
+			EventMovementChange* temp = (EventMovementChange*) event;
+
+			if(temp->playerId != id || playerControlled)
+				return;
+
+			positionComponent->setPosition(sf::Vector2f(temp->x, temp->y));
+			positionComponent->setSpeed(temp->speed);
+			positionComponent->setMovement(sf::Vector2f(temp->velX, temp->velY));
+			if (body) {
+				body->SetTransform(b2Vec2(temp->x * PIXTOMET, temp->y * PIXTOMET),body->GetAngle());
+				body->SetLinearVelocity(b2Vec2(temp->velX * PIXTOMET, temp->velY * PIXTOMET));
+			}
+			
+			updateMovementAnimation();
+			break;
+		}
+		default:
+		break;
+	}
 
 }
 
-void Player::update(sf::Time elapsedTime, Map* map) {
-	Entity::update(elapsedTime, map);
+void Player::update(sf::Time elapsedTime, Map* map, Game* g) {
+	Entity::update(elapsedTime, map, g);
 
-	if (this->playerControlled) {
+	if (this->playerControlled && g->window.hasFocus()) {
 		sf::Vector2f direction = sf::Vector2f(0.f, 0.f);
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
 			direction.y -= 1;
@@ -49,42 +75,26 @@ void Player::update(sf::Time elapsedTime, Map* map) {
 			direction.x += 1;
 		}
 		positionComponent->setMovementDirection(direction);
+
 		sf::Vector2f movement = positionComponent->getMovement();
-
 		if (lastMovement != movement) {
-			if (movement.x == 0 && movement.y == 0) {
-				renderComponent->getCurrentAnimation()->stop();
-			}
-			else if (movement.x == 0 && movement.y < 0) // top
-			{
-				renderComponent->changeAnimation("up");
-				renderComponent->getCurrentAnimation()->setLooped(true);
-			}
-			else if (movement.x == 0 && movement.y > 0) //down
-			{
-				renderComponent->changeAnimation("down");
-				renderComponent->getCurrentAnimation()->setLooped(true);
-			}
-			else if (movement.x < 0 && movement.y == 0) //left
-			{
-				renderComponent->changeAnimation("left");
-				renderComponent->getCurrentAnimation()->setLooped(true);
-			}
-			else if (movement.x > 0 && movement.y == 0) {
-				renderComponent->changeAnimation("right");
-				renderComponent->getCurrentAnimation()->setLooped(true);
-			}
-			else if (movement.x > 0) {
-				renderComponent->changeAnimation("right");
-				renderComponent->getCurrentAnimation()->setLooped(true);
-			}
-			else if (movement.x < 0) {
-				renderComponent->changeAnimation("left");
-				renderComponent->getCurrentAnimation()->setLooped(true);
-			}
-
+			updateMovementAnimation();
 			lastMovement = movement;
 			body->SetLinearVelocity(b2Vec2(movement.x * PIXTOMET, movement.y * PIXTOMET));
+
+			sf::Vector2f position = positionComponent->getPosition();
+			EventMovementChange e;
+			e.playerId = id;
+			e.x = position.x;
+			e.y = position.y;
+			e.velX = movement.x;
+			e.velY = movement.y;
+			e.speed = positionComponent->getSpeed();
+
+			sf::Packet* packet = e.toPacket();
+			g->packet_manager->sendPacket(packet);
+
+			delete packet;
 		}
 	}
 }
@@ -95,8 +105,47 @@ EntityType Player::getType() {
 
 EntityCategory Player::getEntityCategory() {
 	if (playerControlled)
-		return EntityCategory::PLAYER;
-	return EntityCategory::ENEMY_PLAYER;
+		return PLAYER;
+	return ENEMY_PLAYER;
+}
+
+uint16 Player::getCollisionMask() {
+	return BOUNDARY | GAME_OBJECT;
+}
+
+void Player::updateMovementAnimation() {
+	sf::Vector2f movement = positionComponent->getMovement();
+	if (movement.x == 0 && movement.y == 0) {
+		renderComponent->getCurrentAnimation()->stop();
+	}
+	else if (movement.x == 0 && movement.y < 0) // top
+	{
+		renderComponent->changeAnimation("up");
+		renderComponent->getCurrentAnimation()->setLooped(true);
+	}
+	else if (movement.x == 0 && movement.y > 0) //down
+	{
+		renderComponent->changeAnimation("down");
+		renderComponent->getCurrentAnimation()->setLooped(true);
+	}
+	else if (movement.x < 0 && movement.y == 0) //left
+	{
+		renderComponent->changeAnimation("left");
+		renderComponent->getCurrentAnimation()->setLooped(true);
+	}
+	else if (movement.x > 0 && movement.y == 0) {
+		renderComponent->changeAnimation("right");
+		renderComponent->getCurrentAnimation()->setLooped(true);
+	}
+	else if (movement.x > 0) {
+		renderComponent->changeAnimation("right");
+		renderComponent->getCurrentAnimation()->setLooped(true);
+	}
+	else if (movement.x < 0) {
+		renderComponent->changeAnimation("left");
+		renderComponent->getCurrentAnimation()->setLooped(true);
+	}
+
 }
 
 void Player::loadFromJson(json jsonData) {
@@ -143,4 +192,12 @@ void Player::loadFromJson(json jsonData) {
 	float positionY = (float)jsonData["positionY"].get<json::number_float_t>();
 
 	positionComponent->setPosition(sf::Vector2f(positionX, positionY));
+
+	float movementX = (float)jsonData["movementX"].get<json::number_float_t>();
+	float movementY = (float)jsonData["movementY"].get<json::number_float_t>();
+
+	positionComponent->setMovement(sf::Vector2f(movementX, movementY));
+
+	float speed = (float)jsonData["speed"].get<json::number_float_t>();
+	positionComponent->setSpeed(speed);
 }

@@ -11,7 +11,7 @@ public:
 	~GameObject();
 
 	void handleEvent(GameEvent* event) override;
-	void update(sf::Time elapsedTime, Map* map) override;
+	void update(sf::Time elapsedTime, Map* map, Game* g) override;
 	void loadFromJson(const std::string& file);
 
 	EntityType getType() override;
@@ -19,6 +19,7 @@ public:
 	RenderComponent* getRenderComponent() const;
 	PositionComponent* getPositionComponent() const;
 	EntityCategory getEntityCategory() override;
+	uint16 getCollisionMask() override;
 private:
 	PositionComponent* positionComponent;
 	RenderComponent* renderComponent;

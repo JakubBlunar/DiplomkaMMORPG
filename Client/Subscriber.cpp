@@ -3,6 +3,3 @@
 Subscriber::Subscriber() {
 }
 
-
-Subscriber::~Subscriber() {
-}

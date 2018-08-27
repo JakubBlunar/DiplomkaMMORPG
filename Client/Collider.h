@@ -10,11 +10,12 @@ public:
 	~Collider();
 
 	void handleEvent(GameEvent* event) override;
-	void update(sf::Time elapsedTime, Map* map);
+	void update(sf::Time elapsedTime, Map* map, Game* g) override;
 	EntityType getType() override;
 	EntityCategory getEntityCategory() override;
 
 	PositionComponent* getPositionComponent() const;
+	uint16 getCollisionMask() override;
 private:
 	PositionComponent* positionComponent;
 };

@@ -6,7 +6,7 @@
 #include <map>
 #include <cassert>
 
-template <typename Resource>
+template<typename Resource>
 class ResourceHolder {
 
 public:
@@ -26,11 +26,10 @@ private:
 	ResourceHolder();
 };
 
-template <typename Resource>
-ResourceHolder<Resource>::ResourceHolder() {
-}
+template<typename Resource>
+ResourceHolder<Resource>::ResourceHolder() {}
 
-template <typename Resource>
+template<typename Resource>
 void ResourceHolder<Resource>::load(const std::string& filename) {
 	std::unique_ptr<Resource> resource(new Resource());
 
@@ -41,7 +40,7 @@ void ResourceHolder<Resource>::load(const std::string& filename) {
 	//assert(inserted.second);
 }
 
-template <typename Resource>
+template<typename Resource>
 Resource& ResourceHolder<Resource>::get(const std::string& filename) {
 	auto found = mResourceMap.find(filename);
 	if (found == mResourceMap.end()) {

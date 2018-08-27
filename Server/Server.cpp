@@ -10,7 +10,10 @@
 #include <spdlog/spdlog.h>
 #include "EventCharacterChoose.h"
 #include "ServerTasks.h"
-
+#include "Account.h"
+#include "Character.h"
+#include "Map.h"
+#include "EventCharacterLogout.h"
 
 s::Server::Server(ServerSettings* settings):
 	running(false) {
@@ -101,15 +104,8 @@ void s::Server::identifyPacket(EventId type, sf::Packet* packet, Session* player
 	case MOVEMENT: {
 		EventMovementChange* e = new EventMovementChange();
 		if (e->loadFromPacket(packet)) {
-
-			spdlog::get("log")->info("Player({}) [{}, {}]", e->playerId, e->velX, e->velY);
-
-			sf::Packet* p = e->toPacket();
-
-			for (unsigned int j = 0; j < sessions.size(); j++) {
-				if (playerSession != sessions[j])
-					sessions[j]->socket->send(*p);
-			}
+			Map* map = playerSession->getAccount()->getCharacter()->getMap();
+			map->handleEvent(e, playerSession, this);
 		}
 		delete e;
 		break;
@@ -134,8 +130,17 @@ void s::Server::identifyPacket(EventId type, sf::Packet* packet, Session* player
 		if (e->loadFromPacket(packet)) {
 			authManager.handleEvent(e, playerSession, this);
 		}
+		delete e;
 	}
 	break;
+	case CHARACTER_LOGOUT: {
+		EventCharacterLogout* e = new EventCharacterLogout();
+		if(e->loadFromPacket(packet)) {
+			authManager.handleEvent(e, playerSession, this);
+		}
+		delete e;
+		break;
+	}
 	default:
 		spdlog::get("log")->info("Cannot handle packet type {}", type);
 	}
@@ -159,20 +164,38 @@ void s::Server::recievePackets() {
 
 					spdlog::get("log")->info("new connection received from {}", client->getRemoteAddress().toString());
 
-					sf::sleep(sf::seconds(0.5f));
-					EventLoginRequest e("kubik2405", "123456");
-					sf::Packet* tempPacket = e.toPacket();
-					int id;
-					*tempPacket >> id;
-					identifyPacket(LOGINREQUEST, tempPacket, playerSession);
-					delete tempPacket;
 
-					EventCharacterChoose ec;
-					ec.characterId = 2;
-					tempPacket = ec.toPacket();
-					*tempPacket >> id;
-					identifyPacket(CHARACTER_CHOOSE, tempPacket, playerSession);
-					delete tempPacket;
+					string name;
+					string pass;
+					int characterId;
+					if(sessions.size() <= 2) {
+						if (sessions.size() == 1) {
+							name = "kubik2405";
+							pass = "123456";
+							characterId = 2;
+						}else {
+							name = "admin";
+							pass = "123456";
+							characterId = 3;
+						}
+
+						sf::sleep(sf::seconds(0.5f));
+						EventLoginRequest e(name, pass);
+						sf::Packet* tempPacket = e.toPacket();
+						int id;
+						*tempPacket >> id;
+						identifyPacket(LOGINREQUEST, tempPacket, playerSession);
+						delete tempPacket;
+
+						EventCharacterChoose ec;
+						ec.characterId = characterId;
+						tempPacket = ec.toPacket();
+						*tempPacket >> id;
+						identifyPacket(CHARACTER_CHOOSE, tempPacket, playerSession);
+						delete tempPacket;
+					}
+					
+					
 				}
 				else {
 					print("error : server has no connection");

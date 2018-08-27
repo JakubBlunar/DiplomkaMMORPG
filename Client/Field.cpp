@@ -1,19 +1,26 @@
 #include "Field.h"
+#include "Globals.h"
 
 
 Field::Field() {
-	init();
+
 }
 
 
 Field::~Field() {
+	layers.clear();
 }
 
 
 void Field::init() {
 	RenderSprite* sprite = new RenderSprite();
-	sprite->load("Dungeon_A2.png", sf::Vector2i(32, 32), sf::Vector2i(0, 0));
+	sprite->load("Graphics/Tilesets/hills.png", sf::Vector2i(FIELD_SIZE, FIELD_SIZE), sf::Vector2i(0, 96));
 
+	layers.push_back(sprite);
+}
+
+void Field::addLayer(RenderSprite * sprite)
+{
 	layers.push_back(sprite);
 }
 

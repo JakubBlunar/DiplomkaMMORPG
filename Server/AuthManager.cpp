@@ -7,6 +7,8 @@
 #include "EventCharacterChooseResponse.h"
 #include "Character.h"
 #include "Map.h"
+#include "EventCharacterMapJoin.h"
+#include "EventCharacterMapLeave.h"
 
 s::AuthManager::AuthManager() {
 	dynamic = false;
@@ -16,7 +18,28 @@ s::AuthManager::AuthManager() {
 s::AuthManager::~AuthManager() {
 }
 
-void s::AuthManager::handleEvent(EventLoginRequest* event, s::Session* playerSession, s::Server* s) const {
+void s::AuthManager::handleEvent(EventCharacterLogout* event, s::Session* playerSession, s::Server* s) {
+	spdlog::get("log")->info("EVENT: {}", event->toString());
+
+	Account* account = playerSession->getAccount();
+	Character* ch = account->getCharacter();
+
+	ch->save();
+
+	Map* map = ch->getMap();
+	map->removeCharacter(ch);
+	ch->setMap(nullptr);
+	ch->setAccount(nullptr);
+	account->setCharacter(nullptr);
+
+	EventCharacterMapLeave* e = new EventCharacterMapLeave();
+	e->characterId = ch->id;
+	e->mapId = map->getId();
+
+	map->sendEventToAnotherPlayers(e, e->characterId);
+}
+
+void s::AuthManager::handleEvent(EventLoginRequest* event, s::Session* playerSession, s::Server* s) {
 	spdlog::get("log")->info("EVENT: {}", event->toString());
 
 	bool result = false;
@@ -62,7 +85,7 @@ void s::AuthManager::handleEvent(EventLoginRequest* event, s::Session* playerSes
 }
 
 
-void s::AuthManager::handleEvent(EventCharacterChoose* event, s::Session* playerSession, s::Server* s) const {
+void s::AuthManager::handleEvent(EventCharacterChoose* event, s::Session* playerSession, s::Server* s) {
 	spdlog::get("log")->info("EVENT: {}", event->toString());
 
 	bool result = false;
@@ -85,11 +108,18 @@ void s::AuthManager::handleEvent(EventCharacterChoose* event, s::Session* player
 				Character* ch = *character;
 				Map* m = s->mapsManager.getMap(ch->mapId);
 				if (m) {
+
 					ch->setAccount(playerSession->getAccount());
 					playerSession->getAccount()->setCharacter(ch);
 
 					m->addCharacter(ch);
 					ch->setMap(m);
+
+					EventCharacterMapJoin eventMapJoin;
+					eventMapJoin.mapId = m->getId();
+					eventMapJoin.characterData = ch->toJson().dump();
+
+					m->sendEventToAnotherPlayers(&eventMapJoin, ch->id);
 
 					json resData;
 					resData["character"] = ch->toJson();
@@ -126,3 +156,5 @@ void s::AuthManager::handleEvent(EventCharacterChoose* event, s::Session* player
 
 
 }
+
+

@@ -8,7 +8,7 @@ class EventMovementChange :
 public:
 	EventMovementChange();
 
-	float x, y, velX, velY;
+	float x, y, velX, velY, speed;
 	int playerId;
 
 	void accept(class EventVisitor* v);

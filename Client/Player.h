@@ -15,12 +15,16 @@ public:
 	~Player();
 
 	void handleEvent(GameEvent* event) override;
-	void update(sf::Time elapsedTime, Map* map) override;
+	void update(sf::Time elapsedTime, Map* map, Game* g) override;
 
 	EntityType getType() override;
 	EntityCategory getEntityCategory() override;
+	uint16 getCollisionMask() override;
+
+	void updateMovementAnimation();
 
 	void loadFromJson(json jsonData);
+	
 private:
 	bool playerControlled;
 	PositionComponent* positionComponent;

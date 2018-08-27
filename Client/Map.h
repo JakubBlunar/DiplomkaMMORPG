@@ -1,4 +1,6 @@
-#pragma once
+#ifndef MAP_H
+#define MAP_H
+
 #include <Box2D/Dynamics/b2World.h>
 #include <SFML/System/Time.hpp>
 #include "Field.h"
@@ -9,13 +11,12 @@
 class Collider;
 class Game;
 
-class Map {
+class Map : public Subscriber {
 	Game* game;
 
 	int width, height;
 	Matrix<Field>* fields;
 	b2World* world;
-	Player* player;
 	std::vector<Player*> players;
 	std::vector<Entity*> entities;
 
@@ -38,9 +39,15 @@ public:
 
 	void loadFromFile(int id);
 
+	void subscribe();
+	void unsubscribe();
 
 	Field* getField(int x, int y) const;
 	int getWidth() const;
 	int getHeight() const;
 	b2World* getB2World() const;
+
+	void handleEvent(GameEvent* event) override;
 };
+
+#endif

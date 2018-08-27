@@ -5,6 +5,7 @@
 #include "Component.h"
 #include <Box2D/Dynamics/b2Body.h>
 
+class Game;
 class Map;
 
 enum class EntityType {
@@ -13,7 +14,7 @@ enum class EntityType {
 	COLLIDER,
 };
 
-enum class EntityCategory {
+enum EntityCategory {
 	BOUNDARY = 0x0001,
 	PLAYER = 0x0002,
 	ENEMY_PLAYER = 0x0004,
@@ -21,17 +22,18 @@ enum class EntityCategory {
 	SENSOR = 0x0010
 };
 
-class Entity : Subscriber {
+class Entity : public Subscriber {
 public:
 	virtual ~Entity();
 
-	virtual void update(sf::Time elapsedTime, Map* map);
+	virtual void update(sf::Time elapsedTime, Map* map, Game* g);
 	Component* getComponent(ComponentType type) const;
 	virtual void setBody(b2Body* body);
 	virtual b2Body* getBody();
 
 	virtual EntityType getType() = 0;
 	virtual EntityCategory getEntityCategory() = 0;
+	virtual uint16 getCollisionMask() = 0;
 
 	sf::Vector2f getPosition() const;
 	sf::Vector2f getSize() const;

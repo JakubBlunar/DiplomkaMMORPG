@@ -3,6 +3,8 @@
 #include "ServerGlobals.h"
 #include "JsonLoader.h"
 #include <spdlog/spdlog.h>
+#include "Account.h"
+#include "EventMovementChange.h"
 
 s::Map::Map(): id(0) {
 }
@@ -18,7 +20,7 @@ void s::Map::addCharacter(Character* character) {
 	lock.lock();
 	sf::Vector2f position = character->position;
 
-	b2Body* characterBody = createCircle(b2_kinematicBody, position.x, position.y, 32);
+	b2Body* characterBody = createCircle(b2_kinematicBody, position.x, position.y, FIELD_SIZE / 2, PLAYER, GAME_OBJECT | BOUNDARY);
 	character->body = characterBody;
 	character->mapId = id;
 
@@ -40,6 +42,21 @@ void s::Map::removeCharacter(Character* character) {
 void s::Map::update(sf::Time deltaTime, Server* s) {
 	lock.lock();
 	world->Step(deltaTime.asSeconds(), 5, 2);
+
+	std::for_each(
+		characters.begin(),
+		characters.end(),
+	    [=](Character* character)
+	    {
+			b2Vec2 position = character->body->GetPosition();
+			b2Vec2 velocity = character->body->GetLinearVelocity();
+
+			character->position.x = position.x * METTOPIX;
+			character->position.y = position.y * METTOPIX;
+
+			character->movement.x = velocity.x * METTOPIX;
+			character->movement.y = velocity.y * METTOPIX;
+	    });
 	lock.unlock();
 }
 
@@ -59,10 +76,10 @@ void s::Map::loadFromJson(std::string path) {
 	world->SetAllowSleeping(true);
 
 
-	createBox(b2_staticBody, 0, -2, width * FIELD_SIZE, 2);
-	createBox(b2_staticBody, -2, 0, 2, FIELD_SIZE * height);
-	createBox(b2_staticBody, width * FIELD_SIZE, 0, 2, FIELD_SIZE * height);
-	createBox(b2_staticBody, 0, height * FIELD_SIZE, FIELD_SIZE * width, 2);
+	createBox(b2_staticBody, 0, -2, width * FIELD_SIZE, 2, BOUNDARY, PLAYER);
+	createBox(b2_staticBody, -2, 0, 2, FIELD_SIZE * height, BOUNDARY, PLAYER);
+	createBox(b2_staticBody, width * FIELD_SIZE, 0, 2, FIELD_SIZE * height, BOUNDARY, PLAYER);
+	createBox(b2_staticBody, 0, height * FIELD_SIZE, FIELD_SIZE * width, 2, BOUNDARY, PLAYER);
 
 
 	lock.unlock();
@@ -78,13 +95,76 @@ json s::Map::getCharactersJson() {
 	return jsonCharacters;
 }
 
+void s::Map::sendEventToAnotherPlayers(GameEvent* event, int characterId)
+{
+	lock.lock();
 
-b2Body* s::Map::createCircle(b2BodyType bodyType, float x, float y, float radius) {
+	sf::Packet* p = event->toPacket();
+
+	std::for_each(
+		characters.begin(),
+		characters.end(),
+	    [=](Character* character)
+	    {
+			if (character->id != characterId) {
+				Session* s = character->getAccount()->getSession();
+				s->socket->send(*p);
+			}
+	    });
+
+	delete p;
+	lock.unlock();
+}
+
+void s::Map::sendEventToAllPlayers(GameEvent* event) {
+	lock.lock();
+
+	sf::Packet* p = event->toPacket();
+
+	std::for_each(
+		characters.begin(),
+		characters.end(),
+	    [=](Character* character)
+	    {
+			Session* s = character->getAccount()->getSession();
+			s->socket->send(*p);
+	    });
+
+	delete p;
+	lock.unlock();
+}
+
+void s::Map::handleEvent(GameEvent* event, Session* playerSession, Server* server) {
+	switch(event->getId()) {
+		case MOVEMENT: {
+			EventMovementChange* e = (EventMovementChange*)event;
+
+			lock.lock();
+			Character* character = playerSession->getAccount()->getCharacter();
+			character->body->SetTransform(b2Vec2(e->x * PIXTOMET, e->y * PIXTOMET), character->body->GetAngle());
+			character->body->SetLinearVelocity(b2Vec2(e->velX * PIXTOMET, e->velY * PIXTOMET));
+
+			character->position = sf::Vector2f(e->x, e->y);
+			character->movement = sf::Vector2f(e->velX, e->velY);
+			character->speed = e->speed;
+
+			sendEventToAnotherPlayers(event, character->id);
+
+			lock.unlock();
+			break;
+		}
+		default:
+			break;
+	}
+}
+
+
+b2Body* s::Map::createCircle(b2BodyType bodyType, float x, float y, float radius, int16 categoryBits, uint16 maskBits) {
 	lock.lock();
 
 	b2BodyDef bodyDef;
 	bodyDef.type = bodyType;
-	bodyDef.position.Set(x * PIXTOMET + (radius / 2.0f) * PIXTOMET, y * PIXTOMET + (radius / 2.0f) * PIXTOMET);
+	bodyDef.position.Set(x * PIXTOMET, y * PIXTOMET);
 	bodyDef.angle = 0;
 	bodyDef.fixedRotation = true;
 
@@ -95,6 +175,8 @@ b2Body* s::Map::createCircle(b2BodyType bodyType, float x, float y, float radius
 	dynamicCircle.m_radius = (radius / 2.0f) * PIXTOMET;
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicCircle;
+	fixtureDef.filter.categoryBits = categoryBits;
+	fixtureDef.filter.maskBits = maskBits;
 
 	bdCircle->CreateFixture(&fixtureDef);
 
@@ -102,11 +184,11 @@ b2Body* s::Map::createCircle(b2BodyType bodyType, float x, float y, float radius
 	return bdCircle;
 }
 
-b2Body* s::Map::createBox(b2BodyType bodyType, float x, float y, float width, float height) {
+b2Body* s::Map::createBox(b2BodyType bodyType, float x, float y, float width, float height, int16 categoryBits, uint16 maskBits) {
 	lock.lock();
 	b2BodyDef bodyDef;
 	bodyDef.type = bodyType;
-	bodyDef.position.Set(x * PIXTOMET + (width / 2) * PIXTOMET, y * PIXTOMET + (height / 2) * PIXTOMET);
+	bodyDef.position.Set(x * PIXTOMET, y * PIXTOMET);
 	bodyDef.angle = 0;
 	bodyDef.fixedRotation = true;
 	b2Body* bodyBox = world->CreateBody(&bodyDef);
@@ -114,6 +196,8 @@ b2Body* s::Map::createBox(b2BodyType bodyType, float x, float y, float width, fl
 	dynamicBox.SetAsBox((width / 2) * PIXTOMET, (height / 2) * PIXTOMET);
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;
+	fixtureDef.filter.categoryBits = categoryBits;
+	fixtureDef.filter.maskBits = maskBits;
 
 	bodyBox->CreateFixture(&fixtureDef);
 	lock.unlock();

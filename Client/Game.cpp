@@ -143,7 +143,7 @@ void Game::update(sf::Time elapsedTime) {
 void Game::render() {
 	window.clear();
 
-	if (window.hasFocus()) {
+	if(true || window.hasFocus()) {
 		sceneManager->render(this);
 	}
 
@@ -212,7 +212,6 @@ void Game::sendPlayerPosition()
 */
 
 void Game::subscribe() {
-	EventDispatcher<EventMovementChange>::addSubscriber(this);
 	EventDispatcher<EventLoginRequest>::addSubscriber(this);
 	EventDispatcher<EventLoginResponse>::addSubscriber(this);
 	EventDispatcher<EventCharacterChooseResponse>::addSubscriber(this);

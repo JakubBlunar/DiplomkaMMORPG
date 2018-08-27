@@ -2,7 +2,6 @@
 #define FIELD_H
 
 #include <vector>
-#include <SFML/Graphics/Sprite.hpp>
 #include "RenderSprite.h"
 
 class Field {
@@ -12,6 +11,7 @@ public:
 	~Field();
 
 	void init();
+	void addLayer(RenderSprite* sprite); 
 	std::vector<RenderSprite*>* getLayers();
 };
 

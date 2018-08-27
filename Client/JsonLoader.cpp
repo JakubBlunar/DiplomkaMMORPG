@@ -16,9 +16,6 @@ json JsonLoader::loadJson(std::string filename) {
 		if (jsonFile.is_open()) {
 			json json;
 			jsonFile >> json;
-
-			std::cout << json << std::endl;
-
 			loadedFiles.insert(std::make_pair(filename, json));
 			return json;
 		}

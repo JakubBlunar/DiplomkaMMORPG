@@ -15,12 +15,6 @@ ClientEventActions::ClientEventActions(Game* g) {
 ClientEventActions::~ClientEventActions() {
 }
 
-void ClientEventActions::visit(EventMovementChange* e) {
-	sf::Packet* packet = e->toPacket();
-	game->packet_manager->sendPacket(packet);
-	delete packet;
-}
-
 void ClientEventActions::visit(EventLoginRequest* e) {
 	sf::Packet* packet = e->toPacket();
 	game->packet_manager->sendPacket(packet);
@@ -64,6 +58,15 @@ void ClientEventActions::visit(EventCharacterChooseResponse* e) {
 
 		game->getAccount()->setPlayerEntity(p);
 		map->addPlayer(p);
+
+		json otherPlayers = response["otherPlayers"].get<json::array_t>();
+		for (json::iterator it = otherPlayers.begin(); it != otherPlayers.end(); ++it) {
+			Player* otherPlayer = new Player(false);
+			otherPlayer->loadFromJson(*it);
+
+			if (otherPlayer->getId() != p->getId())
+				map->addPlayer(otherPlayer);
+		}
 		game->changeMap(map);
 
 		game->sceneManager->changeScene(SceneType::GAMEPLAY);

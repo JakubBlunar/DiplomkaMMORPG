@@ -2,10 +2,12 @@
 #include <mysql.h>
 #include "Database.h"
 #include "../Server/json.hpp"
+#include "Map.h"
 
 using json = nlohmann::json;
 
 s::Character::Character() {
+	movement = sf::Vector2f(0,0);
 }
 
 
@@ -17,6 +19,9 @@ s::Map* s::Character::getMap() const {
 }
 
 void s::Character::setMap(Map* map) {
+	if(map) {
+		mapId = map->getId();
+	}
 	actualMap = map;
 }
 
@@ -29,10 +34,13 @@ s::Account* s::Character::getAccount() const {
 }
 
 bool s::Character::save() const {
-	std::string query = "UPDATE characters SET ";
-	query.append("name='" + Database::escapeString(name) + "'");
-	query.append("faction='" + Database::escapeString(std::to_string(static_cast<int>(faction))) + "'");
-	query.append("type='" + Database::escapeString(std::to_string(static_cast<int>(type))) + "'");
+	std::string query = "UPDATE characters SET";
+	query.append(" name='" + Database::escapeString(name) + "',");
+	query.append(" faction=" + Database::escapeString(std::to_string(static_cast<int>(faction))) + ",");
+	query.append(" type=" + Database::escapeString(std::to_string(static_cast<int>(type))) + ",");
+	query.append(" mapId=" + Database::escapeString(std::to_string(mapId)) + ",");
+	query.append(" positionX=" + Database::escapeString(std::to_string(position.x)) + ",");
+	query.append(" positionY=" + Database::escapeString(std::to_string(position.y)));
 	query.append(" WHERE id=" + std::to_string(id) + ";");
 
 	bool success = Database::i()->executeModify(query) > 0;
@@ -51,6 +59,7 @@ json s::Character::toJson() const {
 	json["positionY"] = position.y;
 	json["movementX"] = movement.x;
 	json["movementY"] = movement.y;
+	json["speed"] = speed;
 	return json;
 }
 
@@ -75,7 +84,8 @@ s::Character* s::Character::getCharacterById(int characterId) {
 	character->mapId = std::stoi(row[4]);
 	character->position = sf::Vector2f(std::stof(row[5]), std::stof(row[6]));
 	character->movement = sf::Vector2f(0, 0);
-
+	character->speed = 500;
+	
 	mysql_free_result(res);
 
 	return character;

@@ -23,7 +23,10 @@ public:
 	sf::Vector2f getPosition() const;
 
 	sf::Vector2f getMovement() const;
+	void setMovement(sf::Vector2f movement);
+
 	void setSpeed(float speed);
+	float getSpeed() const;
 
 	sf::Vector2f getSize() const;
 	void setSize(sf::Vector2f size);

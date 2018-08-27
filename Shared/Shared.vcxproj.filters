@@ -19,6 +19,12 @@
     <Filter Include="Source Files\Events">
       <UniqueIdentifier>{fb972175-3d3c-4a66-94dd-f702a3a6c518}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Tools">
+      <UniqueIdentifier>{6e8e626a-3ddd-40c6-ba89-646e15d66705}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools">
+      <UniqueIdentifier>{60d4932f-ee7f-434f-a183-f47874107c9c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -52,7 +58,19 @@
       <Filter>Header Files\Events</Filter>
     </ClInclude>
     <ClInclude Include="EventCharacterChooseResponse.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="EventCharacterMapJoin.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="EventCharacterMapLeave.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="EventCharacterLogout.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Header Files\Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -78,7 +96,19 @@
       <Filter>Source Files\Events</Filter>
     </ClCompile>
     <ClCompile Include="EventCharacterChooseResponse.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="EventCharacterMapJoin.cpp">
+      <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="EventCharacterMapLeave.cpp">
+      <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="EventCharacterLogout.cpp">
+      <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>Source Files\Tools</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

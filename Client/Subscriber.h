@@ -6,9 +6,8 @@
 class Subscriber {
 public:
 	virtual void handleEvent(GameEvent* event) = 0;
-protected:
+public:
 	Subscriber();
-	~Subscriber();
 };
 
 #endif

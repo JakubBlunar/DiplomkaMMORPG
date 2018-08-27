@@ -11,8 +11,6 @@ public:
 	ClientEventActions(Game* g);
 	~ClientEventActions();
 
-
-	void visit(EventMovementChange* e) override;
 	void visit(EventLoginRequest* e) override;
 	void visit(EventLoginResponse* e) override;
 	void visit(EventCharacterChooseResponse* e) override;

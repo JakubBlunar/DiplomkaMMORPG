@@ -34,6 +34,7 @@ namespace s {
 
 		sf::Vector2f movement;
 		sf::Vector2f position;
+		float speed;
 		int mapId;
 
 		b2Body* body;

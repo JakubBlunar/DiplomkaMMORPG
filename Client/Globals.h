@@ -6,7 +6,7 @@
 #define METTOPIX 30.f
 #define PIXTOMET 0.03333333333333333f
 
-#define FIELD_SIZE 32.f
+#define FIELD_SIZE 48.f
 
 #define ceilNumber(x) ((float)(long)(x))
 

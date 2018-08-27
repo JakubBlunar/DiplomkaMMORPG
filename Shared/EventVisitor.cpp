@@ -20,3 +20,15 @@ void EventVisitor::visit(EventCharacterChoose* e) {
 
 void EventVisitor::visit(EventCharacterChooseResponse* e) {
 }
+
+void EventVisitor::visit(EventCharacterMapJoin * e)
+{
+}
+
+void EventVisitor::visit(EventCharacterMapLeave * e)
+{
+}
+
+void EventVisitor::visit(EventCharacterLogout * e)
+{
+}

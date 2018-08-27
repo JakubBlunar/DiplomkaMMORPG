@@ -14,27 +14,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server", "Server\Server.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shared", "Shared\Shared.vcxproj", "{EBA40138-6B8C-4C11-9915-B99B9E043631}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ClientData", "ClientData", "{FB331461-E41E-409A-968C-0D1CE81552BF}"
-	ProjectSection(SolutionItems) = preProject
-		Client\Data\Dungeon_A2.png = Client\Data\Dungeon_A2.png
-		Client\Data\font.ttf = Client\Data\font.ttf
-		Client\Data\Sansation.ttf = Client\Data\Sansation.ttf
-		Client\Data\test.json = Client\Data\test.json
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GameObjects", "GameObjects", "{877A43AE-1D85-4D15-9A8C-8EBCFCDBB96C}"
-	ProjectSection(SolutionItems) = preProject
-		Client\Data\GameObjects\largeTree.json = Client\Data\GameObjects\largeTree.json
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Graphics", "Graphics", "{72701EEE-64C8-4E18-9A8A-1ADA32CD42F6}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tilesets", "Tilesets", "{F8A7BB8E-69DE-49C7-B27C-A2AEDE73574F}"
-	ProjectSection(SolutionItems) = preProject
-		Client\Data\Graphics\Tilesets\wild1.png = Client\Data\Graphics\Tilesets\wild1.png
-		Client\Data\Graphics\Tilesets\wild2.png = Client\Data\Graphics\Tilesets\wild2.png
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -70,11 +49,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{877A43AE-1D85-4D15-9A8C-8EBCFCDBB96C} = {FB331461-E41E-409A-968C-0D1CE81552BF}
-		{72701EEE-64C8-4E18-9A8A-1ADA32CD42F6} = {FB331461-E41E-409A-968C-0D1CE81552BF}
-		{F8A7BB8E-69DE-49C7-B27C-A2AEDE73574F} = {72701EEE-64C8-4E18-9A8A-1ADA32CD42F6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E1A2C992-FEF5-4BB4-A258-ADB3716A9CE9}

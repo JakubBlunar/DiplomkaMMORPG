@@ -29,8 +29,13 @@ namespace s {
 
 		json getCharactersJson();
 
-		b2Body* createCircle(b2BodyType bodyType, float x, float y, float radius);
-		b2Body* createBox(b2BodyType bodyType, float x, float y, float width, float height);
+		void sendEventToAnotherPlayers(GameEvent* event, int characterId);
+		void sendEventToAllPlayers(GameEvent* event);
+
+		void handleEvent(GameEvent* event, Session* playerSession, Server* server);
+
+		b2Body * createCircle(b2BodyType bodyType, float x, float y, float radius, int16 categoryBits, uint16 maskBits);
+		b2Body* createBox(b2BodyType bodyType, float x, float y, float width, float height, int16 categoryBits, uint16 maskBits);
 	};
 
 }

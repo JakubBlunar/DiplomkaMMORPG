@@ -198,6 +198,9 @@
     <ClCompile Include="IGAvailableCharacters.cpp">
       <Filter>Source Files\Scenes\IMGui</Filter>
     </ClCompile>
+    <ClCompile Include="TileSetsHolder.cpp">
+      <Filter>Source Files\Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="json.hpp">
@@ -331,6 +334,9 @@
     </ClInclude>
     <ClInclude Include="IGAvailableCharacters.h">
       <Filter>Header Files\Scenes\IMGui</Filter>
+    </ClInclude>
+    <ClInclude Include="TileSetsHolder.h">
+      <Filter>Header Files\Tools</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

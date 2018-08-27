@@ -16,7 +16,9 @@ namespace s {
 		Server* server;
 
 		void fetchOnline();
+		void saveCharacters();
 		sf::Thread fetchOnlineThread;
+		sf::Thread saveCharactersThread;
 	};
 }
 

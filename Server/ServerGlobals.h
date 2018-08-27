@@ -6,8 +6,19 @@
 #define METTOPIX 30.f
 #define PIXTOMET 0.03333333333333333f
 
-#define FIELD_SIZE 32.f
+#define FIELD_SIZE 48.f
 
 #define ceilNumber(x) ((float)(long)(x))
+
+namespace s {
+
+	enum EntityCategory {
+		BOUNDARY = 0x0001,
+		PLAYER = 0x0002,
+		GAME_OBJECT = 0x0008,
+		SENSOR = 0x0010
+	};
+
+}
 
 #endif // GLOBALS_H_INCLUDED

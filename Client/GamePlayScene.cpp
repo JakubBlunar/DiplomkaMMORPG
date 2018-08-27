@@ -48,7 +48,7 @@ void GamePlayScene::update(Game* g, sf::Time elapsedTime) {
 		map->update(elapsedTime, g);
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape) && g->window.hasFocus()) {
 		if (!escPressed) {
 			if (windowManager->isVisible("GameMenu"))
 				windowManager->close("GameMenu");
@@ -60,7 +60,7 @@ void GamePlayScene::update(Game* g, sf::Time elapsedTime) {
 	else
 		escPressed = false;
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F1)) {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F1) && g->window.hasFocus()) {
 		if (!fonePressed)
 			drawDebugData = !drawDebugData;
 		fonePressed = true;

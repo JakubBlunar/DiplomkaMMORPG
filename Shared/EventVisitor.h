@@ -4,9 +4,12 @@
 #include "EventLoginRequest.h"
 #include "EventCharacterChoose.h"
 #include "EventCharacterChooseResponse.h"
+#include "EventCharacterMapJoin.h"
 
+class EventCharacterMapLeave;
 class EventLoginResponse;
 class EventMovementChange;
+class EventCharacterLogout;
 
 class EventVisitor {
 public:
@@ -17,6 +20,9 @@ public:
 	virtual void visit(EventLoginResponse* e);
 	virtual void visit(EventCharacterChoose* e);
 	virtual void visit(EventCharacterChooseResponse* e);
+	virtual void visit(EventCharacterMapJoin* e);
+	virtual void visit(EventCharacterMapLeave* e);
+	virtual void visit(EventCharacterLogout* e);
 };
 
 

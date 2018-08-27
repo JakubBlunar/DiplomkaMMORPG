@@ -25,8 +25,8 @@ void GameObject::handleEvent(GameEvent* event) {
 
 }
 
-void GameObject::update(sf::Time elapsedTime, Map* map) {
-	Entity::update(elapsedTime, map);
+void GameObject::update(sf::Time elapsedTime, Map* map, Game* g) {
+	Entity::update(elapsedTime, map, g);
 
 }
 
@@ -91,4 +91,8 @@ PositionComponent* GameObject::getPositionComponent() const {
 
 EntityCategory GameObject::getEntityCategory() {
 	return EntityCategory::GAME_OBJECT;
+}
+
+uint16 GameObject::getCollisionMask() {
+	return PLAYER | ENEMY_PLAYER;
 }

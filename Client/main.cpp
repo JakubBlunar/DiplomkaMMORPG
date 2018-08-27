@@ -155,11 +155,6 @@ void MovementChangeWriter::handleEvent(GameEvent* event) {
 }
 
 int main() {
-
-	//testBox2d();
-
-	//return 0;
-
 	std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 	if (!initSettings()) {
 		system("pause");
@@ -167,8 +162,6 @@ int main() {
 	}
 
 	Game* g = new Game();
-	MovementChangeWriter c;
-	EventDispatcher<EventMovementChange>::addSubscriber(&c);
 
 	g->run();
 	return EXIT_SUCCESS;

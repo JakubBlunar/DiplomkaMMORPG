@@ -1,6 +1,7 @@
 #include "IGGameMenu.h"
 #include "Game.h"
-
+#include "EventCharacterLogout.h"
+#include "SceneManager.h"
 
 IGGameMenu::IGGameMenu() {
 	size = sf::Vector2f(250, 260);
@@ -34,7 +35,9 @@ void IGGameMenu::render(Game* g, IGManager* manager) {
 	}
 
 	if (ImGui::Button("Logout", sf::Vector2f(ImGui::GetWindowWidth() * 0.935f, 40))) {
-		close();
+		ImGui::OpenPopup("LogoutCharacterPrompt");
+		ImGui::SetNextWindowPos(position);
+		ImGui::SetNextWindowPosCenter(centeredPosition);
 	}
 
 	if (ImGui::Button("Exit", sf::Vector2f(ImGui::GetWindowWidth() * 0.935f, 40))) {
@@ -56,6 +59,35 @@ void IGGameMenu::render(Game* g, IGManager* manager) {
 		ImGui::SameLine();
 		if (ImGui::Button("Exit")) {
 			g->running = false;
+		}
+		ImGui::EndPopup();
+	}
+
+	if (ImGui::BeginPopupModal("LogoutCharacterPrompt", &open, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize)) {
+		ImGui::SetWindowFontScale(0.2f);
+		ImGui::Text("Do you realy wish to logout?");
+		ImGui::NewLine();
+
+		ImGui::SameLine();
+		if (ImGui::Button("Yes")) {
+			ImGui::CloseCurrentPopup();
+
+			EventCharacterLogout e;
+			e.characterId = g->getAccount()->getPlayerEntity()->getId();
+
+			sf::Packet* p = e.toPacket();
+			g->packet_manager->sendPacket(p);
+			delete p;
+
+			g->sceneManager->changeScene(SceneType::CHARACTER_CHOOSE);
+
+			delete g->getAccount()->getPlayerEntity();
+			delete g->getMap();
+		}
+
+		ImGui::SameLine();
+		if (ImGui::Button("No")) {
+			ImGui::CloseCurrentPopup();
 		}
 		ImGui::EndPopup();
 	}

@@ -5,6 +5,8 @@
 #include "Game.h"
 #include "EventLoginResponse.h"
 #include "EventDispatcher.h"
+#include "EventMovementChange.h"
+#include "EventCharacterMapLeave.h"
 
 PacketManager::PacketManager(Game* g) : game(nullptr), latencyCheckThread(nullptr) {
 	game = g;
@@ -89,6 +91,33 @@ void PacketManager::startRecieve() {
 					e = new EventCharacterChooseResponse();
 					if (e->loadFromPacket(&packet)) {
 						EventDispatcher<EventCharacterChooseResponse>::dispatchEvent(e);
+					}
+					else {
+						game->print("Error while parsing packet " + std::to_string(pt));
+					}
+					break;
+				case CHARACTER_MAP_JOIN:
+					e = new EventCharacterMapJoin();
+					if (e->loadFromPacket(&packet)) {
+						EventDispatcher<EventCharacterMapJoin>::dispatchEvent(e);
+					}
+					else {
+						game->print("Error while parsing packet " + std::to_string(pt));
+					}
+					break;
+				case CHARACTER_MAP_LEAVE:
+					e = new EventCharacterMapLeave();
+					if (e->loadFromPacket(&packet)) {
+						EventDispatcher<EventCharacterMapLeave>::dispatchEvent(e);
+					}
+					else {
+						game->print("Error while parsing packet " + std::to_string(pt));
+					}
+					break;
+				case MOVEMENT:
+					e = new EventMovementChange();
+					if (e->loadFromPacket(&packet)) {
+						EventDispatcher<EventMovementChange>::dispatchEvent(e);
 					}
 					else {
 						game->print("Error while parsing packet " + std::to_string(pt));

@@ -78,6 +78,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)/ExternalLibraries/Box2D/include;$(SolutionDir)/ExternalLibraries/SFML/include;$(SolutionDir)/ExternalLibraries/Imgui;$(SolutionDir)/ExternalLibraries/MySQL/include;E:\boost_1_66_0;$(SolutionDir)/Shared;$(SolutionDir)/ExternalLibraries/CryptLib;$(SolutionDir)/ExternalLibraries/spdlog/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalDependencies>sfml-main-d.lib;sfml-system-d.lib;sfml-network-d.lib;Box2D.lib;Shared.lib;cryptlib.lib;libmysql.lib;%(AdditionalDependencies)</AdditionalDependencies>

@@ -4,6 +4,8 @@
 #include <vector>
 #include "GameEvent.h"
 #include "Subscriber.h"
+#include "ClientSettings.h"
+
 using namespace std;
 
 template <class T>

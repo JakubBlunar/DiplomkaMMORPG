@@ -11,8 +11,8 @@ Collider::~Collider() {
 void Collider::handleEvent(GameEvent* event) {
 }
 
-void Collider::update(sf::Time elapsedTime, Map* map) {
-	Entity::update(elapsedTime, map);
+void Collider::update(sf::Time elapsedTime, Map* map, Game* g) {
+	Entity::update(elapsedTime, map, g);
 }
 
 EntityType Collider::getType() {
@@ -25,4 +25,8 @@ EntityCategory Collider::getEntityCategory() {
 
 PositionComponent* Collider::getPositionComponent() const {
 	return positionComponent;
+}
+
+uint16 Collider::getCollisionMask() {
+	return PLAYER | ENEMY_PLAYER;
 }

@@ -62,8 +62,38 @@ sf::Vector2f PositionComponent::getMovement() const {
 	return movement;
 }
 
+void PositionComponent::setMovement(sf::Vector2f movement)
+{
+	this->movement = movement;
+	if (movement.y > 0) {
+		isMovingDown = true;
+	}
+	else if (movement.y < 0) {
+		isMovingUp = true;
+	}
+	else {
+		isMovingUp = false;
+		isMovingDown = false;
+	}
+
+	if (movement.x > 0) {
+		isMovingRight = true;
+	}
+	else if (movement.x < 0) {
+		isMovingLeft = true;
+	}
+	else {
+		isMovingLeft = false;
+		isMovingRight = false;
+	}
+}
+
 void PositionComponent::setSpeed(float speed) {
 	this->speed = speed;
+}
+
+float PositionComponent::getSpeed() const {
+	return speed;
 }
 
 sf::Vector2f PositionComponent::getSize() const {
