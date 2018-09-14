@@ -20,6 +20,7 @@ void s::Account::setCharacter(Character* character) {
 
 bool s::Account::checkPassword(std::string password) const {
 	std::string hash = Crypto::i()->hashWithSha256(password);
+
 	if (hash == this->password) {
 		return true;
 	}

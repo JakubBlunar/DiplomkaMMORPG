@@ -14,7 +14,7 @@ Field::~Field() {
 
 void Field::init() {
 	RenderSprite* sprite = new RenderSprite();
-	sprite->load("Graphics/Tilesets/hills.png", sf::Vector2i(FIELD_SIZE, FIELD_SIZE), sf::Vector2i(0, 96));
+	sprite->load("Graphics/Tilesets/hills.png", sf::Vector2i((int)FIELD_SIZE, (int)FIELD_SIZE), sf::Vector2i(0, 96));
 
 	layers.push_back(sprite);
 }

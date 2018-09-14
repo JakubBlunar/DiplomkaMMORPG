@@ -201,6 +201,9 @@
     <ClCompile Include="TileSetsHolder.cpp">
       <Filter>Source Files\Tools</Filter>
     </ClCompile>
+    <ClCompile Include="MapContactListener.cpp">
+      <Filter>Source Files\Core\Map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="json.hpp">
@@ -337,6 +340,9 @@
     </ClInclude>
     <ClInclude Include="TileSetsHolder.h">
       <Filter>Header Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="MapContactListener.h">
+      <Filter>Header Files\Core\Map</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

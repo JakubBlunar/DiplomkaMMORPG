@@ -29,7 +29,7 @@ Matrix<T>::Matrix(int rows, int cols)
 
 template <typename T>
 Matrix<T>::~Matrix() {
-	for (int i = 0; i < data.size(); i++) {
+	for (unsigned int i = 0; i < data.size(); i++) {
 		delete data[i];
 	}
 }

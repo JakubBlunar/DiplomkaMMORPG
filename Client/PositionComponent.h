@@ -3,11 +3,7 @@
 
 #include "Component.h"
 #include <SFML/System/Vector2.hpp>
-
-enum class BodyType {
-	RECTANGLE = 0,
-	CIRCLE = 1,
-};
+#include "../Shared/EntityConstants.h"
 
 class PositionComponent :
 	public Component {

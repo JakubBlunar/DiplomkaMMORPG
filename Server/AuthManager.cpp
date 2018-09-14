@@ -32,11 +32,13 @@ void s::AuthManager::handleEvent(EventCharacterLogout* event, s::Session* player
 	ch->setAccount(nullptr);
 	account->setCharacter(nullptr);
 
+	/*
 	EventCharacterMapLeave* e = new EventCharacterMapLeave();
 	e->characterId = ch->id;
 	e->mapId = map->getId();
 
 	map->sendEventToAnotherPlayers(e, e->characterId);
+	*/
 }
 
 void s::AuthManager::handleEvent(EventLoginRequest* event, s::Session* playerSession, s::Server* s) {
@@ -119,7 +121,7 @@ void s::AuthManager::handleEvent(EventCharacterChoose* event, s::Session* player
 					eventMapJoin.mapId = m->getId();
 					eventMapJoin.characterData = ch->toJson().dump();
 
-					m->sendEventToAnotherPlayers(&eventMapJoin, ch->id);
+					//->sendEventToAnotherPlayers(&eventMapJoin, ch->id);
 
 					json resData;
 					resData["character"] = ch->toJson();

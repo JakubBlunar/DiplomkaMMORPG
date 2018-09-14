@@ -1,0 +1,18 @@
+{
+  "name": "Large Tree",
+  "position": {
+    "width": 70,
+    "height": 25,
+    "bodyType": 0
+  },
+  "render": {
+    "type": 1,
+    "width": 96,
+    "height": 128,
+    "renderOffsetX": -34,
+    "renderOffsetY": -100,
+    "spriteOffsetX": 96,
+    "spriteOffsetY": 64,
+    "texture": "Graphics/Tilesets/wild1.png"
+  }
+}

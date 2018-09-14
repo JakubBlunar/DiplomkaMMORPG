@@ -2,15 +2,14 @@
 #include <SFML/Window/Keyboard.hpp>
 #include "Globals.h"
 #include "RenderComponent.h"
-#include "../Shared/CharacterConstants.h"
 #include "JsonLoader.h"
 #include "ResourceHolder.h"
-#include <iostream>
 #include "EventMovementChange.h"
 #include "EventDispatcher.h"
 #include "Map.h"
 #include "Game.h"
-#include "Subscriber.h"
+#include <iostream>
+
 
 Player::Player(bool playerControlled) : Entity(0) {
 	this->playerControlled = playerControlled;
@@ -58,6 +57,10 @@ void Player::handleEvent(GameEvent* event) {
 
 void Player::update(sf::Time elapsedTime, Map* map, Game* g) {
 	Entity::update(elapsedTime, map, g);
+
+	body->SetLinearVelocity(b2Vec2(positionComponent->getMovement().x * PIXTOMET, positionComponent->getMovement().y * PIXTOMET));
+
+	//cout << "VIEW: " << melleViewEntities.size() << " RANGE:" << melleRangeEntities.size() << endl;
 
 	if (this->playerControlled && g->window.hasFocus()) {
 		sf::Vector2f direction = sf::Vector2f(0.f, 0.f);
@@ -115,6 +118,8 @@ uint16 Player::getCollisionMask() {
 
 void Player::updateMovementAnimation() {
 	sf::Vector2f movement = positionComponent->getMovement();
+	sf::Vector2f position = positionComponent->getPosition();
+
 	if (movement.x == 0 && movement.y == 0) {
 		renderComponent->getCurrentAnimation()->stop();
 	}
@@ -122,20 +127,25 @@ void Player::updateMovementAnimation() {
 	{
 		renderComponent->changeAnimation("up");
 		renderComponent->getCurrentAnimation()->setLooped(true);
+		body->SetTransform(b2Vec2(position.x * PIXTOMET, position.y * PIXTOMET), 180 * DEGTORAD);
 	}
 	else if (movement.x == 0 && movement.y > 0) //down
 	{
 		renderComponent->changeAnimation("down");
 		renderComponent->getCurrentAnimation()->setLooped(true);
+		body->SetTransform(b2Vec2(position.x * PIXTOMET, position.y * PIXTOMET), 0);
+		
 	}
 	else if (movement.x < 0 && movement.y == 0) //left
 	{
 		renderComponent->changeAnimation("left");
 		renderComponent->getCurrentAnimation()->setLooped(true);
+		body->SetTransform(b2Vec2(position.x * PIXTOMET, position.y * PIXTOMET), 90 * DEGTORAD);
 	}
 	else if (movement.x > 0 && movement.y == 0) {
 		renderComponent->changeAnimation("right");
 		renderComponent->getCurrentAnimation()->setLooped(true);
+		body->SetTransform(b2Vec2(position.x * PIXTOMET, position.y * PIXTOMET), 270 * DEGTORAD);	
 	}
 	else if (movement.x > 0) {
 		renderComponent->changeAnimation("right");
@@ -200,4 +210,23 @@ void Player::loadFromJson(json jsonData) {
 
 	float speed = (float)jsonData["speed"].get<json::number_float_t>();
 	positionComponent->setSpeed(speed);
+}
+
+b2Fixture* Player::getMelleView() const {
+	return melleView;
+}
+
+void Player::setMelleView(b2Fixture * fixture)
+{
+	melleView = fixture;
+}
+
+b2Fixture * Player::getMelleRange() const
+{
+	return melleRange;
+}
+
+void Player::setMelleRange(b2Fixture * fixture)
+{
+	melleRange = fixture;
 }

@@ -72,6 +72,9 @@
     <ClInclude Include="Utils.h">
       <Filter>Header Files\Tools</Filter>
     </ClInclude>
+    <ClInclude Include="EntityConstants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

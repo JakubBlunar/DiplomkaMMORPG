@@ -158,6 +158,40 @@ void Map::addPlayer(Player* player) {
 	sf::Vector2f position = player->getPosition();
 	sf::Vector2f size = player->getSize();
 	Box2DTools::addCircle(b2_dynamicBody, position.x, position.y, size.x, player, this, player->getEntityCategory(), player->getCollisionMask());
+
+	b2Body* playerBody = player->getBody();
+
+	float radius = 32 * PIXTOMET;
+	b2Vec2 vertices[8];
+	vertices[0].Set(0,0);
+	for (int i = 0; i < 7; i++) {
+		float angle = i / 6.0 * 180 * DEGTORAD;
+		vertices[i+1].Set( radius * cosf(angle), radius * sinf(angle) );
+	}
+	
+	b2PolygonShape polygonShape;
+	polygonShape.Set(vertices, 8);
+
+	b2FixtureDef melleViewDef;
+	melleViewDef.shape = &polygonShape;
+	melleViewDef.filter.categoryBits = PLAYER_SENSOR;
+	melleViewDef.filter.maskBits = ENEMY_PLAYER | GAME_OBJECT;
+	melleViewDef.isSensor = true;
+	b2Fixture* melleView = playerBody->CreateFixture(&melleViewDef);
+	player->setMelleView(melleView);
+
+	b2CircleShape circleShape;
+	circleShape.m_radius = radius;
+
+	b2FixtureDef melleRangeDef;
+	melleRangeDef.shape = &circleShape;
+	melleRangeDef.filter.categoryBits = PLAYER_SENSOR;
+	melleRangeDef.filter.maskBits = ENEMY_PLAYER | GAME_OBJECT;
+	melleRangeDef.isSensor = true;
+
+	b2Fixture* melleRange = playerBody->CreateFixture(&melleRangeDef);
+	player->setMelleRange(melleRange);
+
 }
 
 void Map::removePlayer(Player* player) {
@@ -217,15 +251,15 @@ void Map::loadFromFile(int id) {
 	uint32 flags = 0;
 	flags += b2Draw::e_shapeBit;
 	flags += b2Draw::e_jointBit;
-	flags += b2Draw::e_aabbBit;
-	//flags += b2Draw::e_pairBit;
+	//flags += b2Draw::e_aabbBit;
+	flags += b2Draw::e_pairBit;
 	//flags += b2Draw::e_centerOfMassBit;
 	debugDrawInstance->SetFlags(flags);
 
 	json mapData = JsonLoader::instance()->loadJson("Maps/" + std::to_string(id));
 	json mapProperties = mapData["properties"].get<json::object_t>();
 
-	id = (int)mapProperties["id"].get<json::number_integer_t>();
+	this->id = (int)mapProperties["id"].get<json::number_integer_t>();
 	width = (int)mapData["width"].get<json::number_integer_t>();
 	height = (int)mapData["height"].get<json::number_integer_t>();
 
@@ -288,9 +322,10 @@ void Map::loadFromFile(int id) {
 	for (json::iterator layerIterator = layers.begin(); layerIterator != layers.end(); layerIterator++) {
 		json layer = *layerIterator;
 
-		std::string type = layer["type"].get<json::string_t>();
+		std::string layerType = layer["type"].get<json::string_t>();
+		std::string layerName = layer["name"].get<json::string_t>();
 
-		if (type == "tilelayer") {
+		if (layerType == "tilelayer") {
 			int width = (int) layer["width"].get<json::number_integer_t>();
 			int height = (int) layer["width"].get<json::number_integer_t>();
 
@@ -327,7 +362,7 @@ void Map::loadFromFile(int id) {
 						int tileY = value / foundTileSet.columns;
 
 						RenderSprite* sprite = new RenderSprite();
-						sprite->load(foundTileSet.path, sf::Vector2i(FIELD_SIZE, FIELD_SIZE), sf::Vector2i(tileX * FIELD_SIZE, tileY * FIELD_SIZE));
+						sprite->load(foundTileSet.path, sf::Vector2i((int)FIELD_SIZE, (int)FIELD_SIZE), sf::Vector2i((int)tileX * FIELD_SIZE, (int)tileY * FIELD_SIZE));
 
 						fields->get(x, y)->addLayer(sprite);
 					}
@@ -336,11 +371,48 @@ void Map::loadFromFile(int id) {
 				counter++;
 			}
 		}
-		
+
+		if (layerType == "objectgroup" && layerName == "gameobjects") {
+			json gameObjects = layer["objects"].get<json::array_t>();
+
+			for (json::iterator gameObjectIterator = gameObjects.begin(); gameObjectIterator != gameObjects.end(); gameObjectIterator++) {
+				json gameObject = *gameObjectIterator;
+
+				if (gameObject.count("point") && gameObject["point"].get<json::boolean_t>()) {
+						
+					string gameObjectType = gameObject["name"].get<json::string_t>();
+					float positionX = (float) gameObject["x"].get<json::number_float_t>();
+					float positionY = (float) gameObject["y"].get<json::number_float_t>();
+					if (!gameObjectType.empty()) {
+						GameObject * o = new GameObject(-1, gameObjectType);
+						o->getPositionComponent()->setPosition(sf::Vector2f(positionX, positionY));
+						addGameObject(o);
+					}
+				
+
+				} else {
+					float positionX = (float) gameObject["x"].get<json::number_float_t>();
+					float positionY = (float) gameObject["y"].get<json::number_float_t>();
+					float width = (float) gameObject["width"].get<json::number_float_t>();
+					float height = (float) gameObject["height"].get<json::number_float_t>();
+
+					if (width > 0 && height > 0) {
+						Collider * c = new Collider(-1);
+						c->getPositionComponent()->setPosition(sf::Vector2f(positionX + width /2, positionY + height /2));
+						c->getPositionComponent()->setBodyType(BodyType::RECTANGLE);
+						c->getPositionComponent()->setSize(sf::Vector2f(width, height));
+						c->getPositionComponent()->setMovement(sf::Vector2f(0,0));
+						addCollider(c);
+					}
+
+				}
+			}
+		}
 	}
 
-
-
+	delete contactListener;
+	contactListener = new MapContactListener();
+	world->SetContactListener(contactListener);
 
 	subscribe();
 }

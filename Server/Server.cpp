@@ -9,7 +9,6 @@
 #include "ServerTasks.h"
 #include <spdlog/spdlog.h>
 #include "EventCharacterChoose.h"
-#include "ServerTasks.h"
 #include "Account.h"
 #include "Character.h"
 #include "Map.h"
@@ -194,7 +193,6 @@ void s::Server::recievePackets() {
 						identifyPacket(CHARACTER_CHOOSE, tempPacket, playerSession);
 						delete tempPacket;
 					}
-					
 					
 				}
 				else {

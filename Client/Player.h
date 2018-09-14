@@ -5,6 +5,7 @@
 #include "PositionComponent.h"
 #include "../Client/json.hpp"
 #include "RenderComponent.h"
+#include <list>
 
 using json = nlohmann::json;
 
@@ -21,14 +22,27 @@ public:
 	EntityCategory getEntityCategory() override;
 	uint16 getCollisionMask() override;
 
+	
+
 	void updateMovementAnimation();
 
 	void loadFromJson(json jsonData);
-	
+
+	b2Fixture* getMelleView() const;
+	void setMelleView(b2Fixture* fixture);
+
+	b2Fixture* getMelleRange() const;
+	void setMelleRange(b2Fixture* fixture);
+
+	std::list<Entity*> melleRangeEntities;
+	std::list<Entity*> melleViewEntities;
 private:
 	bool playerControlled;
 	PositionComponent* positionComponent;
 	RenderComponent* renderComponent;
+
+	b2Fixture* melleView;
+	b2Fixture* melleRange;
 
 	sf::Vector2f lastMovement;
 };

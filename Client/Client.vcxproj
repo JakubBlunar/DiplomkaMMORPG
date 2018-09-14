@@ -153,6 +153,7 @@
     <ClCompile Include="LoginScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="MapContactListener.cpp" />
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="PacketManager.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="KeyboardManager.h" />
     <ClInclude Include="LoginScene.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="MapContactListener.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="PacketManager.h" />
     <ClInclude Include="Player.h" />

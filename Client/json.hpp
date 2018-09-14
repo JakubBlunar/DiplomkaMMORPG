@@ -1677,7 +1677,7 @@ namespace nlohmann
 			// std::istream/std::streambuf use std::char_traits<char>::to_int_type, to
 			// ensure that std::char_traits<char>::eof() and the character 0xFF do not
 			// end up as the same value, eg. 0xFFFFFFFF.
-			std::char_traits<char>::int_type get_character() override
+			virtual std::char_traits<char>::int_type get_character() override
 			{
 				return sb.sbumpc();
 			}
@@ -1711,7 +1711,7 @@ namespace nlohmann
 			input_buffer_adapter(const input_buffer_adapter&) = delete;
 			input_buffer_adapter& operator=(input_buffer_adapter&) = delete;
 
-			std::char_traits<char>::int_type get_character() noexcept override
+			virtual std::char_traits<char>::int_type get_character() noexcept override
 			{
 				if (JSON_LIKELY(cursor < limit))
 				{

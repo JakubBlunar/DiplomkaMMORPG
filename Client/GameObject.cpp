@@ -9,12 +9,12 @@ GameObject::GameObject(long long id, std::string file) : Entity(id) {
 	positionComponent = new PositionComponent();
 	components.push_back(positionComponent);
 	positionComponent->setSpeed(0);
-	positionComponent->setPosition(sf::Vector2f(200.f, 300.f));
+	//positionComponent->setPosition(sf::Vector2f(200.f, 300.f));
 
 	renderComponent = new RenderComponent();
 	components.push_back(renderComponent);
 
-	this->loadFromJson(file);
+	this->loadFromJson("GameObjects/" + file);
 }
 
 
@@ -41,8 +41,8 @@ void GameObject::loadFromJson(const std::string& file) {
 	if (position.is_object()) {
 		BodyType bodyType = static_cast<BodyType>(position["bodyType"].get<json::number_integer_t>());
 		positionComponent->setBodyType(bodyType);
-		float width = position["width"].get<json::number_float_t>();
-		float height = position["height"].get<json::number_float_t>();
+		float width = (float)position["width"].get<json::number_float_t>();
+		float height = (float)position["height"].get<json::number_float_t>();
 		positionComponent->setSize(sf::Vector2f(width, height));
 
 
@@ -53,12 +53,12 @@ void GameObject::loadFromJson(const std::string& file) {
 
 	json render = jsonFile["render"].get<json::object_t>();
 	if (render.is_object()) {
-		int width = render["width"].get<json::number_integer_t>();
-		int height = render["height"].get<json::number_integer_t>();
-		int renderOffsetX = render["renderOffsetX"].get<json::number_integer_t>();
-		int renderOffsetY = render["renderOffsetY"].get<json::number_integer_t>();
-		int spriteOffsetX = render["spriteOffsetX"].get<json::number_integer_t>();
-		int spriteOffsetY = render["spriteOffsetY"].get<json::number_integer_t>();
+		int width = (int)render["width"].get<json::number_integer_t>();
+		int height = (int)render["height"].get<json::number_integer_t>();
+		int renderOffsetX = (int)render["renderOffsetX"].get<json::number_integer_t>();
+		int renderOffsetY = (int)render["renderOffsetY"].get<json::number_integer_t>();
+		int spriteOffsetX = (int)render["spriteOffsetX"].get<json::number_integer_t>();
+		int spriteOffsetY = (int)render["spriteOffsetY"].get<json::number_integer_t>();
 
 		std::string textureFile = render["texture"].get<json::string_t>();
 
@@ -94,5 +94,5 @@ EntityCategory GameObject::getEntityCategory() {
 }
 
 uint16 GameObject::getCollisionMask() {
-	return PLAYER | ENEMY_PLAYER;
+	return PLAYER | ENEMY_PLAYER | PLAYER_SENSOR;
 }

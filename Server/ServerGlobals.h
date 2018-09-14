@@ -10,15 +10,4 @@
 
 #define ceilNumber(x) ((float)(long)(x))
 
-namespace s {
-
-	enum EntityCategory {
-		BOUNDARY = 0x0001,
-		PLAYER = 0x0002,
-		GAME_OBJECT = 0x0008,
-		SENSOR = 0x0010
-	};
-
-}
-
 #endif // GLOBALS_H_INCLUDED

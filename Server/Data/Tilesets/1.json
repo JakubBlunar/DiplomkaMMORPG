@@ -1,0 +1,12 @@
+{ "columns":8,
+ "image":"diplomka mapy\/1.png",
+ "imageheight":960,
+ "imagewidth":384,
+ "margin":0,
+ "name":"1",
+ "spacing":0,
+ "tilecount":160,
+ "tileheight":48,
+ "tilewidth":48,
+ "type":"tileset"
+}

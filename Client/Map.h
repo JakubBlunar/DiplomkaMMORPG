@@ -7,6 +7,7 @@
 #include "Matrix.h"
 #include "Player.h"
 #include "GameObject.h"
+#include "MapContactListener.h"
 
 class Collider;
 class Game;
@@ -23,6 +24,7 @@ class Map : public Subscriber {
 	b2Draw* debugDrawInstance;
 	int id;
 
+	MapContactListener* contactListener;
 public:
 	Map(Game* g);
 	~Map();

@@ -4,6 +4,7 @@
 #include "Subscriber.h"
 #include "Component.h"
 #include <Box2D/Dynamics/b2Body.h>
+#include "EntityConstants.h"
 
 class Game;
 class Map;
@@ -12,14 +13,6 @@ enum class EntityType {
 	PLAYER,
 	GAMEOBJECT,
 	COLLIDER,
-};
-
-enum EntityCategory {
-	BOUNDARY = 0x0001,
-	PLAYER = 0x0002,
-	ENEMY_PLAYER = 0x0004,
-	GAME_OBJECT = 0x0008,
-	SENSOR = 0x0010
 };
 
 class Entity : public Subscriber {

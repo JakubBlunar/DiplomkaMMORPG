@@ -5,6 +5,9 @@
 #include <spdlog/spdlog.h>
 #include "Account.h"
 #include "EventMovementChange.h"
+#include "EntityConstants.h"
+#include "EventCharacterMapJoin.h"
+#include "EventCharacterMapLeave.h"
 
 s::Map::Map(): id(0) {
 }
@@ -24,6 +27,11 @@ void s::Map::addCharacter(Character* character) {
 	character->body = characterBody;
 	character->mapId = id;
 
+	EventCharacterMapJoin eventMapJoin;
+	eventMapJoin.mapId = id;
+	eventMapJoin.characterData = character->toJson().dump();
+
+	sendEventToAnotherPlayers(&eventMapJoin, character->id);
 
 	characters.push_back(character);
 	lock.unlock();
@@ -35,6 +43,14 @@ void s::Map::removeCharacter(Character* character) {
 		world->DestroyBody(character->body);
 		character->body = nullptr;
 	}
+
+	EventCharacterMapLeave* e = new EventCharacterMapLeave();
+	e->characterId = character->id;
+	e->mapId = id;
+
+	sendEventToAnotherPlayers(e, character->id);
+	delete e;
+
 	characters.erase(std::remove(characters.begin(), characters.end(), character), characters.end());
 	lock.unlock();
 }
@@ -67,10 +83,12 @@ void s::Map::loadFromJson(std::string path) {
 
 	json mapData = JsonLoader::instance()->loadJson(path);
 
-	id = (int)mapData["id"].get<json::number_integer_t>();
+	json mapProperties = mapData["properties"].get<json::object_t>();
 
+	id = (int)mapProperties["id"].get<json::number_integer_t>();
 	width = (int)mapData["width"].get<json::number_integer_t>();
 	height = (int)mapData["height"].get<json::number_integer_t>();
+
 
 	world = new b2World(b2Vec2(0.f, 0.f));
 	world->SetAllowSleeping(true);
@@ -80,6 +98,55 @@ void s::Map::loadFromJson(std::string path) {
 	createBox(b2_staticBody, -2, 0, 2, FIELD_SIZE * height, BOUNDARY, PLAYER);
 	createBox(b2_staticBody, width * FIELD_SIZE, 0, 2, FIELD_SIZE * height, BOUNDARY, PLAYER);
 	createBox(b2_staticBody, 0, height * FIELD_SIZE, FIELD_SIZE * width, 2, BOUNDARY, PLAYER);
+
+	json layers = mapData["layers"].get<json::array_t>();
+	for (json::iterator layerIterator = layers.begin(); layerIterator != layers.end(); layerIterator++) {
+		json layer = *layerIterator;
+
+		std::string layerType = layer["type"].get<json::string_t>();
+		std::string layerName = layer["name"].get<json::string_t>();
+
+		if (layerType == "objectgroup" && layerName == "gameobjects") {
+			json gameObjects = layer["objects"].get<json::array_t>();
+
+			for (json::iterator gameObjectIterator = gameObjects.begin(); gameObjectIterator != gameObjects.end(); gameObjectIterator++) {
+				json gameObject = *gameObjectIterator;
+				float positionX = (float) gameObject["x"].get<json::number_float_t>();
+				float positionY = (float) gameObject["y"].get<json::number_float_t>();
+
+				if (gameObject.count("point") && gameObject["point"].get<json::boolean_t>()) {
+						
+					string gameObjectType = gameObject["name"].get<json::string_t>();
+				
+					if (!gameObjectType.empty()) {
+						json jsonFile = JsonLoader::instance()->loadJson("GameObjects/" + gameObjectType);
+	
+						json position = jsonFile["position"].get<json::object_t>();
+						if (position.is_object()) {
+							BodyType bodyType = static_cast<BodyType>(position["bodyType"].get<json::number_integer_t>());
+							float width = (float)position["width"].get<json::number_float_t>();
+							float height = (float)position["height"].get<json::number_float_t>();
+
+							if (bodyType == BodyType::RECTANGLE)
+								createBox(b2_staticBody, positionX, positionY, width, height, GAME_OBJECT, PLAYER | ENEMY_PLAYER);
+							if (bodyType == BodyType::CIRCLE) 
+								createCircle(b2_staticBody, positionX, positionY, width, GAME_OBJECT, PLAYER | ENEMY_PLAYER);
+						}
+						else
+							throw "cannot load gameObject from file " + gameObjectType;
+				
+					}
+
+				} else {
+					float width = (float) gameObject["width"].get<json::number_float_t>();
+					float height = (float) gameObject["height"].get<json::number_float_t>();
+
+					if (width > 0 && height > 0) 
+						createBox(b2_staticBody, positionX, positionY, width, height, BOUNDARY, PLAYER | ENEMY_PLAYER);
+				}
+			}
+		}
+	}
 
 
 	lock.unlock();
@@ -147,7 +214,6 @@ void s::Map::handleEvent(GameEvent* event, Session* playerSession, Server* serve
 			character->position = sf::Vector2f(e->x, e->y);
 			character->movement = sf::Vector2f(e->velX, e->velY);
 			character->speed = e->speed;
-
 			sendEventToAnotherPlayers(event, character->id);
 
 			lock.unlock();
