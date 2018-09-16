@@ -13,6 +13,7 @@
 #include "Character.h"
 #include "Map.h"
 #include "EventCharacterLogout.h"
+#include <SFML/Window/Keyboard.hpp>
 
 s::Server::Server(ServerSettings* settings):
 	running(false) {
@@ -69,15 +70,28 @@ void s::Server::start() {
 		while (timeSinceLastUpdate > timePerFrame) {
 			timeSinceLastUpdate -= timePerFrame;
 		}
+		bool isConsoleWindowFocussed = (GetConsoleWindow() == GetForegroundWindow());
+
 		update(elapsedTime);
+
+		if(isConsoleWindowFocussed && GetAsyncKeyState(VK_ESCAPE)) {
+			running = false;
+		}
 	}
+
+	spdlog::get("log")->info("SERVER IS TURNING OFF WAITING FOR WORKERS TO END");
+	tasks->finish();
 
 	for (auto& thread : recieveThreads) {
 		thread->wait();
 	}
 
 	running = false;
-	Database::i()->disconnect();
+
+	Database* database = Database::i();
+	database->executeQuery("UPDATE realmStatuses SET onlineCount=0, lightFactionOnline=0, darkFactionOnline=0, updatedAt=NOW(), endTime=NOW() WHERE id = 1;");
+	database->executeQuery("DELETE from onlineplayers;");
+	database->disconnect();
 }
 
 void s::Server::update(sf::Time elapsedTime) {
@@ -221,6 +235,18 @@ void s::Server::recievePackets() {
 					}
 					case sf::Socket::Disconnected: {
 						spdlog::get("log")->info("disconnect from ", playerSession->socket->getRemoteAddress().toString());
+
+						Account* a = playerSession->getAccount();
+						if (a) {
+							Character* ch = a->getCharacter();
+							if (ch) {
+								ch->save();
+								ch->getMap()->removeCharacter(ch);
+								delete ch;
+							}
+							delete a;
+						}
+
 
 						selector.remove(*playerSession->socket);
 						playerSession->socket->disconnect();
