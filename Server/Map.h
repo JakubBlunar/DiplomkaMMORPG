@@ -4,6 +4,7 @@
 #include <Box2D/Dynamics/b2World.h>
 #include "Server.h"
 #include <Box2D/Dynamics/b2Body.h>
+#include "MapGrid.h"
 
 namespace s {
 	class Map {
@@ -14,6 +15,8 @@ namespace s {
 		int width, height;
 		sf::Mutex lock;
 
+
+		MapGrid* mapGrid;
 	public:
 		Map();
 		~Map();

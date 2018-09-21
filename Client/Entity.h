@@ -30,14 +30,14 @@ public:
 
 	sf::Vector2f getPosition() const;
 	sf::Vector2f getSize() const;
-	long long getId() const;
+	uint32 getId() const;
 
 protected:
-	Entity(long long id);
+	Entity(sf::Uint32 id);
 	std::vector<Component *> components;
 	b2Body* body;
 	std::string name;
-	long long id;
+	sf::Uint32 id;
 };
 
 

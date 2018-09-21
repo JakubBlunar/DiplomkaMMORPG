@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "GameObject.h"
 #include "MapContactListener.h"
+#include "MapGrid.h"
 
 class Collider;
 class Game;
@@ -24,7 +25,9 @@ class Map : public Subscriber {
 	b2Draw* debugDrawInstance;
 	int id;
 
+	Player* player;
 	MapContactListener* contactListener;
+	MapGrid* grid;
 public:
 	Map(Game* g);
 	~Map();
@@ -44,10 +47,13 @@ public:
 	void subscribe();
 	void unsubscribe();
 
+	Player* getPlayer() const;
+
 	Field* getField(int x, int y) const;
 	int getWidth() const;
 	int getHeight() const;
 	b2World* getB2World() const;
+	MapGrid* getGrid() const;
 
 	void handleEvent(GameEvent* event) override;
 };

@@ -2,7 +2,7 @@
 #include "PositionComponent.h"
 
 
-Entity::Entity(long long id): body(nullptr) {
+Entity::Entity(sf::Uint32 id): body(nullptr) {
 	this->id = id;
 }
 
@@ -49,6 +49,6 @@ sf::Vector2f Entity::getSize() const {
 	return sf::Vector2f(0, 0);
 }
 
-long long Entity::getId() const {
+sf::Uint32 Entity::getId() const {
 	return id;
 }

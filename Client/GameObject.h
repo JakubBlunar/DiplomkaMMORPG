@@ -7,7 +7,7 @@ class GameObject :
 	public Entity {
 public:
 
-	GameObject(long long id, std::string file);
+	GameObject(sf::Uint32 id, std::string file);
 	~GameObject();
 
 	void handleEvent(GameEvent* event) override;

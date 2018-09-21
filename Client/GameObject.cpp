@@ -5,7 +5,7 @@
 #include "ResourceHolder.h"
 
 
-GameObject::GameObject(long long id, std::string file) : Entity(id) {
+GameObject::GameObject(sf::Uint32 id, std::string file) : Entity(id) {
 	positionComponent = new PositionComponent();
 	components.push_back(positionComponent);
 	positionComponent->setSpeed(0);

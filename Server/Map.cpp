@@ -89,6 +89,7 @@ void s::Map::loadFromJson(std::string path) {
 	width = (int)mapData["width"].get<json::number_integer_t>();
 	height = (int)mapData["height"].get<json::number_integer_t>();
 
+	mapGrid = new MapGrid(width * (int)FIELD_SIZE, height * (int)FIELD_SIZE);
 
 	world = new b2World(b2Vec2(0.f, 0.f));
 	world->SetAllowSleeping(true);
@@ -127,10 +128,15 @@ void s::Map::loadFromJson(std::string path) {
 							float width = (float)position["width"].get<json::number_float_t>();
 							float height = (float)position["height"].get<json::number_float_t>();
 
-							if (bodyType == BodyType::RECTANGLE)
+							if (bodyType == BodyType::RECTANGLE) {
 								createBox(b2_staticBody, positionX, positionY, width, height, GAME_OBJECT, PLAYER | ENEMY_PLAYER);
-							if (bodyType == BodyType::CIRCLE) 
+								mapGrid->setWall(sf::Vector2f(positionX, positionY + height / 2), sf::Vector2f(width, height));
+							}
+							if (bodyType == BodyType::CIRCLE) {
 								createCircle(b2_staticBody, positionX, positionY, width, GAME_OBJECT, PLAYER | ENEMY_PLAYER);
+								mapGrid->setWall(sf::Vector2f(positionX, positionY), sf::Vector2f(width, width));
+							}
+						
 						}
 						else
 							throw "cannot load gameObject from file " + gameObjectType;
@@ -141,13 +147,16 @@ void s::Map::loadFromJson(std::string path) {
 					float width = (float) gameObject["width"].get<json::number_float_t>();
 					float height = (float) gameObject["height"].get<json::number_float_t>();
 
-					if (width > 0 && height > 0) 
+					if (width > 0 && height > 0) {
 						createBox(b2_staticBody, positionX, positionY, width, height, BOUNDARY, PLAYER | ENEMY_PLAYER);
+						mapGrid->setWall(sf::Vector2f(positionX, positionY + height / 2), sf::Vector2f(width, height));
+					}
 				}
 			}
 		}
 	}
 
+	mapGrid->initNeighbours();
 
 	lock.unlock();
 }

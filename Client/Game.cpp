@@ -24,8 +24,9 @@ Game::Game():
 
 	mStatisticsText.setFont(ResourceHolder<sf::Font>::instance()->get("Sansation.ttf"));
 	mStatisticsText.setPosition(5.f, 5.f);
-	mStatisticsText.setCharacterSize(12);
-	mStatisticsText.setFillColor(sf::Color::Blue);
+	mStatisticsText.setCharacterSize(16);
+	mStatisticsText.setOutlineColor(sf::Color::Magenta);
+	mStatisticsText.setFillColor(sf::Color::Magenta);
 	subscribe();
 }
 

@@ -154,7 +154,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MapContactListener.cpp" />
-    <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="PacketManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PMStatistics.cpp" />
@@ -200,7 +199,6 @@
     <ClInclude Include="LoginScene.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapContactListener.h" />
-    <ClInclude Include="Matrix.h" />
     <ClInclude Include="PacketManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PMStatistics.h" />
@@ -211,6 +209,7 @@
     <ClInclude Include="RunningAverage.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="sfLine.h" />
     <ClInclude Include="Subscriber.h" />
     <ClInclude Include="TileSetsHolder.h" />
     <ClInclude Include="VisibleObjectsCast.h" />

@@ -159,7 +159,7 @@ void Player::updateMovementAnimation() {
 }
 
 void Player::loadFromJson(json jsonData) {
-	id = jsonData["id"].get<json::number_integer_t>();
+	id = (int)jsonData["id"].get<json::number_integer_t>();
 	name = jsonData["name"].get<json::string_t>();
 	int type = (int)jsonData["type"].get<json::number_integer_t>();
 
@@ -229,4 +229,9 @@ b2Fixture * Player::getMelleRange() const
 void Player::setMelleRange(b2Fixture * fixture)
 {
 	melleRange = fixture;
+}
+
+bool Player::isControlledByPlayer() const
+{
+	return playerControlled;
 }

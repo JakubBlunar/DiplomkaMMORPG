@@ -6,7 +6,7 @@
 
 class Collider : public Entity {
 public:
-	explicit Collider(long long id);
+	explicit Collider(sf::Uint32 id);
 	~Collider();
 
 	void handleEvent(GameEvent* event) override;

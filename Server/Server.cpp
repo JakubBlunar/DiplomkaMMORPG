@@ -14,6 +14,8 @@
 #include "Map.h"
 #include "EventCharacterLogout.h"
 #include <SFML/Window/Keyboard.hpp>
+#include <SFML/Graphics/BlendMode.hpp>
+#include <cstdint>
 
 s::Server::Server(ServerSettings* settings):
 	running(false) {

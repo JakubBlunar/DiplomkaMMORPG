@@ -1,6 +1,7 @@
 #pragma once
 #include "Scene.h"
 #include "VisibleObjectsCast.h"
+#include "Astar.h"
 
 class GamePlayScene :
 	public Scene {
@@ -26,4 +27,8 @@ private:
 	bool drawDebugData;
 	bool fonePressed;
 	sf::Sprite Sprite;
+
+	std::list<sf::Vector2f> path;
+
+	bool mousePressed;
 };

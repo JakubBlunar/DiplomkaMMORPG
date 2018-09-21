@@ -135,9 +135,6 @@
     <ClCompile Include="FieldLayer.cpp">
       <Filter>Source Files\Core\Map</Filter>
     </ClCompile>
-    <ClCompile Include="Matrix.cpp">
-      <Filter>Source Files\Tools</Filter>
-    </ClCompile>
     <ClCompile Include="ResourceHolder.cpp">
       <Filter>Source Files\Tools</Filter>
     </ClCompile>
@@ -266,9 +263,6 @@
     <ClInclude Include="Field.h">
       <Filter>Header Files\Core\Map</Filter>
     </ClInclude>
-    <ClInclude Include="Matrix.h">
-      <Filter>Header Files\Tools</Filter>
-    </ClInclude>
     <ClInclude Include="RenderSprite.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
@@ -343,6 +337,9 @@
     </ClInclude>
     <ClInclude Include="MapContactListener.h">
       <Filter>Header Files\Core\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="sfLine.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

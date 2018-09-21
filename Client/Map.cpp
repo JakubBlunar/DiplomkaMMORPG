@@ -23,7 +23,7 @@ Map::~Map() {
 	entities.clear();
 	delete world;
 	delete fields;
-	
+
 
 }
 
@@ -101,52 +101,56 @@ b2World* Map::getB2World() const {
 	return world;
 }
 
+MapGrid* Map::getGrid() const {
+	return grid;
+}
+
 void Map::handleEvent(GameEvent* event) {
 	switch (event->getId()) {
-		case CHARACTER_MAP_JOIN: {
-			EventCharacterMapJoin* e = (EventCharacterMapJoin*) event;
-			if(e->mapId != id)
-				return;
+	case CHARACTER_MAP_JOIN: {
+		EventCharacterMapJoin* e = (EventCharacterMapJoin*)event;
+		if (e->mapId != id)
+			return;
 
-			json characterData = json::parse(e->characterData);
-			Player* p = new Player(false);
-			p->loadFromJson(characterData);
+		json characterData = json::parse(e->characterData);
+		Player* p = new Player(false);
+		p->loadFromJson(characterData);
 
-			auto exists = std::find_if(players.begin(), players.end(),
-			                              [=](Player* player)-> bool {
-				                              if (player->getId() == p->getId()) {
-					                              return true;
-				                              }
-				                              return false;
-			                              });
-			if(exists != players.end()) {
-				return;
-			}
-
-			addPlayer(p);
+		auto exists = std::find_if(players.begin(), players.end(),
+		                           [=](Player* player)-> bool {
+			                           if (player->getId() == p->getId()) {
+				                           return true;
+			                           }
+			                           return false;
+		                           });
+		if (exists != players.end()) {
+			return;
 		}
-		case CHARACTER_MAP_LEAVE: {
-			EventCharacterMapLeave* e = (EventCharacterMapLeave*) event;
-			if(e->mapId != id)
-				return;
 
-			auto exists = std::find_if(players.begin(), players.end(),
-			                              [=](Player* player)-> bool {
-				                              if (player->getId() == e->characterId) {
-					                              return true;
-				                              }
-				                              return false;
-			                              });
-			if(exists == players.end()) {
-				return;
-			}
+		addPlayer(p);
+	}
+	case CHARACTER_MAP_LEAVE: {
+		EventCharacterMapLeave* e = (EventCharacterMapLeave*)event;
+		if (e->mapId != id)
+			return;
 
-			Player* p = *exists;
-			removePlayer(p);
-			delete p;
+		auto exists = std::find_if(players.begin(), players.end(),
+		                           [=](Player* player)-> bool {
+			                           if (player->getId() == e->characterId) {
+				                           return true;
+			                           }
+			                           return false;
+		                           });
+		if (exists == players.end()) {
+			return;
 		}
-		default:
-			break;
+
+		Player* p = *exists;
+		removePlayer(p);
+		delete p;
+	}
+	default:
+		break;
 	}
 
 }
@@ -155,20 +159,26 @@ void Map::handleEvent(GameEvent* event) {
 void Map::addPlayer(Player* player) {
 	players.push_back(player);
 	entities.push_back(player);
+
+	if (player->isControlledByPlayer()) {
+		this->player = player;
+	}
+
 	sf::Vector2f position = player->getPosition();
 	sf::Vector2f size = player->getSize();
-	Box2DTools::addCircle(b2_dynamicBody, position.x, position.y, size.x, player, this, player->getEntityCategory(), player->getCollisionMask());
+	Box2DTools::addCircle(b2_dynamicBody, position.x, position.y, size.x, player, this, player->getEntityCategory(),
+	                      player->getCollisionMask());
 
 	b2Body* playerBody = player->getBody();
 
 	float radius = 32 * PIXTOMET;
 	b2Vec2 vertices[8];
-	vertices[0].Set(0,0);
+	vertices[0].Set(0, 0);
 	for (int i = 0; i < 7; i++) {
-		float angle = i / 6.0 * 180 * DEGTORAD;
-		vertices[i+1].Set( radius * cosf(angle), radius * sinf(angle) );
+		float angle = i / 6.0f * 180.f * DEGTORAD;
+		vertices[i + 1].Set(radius * cosf(angle), radius * sinf(angle));
 	}
-	
+
 	b2PolygonShape polygonShape;
 	polygonShape.Set(vertices, 8);
 
@@ -211,10 +221,12 @@ void Map::addGameObject(GameObject* gameObject) {
 	sf::Vector2f size = po->getSize();
 	BodyType bodyType = po->getBodyType();
 	if (bodyType == BodyType::RECTANGLE) {
-		Box2DTools::addBox(b2_kinematicBody, position.x, position.y, size.x, size.y, gameObject, this, gameObject->getEntityCategory(), gameObject->getCollisionMask());
+		Box2DTools::addBox(b2_kinematicBody, position.x, position.y, size.x, size.y, gameObject, this,
+		                   gameObject->getEntityCategory(), gameObject->getCollisionMask());
 	}
 	else {
-		Box2DTools::addCircle(b2_kinematicBody, position.x, position.y, size.x, gameObject, this, gameObject->getEntityCategory(), gameObject->getCollisionMask());
+		Box2DTools::addCircle(b2_kinematicBody, position.x, position.y, size.x, gameObject, this,
+		                      gameObject->getEntityCategory(), gameObject->getCollisionMask());
 	}
 }
 
@@ -229,10 +241,12 @@ void Map::addCollider(Collider* collider) {
 	sf::Vector2f size = po->getSize();
 	BodyType bodyType = po->getBodyType();
 	if (bodyType == BodyType::RECTANGLE) {
-		Box2DTools::addBox(b2_staticBody, position.x, position.y, size.x, size.y, collider, this, collider->getEntityCategory(), collider->getCollisionMask());
+		Box2DTools::addBox(b2_staticBody, position.x, position.y, size.x, size.y, collider, this,
+		                   collider->getEntityCategory(), collider->getCollisionMask());
 	}
 	else {
-		Box2DTools::addCircle(b2_staticBody, position.x, position.y, size.x, collider, this, collider->getEntityCategory(), collider->getCollisionMask());
+		Box2DTools::addCircle(b2_staticBody, position.x, position.y, size.x, collider, this, collider->getEntityCategory(),
+		                      collider->getCollisionMask());
 	}
 }
 
@@ -269,6 +283,8 @@ void Map::loadFromFile(int id) {
 			fields->set(i, j, new Field());
 		}
 	}
+
+	grid = new MapGrid(width * (int)FIELD_SIZE, height * (int)FIELD_SIZE);
 
 	Collider* collider = new Collider(-1);
 	PositionComponent* position = collider->getPositionComponent();
@@ -326,8 +342,8 @@ void Map::loadFromFile(int id) {
 		std::string layerName = layer["name"].get<json::string_t>();
 
 		if (layerType == "tilelayer") {
-			int width = (int) layer["width"].get<json::number_integer_t>();
-			int height = (int) layer["width"].get<json::number_integer_t>();
+			int width = (int)layer["width"].get<json::number_integer_t>();
+			int height = (int)layer["width"].get<json::number_integer_t>();
 
 			json data = layer["data"].get<json::array_t>();
 
@@ -338,15 +354,15 @@ void Map::loadFromFile(int id) {
 					int x = counter % width;
 					int y = counter / width;
 
-				
+
 					TileSet foundTileSet;
 					foundTileSet.valid = false;
 					foundTileSet.columns = 1;
 
 					int tilesetIdOffset = 0;
 
-					for (std::map<int, TileSet>::iterator tilesetIterator = tilesets.begin(); tilesetIterator != tilesets.end(); tilesetIterator++)
-					{
+					for (std::map<int, TileSet>::iterator tilesetIterator = tilesets.begin(); tilesetIterator != tilesets.end();
+					     tilesetIterator++) {
 						if (tilesetIdOffset <= value) {
 							if (value < tilesetIterator->first) {
 								break;
@@ -362,7 +378,8 @@ void Map::loadFromFile(int id) {
 						int tileY = value / foundTileSet.columns;
 
 						RenderSprite* sprite = new RenderSprite();
-						sprite->load(foundTileSet.path, sf::Vector2i((int)FIELD_SIZE, (int)FIELD_SIZE), sf::Vector2i((int)tileX * FIELD_SIZE, (int)tileY * FIELD_SIZE));
+						sprite->load(foundTileSet.path, sf::Vector2i((int)FIELD_SIZE, (int)FIELD_SIZE),
+						             sf::Vector2i(tileX * (int)FIELD_SIZE,tileY * (int)FIELD_SIZE));
 
 						fields->get(x, y)->addLayer(sprite);
 					}
@@ -375,33 +392,49 @@ void Map::loadFromFile(int id) {
 		if (layerType == "objectgroup" && layerName == "gameobjects") {
 			json gameObjects = layer["objects"].get<json::array_t>();
 
-			for (json::iterator gameObjectIterator = gameObjects.begin(); gameObjectIterator != gameObjects.end(); gameObjectIterator++) {
+			for (json::iterator gameObjectIterator = gameObjects.begin(); gameObjectIterator != gameObjects.end();
+			     gameObjectIterator++) {
 				json gameObject = *gameObjectIterator;
 
 				if (gameObject.count("point") && gameObject["point"].get<json::boolean_t>()) {
-						
+
 					string gameObjectType = gameObject["name"].get<json::string_t>();
-					float positionX = (float) gameObject["x"].get<json::number_float_t>();
-					float positionY = (float) gameObject["y"].get<json::number_float_t>();
+					float positionX = (float)gameObject["x"].get<json::number_float_t>();
+					float positionY = (float)gameObject["y"].get<json::number_float_t>();
 					if (!gameObjectType.empty()) {
-						GameObject * o = new GameObject(-1, gameObjectType);
-						o->getPositionComponent()->setPosition(sf::Vector2f(positionX, positionY));
+						GameObject* o = new GameObject(-1, gameObjectType);
+						PositionComponent* po = o->getPositionComponent();
+						po->setPosition(sf::Vector2f(positionX, positionY));
+
+						if (po->getBodyType() == BodyType::CIRCLE) {
+							grid->setWall(sf::Vector2f(positionX, positionY), sf::Vector2f(po->getSize().x, po->getSize().x));
+						}
+
+						if (po->getBodyType() == BodyType::RECTANGLE) {
+							grid->setWall(sf::Vector2f(positionX, positionY + po->getSize().y / 2), po->getSize());
+						}
+
+
 						addGameObject(o);
 					}
-				
 
-				} else {
-					float positionX = (float) gameObject["x"].get<json::number_float_t>();
-					float positionY = (float) gameObject["y"].get<json::number_float_t>();
-					float width = (float) gameObject["width"].get<json::number_float_t>();
-					float height = (float) gameObject["height"].get<json::number_float_t>();
+
+				}
+				else {
+					float positionX = (float)gameObject["x"].get<json::number_float_t>();
+					float positionY = (float)gameObject["y"].get<json::number_float_t>();
+					float width = (float)gameObject["width"].get<json::number_float_t>();
+					float height = (float)gameObject["height"].get<json::number_float_t>();
+
+					grid->setWall(sf::Vector2f(positionX, positionY + height / 2), sf::Vector2f(width, height));
 
 					if (width > 0 && height > 0) {
-						Collider * c = new Collider(-1);
-						c->getPositionComponent()->setPosition(sf::Vector2f(positionX + width /2, positionY + height /2));
+						Collider* c = new Collider(-1);
+						c->getPositionComponent()->setPosition(sf::Vector2f(positionX + width / 2, positionY + height / 2));
 						c->getPositionComponent()->setBodyType(BodyType::RECTANGLE);
 						c->getPositionComponent()->setSize(sf::Vector2f(width, height));
-						c->getPositionComponent()->setMovement(sf::Vector2f(0,0));
+						c->getPositionComponent()->setMovement(sf::Vector2f(0, 0));
+
 						addCollider(c);
 					}
 
@@ -414,11 +447,12 @@ void Map::loadFromFile(int id) {
 	contactListener = new MapContactListener();
 	world->SetContactListener(contactListener);
 
+	grid->initNeighbours();
+
 	subscribe();
 }
 
-void Map::subscribe()
-{
+void Map::subscribe() {
 	EventDispatcher<EventCharacterMapJoin>::addSubscriber(this);
 	EventDispatcher<EventCharacterMapLeave>::addSubscriber(this);
 }
@@ -426,4 +460,8 @@ void Map::subscribe()
 void Map::unsubscribe() {
 	EventDispatcher<EventCharacterMapJoin>::removeSubscriber(this);
 	EventDispatcher<EventCharacterMapLeave>::removeSubscriber(this);
+}
+
+Player* Map::getPlayer() const {
+	return player;
 }

@@ -36,6 +36,7 @@ public:
 
 	std::list<Entity*> melleRangeEntities;
 	std::list<Entity*> melleViewEntities;
+	bool isControlledByPlayer() const;
 private:
 	bool playerControlled;
 	PositionComponent* positionComponent;

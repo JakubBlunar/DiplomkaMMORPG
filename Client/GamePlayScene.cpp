@@ -7,6 +7,8 @@
 #include "VisibleObjectsCast.h"
 #include "Globals.h"
 #include <iostream>
+#include "Astar.h"
+#include "sfLine.h"
 
 GamePlayScene::GamePlayScene(SceneType sceneType) : Scene(sceneType) {
 	escPressed = false;
@@ -111,6 +113,84 @@ void GamePlayScene::render(Game* g) {
 			}
 		}
 	}
+
+	if(drawDebugData) {
+		MapGrid* mapGrid = map->getGrid();
+
+		if(g->window.hasFocus()) {
+			if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+				if(!mousePressed) {
+					sf::Vector2i mousePos = sf::Mouse::getPosition(g->window);
+
+					int mouseX = (int)offset.x + mousePos.x;
+					int mouseY = (int)offset.y + mousePos.y;
+
+					Player* player = map->getPlayer();
+					
+					sf::Vector2f pathFindingFrom = sf::Vector2f(24, 24);
+					if (player) {
+						sf::Vector2f playerSize = player->getSize();
+						pathFindingFrom = player->getPosition();
+						pathFindingFrom.x += playerSize.x / 2;
+						pathFindingFrom.y += playerSize.y / 2;
+					}
+					Astar astar(mapGrid);
+					int res = astar.findPath(pathFindingFrom, sf::Vector2f((float)mouseX, (float)mouseY)); 
+					if (res == 1) {
+						path = astar.path;
+					}
+				}
+				mousePressed = true;
+				
+			} else {
+				mousePressed = false;
+			}
+			
+		}
+		
+
+		
+		if (mapGrid) {
+			sf::CircleShape shape(4);
+			shape.setOrigin(2, 2);
+
+			fromX = mapGrid->transformXToGrid(offset.x);
+			fromY = mapGrid->transformYToGrid(offset.y);
+
+			toX = (int)ceil(mapGrid->transformXToGrid(offset.x + resolution.x));
+			toY = (int)ceil(mapGrid->transformYToGrid(offset.y + resolution.y));
+
+			for (int i = fromX; i < toX; i++) {
+				for(int j = fromY; j < toY; j++) {
+					MapGridSpot* spot = mapGrid->grid->get(i, j);
+					if(spot) {
+						if (spot->isWall()) {
+							shape.setFillColor(sf::Color::Black);
+						}else {
+							shape.setFillColor(sf::Color::White);
+						}
+						shape.setPosition((float)spot->positionX, (float)spot->positionY);
+						g->window.draw(shape);
+					}
+
+				}
+			}
+
+			for (std::list<sf::Vector2f>::const_iterator it = path.begin(); it != path.end(); it++)
+			{
+				if(std::next(it) != path.end()) {
+
+					sfLine line(sf::Vector2f(it->x, it->y), sf::Vector2f(next(it)->x, next(it)->y));
+					line.color = sf::Color::Red;
+					line.thickness = 3;
+					g->window.draw(line);
+				}
+
+			}
+
+		}
+	}
+
 
 	b2World* w = map->getB2World();
 

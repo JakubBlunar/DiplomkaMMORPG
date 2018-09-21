@@ -12,7 +12,8 @@
 #include "Globals.h"
 #include <Box2D/Box2D.h>
 #include "b2GLDraw.h"
-
+#include "MapGrid.h"
+#include "Astar.h"
 
 void CreateGround(b2World& World, float X, float Y);
 void CreateBox(b2World& World, int MouseX, int MouseY);
@@ -143,18 +144,29 @@ bool initSettings() {
 	return true;
 }
 
-class MovementChangeWriter : public Subscriber {
-	void handleEvent(GameEvent* event) override;
-
-};
-
-void MovementChangeWriter::handleEvent(GameEvent* event) {
-	EventMovementChange* e = (EventMovementChange *)event;
-	std::cout << "Handling event with id= " << std::to_string(event->getId()) << " [" << e->velX << "," << e->velY << "]"
-		<< std::endl;
-}
 
 int main() {
+
+	/*
+	MapGrid mapGrid(150, 150);
+	mapGrid.setWall(sf::Vector2f(9, 9), sf::Vector2f(20, 20));
+	mapGrid.initNeighbours();
+	Astar a(&mapGrid);
+
+	for (int i = 0; i < 100; i++) {
+		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+
+
+		a.findPath(sf::Vector2f(26, 32), sf::Vector2f(140, 140));
+
+		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+		std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << std
+			::endl;
+	}
+
+	system("pause");
+	return EXIT_SUCCESS;*/
+
 	std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 	if (!initSettings()) {
 		system("pause");
