@@ -17,8 +17,6 @@ GamePlayScene::GamePlayScene(SceneType sceneType) : Scene(sceneType), mousePress
 
 	windowManager->addWindow("GameMenu", new IGGameMenu());
 
-	BoxTexture.loadFromFile("box.png");
-	BoxTexture.setSmooth(true);
 	mFont = ResourceHolder<sf::Font>::instance()->get("Sansation.ttf");
 
 	nameOfScene.setString("Game play screen");
@@ -26,9 +24,6 @@ GamePlayScene::GamePlayScene(SceneType sceneType) : Scene(sceneType), mousePress
 	nameOfScene.setPosition(50, 50);
 	nameOfScene.setCharacterSize(20);
 	nameOfScene.setFillColor(sf::Color::Black);
-
-	Sprite.setTexture(BoxTexture);
-	Sprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
 }
 
 

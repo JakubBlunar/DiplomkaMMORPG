@@ -88,6 +88,9 @@
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
     </Bscmake>
+    <PostBuildEvent>
+      <Command>xcopy "$(ProjectDir)Data" "$(SolutionDir)Debug\Data" /Y /I /E</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -130,6 +133,8 @@
     <ClCompile Include="AnimatedSprite.cpp" />
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="b2GLDraw.cpp" />
+    <ClCompile Include="BotCommand.cpp" />
+    <ClCompile Include="BotCommandMoveTo.cpp" />
     <ClCompile Include="BotGame.cpp" />
     <ClCompile Include="Box2DTools.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -164,6 +169,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PMStatistics.cpp" />
     <ClCompile Include="PositionComponent.cpp" />
+    <ClCompile Include="Random.cpp" />
     <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="RenderSprite.cpp" />
     <ClCompile Include="ResourceHolder.cpp" />
@@ -177,6 +183,8 @@
     <ClInclude Include="AnimatedSprite.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="b2GLDraw.h" />
+    <ClInclude Include="BotCommand.h" />
+    <ClInclude Include="BotCommandMoveTo.h" />
     <ClInclude Include="BotGame.h" />
     <ClInclude Include="Box2DTools.h" />
     <ClInclude Include="Camera.h" />
@@ -211,6 +219,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PMStatistics.h" />
     <ClInclude Include="PositionComponent.h" />
+    <ClInclude Include="Random.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="RenderSprite.h" />
     <ClInclude Include="ResourceHolder.h" />

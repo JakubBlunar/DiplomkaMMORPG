@@ -37,15 +37,23 @@ public:
 	std::list<Entity*> melleRangeEntities;
 	std::list<Entity*> melleViewEntities;
 	bool isControlledByPlayer() const;
+
+	void setMovementDirection(sf::Vector2f direction, Game* g);
+
+	PositionComponent* positionComponent;
 private:
 	bool playerControlled;
-	PositionComponent* positionComponent;
 	RenderComponent* renderComponent;
 
 	b2Fixture* melleView;
 	b2Fixture* melleRange;
 
 	sf::Vector2f lastMovement;
+	sf::Time sendingTime;
+
+	sf::Time lastSendedMovementTime;
+
+	void sendPosition(Game* g) const;
 };
 
 #endif

@@ -16,6 +16,7 @@
 #include "Astar.h"
 #include "BotGame.h"
 
+/*
 void CreateGround(b2World& World, float X, float Y);
 void CreateBox(b2World& World, int MouseX, int MouseY);
 
@@ -121,7 +122,7 @@ void CreateGround(b2World& World, float X, float Y) {
 	FixtureDef.shape = &Shape;
 	Body->CreateFixture(&FixtureDef);
 }
-
+*/
 using namespace std;
 
 bool initSettings() {

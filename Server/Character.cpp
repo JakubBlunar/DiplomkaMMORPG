@@ -84,7 +84,7 @@ s::Character* s::Character::getCharacterById(int characterId) {
 	character->mapId = std::stoi(row[4]);
 	character->position = sf::Vector2f(std::stof(row[5]), std::stof(row[6]));
 	character->movement = sf::Vector2f(0, 0);
-	character->speed = 500;
+	character->speed = 48;
 	
 	mysql_free_result(res);
 

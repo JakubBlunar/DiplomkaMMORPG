@@ -1,7 +1,8 @@
 #ifndef BOT_GAME_H
 #define BOT_GAME_H
 
-#include "../Client/Game.h"
+#include "Game.h"
+#include "BotCommand.h"
 
 class BotGame: public Game
 {
@@ -15,6 +16,8 @@ private:
 	void afterStart() override;
 
 	void botUpdatePlayer();
+
+	BotCommand* botCommand;
 };
 
 #endif

@@ -70,6 +70,18 @@
     <Filter Include="Source Files\Entities\Components">
       <UniqueIdentifier>{135a0ed8-9e69-43ad-8eda-cddf5dbb06f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Bot">
+      <UniqueIdentifier>{a241710f-cb43-4598-87b2-d642ca1a082f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Bot">
+      <UniqueIdentifier>{1bbfb790-255d-4c79-8517-0a0ad97a92b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Bot\Botcommands">
+      <UniqueIdentifier>{96a02e2a-2c67-4b76-a9bc-f0df0946e18a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Bot\Botcommends">
+      <UniqueIdentifier>{b3a412a2-874a-4883-8741-5d44bc69eae7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -205,7 +217,16 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BotGame.cpp">
+      <Filter>Source Files\Bot</Filter>
+    </ClCompile>
+    <ClCompile Include="BotCommand.cpp">
+      <Filter>Source Files\Bot\Botcommands</Filter>
+    </ClCompile>
+    <ClCompile Include="Random.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BotCommandMoveTo.cpp">
+      <Filter>Source Files\Bot\Botcommands</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -351,7 +372,16 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BotGame.h">
+      <Filter>Header Files\Bot</Filter>
+    </ClInclude>
+    <ClInclude Include="BotCommand.h">
+      <Filter>Header Files\Bot\Botcommends</Filter>
+    </ClInclude>
+    <ClInclude Include="Random.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BotCommandMoveTo.h">
+      <Filter>Header Files\Bot\Botcommends</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

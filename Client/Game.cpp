@@ -57,10 +57,11 @@ void Game::run() {
 		timeSinceLastUpdate += elapsedTime;
 		while (timeSinceLastUpdate > TimePerFrame) {
 			timeSinceLastUpdate -= TimePerFrame;
-
 			processEvents();
-			update(elapsedTime);
 		}
+		
+		update(elapsedTime);
+
 		ImGui::SFML::Update(*window, timeSinceLastUpdate);
 
 		updateStatistics(elapsedTime);
