@@ -62,44 +62,47 @@ void Player::update(sf::Time elapsedTime, Map* map, Game* g) {
 
 	//cout << "VIEW: " << melleViewEntities.size() << " RANGE:" << melleRangeEntities.size() << endl;
 
-	if (this->playerControlled && g->window.hasFocus()) {
-		sf::Vector2f direction = sf::Vector2f(0.f, 0.f);
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-			direction.y -= 1;
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-			direction.y += 1;
-		}
+	if (g->window) {
+		if (this->playerControlled && g->window->hasFocus()) {
+			sf::Vector2f direction = sf::Vector2f(0.f, 0.f);
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+				direction.y -= 1;
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+				direction.y += 1;
+			}
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-			direction.x -= 1;
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-			direction.x += 1;
-		}
-		positionComponent->setMovementDirection(direction);
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+				direction.x -= 1;
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+				direction.x += 1;
+			}
+			positionComponent->setMovementDirection(direction);
 
-		sf::Vector2f movement = positionComponent->getMovement();
-		if (lastMovement != movement) {
-			updateMovementAnimation();
-			lastMovement = movement;
-			body->SetLinearVelocity(b2Vec2(movement.x * PIXTOMET, movement.y * PIXTOMET));
+			sf::Vector2f movement = positionComponent->getMovement();
+			if (lastMovement != movement) {
+				updateMovementAnimation();
+				lastMovement = movement;
+				body->SetLinearVelocity(b2Vec2(movement.x * PIXTOMET, movement.y * PIXTOMET));
 
-			sf::Vector2f position = positionComponent->getPosition();
-			EventMovementChange e;
-			e.playerId = id;
-			e.x = position.x;
-			e.y = position.y;
-			e.velX = movement.x;
-			e.velY = movement.y;
-			e.speed = positionComponent->getSpeed();
+				sf::Vector2f position = positionComponent->getPosition();
+				EventMovementChange e;
+				e.playerId = id;
+				e.x = position.x;
+				e.y = position.y;
+				e.velX = movement.x;
+				e.velY = movement.y;
+				e.speed = positionComponent->getSpeed();
 
-			sf::Packet* packet = e.toPacket();
-			g->packet_manager->sendPacket(packet);
+				sf::Packet* packet = e.toPacket();
+				g->packet_manager->sendPacket(packet);
 
-			delete packet;
+				delete packet;
+			}
 		}
 	}
+	
 }
 
 EntityType Player::getType() {

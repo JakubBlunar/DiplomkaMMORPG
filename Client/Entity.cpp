@@ -1,7 +1,6 @@
 #include "Entity.h"
 #include "PositionComponent.h"
 
-
 Entity::Entity(sf::Uint32 id): body(nullptr) {
 	this->id = id;
 }

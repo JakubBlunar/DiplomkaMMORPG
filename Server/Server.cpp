@@ -16,6 +16,7 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Graphics/BlendMode.hpp>
 #include <cstdint>
+#include "NpcHolder.h"
 
 s::Server::Server(ServerSettings* settings):
 	running(false) {
@@ -44,6 +45,7 @@ void s::Server::init() {
 	}
 
 	mapsManager.init();
+	NpcHolder::instance()->init();
 
 	managers.push_back(&authManager);
 	managers.push_back(&mapsManager);

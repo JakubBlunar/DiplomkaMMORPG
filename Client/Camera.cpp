@@ -79,7 +79,7 @@ void Camera::update(sf::Time elapsedTime, Game* g) {
 			lastView = viewPort;
 			view.reset(viewPort);
 			view.zoom(scale);
-			g->window.setView(view);
+			g->window->setView(view);
 		}
 	}
 	else {
@@ -89,7 +89,7 @@ void Camera::update(sf::Time elapsedTime, Game* g) {
 			std::cout << "Viewport changed" << std::endl;
 			lastView = viewPort;
 			view.reset(viewPort);
-			g->window.setView(view);
+			g->window->setView(view);
 		}
 
 	}
@@ -109,7 +109,7 @@ void Camera::adjustScale(float delta, Game* g) {
 	}
 	view.reset(sf::FloatRect(offset, resolution));
 	view.zoom(scale);
-	g->window.setView(view);
+	g->window->setView(view);
 }
 
 void Camera::adjustRotation(float delta, Game* g) {
@@ -123,7 +123,7 @@ void Camera::adjustRotation(float delta, Game* g) {
 	}
 	rotation += delta;
 	view.setRotation(rotation);
-	g->window.setView(view);
+	g->window->setView(view);
 }
 
 sf::Vector2f Camera::getResolution() const {

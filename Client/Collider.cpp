@@ -28,5 +28,5 @@ PositionComponent* Collider::getPositionComponent() const {
 }
 
 uint16 Collider::getCollisionMask() {
-	return PLAYER | ENEMY_PLAYER;
+	return PLAYER | ENEMY_PLAYER | NPC;
 }

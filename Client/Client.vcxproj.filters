@@ -201,6 +201,12 @@
     <ClCompile Include="MapContactListener.cpp">
       <Filter>Source Files\Core\Map</Filter>
     </ClCompile>
+    <ClCompile Include="Npc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BotGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="json.hpp">
@@ -339,6 +345,12 @@
       <Filter>Header Files\Core\Map</Filter>
     </ClInclude>
     <ClInclude Include="sfLine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Npc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BotGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

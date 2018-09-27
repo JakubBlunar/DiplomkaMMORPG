@@ -30,7 +30,7 @@ void IGAvailableCharacters::render(Game* g, IGManager* manager) {
 		break;
 	}*/
 
-	sf::Vector2u renderWindowSize = g->window.getSize();
+	sf::Vector2u renderWindowSize = g->window->getSize();
 
 	sf::Vector2f windowSize = sf::Vector2f(renderWindowSize.x * 0.94f, renderWindowSize.y * 0.8f);
 	ImGui::SetNextWindowSize(windowSize, ImGuiCond_Always);

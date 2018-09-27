@@ -21,7 +21,7 @@ void CharacterChooseScene::update(Game* g, sf::Time elapsedTime) {
 }
 
 void CharacterChooseScene::render(Game* g) {
-	g->window.clear(sf::Color::Green);
+	g->window->clear(sf::Color::Green);
 
 	Scene::render(g);
 }

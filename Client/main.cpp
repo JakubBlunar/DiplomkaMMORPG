@@ -14,6 +14,7 @@
 #include "b2GLDraw.h"
 #include "MapGrid.h"
 #include "Astar.h"
+#include "BotGame.h"
 
 void CreateGround(b2World& World, float X, float Y);
 void CreateBox(b2World& World, int MouseX, int MouseY);
@@ -145,7 +146,15 @@ bool initSettings() {
 }
 
 
-int main() {
+int main(int argc, char* argv[]) {
+	bool bot = false;
+
+	for(int i = 0; i < argc; ++i) {
+        string arg = argv[i];
+		if(arg == "bot") {
+			bot = true;
+		}
+    }
 
 	/*
 	MapGrid mapGrid(150, 150);
@@ -173,7 +182,13 @@ int main() {
 		return EXIT_FAILURE;
 	}
 
-	Game* g = new Game();
+	
+	Game* g;
+	if (bot) {
+		g = new BotGame();
+	} else {
+		g = new Game();
+	}
 
 	g->run();
 	return EXIT_SUCCESS;

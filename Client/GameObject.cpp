@@ -94,5 +94,5 @@ EntityCategory GameObject::getEntityCategory() {
 }
 
 uint16 GameObject::getCollisionMask() {
-	return PLAYER | ENEMY_PLAYER | PLAYER_SENSOR;
+	return PLAYER | ENEMY_PLAYER | PLAYER_SENSOR | NPC;
 }

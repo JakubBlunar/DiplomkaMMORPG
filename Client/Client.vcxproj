@@ -76,14 +76,18 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)/ExternalLibraries/Box2D/include;$(SolutionDir)/ExternalLibraries/SFML/include;$(SolutionDir)/ExternalLibraries/Imgui;$(SolutionDir)/ExternalLibraries/MysqlConnector/include;E:\boost_1_66_0;$(SolutionDir)/Shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)/ExternalLibraries/Box2D/include;$(SolutionDir)/ExternalLibraries/SFML/include;$(SolutionDir)/ExternalLibraries/Imgui;$(SolutionDir)/ExternalLibraries/MysqlConnector/include;$(SolutionDir)/Shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp14</LanguageStandard>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)/ExternalLibraries/Box2D/lib;$(SolutionDir)/ExternalLibraries/SFML/lib/Debug;$(SolutionDir)/ExternalLibraries/MysqlConnector/lib;E:\boost_1_66_0\stage\win32\lib;$(SolutionDir)/Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)/ExternalLibraries/Box2D/lib;$(SolutionDir)/ExternalLibraries/SFML/lib/Debug;$(SolutionDir)/ExternalLibraries/MysqlConnector/lib;$(SolutionDir)/Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-main-d.lib;sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;sfml-audio-d.lib;sfml-network-d.lib;opengl32.lib;Box2D.lib;Shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -126,6 +130,7 @@
     <ClCompile Include="AnimatedSprite.cpp" />
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="b2GLDraw.cpp" />
+    <ClCompile Include="BotGame.cpp" />
     <ClCompile Include="Box2DTools.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CharacterChooseScene.cpp" />
@@ -154,6 +159,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MapContactListener.cpp" />
+    <ClCompile Include="Npc.cpp" />
     <ClCompile Include="PacketManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PMStatistics.cpp" />
@@ -171,6 +177,7 @@
     <ClInclude Include="AnimatedSprite.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="b2GLDraw.h" />
+    <ClInclude Include="BotGame.h" />
     <ClInclude Include="Box2DTools.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CharacterChooseScene.h" />
@@ -199,6 +206,7 @@
     <ClInclude Include="LoginScene.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapContactListener.h" />
+    <ClInclude Include="Npc.h" />
     <ClInclude Include="PacketManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PMStatistics.h" />

@@ -8,6 +8,7 @@
 #include "EntityConstants.h"
 #include "EventCharacterMapJoin.h"
 #include "EventCharacterMapLeave.h"
+#include "Npc.h"
 
 s::Map::Map(): id(0) {
 }
@@ -55,6 +56,33 @@ void s::Map::removeCharacter(Character* character) {
 	lock.unlock();
 }
 
+void s::Map::addNpc(Npc * npc)
+{
+	lock.lock();
+	sf::Vector2f position = npc->getPosition();
+
+	b2Body* npcBody = createCircle(b2_kinematicBody, position.x, position.y, FIELD_SIZE / 2, NPC, GAME_OBJECT | BOUNDARY);
+	npc->setBody(npcBody);
+	npc->setMap(this);
+
+	npcs.push_back(npc);
+	lock.unlock();
+}
+
+void s::Map::removeNpc(Npc * npc)
+{
+	lock.lock();
+	auto body = npc->getBody();
+	if (body) {
+		world->DestroyBody(body);
+		npc->setBody(nullptr);
+	}
+
+
+	npcs.remove(npc);
+	lock.unlock();
+}
+
 void s::Map::update(sf::Time deltaTime, Server* s) {
 	lock.lock();
 	world->Step(deltaTime.asSeconds(), 5, 2);
@@ -95,10 +123,10 @@ void s::Map::loadFromJson(std::string path) {
 	world->SetAllowSleeping(true);
 
 
-	createBox(b2_staticBody, 0, -2, width * FIELD_SIZE, 2, BOUNDARY, PLAYER);
-	createBox(b2_staticBody, -2, 0, 2, FIELD_SIZE * height, BOUNDARY, PLAYER);
-	createBox(b2_staticBody, width * FIELD_SIZE, 0, 2, FIELD_SIZE * height, BOUNDARY, PLAYER);
-	createBox(b2_staticBody, 0, height * FIELD_SIZE, FIELD_SIZE * width, 2, BOUNDARY, PLAYER);
+	createBox(b2_staticBody, 0, -2, width * FIELD_SIZE, 2, BOUNDARY, PLAYER | NPC);
+	createBox(b2_staticBody, -2, 0, 2, FIELD_SIZE * height, BOUNDARY, PLAYER | NPC);
+	createBox(b2_staticBody, width * FIELD_SIZE, 0, 2, FIELD_SIZE * height, BOUNDARY, PLAYER | NPC);
+	createBox(b2_staticBody, 0, height * FIELD_SIZE, FIELD_SIZE * width, 2, BOUNDARY, PLAYER | NPC);
 
 	json layers = mapData["layers"].get<json::array_t>();
 	for (json::iterator layerIterator = layers.begin(); layerIterator != layers.end(); layerIterator++) {
@@ -129,11 +157,11 @@ void s::Map::loadFromJson(std::string path) {
 							float height = (float)position["height"].get<json::number_float_t>();
 
 							if (bodyType == BodyType::RECTANGLE) {
-								createBox(b2_staticBody, positionX, positionY, width, height, GAME_OBJECT, PLAYER | ENEMY_PLAYER);
+								createBox(b2_staticBody, positionX, positionY, width, height, GAME_OBJECT, PLAYER | ENEMY_PLAYER | NPC);
 								mapGrid->setWall(sf::Vector2f(positionX, positionY + height / 2), sf::Vector2f(width, height));
 							}
 							if (bodyType == BodyType::CIRCLE) {
-								createCircle(b2_staticBody, positionX, positionY, width, GAME_OBJECT, PLAYER | ENEMY_PLAYER);
+								createCircle(b2_staticBody, positionX, positionY, width, GAME_OBJECT, PLAYER | ENEMY_PLAYER | NPC);
 								mapGrid->setWall(sf::Vector2f(positionX, positionY), sf::Vector2f(width, width));
 							}
 						
@@ -148,7 +176,7 @@ void s::Map::loadFromJson(std::string path) {
 					float height = (float) gameObject["height"].get<json::number_float_t>();
 
 					if (width > 0 && height > 0) {
-						createBox(b2_staticBody, positionX, positionY, width, height, BOUNDARY, PLAYER | ENEMY_PLAYER);
+						createBox(b2_staticBody, positionX, positionY, width, height, BOUNDARY, PLAYER | ENEMY_PLAYER | NPC);
 						mapGrid->setWall(sf::Vector2f(positionX, positionY + height / 2), sf::Vector2f(width, height));
 					}
 				}

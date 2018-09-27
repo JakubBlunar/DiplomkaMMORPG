@@ -108,8 +108,8 @@ void IGGameMenu::render(Game* g, IGManager* manager) {
 void IGGameMenu::beforeRender(Game* game) {
 	IGWindow::beforeRender(game);
 
-	float left = game->window.getView().getViewport().left + game->window.getView().getViewport().width / 2.0f;
-	float top = game->window.getView().getViewport().top + game->window.getView().getViewport().height / 2.0f;
+	float left = game->window->getView().getViewport().left + game->window->getView().getViewport().width / 2.0f;
+	float top = game->window->getView().getViewport().top + game->window->getView().getViewport().height / 2.0f;
 	setPosition(sf::Vector2f(left, top), true);
 
 }

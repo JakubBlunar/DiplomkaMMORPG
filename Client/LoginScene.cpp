@@ -31,7 +31,7 @@ void LoginScene::update(Game* g, sf::Time elapsedTime) {
 }
 
 void LoginScene::render(Game* g) {
-	g->window.clear(sf::Color::Green);
+	g->window->clear(sf::Color::Green);
 
 	Scene::render(g);
 }

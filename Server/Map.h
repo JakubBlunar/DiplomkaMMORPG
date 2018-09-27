@@ -7,11 +7,13 @@
 #include "MapGrid.h"
 
 namespace s {
+	class Npc;
+
 	class Map {
 		int id;
 		b2World* world;
 		std::vector<Character *> characters;
-
+		std::list<Npc*> npcs;
 		int width, height;
 		sf::Mutex lock;
 
@@ -25,6 +27,9 @@ namespace s {
 
 		void addCharacter(Character* character);
 		void removeCharacter(Character* character);
+
+		void addNpc(Npc* npc);
+		void removeNpc(Npc* npc);
 
 		void update(sf::Time deltaTime, Server* s);
 

@@ -257,7 +257,7 @@ void Map::removeGameObject(GameObject* gameObject) {
 }
 
 void Map::loadFromFile(int id) {
-	debugDrawInstance = new SFMLDebugDraw(game->window);
+	debugDrawInstance = new SFMLDebugDraw(*game->window);
 	world = new b2World(b2Vec2(0.f, 0.f));
 	world->SetAllowSleeping(true);
 

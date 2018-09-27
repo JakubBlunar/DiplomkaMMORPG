@@ -13,14 +13,14 @@
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 
 Game::Game():
-	window(sf::VideoMode(1360, 768), "SFML Application", sf::Style::Resize | sf::Style::Close),
 	mStatisticsNumFrames(0) {
+	
 	this->packet_manager = new PacketManager(this);
 	this->sceneManager = new SceneManager();
 	this->keyboardManager = new KeyboardManager();
 	this->eventActions = new ClientEventActions(this);
 
-	window.setFramerateLimit(60);
+	
 
 	mStatisticsText.setFont(ResourceHolder<sf::Font>::instance()->get("Sansation.ttf"));
 	mStatisticsText.setPosition(5.f, 5.f);
@@ -32,9 +32,10 @@ Game::Game():
 
 void Game::run() {
 	running = true;
-
-	window.setVerticalSyncEnabled(true);
-	ImGui::SFML::Init(window, false);
+	window = new sf::RenderWindow(sf::VideoMode(1360, 768), "SFML Application", sf::Style::Resize | sf::Style::Close),
+	window->setFramerateLimit(60);
+	window->setVerticalSyncEnabled(true);
+	ImGui::SFML::Init(*window, false);
 
 	ImGuiIO& io = ImGui::GetIO();
 	io.Fonts->Clear(); // clear fonts if you loaded some before (even if only default one was loaded)
@@ -42,14 +43,16 @@ void Game::run() {
 
 	ImGui::SFML::UpdateFontTexture();
 
-	window.resetGLStates();
+	window->resetGLStates();
 
 	recieveThread = new sf::Thread(&PacketManager::startRecieve, packet_manager);
 	recieveThread->launch();
 
+	afterStart();
+
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
-	while (window.isOpen() && running) {
+	while (window->isOpen() && running) {
 		const sf::Time elapsedTime = clock.restart();
 		timeSinceLastUpdate += elapsedTime;
 		while (timeSinceLastUpdate > TimePerFrame) {
@@ -58,7 +61,7 @@ void Game::run() {
 			processEvents();
 			update(elapsedTime);
 		}
-		ImGui::SFML::Update(window, timeSinceLastUpdate);
+		ImGui::SFML::Update(*window, timeSinceLastUpdate);
 
 		updateStatistics(elapsedTime);
 		render();
@@ -95,10 +98,10 @@ void Game::handleEvent(GameEvent* event) {
 void Game::processEvents() {
 
 	sf::Event event;
-	while (window.pollEvent(event)) {
+	while (window->pollEvent(event)) {
 		if (event.type == sf::Event::Closed) {
 			running = false;
-			window.close();
+			window->close();
 			break;
 		}
 
@@ -117,7 +120,7 @@ void Game::processEvents() {
 			keyboardManager->handlePlayerInput(event.key.code, false);
 			break;
 		case sf::Event::Resized:
-			window.setView(*camera.getView());
+			window->setView(*camera.getView());
 			break;
 		case sf::Event::MouseWheelScrolled:
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl)) {
@@ -142,22 +145,24 @@ void Game::update(sf::Time elapsedTime) {
 }
 
 void Game::render() {
-	window.clear();
+	window->clear();
 
-	if(true || window.hasFocus()) {
+	if(true || window->hasFocus()) {
 		sceneManager->render(this);
 	}
 
-	ImGui::SFML::Render(window);
+	ImGui::SFML::Render(*window);
 
-	if (window.hasFocus()) {
+	if (window->hasFocus()) {
 		sf::Vector2f cameraOffset = camera.getOffset();
 		mStatisticsText.setPosition(cameraOffset.x + 5, cameraOffset.y + 5);
-		window.draw(mStatisticsText);
+		window->draw(mStatisticsText);
 	}
 
-	window.display();
+	window->display();
 }
+
+void Game::afterStart() {}
 
 void Game::updateStatistics(const sf::Time elapsedTime) {
 	mStatisticsUpdateTime += elapsedTime;

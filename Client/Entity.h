@@ -13,6 +13,7 @@ enum class EntityType {
 	PLAYER,
 	GAMEOBJECT,
 	COLLIDER,
+	NPC
 };
 
 class Entity : public Subscriber {
@@ -31,7 +32,6 @@ public:
 	sf::Vector2f getPosition() const;
 	sf::Vector2f getSize() const;
 	uint32 getId() const;
-
 protected:
 	Entity(sf::Uint32 id);
 	std::vector<Component *> components;

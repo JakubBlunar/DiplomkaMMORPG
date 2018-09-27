@@ -58,22 +58,25 @@ void s::ServerTasks::fetchOnline() {
 			Account* account = session->getAccount();
 			if (account) {
 				Character* ch = account->getCharacter();
-				if(ch->faction == CharacterFaction::DARK) {
-					darkFactionCount++;
-				}
-				if(ch->faction == CharacterFaction::LIGHT) {
-					lightFactionCount++;
-				}
-				totalCount++;
+				if(ch) {
+					if(ch->faction == CharacterFaction::DARK) {
+						darkFactionCount++;
+					}
+					if(ch->faction == CharacterFaction::LIGHT) {
+						lightFactionCount++;
+					}
+					totalCount++;
 
-				std::string query = "INSERT INTO onlinePlayers(`id`, `createdAt`, `updatedAt`, `accountId`, `characterId`) VALUES(";
-				query.append(Database::escapeString(std::to_string(ch->id) + ", "));
-				query.append(Database::escapeString("NOW(), NOW(), "));
-				query.append(Database::escapeString(std::to_string(account->id) + ", "));
-				query.append(Database::escapeString(std::to_string(ch->id)));
-				query.append(");");
+					std::string query = "INSERT INTO onlinePlayers(`id`, `createdAt`, `updatedAt`, `accountId`, `characterId`) VALUES(";
+					query.append(Database::escapeString(std::to_string(ch->id) + ", "));
+					query.append(Database::escapeString("NOW(), NOW(), "));
+					query.append(Database::escapeString(std::to_string(account->id) + ", "));
+					query.append(Database::escapeString(std::to_string(ch->id)));
+					query.append(");");
 
-				database->executeQuery(query);
+					database->executeQuery(query);
+				}
+			
 			}
 		});
 
@@ -102,6 +105,6 @@ void s::ServerTasks::saveCharacters() {
 		});
 		spdlog::get("log")->info("Saving characters done");
 
-		sf::sleep(sf::seconds(120));
+		sleep(sf::seconds(120));
 	}
 }

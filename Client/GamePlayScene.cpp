@@ -10,7 +10,7 @@
 #include "Astar.h"
 #include "sfLine.h"
 
-GamePlayScene::GamePlayScene(SceneType sceneType) : Scene(sceneType) {
+GamePlayScene::GamePlayScene(SceneType sceneType) : Scene(sceneType), mousePressed(false) {
 	escPressed = false;
 	fonePressed = false;
 	drawDebugData = true;
@@ -50,29 +50,32 @@ void GamePlayScene::update(Game* g, sf::Time elapsedTime) {
 		map->update(elapsedTime, g);
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape) && g->window.hasFocus()) {
-		if (!escPressed) {
-			if (windowManager->isVisible("GameMenu"))
-				windowManager->close("GameMenu");
-			else
-				windowManager->Open("GameMenu");
+	if(g->window) {
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape) && g->window->hasFocus()) {
+			if (!escPressed) {
+				if (windowManager->isVisible("GameMenu"))
+					windowManager->close("GameMenu");
+				else
+					windowManager->Open("GameMenu");
+			}
+			escPressed = true;
 		}
-		escPressed = true;
-	}
-	else
-		escPressed = false;
+		else
+			escPressed = false;
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F1) && g->window.hasFocus()) {
-		if (!fonePressed)
-			drawDebugData = !drawDebugData;
-		fonePressed = true;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F1) && g->window->hasFocus()) {
+			if (!fonePressed)
+				drawDebugData = !drawDebugData;
+			fonePressed = true;
+		}
+		else
+			fonePressed = false;
 	}
-	else
-		fonePressed = false;
+	
 }
 
 void GamePlayScene::render(Game* g) {
-	g->window.clear(sf::Color(220, 220, 220));
+	g->window->clear(sf::Color(220, 220, 220));
 
 	Map* map = g->getMap();
 
@@ -109,7 +112,7 @@ void GamePlayScene::render(Game* g) {
 			for (unsigned int k = 0; k < layerSize; k++) {
 				RenderSprite* layer = layers->at(k);
 				layer->setPosition(i * FIELD_SIZE + 16, j * FIELD_SIZE + 16);
-				g->window.draw(*layer);
+				g->window->draw(*layer);
 			}
 		}
 	}
@@ -117,10 +120,10 @@ void GamePlayScene::render(Game* g) {
 	if(drawDebugData) {
 		MapGrid* mapGrid = map->getGrid();
 
-		if(g->window.hasFocus()) {
+		if(g->window->hasFocus()) {
 			if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 				if(!mousePressed) {
-					sf::Vector2i mousePos = sf::Mouse::getPosition(g->window);
+					sf::Vector2i mousePos = sf::Mouse::getPosition(*g->window);
 
 					int mouseX = (int)offset.x + mousePos.x;
 					int mouseY = (int)offset.y + mousePos.y;
@@ -170,7 +173,7 @@ void GamePlayScene::render(Game* g) {
 							shape.setFillColor(sf::Color::White);
 						}
 						shape.setPosition((float)spot->positionX, (float)spot->positionY);
-						g->window.draw(shape);
+						g->window->draw(shape);
 					}
 
 				}
@@ -183,9 +186,8 @@ void GamePlayScene::render(Game* g) {
 					sfLine line(sf::Vector2f(it->x, it->y), sf::Vector2f(next(it)->x, next(it)->y));
 					line.color = sf::Color::Red;
 					line.thickness = 3;
-					g->window.draw(line);
+					g->window->draw(line);
 				}
-
 			}
 
 		}
@@ -214,20 +216,20 @@ void GamePlayScene::render(Game* g) {
 			sprite->setPosition(
 				ceilNumber(METTOPIX * position.x + renderOffset.x), ceilNumber(METTOPIX * position.y + renderOffset.y));
 
-			g->window.draw(*sprite);
+			g->window->draw(*sprite);
 		}
 		else {
 			if (entity->getType() == EntityType::PLAYER) {
 				b2Vec2 position = queryCallback.foundBodies[i]->GetPosition();
 				Sprite.setPosition(ceilNumber(METTOPIX * position.x), ceilNumber(METTOPIX * position.y));
 				//std::cout << Sprite.getPosition().x << "-" <<Sprite.getPosition().y << std::endl; 
-				g->window.draw(Sprite);
+				g->window->draw(Sprite);
 			}
 
 		}
 	}
 
-	g->window.draw(nameOfScene);
+	g->window->draw(nameOfScene);
 
 	if (drawDebugData)
 		w->DrawDebugData();

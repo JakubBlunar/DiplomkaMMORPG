@@ -19,10 +19,10 @@ class Game :
 	public Subscriber {
 public:
 	Game();
-	void run();
+	virtual void run();
 	bool isRunning() const;
 
-	sf::RenderWindow window;
+	sf::RenderWindow* window;
 
 	void print(const std::string& message);
 
@@ -41,10 +41,11 @@ public:
 
 	void handleEvent(GameEvent* event) override;
 
-private:
+protected:
 	void processEvents();
-	void update(sf::Time elapsedTime);
-	void render();
+	virtual void update(sf::Time elapsedTime);
+	virtual void render();
+	virtual void afterStart();
 	void subscribe();
 
 	void updateStatistics(sf::Time elapsedTime);
