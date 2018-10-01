@@ -34,26 +34,26 @@ void BotCommandMoveTo::update(sf::Time elapsedTime, BotGame* g) {
 		sf::Vector2f finish = path.front();
 		float distance = sqrt(pow(start.x - finish.x, 2) + pow(start.y - finish.y, 2));
 		
-		if (distance < 20) {
+		if (distance < 25) {
 			path.pop_front();
 			return;
 		}
 
 		sf::Vector2f direction = sf::Vector2f(0, 0);
 
-		if (start.x < finish.x ) {
+		if (start.x < finish.x && (finish.x - start.x) > 8 ) {
 			direction.x = 1;
 		}
 
-		if(start.x > finish.x) {
+		if(start.x > finish.x && (start.x - finish.x) > 8) {
 			direction.x = -1;
 		}
 
-		if (start.y < finish.y ) {
+		if (start.y < finish.y && (finish.y - start.y) > 8) {
 			direction.y = 1;
 		}
 
-		if(start.y > finish.y) {
+		if(start.y > finish.y && (start.y - finish.y) > 8) {
 			direction.y = -1;
 		}
 
