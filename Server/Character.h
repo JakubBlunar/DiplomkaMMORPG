@@ -20,7 +20,6 @@ namespace s {
 		Account* account;
 	public:
 		Character();
-		~Character();
 
 		Map* getMap() const;
 		void setMap(Map* map);
@@ -38,6 +37,8 @@ namespace s {
 		int mapId;
 
 		b2Body* body;
+
+		bool isBot;
 
 		bool save() const;
 		json toJson() const;

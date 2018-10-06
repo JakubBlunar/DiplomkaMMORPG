@@ -15,11 +15,13 @@ namespace s {
 		Session* session;
 	public:
 		Account();
+		~Account();
 
 		std::string email;
 		int id;
 		std::string login;
 		std::string password;
+		bool isBot;
 
 		std::vector<Character*>* characters;
 

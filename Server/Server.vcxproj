@@ -142,6 +142,7 @@
   <ItemGroup>
     <ClCompile Include="Account.cpp" />
     <ClCompile Include="AuthManager.cpp" />
+    <ClCompile Include="BotManager.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="Crypto.cpp" />
     <ClCompile Include="Database.cpp" />
@@ -163,6 +164,7 @@
   <ItemGroup>
     <ClInclude Include="Account.h" />
     <ClInclude Include="AuthManager.h" />
+    <ClInclude Include="BotManager.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="Crypto.h" />
     <ClInclude Include="Database.h" />

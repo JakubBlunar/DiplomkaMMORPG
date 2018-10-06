@@ -7,7 +7,8 @@ template <typename  T>
 class IDManager
 {
 public:
-	IDManager();
+	IDManager(T maxId);
+	IDManager(T minId, T maxId);
 	~IDManager();
 
 	T getId();
@@ -21,10 +22,17 @@ public:
 
 
 template<typename  T>
-IDManager<T>::IDManager()
+IDManager<T>::IDManager(T maxId)
 {
-	max = ~0;
+	max = maxId;
 	nextId = 0;
+}
+
+template<typename  T>
+IDManager<T>::IDManager(T minId, T maxId)
+{
+	max = maxId;
+	nextId = minId;
 }
 
 template<typename  T>

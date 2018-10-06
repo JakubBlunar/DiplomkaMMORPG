@@ -131,7 +131,7 @@ void Map::handleEvent(GameEvent* event) {
 	}
 	case CHARACTER_MAP_LEAVE: {
 		EventCharacterMapLeave* e = (EventCharacterMapLeave*)event;
-		if (e->mapId != id)
+		if (e->mapId != this->id)
 			return;
 
 		auto exists = std::find_if(players.begin(), players.end(),
@@ -206,6 +206,7 @@ void Map::addPlayer(Player* player) {
 
 void Map::removePlayer(Player* player) {
 	world->DestroyBody(player->getBody());
+	player->setBody(nullptr);
 	entities.erase(std::remove(entities.begin(), entities.end(), player), entities.end());
 	players.erase(std::remove(players.begin(), players.end(), player), players.end());
 }

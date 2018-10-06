@@ -7,7 +7,6 @@ Random::Random():
 	
 }
 
-
 Random::~Random()
 {
 }

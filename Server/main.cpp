@@ -70,6 +70,8 @@ int main() {
 	polygonShape.ComputeAABB(&rect, transform,  1);
 	*/
 
+	srand(time(NULL));
+
 	initLogger();
 
 	s::ServerSettings* settings = initSettings();

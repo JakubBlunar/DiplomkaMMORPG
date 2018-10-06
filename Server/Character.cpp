@@ -10,10 +10,6 @@ s::Character::Character() {
 	movement = sf::Vector2f(0,0);
 }
 
-
-s::Character::~Character() {
-}
-
 s::Map* s::Character::getMap() const {
 	return actualMap;
 }
@@ -85,7 +81,7 @@ s::Character* s::Character::getCharacterById(int characterId) {
 	character->position = sf::Vector2f(std::stof(row[5]), std::stof(row[6]));
 	character->movement = sf::Vector2f(0, 0);
 	character->speed = 48;
-	
+	character->isBot = false;
 	mysql_free_result(res);
 
 	return character;

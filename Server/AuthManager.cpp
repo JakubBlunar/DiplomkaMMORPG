@@ -22,6 +22,9 @@ void s::AuthManager::handleEvent(EventCharacterLogout* event, s::Session* player
 	spdlog::get("log")->info("EVENT: {}", event->toString());
 
 	Account* account = playerSession->getAccount();
+	if(account && account->isBot)
+		return;
+
 	Character* ch = account->getCharacter();
 
 	ch->save();
@@ -48,6 +51,22 @@ void s::AuthManager::handleEvent(EventLoginRequest* event, s::Session* playerSes
 	std::string accData;
 	std::string message;
 
+	if(event->name == "bot") {
+		s::Account* account = s->botManager.createBotAccount();
+		accData = account->toJsonString();
+		playerSession->setAccount(account);
+		account->setSession(playerSession);
+		EventLoginResponse res;
+		res.status = true;
+		res.message = message;
+		res.account = accData;
+
+		sf::Packet* p = res.toPacket();
+		playerSession->socket->send(*p);
+		delete p;
+		return;
+	}
+	
 	auto find = std::find_if(s->sessions.begin(), s->sessions.end(), [event](s::Session* sess)-> bool {
 		s::Account* account = sess->getAccount();
 		if (!account)
@@ -96,15 +115,23 @@ void s::AuthManager::handleEvent(EventCharacterChoose* event, s::Session* player
 
 	s::Account* account = playerSession->getAccount();
 	if (account) {
-		if (!account->getCharacter()) {
-			auto character = std::find_if(account->characters->begin(), account->characters->end(),
-			                              [event](s::Character* character)-> bool {
-				                              if (character->id == event->characterId) {
-					                              return true;
-				                              }
-				                              return false;
-			                              });
 
+		if (!account->getCharacter()) {
+
+			std::vector<Character*>::iterator character;
+
+			if (!account->isBot) {
+				character = std::find_if(account->characters->begin(), account->characters->end(),
+		                              [event](s::Character* character)-> bool {
+			                              if (character->id == event->characterId) {
+				                              return true;
+			                              }
+			                              return false;
+		                              });
+			} else {
+				character = account->characters->begin();
+			}
+		
 			if (character != account->characters->end()) {
 
 				Character* ch = *character;
@@ -121,12 +148,9 @@ void s::AuthManager::handleEvent(EventCharacterChoose* event, s::Session* player
 					eventMapJoin.mapId = m->getId();
 					eventMapJoin.characterData = ch->toJson().dump();
 
-					//->sendEventToAnotherPlayers(&eventMapJoin, ch->id);
-
 					json resData;
 					resData["character"] = ch->toJson();
 					resData["otherPlayers"] = m->getCharactersJson();
-
 
 					characterData = resData.dump();
 					result = true;
@@ -155,8 +179,6 @@ void s::AuthManager::handleEvent(EventCharacterChoose* event, s::Session* player
 	sf::Packet* p = res.toPacket();
 	playerSession->socket->send(*p);
 	delete p;
-
-
 }
 
 

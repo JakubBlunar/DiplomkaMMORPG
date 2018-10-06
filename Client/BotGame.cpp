@@ -11,6 +11,9 @@
 #include "Account.h"
 #include "BotCommandMoveTo.h"
 #include "Random.h"
+#include <windows.h>
+#include "EventCharacterLogout.h"
+#include "EventDispatcher.h"
 
 
 BotGame::BotGame() {
@@ -32,13 +35,18 @@ void BotGame::run() {
 
 	afterStart();
 
+
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
+	sf::Time botTimePerFrame = sf::seconds(1.f / 20.f);
+	sf::Time sleepTime = sf::seconds(botTimePerFrame.asSeconds() / 3);
+
 	while (running) {
 		const sf::Time elapsedTime = clock.restart();
 		timeSinceLastUpdate += elapsedTime;
-		while (timeSinceLastUpdate > TimePerFrame) {
-			timeSinceLastUpdate -= TimePerFrame;
+		while (timeSinceLastUpdate > botTimePerFrame) {
+			timeSinceLastUpdate -= botTimePerFrame;
+			sf::sleep(sleepTime);
 		}
 		update(elapsedTime);
 		botUpdatePlayer();
@@ -55,6 +63,22 @@ void BotGame::update(sf::Time elapsedTime) {
 		botCommand->update(elapsedTime, this);
 	}
 
+	bool isConsoleWindowFocussed = (GetConsoleWindow() == GetForegroundWindow());
+	if(isConsoleWindowFocussed && GetAsyncKeyState(VK_ESCAPE)) {
+		EventCharacterLogout e;
+
+		Player* player = account->getPlayerEntity();
+		if (player) {
+			e.characterId = player->getId();
+
+			sf::Packet* p = e.toPacket();
+			packet_manager->sendPacket(p);
+			delete p;
+		}
+		
+		running = false;
+	}
+
 	ClientSettings::instance()->eventsMutex.unlock();
 }
 void BotGame::render() {}
@@ -63,6 +87,8 @@ void BotGame::afterStart() {
 	
 	print("BOT INITED");
 
+	EventLoginRequest* req = new EventLoginRequest("bot", "");
+	EventDispatcher<EventLoginRequest>::dispatchEvent(req);
 
 }
 

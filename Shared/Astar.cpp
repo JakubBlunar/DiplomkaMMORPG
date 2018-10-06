@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "Astar.h"
 
-
-
 Astar::Astar(MapGrid* grid): current(nullptr), start(nullptr), end(nullptr) {
 	this->grid = grid;
 }
@@ -25,10 +23,24 @@ int Astar::findPath(sf::Vector2f from, sf::Vector2f to)
 	int toX = grid->transformXToGrid(to.x);
 	int toY = grid->transformYToGrid(to.y);
 
-	start = grid->grid->get(fromX, fromY);
+	start = nullptr;
+	end = nullptr;
+
+	bool found = false;
+	for (int i = fromX; i <= fromX + 1; i++ ) {
+		for (int j = fromY; j <= fromY + 1; j++) {
+		;	MapGridSpot * temp = grid->grid->get(i, j);
+			if (!found && temp && !temp->isWall()) {
+				start = temp;
+				found = true;
+				break;
+			}
+		}
+	}
+	
 	end = grid->grid->get(toX, toY);
 
-	if(start->isWall() || end->isWall()) {
+	if(!start || !end || start->isWall() || end->isWall()) {
 		return -1;
 	}
 

@@ -49,6 +49,7 @@ void s::Server::init() {
 
 	managers.push_back(&authManager);
 	managers.push_back(&mapsManager);
+	managers.push_back(&botManager);
 }
 
 void s::Server::start() {
@@ -181,7 +182,7 @@ void s::Server::recievePackets() {
 
 					spdlog::get("log")->info("new connection received from {}", client->getRemoteAddress().toString());
 
-
+					/*
 					string name;
 					string pass;
 					int characterId;
@@ -211,7 +212,7 @@ void s::Server::recievePackets() {
 						identifyPacket(CHARACTER_CHOOSE, tempPacket, playerSession);
 						delete tempPacket;
 					}
-					
+					*/
 				}
 				else {
 					print("error : server has no connection");
@@ -244,13 +245,19 @@ void s::Server::recievePackets() {
 						if (a) {
 							Character* ch = a->getCharacter();
 							if (ch) {
-								ch->save();
+								if(!a->isBot) {
+									ch->save();
+								}
 								ch->getMap()->removeCharacter(ch);
 								delete ch;
 							}
-							delete a;
+							if (a->isBot) {
+								botManager.destroyBotAccount(a);
+							} else {
+								delete a;
+							}
+							
 						}
-
 
 						selector.remove(*playerSession->socket);
 						playerSession->socket->disconnect();

@@ -84,9 +84,6 @@
     <ClCompile Include="JsonLoader.cpp">
       <Filter>Source Files\Tools</Filter>
     </ClCompile>
-    <ClCompile Include="IDManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Npc.cpp">
       <Filter>Source Files\Entities</Filter>
     </ClCompile>
@@ -97,7 +94,13 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SpawnManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="IDManager.cpp">
+      <Filter>Source Files\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="BotManager.cpp">
+      <Filter>Source Files\Managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -149,9 +152,6 @@
     <ClInclude Include="ServerGlobals.h">
       <Filter>Header Files\Tools</Filter>
     </ClInclude>
-    <ClInclude Include="IDManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Npc.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
@@ -162,7 +162,13 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SpawnManager.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="BotManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="IDManager.h">
+      <Filter>Header Files\Tools</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

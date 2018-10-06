@@ -10,6 +10,10 @@ using json = nlohmann::json;
 s::Account::Account(): id(-1) {
 }
 
+s::Account::~Account() {
+	delete characters;
+}
+
 s::Character* s::Account::getCharacter() const {
 	return character;
 }
@@ -83,6 +87,7 @@ s::Account* s::Account::getById(int id) {
 	account->login = row[1];
 	account->email = row[2];
 	account->password = row[3];
+	account->isBot = false;
 
 	mysql_free_result(res);
 

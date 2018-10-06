@@ -56,7 +56,7 @@ void s::ServerTasks::fetchOnline() {
 
 		for_each(server->sessions.begin(), server->sessions.end(), [&darkFactionCount, &lightFactionCount, &totalCount, database](Session* session) {
 			Account* account = session->getAccount();
-			if (account) {
+			if (account && !account->isBot) {
 				Character* ch = account->getCharacter();
 				if(ch) {
 					if(ch->faction == CharacterFaction::DARK) {
@@ -95,7 +95,7 @@ void s::ServerTasks::saveCharacters() {
 		spdlog::get("log")->info("Executing save characters worker");
 		for_each(server->sessions.begin(), server->sessions.end(), [](Session* session) {
 			Account* account = session->getAccount();
-			if (account) {
+			if (account && !account->isBot) {
 				Character* ch = account->getCharacter();
 				if (ch) {
 					ch->save();

@@ -210,7 +210,7 @@ void s::Map::sendEventToAnotherPlayers(GameEvent* event, int characterId)
 		characters.end(),
 	    [=](Character* character)
 	    {
-			if (character->id != characterId) {
+			if (character && character->id != characterId) {
 				Session* s = character->getAccount()->getSession();
 				s->socket->send(*p);
 			}

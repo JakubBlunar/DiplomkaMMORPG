@@ -25,7 +25,9 @@ Component* Entity::getComponent(ComponentType type) const {
 
 void Entity::setBody(b2Body* body) {
 	this->body = body;
-	body->SetUserData(this);
+	if(this->body) {
+		this->body->SetUserData(this);
+	}
 }
 
 b2Body* Entity::getBody() {

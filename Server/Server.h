@@ -9,6 +9,7 @@
 #include "EventId.h"
 #include "AuthManager.h"
 #include "MapsManager.h"
+#include "BotManager.h"
 
 namespace s {
 	class ServerTasks;
@@ -29,7 +30,7 @@ namespace s {
 
 		AuthManager authManager;
 		MapsManager mapsManager;
-
+		BotManager botManager;
 		vector<Manager*> managers;
 	private:
 		void update(sf::Time elapsedTime);

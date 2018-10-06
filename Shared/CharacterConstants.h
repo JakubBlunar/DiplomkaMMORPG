@@ -2,8 +2,8 @@
 #define CHARACTER_CONSTANTS_H
 
 enum class CharacterType {
-	MALE_KNIGHT = 0,
-	FEMALE_KNIGHT = 1,
+	MALE_KNIGHT = 1,
+	FEMALE_KNIGHT = 2,
 };
 
 enum class CharacterFaction {

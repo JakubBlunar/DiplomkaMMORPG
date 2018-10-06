@@ -126,7 +126,7 @@ void CreateGround(b2World& World, float X, float Y) {
 using namespace std;
 
 bool initSettings() {
-	INIReader reader("config.ini");
+	INIReader reader("ClientConfig.ini");
 
 	if (reader.ParseError() < 0) {
 		std::cout << "Can't load 'config.ini'\n";
@@ -177,7 +177,7 @@ int main(int argc, char* argv[]) {
 	system("pause");
 	return EXIT_SUCCESS;*/
 
-	std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+	std::this_thread::sleep_for(std::chrono::milliseconds(3000));
 	if (!initSettings()) {
 		system("pause");
 		return EXIT_FAILURE;

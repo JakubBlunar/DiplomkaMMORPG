@@ -7,6 +7,7 @@
 #include "EventLoginResponse.h"
 #include "SceneManager.h"
 #include <iostream>
+#include "BotGame.h"
 
 ClientEventActions::ClientEventActions(Game* g) {
 	this->game = g;
@@ -22,13 +23,22 @@ void ClientEventActions::visit(EventLoginRequest* e) {
 }
 
 void ClientEventActions::visit(EventLoginResponse* e) {
-	game->print(e->toString());
+	//game->print(e->toString());
 	if (e->status) {
 		json jsonData = json::parse(e->account);
 		Account* account = new Account();
 		account->initFromJson(jsonData);
 		game->setAccount(account);
+
 		game->sceneManager->changeScene(SceneType::CHARACTER_CHOOSE);
+
+		if (dynamic_cast<BotGame*>(game) != nullptr) {
+			EventCharacterChoose* eventCharacterChoose = new EventCharacterChoose();
+			eventCharacterChoose->characterId = 1;
+			sf::Packet* packet = eventCharacterChoose->toPacket();
+			game->packet_manager->sendPacket(packet);
+			delete packet;
+		}
 	}
 	else {
 		IGManager* manager = game->sceneManager->getActualScene()->getWindowManager();
@@ -42,10 +52,10 @@ void ClientEventActions::visit(EventLoginResponse* e) {
 }
 
 void ClientEventActions::visit(EventCharacterChooseResponse* e) {
-	game->print(e->toString());
+	//game->print(e->toString());
 	if (e->success) {
 		json response = json::parse(e->characterData);
-		game->print("Character DATA: " + response.dump());
+		//game->print("Character DATA: " + response.dump());
 		json characterData = response["character"].get<json::object_t>();
 
 		Player* p = new Player(true);

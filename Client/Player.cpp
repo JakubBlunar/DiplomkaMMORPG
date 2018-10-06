@@ -68,7 +68,7 @@ void Player::update(sf::Time elapsedTime, Map* map, Game* g) {
 			sendingTime = sf::Time::Zero;
 			sendPosition(g);
 
-			g->print("Sending player position  "+ std::to_string(elapsedTime.asMicroseconds()));
+			//g->print("Sending player position  "+ std::to_string(elapsedTime.asMicroseconds()));
 		}
 	}
 

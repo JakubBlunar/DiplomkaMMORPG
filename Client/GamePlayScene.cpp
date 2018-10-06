@@ -194,8 +194,9 @@ void GamePlayScene::render(Game* g) {
 	aabb.lowerBound = b2Vec2(offset.x * PIXTOMET, offset.y * PIXTOMET);
 	aabb.upperBound = b2Vec2((offset.x + resolution.x) * PIXTOMET, (offset.y + resolution.y) * PIXTOMET);
 	queryCallback.foundBodies.clear();
-	w->QueryAABB(&queryCallback, aabb);
 
+	ClientSettings::instance()->eventsMutex.lock();
+	w->QueryAABB(&queryCallback, aabb);
 	queryCallback.sortBodies();
 
 	auto bodySize = queryCallback.foundBodies.size();
@@ -220,9 +221,9 @@ void GamePlayScene::render(Game* g) {
 				//std::cout << Sprite.getPosition().x << "-" <<Sprite.getPosition().y << std::endl; 
 				g->window->draw(Sprite);
 			}
-
 		}
 	}
+	ClientSettings::instance()->eventsMutex.unlock();
 
 	g->window->draw(nameOfScene);
 
