@@ -11,6 +11,7 @@
 #include "spdlog/sinks/basic_file_sink.h"
 #include "spdlog/sinks/stdout_color_sinks.h" //support for stdout logging
 #include <Box2D/Collision/Shapes/b2PolygonShape.h>
+#include "Location.h"
 
 s::ServerSettings* initSettings() {
 	INIReader reader("config.ini");
@@ -52,25 +53,21 @@ void initLogger() {
 }
 
 int main() {
-	/*
-	b2Vec2 vertices[5];
+	
+	/*b2Vec2* vertices = new b2Vec2[5];
 	vertices[0].Set(-1,  2);
 	vertices[1].Set(-1,  0);
 	vertices[2].Set( 0, -3);
 	vertices[3].Set( 1,  0);
 	vertices[4].Set( 1,  1);
-	  
-	b2PolygonShape polygonShape;
-	polygonShape.Set(vertices, 5);
 
-	b2AABB rect;
-	b2Transform transform;
-	transform.Set(b2Vec2(0, 0), 0);
+	s::Location l(1, vertices);
+	for (int i = 0; i < 10; i++) {
+		l.generateRandomPoint();
+	}*/
+	
 
-	polygonShape.ComputeAABB(&rect, transform,  1);
-	*/
-
-	srand(time(NULL));
+	srand(time(nullptr));
 
 	initLogger();
 

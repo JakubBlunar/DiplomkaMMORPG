@@ -148,6 +148,7 @@
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="IDManager.cpp" />
     <ClCompile Include="JsonLoader.cpp" />
+    <ClCompile Include="Location.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Manager.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="INIReader.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="JsonLoader.h" />
+    <ClInclude Include="Location.h" />
     <ClInclude Include="Manager.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapsManager.h" />

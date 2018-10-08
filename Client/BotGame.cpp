@@ -1,3 +1,5 @@
+#define NOMINMAX
+
 #include "BotGame.h"
 #include "SceneManager.h"
 #include <imgui.h>

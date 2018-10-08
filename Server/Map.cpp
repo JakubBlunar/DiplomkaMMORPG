@@ -9,6 +9,8 @@
 #include "EventCharacterMapJoin.h"
 #include "EventCharacterMapLeave.h"
 #include "Npc.h"
+#include <iostream>
+#include "Location.h"
 
 s::Map::Map(): id(0) {
 }
@@ -134,6 +136,55 @@ void s::Map::loadFromJson(std::string path) {
 
 		std::string layerType = layer["type"].get<json::string_t>();
 		std::string layerName = layer["name"].get<json::string_t>();
+
+		if (layerType == "objectgroup" && layerName == "locations") {
+			json locations = layer["objects"].get<json::array_t>();
+			for (json::iterator locationIterator = locations.begin(); locationIterator != locations.end(); locationIterator++) {
+				json jsonLoc = *locationIterator;
+
+				int id = stoi(jsonLoc.value("name", "-100000"));
+				float positionX = (float) jsonLoc["x"].get<json::number_float_t>();
+				float positionY = (float) jsonLoc["y"].get<json::number_float_t>();
+
+				Location* loc = nullptr;
+
+				if (jsonLoc.find("polygon") != jsonLoc.end()) {
+					json polygon = jsonLoc["polygon"].get<json::array_t>();
+
+					int size = polygon.size();
+					b2Vec2* vertices = new b2Vec2[size];
+					int i = 0;
+					for (json::iterator polygonIterator = polygon.begin(); polygonIterator != polygon.end(); polygonIterator++) {
+						json point = *polygonIterator;
+						float x = (float)point["x"].get<json::number_float_t>();
+						float y = (float)point["y"].get<json::number_float_t>();
+						vertices[i].Set(positionX + x, positionY + y);
+						i++;
+					}
+					loc = new Location(id, vertices, size);
+				} else if(jsonLoc.find("width") != jsonLoc.end() && jsonLoc.find("height") != jsonLoc.end()) {
+					int size = 4;
+					b2Vec2* vertices = new b2Vec2[size];
+
+					float width = (float)jsonLoc["width"].get<json::number_float_t>();
+					float height = (float)jsonLoc["height"].get<json::number_float_t>();
+
+					vertices[0].Set(positionX, positionY);
+					vertices[1].Set(positionX + width, positionY);
+					vertices[2].Set(positionX, positionY + height);
+					vertices[3].Set(positionX + width, positionY + height);
+
+					loc = new Location(id, vertices, size);
+				}
+
+				if (loc) {
+					this->locations.insert(std::make_pair(id, loc));
+				}
+				
+
+			}
+			
+		}
 
 		if (layerType == "objectgroup" && layerName == "gameobjects") {
 			json gameObjects = layer["objects"].get<json::array_t>();

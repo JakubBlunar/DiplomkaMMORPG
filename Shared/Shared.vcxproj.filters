@@ -87,6 +87,9 @@
     <ClInclude Include="Astar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Random.h">
+      <Filter>Header Files\Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -133,6 +136,9 @@
     </ClCompile>
     <ClCompile Include="Astar.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Random.cpp">
+      <Filter>Source Files\Tools</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

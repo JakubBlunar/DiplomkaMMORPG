@@ -1,3 +1,5 @@
+#define NOMINMAX
+
 #include "NpcHolder.h"
 #include <windows.h>
 #include <regex>

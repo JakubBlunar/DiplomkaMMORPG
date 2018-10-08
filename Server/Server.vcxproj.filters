@@ -102,6 +102,9 @@
     <ClCompile Include="BotManager.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
+    <ClCompile Include="Location.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INIReader.h">
@@ -169,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="IDManager.h">
       <Filter>Header Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Location.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -8,6 +8,7 @@
 
 namespace s {
 	class Npc;
+	class Location;
 
 	class Map {
 		int id;
@@ -17,6 +18,7 @@ namespace s {
 		int width, height;
 		sf::Mutex lock;
 
+		std::map<int, s::Location*> locations;
 
 		MapGrid* mapGrid;
 	public:

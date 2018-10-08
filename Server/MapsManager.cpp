@@ -1,3 +1,5 @@
+#define NOMINMAX
+
 #include "MapsManager.h"
 #include "Map.h"
 #include <spdlog/spdlog.h>

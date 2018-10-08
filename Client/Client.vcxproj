@@ -169,7 +169,6 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PMStatistics.cpp" />
     <ClCompile Include="PositionComponent.cpp" />
-    <ClCompile Include="Random.cpp" />
     <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="RenderSprite.cpp" />
     <ClCompile Include="ResourceHolder.cpp" />
@@ -219,7 +218,6 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PMStatistics.h" />
     <ClInclude Include="PositionComponent.h" />
-    <ClInclude Include="Random.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="RenderSprite.h" />
     <ClInclude Include="ResourceHolder.h" />
