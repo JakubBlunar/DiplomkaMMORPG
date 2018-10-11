@@ -43,9 +43,10 @@ void s::Server::init() {
 		sf::Thread* t = new sf::Thread(&Server::recievePackets, this);
 		recieveThreads.push_back(t);
 	}
+	
+	NpcHolder::instance()->init();
 
 	mapsManager.init();
-	NpcHolder::instance()->init();
 
 	managers.push_back(&authManager);
 	managers.push_back(&mapsManager);

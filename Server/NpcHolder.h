@@ -9,6 +9,8 @@ namespace s {
 	class NpcHolder {
 	public:
 		void init();
+		int generateSpawnId();
+		void freeSpawnId(int id);
 
 		NpcHolder(const NpcHolder&) = delete;
 		NpcHolder& operator=(const NpcHolder) = delete;
@@ -18,12 +20,17 @@ namespace s {
 			return &instance;
 		}
 
+		Npc* createNpc(int type); 
+
 		void read_directory(std::string pattern, std::vector<std::string>& v) const;
 	private:
 		NpcHolder();
 		~NpcHolder();
 
 		std::map<int, Npc*> npcPrototypes;
+		IDManager<sf::Int32> idManager;
+
+		sf::Mutex lock;
 	};
 }
 

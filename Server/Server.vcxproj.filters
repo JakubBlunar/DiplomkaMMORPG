@@ -78,9 +78,6 @@
     <ClCompile Include="MapsManager.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
-    <ClCompile Include="Map.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="JsonLoader.cpp">
       <Filter>Source Files\Tools</Filter>
     </ClCompile>
@@ -89,9 +86,6 @@
     </ClCompile>
     <ClCompile Include="NpcHolder.cpp">
       <Filter>Source Files\Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="Spawn.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SpawnManager.cpp">
       <Filter>Source Files\Managers</Filter>
@@ -103,7 +97,13 @@
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
     <ClCompile Include="Location.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Spawn.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Source Files\Entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -143,9 +143,6 @@
     <ClInclude Include="Character.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="Map.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MapsManager.h">
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
@@ -161,9 +158,6 @@
     <ClInclude Include="NpcHolder.h">
       <Filter>Header Files\Tools</Filter>
     </ClInclude>
-    <ClInclude Include="Spawn.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SpawnManager.h">
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
@@ -174,7 +168,13 @@
       <Filter>Header Files\Tools</Filter>
     </ClInclude>
     <ClInclude Include="Location.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Spawn.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Header Files\Entities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

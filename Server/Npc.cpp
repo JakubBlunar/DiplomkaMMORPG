@@ -18,6 +18,15 @@ s::Npc::~Npc() {
 	
 }
 
+void s::Npc::setSpawnId(int id)
+{
+	this->spawnId = id;
+}
+
+int s::Npc::getSpawnId() const {
+	return spawnId;
+}
+
 void s::Npc::loadFromJson(std::string file)
 {
 	json jsonData = JsonLoader::instance()->loadJson(file);
@@ -29,10 +38,7 @@ void s::Npc::loadFromJson(std::string file)
 	std::string renderFile = jsonData["render"].get<json::string_t>();
 	json renderData = JsonLoader::instance()->loadJson("Graphics/Npcs/" + renderFile);
 
-
-	json animationData = JsonLoader::instance()->loadJson("Graphics/Characters/" + std::to_string(type));
-
-	int width = (int)animationData["width"].get<json::number_integer_t>();
+	int width = (int)renderData["width"].get<json::number_integer_t>();
 
 	size = sf::Vector2i(width, width);
 	movement = sf::Vector2f(0, 0);

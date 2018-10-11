@@ -11,9 +11,9 @@
 #include "Npc.h"
 #include <iostream>
 #include "Location.h"
+#include "Spawn.h"
 
-s::Map::Map(): id(0) {
-}
+s::Map::Map(): id(0), world(nullptr), width(0), height(0), mapGrid(nullptr) {}
 
 s::Map::~Map() {
 }
@@ -103,6 +103,11 @@ void s::Map::update(sf::Time deltaTime, Server* s) {
 			character->movement.x = velocity.x * METTOPIX;
 			character->movement.y = velocity.y * METTOPIX;
 	    });
+
+	for (std::pair<int, Location*> element : locations) {
+		element.second->update(deltaTime, s, this);
+	}
+
 	lock.unlock();
 }
 
@@ -161,7 +166,7 @@ void s::Map::loadFromJson(std::string path) {
 						vertices[i].Set(positionX + x, positionY + y);
 						i++;
 					}
-					loc = new Location(id, vertices, size);
+					loc = new Location(id, vertices, size, this);
 				} else if(jsonLoc.find("width") != jsonLoc.end() && jsonLoc.find("height") != jsonLoc.end()) {
 					int size = 4;
 					b2Vec2* vertices = new b2Vec2[size];
@@ -174,7 +179,7 @@ void s::Map::loadFromJson(std::string path) {
 					vertices[2].Set(positionX, positionY + height);
 					vertices[3].Set(positionX + width, positionY + height);
 
-					loc = new Location(id, vertices, size);
+					loc = new Location(id, vertices, size, this);
 				}
 
 				if (loc) {
@@ -233,6 +238,38 @@ void s::Map::loadFromJson(std::string path) {
 				}
 			}
 		}
+	}
+
+	json mapSpawns = JsonLoader::instance()->loadJson("Maps/Spawns/" + std::to_string(id));
+	int mapId = (int)mapSpawns["mapId"].get<json::number_integer_t>();
+	if (mapId == id) {
+		json mapLocations = mapSpawns["locations"].get<json::array_t>();
+		for (json::iterator locationIterator = mapLocations.begin(); locationIterator != mapLocations.end(); locationIterator++) {
+			json spawnLocation = *locationIterator;
+			int locationId = (int)spawnLocation["id"].get<json::number_integer_t>();
+
+			auto foundLoc = locations.find(locationId);
+			if (foundLoc != locations.end()) {
+				Location* loc = foundLoc->second;
+				json locationSpawns = spawnLocation["spawns"].get<json::array_t>();
+				for (json::iterator spawniterator = locationSpawns.begin(); spawniterator != locationSpawns.end(); spawniterator++) {
+					json jsonSpawn = *spawniterator;
+
+					int npcType = (int)jsonSpawn["npcType"].get<json::number_integer_t>();
+					int maxCount = (int)jsonSpawn["maxCount"].get<json::number_integer_t>();
+
+					if (npcType > 0 && maxCount > 0) {
+						Spawn* spawn = new Spawn(npcType, maxCount, loc);
+						loc->addSpawn(spawn);
+
+						spawn->init();
+					}
+				}
+
+			}
+
+		}
+
 	}
 
 	mapGrid->initNeighbours();

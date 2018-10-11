@@ -12,6 +12,9 @@
 #include "spdlog/sinks/stdout_color_sinks.h" //support for stdout logging
 #include <Box2D/Collision/Shapes/b2PolygonShape.h>
 #include "Location.h"
+#include "Npc.h"
+#include "NpcHolder.h"
+#include "Spawn.h"
 
 s::ServerSettings* initSettings() {
 	INIReader reader("config.ini");
@@ -65,12 +68,11 @@ int main() {
 	for (int i = 0; i < 10; i++) {
 		l.generateRandomPoint();
 	}*/
-	
 
-	srand(time(nullptr));
+	srand((unsigned int)time(nullptr));
 
 	initLogger();
-
+	
 	s::ServerSettings* settings = initSettings();
 	if (settings == nullptr) {
 		return EXIT_FAILURE;

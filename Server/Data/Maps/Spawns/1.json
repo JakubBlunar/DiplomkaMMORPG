@@ -1,0 +1,10 @@
+{
+    "mapId": 1,
+    "locations": [{
+        "id": 1,
+        "spawns": [{
+            "npcType": 1,
+            "maxCount": 10
+        }]
+    }]
+}

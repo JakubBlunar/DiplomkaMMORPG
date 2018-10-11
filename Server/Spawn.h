@@ -8,22 +8,22 @@
 
 namespace s {
 	class Server;
+	class Location;
 
 	class Spawn
 	{
-		int npctype;
-		int locationId;
-
+		int npcType;
 		int maxSpawnedNpcs;
 
+		Location* location;
 		std::vector<s::Npc*> spawnedNpcs;
 		sf::Time lastUpdate;
 	public:
-		Spawn();
+		Spawn(int npcType, int maxSpawnedNpcs, Location* l);
 		~Spawn();
 
 		void init();
-		void update(sf::Time elapsedTime, s::Server* s);
+		void update(sf::Time elapsedTime, s::Server* s, Location* l);
 	};
 }
 

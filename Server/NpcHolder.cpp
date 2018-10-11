@@ -6,9 +6,9 @@
 #include <spdlog/spdlog.h>
 
 
-s::NpcHolder::NpcHolder() {
+s::NpcHolder::NpcHolder():
+	idManager(0, 214748364) {
 	npcPrototypes.clear();
-
 	
 }
 
@@ -18,6 +18,10 @@ s::NpcHolder::~NpcHolder() {
 
 void s::NpcHolder::init()
 {
+	lock.lock();
+
+	npcPrototypes.clear();
+
 	spdlog::get("log")->info("Started loading npc prototypes");
 
 	std::vector<std::string> files;
@@ -37,6 +41,37 @@ void s::NpcHolder::init()
 
 	spdlog::get("log")->info("Loading npc prototypes done");
 
+	lock.unlock();
+}
+
+int s::NpcHolder::generateSpawnId()
+{
+	lock.lock();
+	int id = idManager.getId();
+	lock.unlock();
+	return id;
+}
+
+void s::NpcHolder::freeSpawnId(int id) {
+	lock.lock();
+	idManager.freeId(id);
+	lock.unlock();
+}
+
+s::Npc * s::NpcHolder::createNpc(int type)
+{
+	lock.lock();
+
+	auto found = npcPrototypes.find(type);
+	if (found != npcPrototypes.end()) {
+		Npc* npc = found->second->clone();
+		npc->setSpawnId(idManager.getId());
+		lock.unlock();
+		return npc;
+	}
+
+	lock.unlock();
+	throw "NpcHolder: Npc not found " + std::to_string(type);
 }
 
 void s::NpcHolder::read_directory(std::string pattern, std::vector<std::string>& v) const

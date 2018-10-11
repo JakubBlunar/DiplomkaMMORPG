@@ -19,10 +19,18 @@ namespace s {
 		sf::Vector2f movement;
 		sf::Vector2i size;
 
+
+		sf::Time respawnTime;
+		
+		sf::Time deadTimestamp;
+
 		Map* map;
 	public:
 		Npc();
 		~Npc();
+
+		void setSpawnId(int id);
+		int getSpawnId() const;
 
 		void loadFromJson(std::string file);
 		Npc* clone() const;
