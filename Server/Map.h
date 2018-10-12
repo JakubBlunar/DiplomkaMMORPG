@@ -14,7 +14,7 @@ namespace s {
 		int id;
 		b2World* world;
 		std::vector<Character *> characters;
-		std::list<Npc*> npcs;
+		std::vector<Npc*> npcs;
 		int width, height;
 		sf::Mutex lock;
 
@@ -38,6 +38,7 @@ namespace s {
 		void loadFromJson(std::string path);
 
 		json getCharactersJson();
+		json getNpcsJson();
 
 		void sendEventToAnotherPlayers(GameEvent* event, int characterId);
 		void sendEventToAllPlayers(GameEvent* event);

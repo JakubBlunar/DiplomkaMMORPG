@@ -59,6 +59,24 @@ s::Npc* s::Npc::clone() const {
 	return copy;
 }
 
+json s::Npc::toJson() const {
+	json json;
+
+	json["spawnId"] = spawnId;
+	json["name"] = name;
+	json["type"] = type;
+	json["movementX"] = movement.x;
+	json["movementY"] = movement.y;
+	json["positionX"] = position.x;
+	json["positionY"] = position.y;
+	json["speed"] = speed;
+	if (map) {
+		json["mapId"] = map->getId();
+	}
+
+	return json;
+}
+
 void s::Npc::setBody(b2Body* body) {
 	this->body = body;
 }

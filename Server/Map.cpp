@@ -80,8 +80,8 @@ void s::Map::removeNpc(Npc * npc)
 		npc->setBody(nullptr);
 	}
 
+	npcs.erase(std::remove(npcs.begin(), npcs.end(), npc), npcs.end());
 
-	npcs.remove(npc);
 	lock.unlock();
 }
 
@@ -285,6 +285,17 @@ json s::Map::getCharactersJson() {
 	}
 	lock.unlock();
 	return jsonCharacters;
+}
+
+json s::Map::getNpcsJson()
+{
+	json jsonNpcs = json::array();
+	lock.lock();
+	for (auto& npc : npcs) {
+		jsonNpcs.push_back(npc->toJson());
+	}
+	lock.unlock();
+	return jsonNpcs;
 }
 
 void s::Map::sendEventToAnotherPlayers(GameEvent* event, int characterId)

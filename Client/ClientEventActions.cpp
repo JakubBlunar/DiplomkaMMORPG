@@ -52,7 +52,7 @@ void ClientEventActions::visit(EventLoginResponse* e) {
 }
 
 void ClientEventActions::visit(EventCharacterChooseResponse* e) {
-	//game->print(e->toString());
+	game->print(e->toString());
 	if (e->success) {
 		json response = json::parse(e->characterData);
 		//game->print("Character DATA: " + response.dump());
@@ -77,6 +77,14 @@ void ClientEventActions::visit(EventCharacterChooseResponse* e) {
 			if (otherPlayer->getId() != p->getId())
 				map->addPlayer(otherPlayer);
 		}
+
+		json npcs = response["npcs"].get<json::array_t>();
+		for (json::iterator it = npcs.begin(); it != npcs.end(); ++it) {
+			Npc* npc = new Npc();
+			npc->loadFromJson(*it);
+			map->addNpc(npc);
+		}
+
 		game->changeMap(map);
 
 		game->sceneManager->changeScene(SceneType::GAMEPLAY);

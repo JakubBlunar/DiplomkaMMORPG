@@ -36,7 +36,7 @@ sf::Vector2f s::Location::generateRandomPoint() const {
 	do {
 		point.x = rand->randomUniformFloat(rect.lowerBound.x, rect.upperBound.x);
 		point.y = rand->randomUniformFloat(rect.lowerBound.y, rect.upperBound.y);
-	} while(shape->TestPoint(transform, point));
+	} while(!shape->TestPoint(transform, point));
 
 	return sf::Vector2f(point.x, point.y);
 }

@@ -183,7 +183,7 @@ void s::Server::recievePackets() {
 
 					spdlog::get("log")->info("new connection received from {}", client->getRemoteAddress().toString());
 
-					/*
+					
 					string name;
 					string pass;
 					int characterId;
@@ -213,7 +213,7 @@ void s::Server::recievePackets() {
 						identifyPacket(CHARACTER_CHOOSE, tempPacket, playerSession);
 						delete tempPacket;
 					}
-					*/
+					
 				}
 				else {
 					print("error : server has no connection");

@@ -151,7 +151,7 @@ void s::AuthManager::handleEvent(EventCharacterChoose* event, s::Session* player
 					json resData;
 					resData["character"] = ch->toJson();
 					resData["otherPlayers"] = m->getCharactersJson();
-
+					resData["npcs"] = m->getNpcsJson();
 					characterData = resData.dump();
 					result = true;
 				}

@@ -11,8 +11,8 @@
 #include "TileSetsHolder.h"
 #include "Utils.h"
 
-Map::Map(Game* game) {
-	this->game = game;
+Map::Map(Game* g) {
+	this->game = g;
 }
 
 
@@ -255,6 +255,23 @@ void Map::addCollider(Collider* collider) {
 void Map::removeGameObject(GameObject* gameObject) {
 	world->DestroyBody(gameObject->getBody());
 	entities.erase(std::remove(entities.begin(), entities.end(), gameObject), entities.end());
+}
+
+void Map::addNpc(Npc* npc) {
+	
+	sf::Vector2f position = npc->getPosition();
+	sf::Vector2f size = npc->getSize();
+	Box2DTools::addCircle(b2_dynamicBody, position.x, position.y, size.x, npc, this, npc->getEntityCategory(),
+	                      npc->getCollisionMask());
+
+	entities.push_back(npc);
+	npcs.push_back(npc);
+}
+
+void Map::removeNpc(Npc* npc) {
+	world->DestroyBody(npc->getBody());
+	entities.erase(std::remove(entities.begin(), entities.end(), npc), entities.end());
+	npcs.erase(std::remove(npcs.begin(), npcs.end(), npc), npcs.end());
 }
 
 void Map::loadFromFile(int id) {

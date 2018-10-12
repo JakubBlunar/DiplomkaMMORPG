@@ -9,6 +9,7 @@
 #include "GameObject.h"
 #include "MapContactListener.h"
 #include "MapGrid.h"
+#include "Npc.h"
 
 class Collider;
 class Game;
@@ -21,6 +22,7 @@ class Map : public Subscriber {
 	b2World* world;
 	std::vector<Player*> players;
 	std::vector<Entity*> entities;
+	std::vector<Npc*> npcs;
 
 	b2Draw* debugDrawInstance;
 	int id;
@@ -41,6 +43,8 @@ public:
 	void addGameObject(GameObject* gameObject);
 	void addCollider(Collider* collider);
 	void removeGameObject(GameObject* gameObject);
+	void addNpc(Npc* npc);
+	void removeNpc(Npc* npc);
 
 	void loadFromFile(int id);
 

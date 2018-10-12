@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "RenderComponent.h"
 #include "PositionComponent.h"
+#include "JsonLoader.h"
 
 class Npc :
 	public Entity
@@ -14,7 +15,7 @@ class Npc :
 	RenderComponent* renderComponent;
 
 public:
-	Npc(sf::Uint32 spawnId, int type);
+	Npc();
 	~Npc();
 
 	void handleEvent(GameEvent* event) override;
@@ -28,6 +29,8 @@ public:
 	PositionComponent* getPositionComponent() const;
 
 	void updateMovementAnimation();
+
+	void loadFromJson(json serverData);
 };
 
 #endif

@@ -213,9 +213,6 @@
     <ClCompile Include="MapContactListener.cpp">
       <Filter>Source Files\Core\Map</Filter>
     </ClCompile>
-    <ClCompile Include="Npc.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BotGame.cpp">
       <Filter>Source Files\Bot</Filter>
     </ClCompile>
@@ -224,6 +221,9 @@
     </ClCompile>
     <ClCompile Include="BotCommandMoveTo.cpp">
       <Filter>Source Files\Bot\Botcommands</Filter>
+    </ClCompile>
+    <ClCompile Include="Npc.cpp">
+      <Filter>Source Files\Entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -365,9 +365,6 @@
     <ClInclude Include="sfLine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Npc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BotGame.h">
       <Filter>Header Files\Bot</Filter>
     </ClInclude>
@@ -376,6 +373,9 @@
     </ClInclude>
     <ClInclude Include="BotCommandMoveTo.h">
       <Filter>Header Files\Bot\Botcommends</Filter>
+    </ClInclude>
+    <ClInclude Include="Npc.h">
+      <Filter>Header Files\Entities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

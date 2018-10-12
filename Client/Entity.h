@@ -1,5 +1,6 @@
 #ifndef ENTITY_H
 #define ENTITY_H
+
 #include <SFML/System/Time.hpp>
 #include "Subscriber.h"
 #include "Component.h"

@@ -35,6 +35,7 @@ namespace s {
 		void loadFromJson(std::string file);
 		Npc* clone() const;
 
+		json toJson() const;
 
 		void setBody(b2Body* body);
 		b2Body* getBody() const;
