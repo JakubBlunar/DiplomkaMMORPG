@@ -1,9 +1,10 @@
-#define NOMINMAX
-
 #include "MapsManager.h"
 #include "Map.h"
 #include <spdlog/spdlog.h>
+#define NOMINMAX
 #include <windows.h>
+#undef NOMINMAX
+
 #include <regex>
 
 s::MapsManager::MapsManager() {
@@ -28,7 +29,7 @@ void s::MapsManager::update(sf::Time elapsedTime, s::Server* s) {
 	}
 }
 
-void s::MapsManager::init() {
+void s::MapsManager::init(Server *s) {
 	spdlog::get("log")->info("Started loading maps");
 
 	std::vector<std::string> files;
@@ -40,7 +41,7 @@ void s::MapsManager::init() {
 
 		file = std::regex_replace(file, std::regex("\\.json"), "");
 		Map* m = new Map();
-		m->loadFromJson("Maps/" + file);
+		m->loadFromJson("Maps/" + file, s);
 
 		maps.insert(std::make_pair(m->getId(), m));
 	}

@@ -7,6 +7,7 @@
 
 namespace s {
 	class Map;
+	class Server;
 }
 
 namespace s {
@@ -21,7 +22,7 @@ namespace s {
 
 		Map* getMap(int id);
 		void update(sf::Time elapsedTime, Server* s) override;
-		void init();
+		void init(Server *s);
 		void read_directory(std::string pattern, std::vector<std::string>& v) const;
 	};
 

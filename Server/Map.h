@@ -35,7 +35,7 @@ namespace s {
 
 		void update(sf::Time deltaTime, Server* s);
 
-		void loadFromJson(std::string path);
+		void loadFromJson(std::string path, Server *s);
 
 		json getCharactersJson();
 		json getNpcsJson();

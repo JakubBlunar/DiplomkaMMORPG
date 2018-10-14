@@ -111,7 +111,7 @@ void s::Map::update(sf::Time deltaTime, Server* s) {
 	lock.unlock();
 }
 
-void s::Map::loadFromJson(std::string path) {
+void s::Map::loadFromJson(std::string path, Server *s) {
 
 	spdlog::get("log")->info("Loading map: {}", path);
 	lock.lock();
@@ -262,7 +262,7 @@ void s::Map::loadFromJson(std::string path) {
 						Spawn* spawn = new Spawn(npcType, maxCount, loc);
 						loc->addSpawn(spawn);
 
-						spawn->init();
+						spawn->init(s);
 					}
 				}
 

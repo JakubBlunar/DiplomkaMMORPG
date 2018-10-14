@@ -1,7 +1,9 @@
-#define NOMINMAX
-
 #include "NpcHolder.h"
+
+#define NOMINMAX
 #include <windows.h>
+#undef NOMINMAX
+
 #include <regex>
 #include <spdlog/spdlog.h>
 

@@ -1,6 +1,9 @@
-#define NOMINMAX
-
 #include "BotGame.h"
+
+#define NOMINMAX
+#include <windows.h>
+#undef NOMINMAX
+
 #include "SceneManager.h"
 #include <imgui.h>
 #include <imgui-SFML.h>
@@ -13,7 +16,7 @@
 #include "Account.h"
 #include "BotCommandMoveTo.h"
 #include "Random.h"
-#include <windows.h>
+
 #include "EventCharacterLogout.h"
 #include "EventDispatcher.h"
 

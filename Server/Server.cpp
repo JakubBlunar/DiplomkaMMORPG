@@ -46,11 +46,12 @@ void s::Server::init() {
 	
 	NpcHolder::instance()->init();
 
-	mapsManager.init();
-
 	managers.push_back(&authManager);
 	managers.push_back(&mapsManager);
 	managers.push_back(&botManager);
+	managers.push_back(&npcManager);
+
+	mapsManager.init(this);
 }
 
 void s::Server::start() {

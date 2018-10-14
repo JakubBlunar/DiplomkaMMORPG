@@ -22,7 +22,7 @@ namespace s {
 		Spawn(int npcType, int maxSpawnedNpcs, Location* l);
 		~Spawn();
 
-		void init();
+		void init(Server *s);
 		void update(sf::Time elapsedTime, s::Server* s, Location* l);
 	};
 }

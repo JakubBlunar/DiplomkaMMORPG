@@ -10,6 +10,7 @@
 #include "AuthManager.h"
 #include "MapsManager.h"
 #include "BotManager.h"
+#include "NpcManager.h"
 
 namespace s {
 	class ServerTasks;
@@ -31,6 +32,7 @@ namespace s {
 		AuthManager authManager;
 		MapsManager mapsManager;
 		BotManager botManager;
+		NpcManager npcManager;
 		vector<Manager*> managers;
 	private:
 		void update(sf::Time elapsedTime);

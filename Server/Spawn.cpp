@@ -1,5 +1,4 @@
 #include "Spawn.h"
-#include "NpcHolder.h"
 #include "Location.h"
 #include <spdlog/spdlog.h>
 
@@ -14,16 +13,14 @@ s::Spawn::~Spawn()
 {
 }
 
-void s::Spawn::init()
+void s::Spawn::init(Server *s)
 {
 	spawnedNpcs.clear();
 	spawnedNpcs.reserve(maxSpawnedNpcs);
 
-	NpcHolder* nh = NpcHolder::instance();
-
 	try {
 		for (int i = 0; i < maxSpawnedNpcs; i++) {	
-			Npc* npc = nh->createNpc(npcType);
+			Npc* npc = s->npcManager.createNpc(npcType);
 			spawnedNpcs.push_back(npc);
 
 			npc->setPosition(location->generateRandomPoint());
