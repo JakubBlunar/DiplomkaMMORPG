@@ -87,25 +87,29 @@ void Npc::updateMovementAnimation()
 	{
 		renderComponent->changeAnimation("up");
 		renderComponent->getCurrentAnimation()->setLooped(true);
-		body->SetTransform(b2Vec2(position.x * PIXTOMET, position.y * PIXTOMET), 180 * DEGTORAD);
+		if(body)
+			body->SetTransform(b2Vec2(position.x * PIXTOMET, position.y * PIXTOMET), 180 * DEGTORAD);
 	}
 	else if (movement.x == 0 && movement.y > 0) //down
 	{
 		renderComponent->changeAnimation("down");
 		renderComponent->getCurrentAnimation()->setLooped(true);
-		body->SetTransform(b2Vec2(position.x * PIXTOMET, position.y * PIXTOMET), 0);
+		if(body)
+			body->SetTransform(b2Vec2(position.x * PIXTOMET, position.y * PIXTOMET), 0);
 		
 	}
 	else if (movement.x < 0 && movement.y == 0) //left
 	{
 		renderComponent->changeAnimation("left");
 		renderComponent->getCurrentAnimation()->setLooped(true);
-		body->SetTransform(b2Vec2(position.x * PIXTOMET, position.y * PIXTOMET), 90 * DEGTORAD);
+		if(body)
+			body->SetTransform(b2Vec2(position.x * PIXTOMET, position.y * PIXTOMET), 90 * DEGTORAD);
 	}
 	else if (movement.x > 0 && movement.y == 0) {
 		renderComponent->changeAnimation("right");
 		renderComponent->getCurrentAnimation()->setLooped(true);
-		body->SetTransform(b2Vec2(position.x * PIXTOMET, position.y * PIXTOMET), 270 * DEGTORAD);	
+		if(body)
+			body->SetTransform(b2Vec2(position.x * PIXTOMET, position.y * PIXTOMET), 270 * DEGTORAD);	
 	}
 	else if (movement.x > 0) {
 		renderComponent->changeAnimation("right");
@@ -174,7 +178,7 @@ void Npc::loadFromJson(json serverData)
 		renderComponent->addAnimation(name, a);
 	}
 	renderComponent->changeAnimation("down");
-
+	updateMovementAnimation();
 	subscribe();
 }
 

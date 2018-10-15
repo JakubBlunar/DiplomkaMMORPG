@@ -19,12 +19,18 @@ Map::Map(Game* g) {
 Map::~Map() {
 	unsubscribe();
 
+	for (int i = 0; i < entities.size(); i++)
+	{
+		if (entities[i] != player) {
+			delete entities[i];
+		}
+	}
+
 	players.clear();
 	entities.clear();
+	npcs.clear();
 	delete world;
 	delete fields;
-
-
 }
 
 void Map::init() {
