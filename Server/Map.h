@@ -5,6 +5,7 @@
 #include "Server.h"
 #include <Box2D/Dynamics/b2Body.h>
 #include "MapGrid.h"
+#include "ObjectPool.h"
 
 namespace s {
 	class Npc;
@@ -20,7 +21,7 @@ namespace s {
 
 		std::map<int, s::Location*> locations;
 
-		MapGrid* mapGrid;
+		ObjectPool<MapGrid> mapGridObjectPool;
 	public:
 		Map();
 		~Map();
@@ -39,6 +40,9 @@ namespace s {
 
 		json getCharactersJson();
 		json getNpcsJson();
+
+		MapGrid* getGrid();
+		void returnGrid(MapGrid* grid);
 
 		void sendEventToAnotherPlayers(GameEvent* event, int characterId);
 		void sendEventToAllPlayers(GameEvent* event);

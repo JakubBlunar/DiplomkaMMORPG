@@ -1,19 +1,20 @@
-#ifndef EVENT_MOVEMENT_CHANGED
-#define EVENT_MOVEMENT_CHANGED
+#ifndef EVENT_NPC_MOVEMENT_CHANGE
+#define EVENT_NPC_MOVEMENT_CHANGE
 
 #include "GameEvent.h"
 
-class EventMovementChange :
+class EventNpcMovementChange :
 	public GameEvent {
 public:
-	EventMovementChange();
+	EventNpcMovementChange();
 
 	float x, y, velX, velY, speed;
-	int playerId;
+	int spawnId;
 
 	void accept(class EventVisitor* v) override;
 	bool loadFromPacket(sf::Packet* p) override;
 	sf::Packet* toPacket() override;
+	std::string toString() const override;
 };
 
-#endif // !EVENT_MOVEMENT_CHANGED
+#endif // !EVENT_NPC_MOVEMENT_CHANGE

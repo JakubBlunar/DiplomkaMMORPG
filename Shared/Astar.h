@@ -1,6 +1,7 @@
 #ifndef ASTAR
 #define ASTAR
 #include "MapGrid.h"
+#include <map>
 
 class Astar
 {

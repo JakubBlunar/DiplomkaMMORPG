@@ -50,8 +50,7 @@ int MapGrid::transformYToGrid(float worldCoord) const
 }
 
 
-void MapGrid::setWall(sf::Vector2f worldPosition, sf::Vector2f size)
-{
+void MapGrid::setWall(sf::Vector2f worldPosition, sf::Vector2f size) const {
 	int fromX = this->transformXToGrid(worldPosition.x);
 	int fromY = this->transformYToGrid(worldPosition.y);
 
@@ -65,6 +64,16 @@ void MapGrid::setWall(sf::Vector2f worldPosition, sf::Vector2f size)
 		}
 	}
 }
+
+void MapGrid::setWall(sf::Vector2i coords) const {
+	if (coords.x >= cols || coords.y >= rows) {
+		throw "Out of range" + std::to_string(coords.x) + ", " + std::to_string(coords.y); 
+	}
+	MapGridSpot * spot = grid->get(coords.x, coords.y);
+	spot->setWall(true);
+}
+
+
 
 void MapGrid::initNeighbours()
 {
@@ -83,5 +92,23 @@ void MapGrid::reset() {
 			grid->get(i, j)->reset();
 		}
 	}
+}
+
+ObjectPoolItem * MapGrid::clone()
+{
+	MapGrid* newGrid = new MapGrid(width, height);
+
+	for (int i = 0; i < cols; i++) {
+		for(int j = 0; j < rows; j++) {
+			MapGridSpot* spot = grid->get(i, j);
+			if (spot->isWall()) {
+				newGrid->setWall(sf::Vector2i(i, j));
+			}
+		}
+	}
+
+	newGrid->initNeighbours();
+
+	return newGrid;
 }
 

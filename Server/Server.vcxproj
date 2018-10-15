@@ -154,6 +154,9 @@
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MapsManager.cpp" />
     <ClCompile Include="Npc.cpp" />
+    <ClCompile Include="NpcCommand.cpp" />
+    <ClCompile Include="NpcCommandMoveTo.cpp" />
+    <ClCompile Include="NpcCommandStay.cpp" />
     <ClCompile Include="NpcHolder.cpp" />
     <ClCompile Include="NpcManager.cpp" />
     <ClCompile Include="Server.cpp" />
@@ -179,6 +182,9 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapsManager.h" />
     <ClInclude Include="Npc.h" />
+    <ClInclude Include="NpcCommand.h" />
+    <ClInclude Include="NpcCommandMoveTo.h" />
+    <ClInclude Include="NpcCommandStay.h" />
     <ClInclude Include="NpcHolder.h" />
     <ClInclude Include="NpcManager.h" />
     <ClInclude Include="Server.h" />

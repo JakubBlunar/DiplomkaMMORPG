@@ -2,6 +2,9 @@
 #include "Globals.h"
 #include "JsonLoader.h"
 #include "ResourceHolder.h"
+#include "EventDispatcher.h"
+#include "EventNpcMovementChange.h"
+
 
 
 Npc::Npc(): Entity(-1)
@@ -16,10 +19,31 @@ Npc::Npc(): Entity(-1)
 
 Npc::~Npc()
 {
+	unsubscribe();
 }
 
 void Npc::handleEvent(GameEvent* event) {
-	
+	switch (event->getId()) {
+		case NPC_MOVEMENT_CHANGE: {
+			EventNpcMovementChange* temp = (EventNpcMovementChange*) event;
+
+			if(temp->spawnId != id)
+				return;
+
+			positionComponent->setPosition(sf::Vector2f(temp->x, temp->y));
+			positionComponent->setSpeed(temp->speed);
+			positionComponent->setMovement(sf::Vector2f(temp->velX, temp->velY));
+			if (body) {
+				body->SetTransform(b2Vec2(temp->x * PIXTOMET, temp->y * PIXTOMET),body->GetAngle());
+				body->SetLinearVelocity(b2Vec2(temp->velX * PIXTOMET, temp->velY * PIXTOMET));
+			}
+			
+			updateMovementAnimation();
+			break;
+		}
+		default:
+		break;
+	}
 }
 
 EntityType Npc::getType()
@@ -37,7 +61,9 @@ uint16 Npc::getCollisionMask() {
 }
 
 void Npc::update(sf::Time elapsedTime, Map* map, Game* g) {
-	
+	Entity::update(elapsedTime, map, g);
+
+	body->SetLinearVelocity(b2Vec2(positionComponent->getMovement().x * PIXTOMET, positionComponent->getMovement().y * PIXTOMET));
 }
 
 RenderComponent* Npc::getRenderComponent() const {
@@ -148,4 +174,14 @@ void Npc::loadFromJson(json serverData)
 		renderComponent->addAnimation(name, a);
 	}
 	renderComponent->changeAnimation("down");
+
+	subscribe();
+}
+
+void Npc::subscribe() {
+	EventDispatcher<EventNpcMovementChange>::addSubscriber(this);
+}
+
+void Npc::unsubscribe() {
+	EventDispatcher<EventNpcMovementChange>::removeSubscriber(this);
 }

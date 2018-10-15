@@ -179,12 +179,15 @@
     <ClInclude Include="EventLoginRequest.h" />
     <ClInclude Include="EventLoginResponse.h" />
     <ClInclude Include="EventMovementChange.h" />
+    <ClInclude Include="EventNpcMovementChange.h" />
     <ClInclude Include="EventVisitor.h" />
     <ClInclude Include="GameEvent.h" />
     <ClInclude Include="EventId.h" />
+    <ClInclude Include="ObjectPoolItem.h" />
     <ClInclude Include="MapGrid.h" />
     <ClInclude Include="MapGridSpot.h" />
     <ClInclude Include="Matrix.h" />
+    <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -200,6 +203,7 @@
     <ClCompile Include="EventLoginRequest.cpp" />
     <ClCompile Include="EventLoginResponse.cpp" />
     <ClCompile Include="EventMovementChange.cpp" />
+    <ClCompile Include="EventNpcMovementChange.cpp" />
     <ClCompile Include="EventVisitor.cpp" />
     <ClCompile Include="GameEvent.cpp" />
     <ClCompile Include="MapGrid.cpp" />

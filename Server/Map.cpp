@@ -13,7 +13,7 @@
 #include "Location.h"
 #include "Spawn.h"
 
-s::Map::Map(): id(0), world(nullptr), width(0), height(0), mapGrid(nullptr) {}
+s::Map::Map(): id(0), world(nullptr), width(0), height(0) {}
 
 s::Map::~Map() {
 }
@@ -87,6 +87,12 @@ void s::Map::removeNpc(Npc * npc)
 
 void s::Map::update(sf::Time deltaTime, Server* s) {
 	lock.lock();
+	
+	if (characters.empty()) {
+		lock.unlock();
+		return;
+	}
+
 	world->Step(deltaTime.asSeconds(), 5, 2);
 
 	std::for_each(
@@ -108,6 +114,10 @@ void s::Map::update(sf::Time deltaTime, Server* s) {
 		element.second->update(deltaTime, s, this);
 	}
 
+	for (Npc* npc : npcs) {
+		s->npcManager.updateNpc(deltaTime, npc, s);
+	}
+
 	lock.unlock();
 }
 
@@ -124,7 +134,7 @@ void s::Map::loadFromJson(std::string path, Server *s) {
 	width = (int)mapData["width"].get<json::number_integer_t>();
 	height = (int)mapData["height"].get<json::number_integer_t>();
 
-	mapGrid = new MapGrid(width * (int)FIELD_SIZE, height * (int)FIELD_SIZE);
+	//mapGrid = new MapGrid(width * (int)FIELD_SIZE, height * (int)FIELD_SIZE);
 
 	world = new b2World(b2Vec2(0.f, 0.f));
 	world->SetAllowSleeping(true);
@@ -134,6 +144,15 @@ void s::Map::loadFromJson(std::string path, Server *s) {
 	createBox(b2_staticBody, -2, 0, 2, FIELD_SIZE * height, BOUNDARY, PLAYER | NPC);
 	createBox(b2_staticBody, width * FIELD_SIZE, 0, 2, FIELD_SIZE * height, BOUNDARY, PLAYER | NPC);
 	createBox(b2_staticBody, 0, height * FIELD_SIZE, FIELD_SIZE * width, 2, BOUNDARY, PLAYER | NPC);
+
+	int initGridCount = 5;
+	vector<MapGrid*> grids;
+	grids.reserve(initGridCount);
+
+	for (int i = 0; i < initGridCount; i++) {
+		grids.push_back(new MapGrid(width * (int)FIELD_SIZE, height * (int)FIELD_SIZE));
+	}
+
 
 	json layers = mapData["layers"].get<json::array_t>();
 	for (json::iterator layerIterator = layers.begin(); layerIterator != layers.end(); layerIterator++) {
@@ -191,6 +210,7 @@ void s::Map::loadFromJson(std::string path, Server *s) {
 			
 		}
 
+	
 		if (layerType == "objectgroup" && layerName == "gameobjects") {
 			json gameObjects = layer["objects"].get<json::array_t>();
 
@@ -214,11 +234,15 @@ void s::Map::loadFromJson(std::string path, Server *s) {
 
 							if (bodyType == BodyType::RECTANGLE) {
 								createBox(b2_staticBody, positionX, positionY, width, height, GAME_OBJECT, PLAYER | ENEMY_PLAYER | NPC);
-								mapGrid->setWall(sf::Vector2f(positionX, positionY + height / 2), sf::Vector2f(width, height));
+								for (MapGrid* grid: grids) {
+									grid->setWall(sf::Vector2f(positionX, positionY + height / 2), sf::Vector2f(width, height));
+								}
 							}
 							if (bodyType == BodyType::CIRCLE) {
 								createCircle(b2_staticBody, positionX, positionY, width, GAME_OBJECT, PLAYER | ENEMY_PLAYER | NPC);
-								mapGrid->setWall(sf::Vector2f(positionX, positionY), sf::Vector2f(width, width));
+								for (MapGrid* grid: grids) {
+									grid->setWall(sf::Vector2f(positionX, positionY), sf::Vector2f(width, width));
+								}
 							}
 						
 						}
@@ -233,11 +257,19 @@ void s::Map::loadFromJson(std::string path, Server *s) {
 
 					if (width > 0 && height > 0) {
 						createBox(b2_staticBody, positionX, positionY, width, height, BOUNDARY, PLAYER | ENEMY_PLAYER | NPC);
-						mapGrid->setWall(sf::Vector2f(positionX, positionY + height / 2), sf::Vector2f(width, height));
+						for (MapGrid* grid: grids) {
+							grid->setWall(sf::Vector2f(positionX, positionY + height / 2), sf::Vector2f(width, height));
+						}
 					}
 				}
 			}
 		}
+
+	}
+
+	for (MapGrid* grid: grids) {
+		grid->initNeighbours();
+		mapGridObjectPool.addObject(grid);
 	}
 
 	json mapSpawns = JsonLoader::instance()->loadJson("Maps/Spawns/" + std::to_string(id));
@@ -272,8 +304,6 @@ void s::Map::loadFromJson(std::string path, Server *s) {
 
 	}
 
-	mapGrid->initNeighbours();
-
 	lock.unlock();
 }
 
@@ -296,6 +326,14 @@ json s::Map::getNpcsJson()
 	}
 	lock.unlock();
 	return jsonNpcs;
+}
+
+MapGrid* s::Map::getGrid() {
+	return mapGridObjectPool.getObject();
+}
+
+void s::Map::returnGrid(MapGrid* grid) {
+	mapGridObjectPool.addObject(grid);
 }
 
 void s::Map::sendEventToAnotherPlayers(GameEvent* event, int characterId)

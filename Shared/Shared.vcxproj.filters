@@ -90,6 +90,15 @@
     <ClInclude Include="Random.h">
       <Filter>Header Files\Tools</Filter>
     </ClInclude>
+    <ClInclude Include="EventNpcMovementChange.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectPool.h">
+      <Filter>Header Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectPoolItem.h">
+      <Filter>Header Files\Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -139,6 +148,9 @@
     </ClCompile>
     <ClCompile Include="Random.cpp">
       <Filter>Source Files\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="EventNpcMovementChange.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

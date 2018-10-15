@@ -5,6 +5,7 @@
 #include "EventCharacterChoose.h"
 #include "EventCharacterChooseResponse.h"
 #include "EventCharacterMapJoin.h"
+#include "EventNpcMovementChange.h"
 
 class EventCharacterMapLeave;
 class EventLoginResponse;
@@ -23,6 +24,7 @@ public:
 	virtual void visit(EventCharacterMapJoin* e);
 	virtual void visit(EventCharacterMapLeave* e);
 	virtual void visit(EventCharacterLogout* e);
+	virtual void visit(EventNpcMovementChange* e);
 };
 
 

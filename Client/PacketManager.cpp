@@ -123,6 +123,15 @@ void PacketManager::startRecieve() {
 						game->print("Error while parsing packet " + std::to_string(pt));
 					}
 					break;
+				case NPC_MOVEMENT_CHANGE:
+					e = new EventNpcMovementChange();
+					if (e->loadFromPacket(&packet)) {
+						EventDispatcher<EventNpcMovementChange>::dispatchEvent(e);
+					}
+					else {
+						game->print("Error while parsing packet " + std::to_string(pt));
+					}
+					break;
 				default:
 					game->print("Unknown packet type " + std::to_string(pt));
 					break;

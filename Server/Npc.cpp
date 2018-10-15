@@ -1,5 +1,7 @@
 #include "Npc.h"
 #include "JsonLoader.h"
+#include "ServerGlobals.h"
+#include "EventNpcMovementChange.h"
 
 s::Npc::Npc() {
 	body = nullptr;
@@ -16,6 +18,13 @@ s::Npc::Npc() {
 
 s::Npc::~Npc() {
 	
+}
+
+s::NpcCommand* s::Npc::getNpcCommand() const {
+	return command;
+}
+void s::Npc::setNpcCommand(NpcCommand* command) {
+	this->command = command;
 }
 
 void s::Npc::setSpawnId(int id)
@@ -110,7 +119,28 @@ string s::Npc::getName() const {
 }
 
 void s::Npc::setMovement(sf::Vector2f movement) {
-	this->movement = movement;	
+	if (lastMovement == movement) {
+		return;
+	}
+
+	this->lastMovement = this->movement;
+	this->movement = movement;
+
+	if (body) {
+		body->SetLinearVelocity(b2Vec2(movement.x * PIXTOMET, movement.y * PIXTOMET));
+
+		if (map) {
+			EventNpcMovementChange e;
+			e.spawnId = spawnId;
+			e.speed = speed;
+			e.velX = this->movement.x;
+			e.velY = this->movement.y;
+			e.x = position.x;
+			e.y = position.y;
+
+			map->sendEventToAllPlayers(&e);
+		}
+	}
 }
 sf::Vector2f s::Npc::getMovement() const {
 	return movement;
@@ -138,4 +168,20 @@ void s::Npc::setType(int type) {
 int s::Npc::getType() const
 {
 	return type;
+}
+
+sf::Vector2f s::Npc::getLastMovement() const {
+	return lastMovement;
+}
+
+void s::Npc::setMovementDirection(sf::Vector2f direction, float speed) {
+	this->speed = speed;
+	this->setMovement(sf::Vector2f(direction.x * speed, direction.y * speed));
+}
+
+void s::Npc::setLocation(Location* l) {
+	this->location = l;
+}
+s::Location* s::Npc::getLocation() const {
+	return location;
 }

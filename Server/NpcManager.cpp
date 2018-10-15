@@ -1,5 +1,10 @@
 #include "NpcManager.h"
 #include "NpcHolder.h"
+#include "ServerGlobals.h"
+#include "Random.h"
+#include "NpcCommandMoveTo.h"
+#include "Location.h"
+#include "NpcCommandStay.h"
 
 
 s::NpcManager::NpcManager()
@@ -43,6 +48,36 @@ s::Npc* s::NpcManager::findNpc(int spawnId)
 	}
 	lock.unlock();
 	return nullptr;
+}
+
+void s::NpcManager::updateNpc(sf::Time elapsedTime, Npc* npc, Server * s)
+{
+	b2Body* body = npc->getBody();
+	b2Vec2 position = body->GetPosition();
+	b2Vec2 velocity = body->GetLinearVelocity();
+
+	npc->setPosition(sf::Vector2f(position.x * METTOPIX, position.y * METTOPIX));
+	npc->setMovement(sf::Vector2f(velocity.x * METTOPIX, velocity.y * METTOPIX));
+
+	NpcCommand* command = npc->getNpcCommand();
+	if (!command || command->isFinished()) {
+		delete command;
+
+		Random* rand = Random::instance();
+		if (rand->randomUniformFloat(0, 100) < 45) {
+			Location * l = npc->getLocation();
+			if (l) {
+				NpcCommandMoveTo* newCommand = new NpcCommandMoveTo(l->generateRandomPoint(), npc, npc->getMap(), s,  sf::seconds(30));
+				newCommand->init();
+				npc->setNpcCommand(newCommand);
+			}
+		} else {
+			NpcCommandStay* newCommand = new NpcCommandStay(npc, npc->getMap(), s,  sf::seconds(rand->randomUniformFloat(10, 30)));
+			npc->setNpcCommand(newCommand);
+		}
+	} else {
+		command->update(elapsedTime);
+	}
 }
 
 

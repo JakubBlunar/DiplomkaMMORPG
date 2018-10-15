@@ -40,6 +40,12 @@
     <Filter Include="Header Files\Entities">
       <UniqueIdentifier>{b3b8751c-7894-4438-867c-467496e56481}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\NpcCommands">
+      <UniqueIdentifier>{3e29226e-3a05-4938-b441-914e9ce4f569}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\NpcCommands">
+      <UniqueIdentifier>{69f15386-735c-41be-b100-785925994a50}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -107,6 +113,15 @@
     </ClCompile>
     <ClCompile Include="NpcManager.cpp">
       <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="NpcCommand.cpp">
+      <Filter>Source Files\NpcCommands</Filter>
+    </ClCompile>
+    <ClCompile Include="NpcCommandMoveTo.cpp">
+      <Filter>Source Files\NpcCommands</Filter>
+    </ClCompile>
+    <ClCompile Include="NpcCommandStay.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +196,15 @@
     </ClInclude>
     <ClInclude Include="NpcManager.h">
       <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="NpcCommand.h">
+      <Filter>Header Files\NpcCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="NpcCommandMoveTo.h">
+      <Filter>Header Files\NpcCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="NpcCommandStay.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

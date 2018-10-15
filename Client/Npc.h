@@ -31,6 +31,9 @@ public:
 	void updateMovementAnimation();
 
 	void loadFromJson(json serverData);
+
+	void subscribe();
+	void unsubscribe();
 };
 
 #endif

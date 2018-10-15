@@ -4,6 +4,7 @@
 #include <Box2D/Box2D.h>
 #include <SFML/System/Vector2.hpp>
 #include "Map.h"
+#include "NpcCommand.h"
 
 namespace s {
 	class Npc {
@@ -17,6 +18,7 @@ namespace s {
 
 		sf::Vector2f position;
 		sf::Vector2f movement;
+		sf::Vector2f lastMovement;
 		sf::Vector2i size;
 
 
@@ -25,9 +27,15 @@ namespace s {
 		sf::Time deadTimestamp;
 
 		Map* map;
+		Location* location;
+		NpcCommand* command;
 	public:
+	
 		Npc();
 		~Npc();
+
+		NpcCommand* getNpcCommand() const;
+		void setNpcCommand(NpcCommand* command);
 
 		void setSpawnId(int id);
 		int getSpawnId() const;
@@ -46,8 +54,8 @@ namespace s {
 		void setMap(Map* map);
 		Map* getMap() const;
 
-		void setName(string name);
-		string getName() const;
+		void setName(std::string name);
+		std::string getName() const;
 
 		void setMovement(sf::Vector2f movement);
 		sf::Vector2f getMovement() const;
@@ -60,6 +68,13 @@ namespace s {
 
 		void setType(int type);
 		int getType() const;
+
+		sf::Vector2f getLastMovement() const;
+
+		void setMovementDirection(sf::Vector2f direction, float speed);
+
+		void setLocation(Location* l);
+		Location* getLocation() const;
 	};
 }
 

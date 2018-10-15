@@ -23,6 +23,7 @@ void s::Spawn::init(Server *s)
 			Npc* npc = s->npcManager.createNpc(npcType);
 			spawnedNpcs.push_back(npc);
 
+			npc->setLocation(location);
 			npc->setPosition(location->generateRandomPoint());
 
 			location->getMap()->addNpc(npc);
