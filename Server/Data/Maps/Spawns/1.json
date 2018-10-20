@@ -4,7 +4,7 @@
         "id": 1,
         "spawns": [{
             "npcType": 1,
-            "maxCount": 10
+            "maxCount": 200
         }]
     }]
 }

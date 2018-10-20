@@ -46,10 +46,7 @@ void s::Server::init() {
 	
 	NpcHolder::instance()->init();
 
-	managers.push_back(&authManager);
 	managers.push_back(&mapsManager);
-	managers.push_back(&botManager);
-	managers.push_back(&npcManager);
 
 	mapsManager.init(this);
 }
@@ -104,8 +101,7 @@ void s::Server::start() {
 void s::Server::update(sf::Time elapsedTime) {
 	Server* s = this;
 	std::for_each(managers.begin(), managers.end(), [elapsedTime, s](Manager* m) {
-		if (m->isDynamic())
-			m->update(elapsedTime, s);
+		m->update(elapsedTime, s);
 	});
 }
 

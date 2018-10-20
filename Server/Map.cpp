@@ -93,7 +93,7 @@ void s::Map::update(sf::Time deltaTime, Server* s) {
 		return;
 	}
 
-	world->Step(deltaTime.asSeconds(), 5, 2);
+	world->Step(deltaTime.asSeconds(), 3, 2);
 
 	std::for_each(
 		characters.begin(),
@@ -145,7 +145,7 @@ void s::Map::loadFromJson(std::string path, Server *s) {
 	createBox(b2_staticBody, width * FIELD_SIZE, 0, 2, FIELD_SIZE * height, BOUNDARY, PLAYER | NPC);
 	createBox(b2_staticBody, 0, height * FIELD_SIZE, FIELD_SIZE * width, 2, BOUNDARY, PLAYER | NPC);
 
-	int initGridCount = 5;
+	int initGridCount = 10;
 	vector<MapGrid*> grids;
 	grids.reserve(initGridCount);
 
