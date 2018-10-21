@@ -11,6 +11,7 @@
 #include "MapGrid.h"
 #include "Npc.h"
 
+class GameEvent;
 class Collider;
 class Game;
 
@@ -58,6 +59,8 @@ public:
 	int getHeight() const;
 	b2World* getB2World() const;
 	MapGrid* getGrid() const;
+
+	std::vector<Entity*>* getEntities();
 
 	void handleEvent(GameEvent* event) override;
 };

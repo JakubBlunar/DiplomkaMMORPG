@@ -4,15 +4,15 @@
 #include "GamePlayScene.h"
 #include "CharacterChooseScene.h"
 
-SceneManager::SceneManager() {
-	LoginScene* logS = new LoginScene(SceneType::LOGIN);
+SceneManager::SceneManager(Game *g) {
+	LoginScene* logS = new LoginScene(SceneType::LOGIN, g);
 	scenes.insert(std::pair<SceneType, Scene*>(SceneType::LOGIN, logS));
 	actualScene = logS;
 
-	GamePlayScene* gpS = new GamePlayScene(SceneType::GAMEPLAY);
+	GamePlayScene* gpS = new GamePlayScene(SceneType::GAMEPLAY, g);
 	scenes.insert(std::pair<SceneType, Scene*>(SceneType::GAMEPLAY, gpS));
 
-	CharacterChooseScene* ccs = new CharacterChooseScene(SceneType::CHARACTER_CHOOSE);
+	CharacterChooseScene* ccs = new CharacterChooseScene(SceneType::CHARACTER_CHOOSE, g);
 	scenes.insert(std::pair<SceneType, Scene*>(SceneType::CHARACTER_CHOOSE, ccs));
 }
 
@@ -35,10 +35,10 @@ void SceneManager::changeScene(SceneType sceneType) {
 	}
 }
 
-void SceneManager::render(Game* g) const {
-	actualScene->render(g);
+void SceneManager::render() const {
+	actualScene->render();
 }
 
-void SceneManager::update(Game* g, sf::Time elapsedTime) const {
-	actualScene->update(g, elapsedTime);
+void SceneManager::update(sf::Time elapsedTime) const {
+	actualScene->update(elapsedTime);
 }

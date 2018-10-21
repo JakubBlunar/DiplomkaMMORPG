@@ -8,12 +8,12 @@ class CharacterChooseScene :
 	public Scene {
 public:
 	virtual ~CharacterChooseScene() = default;
-	CharacterChooseScene(SceneType sceneType);
+	CharacterChooseScene(SceneType sceneType, Game* g);
 
-	void beforeChange(Game* g) override;
-	void afterChange(Game* g) override;
-	void update(Game* g, sf::Time elapsedTime) override;
-	void render(Game* g) override;
+	void beforeChange() override;
+	void afterChange() override;
+	void update(sf::Time elapsedTime) override;
+	void render() override;
 };
 
 #endif

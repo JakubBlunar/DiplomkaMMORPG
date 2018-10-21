@@ -154,6 +154,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GamePlayScene.cpp" />
     <ClCompile Include="IGAvailableCharacters.cpp" />
+    <ClCompile Include="IGEntityInfo.cpp" />
     <ClCompile Include="IGGameMenu.cpp" />
     <ClCompile Include="IGLoginCredentials.cpp" />
     <ClCompile Include="IGManager.cpp" />
@@ -205,6 +206,7 @@
     <ClInclude Include="GamePlayScene.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="IGAvailableCharacters.h" />
+    <ClInclude Include="IGEntityInfo.h" />
     <ClInclude Include="IGGameMenu.h" />
     <ClInclude Include="IGLoginCredentials.h" />
     <ClInclude Include="IGManager.h" />

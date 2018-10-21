@@ -62,7 +62,7 @@ void BotGame::run() {
 void BotGame::update(sf::Time elapsedTime) {
 	ClientSettings::instance()->eventsMutex.lock();
 
-	sceneManager->update(this, elapsedTime);
+	sceneManager->update(elapsedTime);
 
 	if (botCommand) {
 		botCommand->update(elapsedTime, this);

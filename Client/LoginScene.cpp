@@ -3,7 +3,7 @@
 
 #include "SFML/Graphics.hpp"
 
-LoginScene::LoginScene(SceneType sceneType): Scene(sceneType) {
+LoginScene::LoginScene(SceneType sceneType, Game* g): Scene(sceneType, g) {
 	IGLoginCredentials* credWindow = new IGLoginCredentials();
 
 	windowManager->addWindow("loginCredentials", credWindow);
@@ -14,24 +14,24 @@ LoginScene::~LoginScene() {
 
 }
 
-void LoginScene::beforeChange(Game* g) {
-	Scene::beforeChange(g);
+void LoginScene::beforeChange() {
+	Scene::beforeChange();
 }
 
-void LoginScene::afterChange(Game* g) {
-	Scene::afterChange(g);
+void LoginScene::afterChange() {
+	Scene::afterChange();
 }
 
-void LoginScene::update(Game* g, sf::Time elapsedTime) {
-	Scene::update(g, elapsedTime);
+void LoginScene::update(sf::Time elapsedTime) {
+	Scene::update(elapsedTime);
 
-	if (g->keyboardManager->isKeyPressed(sf::Keyboard::Escape)) {
-		g->running = false;
+	if (game->keyboardManager->isKeyPressed(sf::Keyboard::Escape)) {
+		game->running = false;
 	}
 }
 
-void LoginScene::render(Game* g) {
-	g->window->clear(sf::Color::Green);
+void LoginScene::render() {
+	game->window->clear(sf::Color::Green);
 
-	Scene::render(g);
+	Scene::render();
 }

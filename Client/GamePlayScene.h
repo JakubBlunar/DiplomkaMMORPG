@@ -2,19 +2,23 @@
 #include "Scene.h"
 #include "VisibleObjectsCast.h"
 #include "Astar.h"
+#include "IGEntityInfo.h"
 
 class GamePlayScene :
 	public Scene {
 public:
-	GamePlayScene(SceneType sceneType);
+	GamePlayScene(SceneType sceneType, Game* g);
 	~GamePlayScene();
 
-	void beforeChange(Game* g) override;
-	void afterChange(Game* g) override;
-	void update(Game* g, sf::Time elapsedTime) override;
-	void render(Game* g) override;
-
+	void beforeChange() override;
+	void afterChange() override;
+	void update(sf::Time elapsedTime) override;
+	void render() override;
 private:
+	IGEntityInfo* targetInfoWindow;
+
+	void onClick(sf::Mouse::Button event, sf::Vector2f position) override;
+
 	bool escPressed;
 	sf::Texture BoxTexture;
 	sf::Font mFont;

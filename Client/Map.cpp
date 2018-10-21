@@ -111,6 +111,10 @@ MapGrid* Map::getGrid() const {
 	return grid;
 }
 
+std::vector<Entity*>* Map::getEntities() {
+	return &entities;
+}
+
 void Map::handleEvent(GameEvent* event) {
 	switch (event->getId()) {
 	case CHARACTER_MAP_JOIN: {

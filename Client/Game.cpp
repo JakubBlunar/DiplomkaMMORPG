@@ -16,7 +16,7 @@ Game::Game():
 	mStatisticsNumFrames(0) {
 	
 	this->packet_manager = new PacketManager(this);
-	this->sceneManager = new SceneManager();
+	this->sceneManager = new SceneManager(this);
 	this->keyboardManager = new KeyboardManager();
 	this->eventActions = new ClientEventActions(this);
 
@@ -139,7 +139,7 @@ void Game::processEvents() {
 void Game::update(sf::Time elapsedTime) {
 	ClientSettings::instance()->eventsMutex.lock();
 
-	sceneManager->update(this, elapsedTime);
+	sceneManager->update(elapsedTime);
 	camera.update(elapsedTime, this);
 
 	ClientSettings::instance()->eventsMutex.unlock();
@@ -149,7 +149,7 @@ void Game::render() {
 	window->clear();
 
 	if(true || window->hasFocus()) {
-		sceneManager->render(this);
+		sceneManager->render();
 	}
 
 	ImGui::SFML::Render(*window);

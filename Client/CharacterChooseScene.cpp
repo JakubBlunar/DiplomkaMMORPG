@@ -1,27 +1,27 @@
 #include "CharacterChooseScene.h"
 #include "IGAvailableCharacters.h"
 
-CharacterChooseScene::CharacterChooseScene(SceneType sceneType) : Scene(sceneType) {
+CharacterChooseScene::CharacterChooseScene(SceneType sceneType, Game* g) : Scene(sceneType, g) {
 	IGAvailableCharacters* selectCharactersWindow = new IGAvailableCharacters();
 	windowManager->addWindow("selectCharacter", selectCharactersWindow);
 	windowManager->OpenAll();
 }
 
 
-void CharacterChooseScene::beforeChange(Game* g) {
-	Scene::beforeChange(g);
+void CharacterChooseScene::beforeChange() {
+	Scene::beforeChange();
 }
 
-void CharacterChooseScene::afterChange(Game* g) {
-	Scene::afterChange(g);
+void CharacterChooseScene::afterChange() {
+	Scene::afterChange();
 }
 
-void CharacterChooseScene::update(Game* g, sf::Time elapsedTime) {
-	Scene::update(g, elapsedTime);
+void CharacterChooseScene::update(sf::Time elapsedTime) {
+	Scene::update(elapsedTime);
 }
 
-void CharacterChooseScene::render(Game* g) {
-	g->window->clear(sf::Color::Green);
+void CharacterChooseScene::render() {
+	game->window->clear(sf::Color::Green);
 
-	Scene::render(g);
+	Scene::render();
 }

@@ -1,5 +1,6 @@
 #include "Entity.h"
 #include "PositionComponent.h"
+#include "RenderComponent.h"
 
 Entity::Entity(sf::Uint32 id): body(nullptr) {
 	this->id = id;
@@ -52,4 +53,27 @@ sf::Vector2f Entity::getSize() const {
 
 sf::Uint32 Entity::getId() const {
 	return id;
+}
+
+bool Entity::containsPoint(sf::Vector2f point) const
+{
+	RenderComponent* renderComponent = (RenderComponent*)getComponent(ComponentType::RENDER);
+	PositionComponent* positionComponent = (PositionComponent*)getComponent(ComponentType::POSITION);
+	if (renderComponent && positionComponent) {
+		sf::Vector2f position = positionComponent->getPosition();
+		sf::Vector2i offset = renderComponent->getOffset();
+		sf::Vector2i size = renderComponent->getSize();
+
+		sf::Vector2f renderOffset = sf::Vector2f(position.x + offset.x, position.y + offset.y);
+		if (renderOffset.x <= point.x && point.x <= renderOffset.x + size.x) {
+			if (renderOffset.y <= point.y && point.y <= renderOffset.y + size.y) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+std::string Entity::getName() const {
+	return name;
 }

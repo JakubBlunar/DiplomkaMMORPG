@@ -225,6 +225,9 @@
     <ClCompile Include="Npc.cpp">
       <Filter>Source Files\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="IGEntityInfo.cpp">
+      <Filter>Source Files\Scenes\IMGui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="json.hpp">
@@ -376,6 +379,9 @@
     </ClInclude>
     <ClInclude Include="Npc.h">
       <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="IGEntityInfo.h">
+      <Filter>Header Files\Scenes\IMGui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

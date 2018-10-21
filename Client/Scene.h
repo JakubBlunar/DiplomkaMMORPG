@@ -13,22 +13,32 @@ enum class SceneType {
 
 class Scene {
 protected:
-	Scene(SceneType sceneType);
+	Scene(SceneType sceneType, Game* g);
 	~Scene();
 	IGManager* windowManager;
+	Game* game;
+
+	bool isLeftClicked;
+	bool isRightClicked;
+	
+	virtual void onClick(sf::Mouse::Button event, sf::Vector2f position);
 public:
 	bool canChange;
 	std::string name;
 	SceneType type;
 	sf::FloatRect playerBorders;
+	
+
 
 	SceneType getType() const;
 	IGManager* getWindowManager() const;
 
-	virtual void beforeChange(Game* g);
-	virtual void afterChange(Game* g);
-	virtual void update(Game* g, sf::Time elapsedTime);
-	virtual void render(Game* g);
+	virtual void beforeChange();
+	virtual void afterChange();
+	virtual void update(sf::Time elapsedTime);
+	virtual void render();
+
+	
 };
 
 #endif

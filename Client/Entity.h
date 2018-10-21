@@ -1,11 +1,12 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include <SFML/System/Time.hpp>
+#include <SFML/Graphics.hpp>
 #include "Subscriber.h"
 #include "Component.h"
 #include <Box2D/Dynamics/b2Body.h>
 #include "EntityConstants.h"
+#include <SFML/System.hpp>
 
 class Game;
 class Map;
@@ -33,6 +34,8 @@ public:
 	sf::Vector2f getPosition() const;
 	sf::Vector2f getSize() const;
 	uint32 getId() const;
+	bool containsPoint(sf::Vector2f point) const;
+	std::string getName() const;
 protected:
 	Entity(sf::Uint32 id);
 	std::vector<Component *> components;

@@ -3,7 +3,7 @@
 #include "ServerGlobals.h"
 #include "EventNpcMovementChange.h"
 
-s::Npc::Npc() {
+s::Npc::Npc(): location(nullptr), command(nullptr) {
 	body = nullptr;
 	name = "";
 	spawnId = -1;
