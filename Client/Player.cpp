@@ -38,7 +38,19 @@ void Player::handleEvent(GameEvent* event) {
 			if(temp->playerId != id || playerControlled)
 				return;
 
-			positionComponent->setPosition(sf::Vector2f(temp->x, temp->y));
+			lsp.velocityX = temp->velX;
+			lsp.velocityY = temp->velY;
+			lsp.x = temp->x;
+			lsp.y = temp->y;
+
+			sf::Vector2f position = positionComponent->getPosition();
+			if (sqrt(pow(position.x - lsp.x, 2) + pow(position.y - lsp.y, 2)) > 64) {
+				positionComponent->setPosition(sf::Vector2f(temp->x, temp->y));
+				if (body) {
+					body->SetTransform(b2Vec2(temp->x * PIXTOMET, temp->y * PIXTOMET), body->GetAngle());
+				}
+			}
+			/*positionComponent->setPosition(sf::Vector2f(temp->x, temp->y));
 			positionComponent->setSpeed(temp->speed);
 			positionComponent->setMovement(sf::Vector2f(temp->velX, temp->velY));
 			if (body) {
@@ -46,7 +58,7 @@ void Player::handleEvent(GameEvent* event) {
 				body->SetLinearVelocity(b2Vec2(temp->velX * PIXTOMET, temp->velY * PIXTOMET));
 			}
 			
-			updateMovementAnimation();
+			updateMovementAnimation();*/
 			break;
 		}
 		default:
@@ -58,22 +70,20 @@ void Player::handleEvent(GameEvent* event) {
 void Player::update(sf::Time elapsedTime, Map* map, Game* g) {
 	Entity::update(elapsedTime, map, g);
 
-	body->SetLinearVelocity(b2Vec2(positionComponent->getMovement().x * PIXTOMET, positionComponent->getMovement().y * PIXTOMET));
+	//body->SetLinearVelocity(b2Vec2(positionComponent->getMovement().x * PIXTOMET, positionComponent->getMovement().y * PIXTOMET));
 
 	//cout << "VIEW: " << melleViewEntities.size() << " RANGE:" << melleRangeEntities.size() << endl;
 
 	if (playerControlled) {
 		sendingTime += elapsedTime;
-		if(sendingTime > sf::seconds(2)) {
+		if (sendingTime > sf::seconds(2)) {
 			sendingTime = sf::Time::Zero;
 			sendPosition(g);
 
 			//g->print("Sending player position  "+ std::to_string(elapsedTime.asMicroseconds()));
 		}
-	}
 
-	if (g->window) {
-		if (this->playerControlled && g->window->hasFocus()) {
+		if (g->window && g->window->hasFocus()) {
 			sf::Vector2f direction = sf::Vector2f(0.f, 0.f);
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
 				direction.y -= 1;
@@ -90,8 +100,43 @@ void Player::update(sf::Time elapsedTime, Map* map, Game* g) {
 			}
 			setMovementDirection(direction, g);
 		}
-	}
-	
+	} else {
+		bool wasMovingLeft = positionComponent->isMovingLeft;
+		bool wasMovingDown = positionComponent->isMovingDown;
+		bool wasMovingUp = positionComponent->isMovingUp;
+		bool wasMovingRight = positionComponent->isMovingRight;
+
+		lsp.x += lsp.velocityX * elapsedTime.asSeconds();
+		lsp.y += lsp.velocityY * elapsedTime.asSeconds();
+
+		sf::Vector2f expectation;
+		expectation.x = lsp.x + lsp.velocityX;
+		expectation.y = lsp.y + lsp.velocityY;
+
+		sf::Vector2f position = positionComponent->getPosition();
+
+		sf::Vector2f neededMovement;
+		neededMovement.x = expectation.x - position.x;
+		neededMovement.y = expectation.y - position.y;
+
+		if (abs(neededMovement.x) < 1) {
+			neededMovement.x = 0;
+		}
+
+		if (abs(neededMovement.y) < 1) {
+			neededMovement.y = 0;
+		}
+
+		positionComponent->setMovement(neededMovement);
+		body->SetLinearVelocity(b2Vec2(neededMovement.x * PIXTOMET, neededMovement.y * PIXTOMET));
+
+		if (wasMovingLeft != positionComponent->isMovingLeft ||
+			wasMovingDown != positionComponent->isMovingDown ||
+			wasMovingUp != positionComponent->isMovingUp ||
+			wasMovingRight != positionComponent->isMovingRight) {
+			updateMovementAnimation();
+		}
+	}	
 }
 
 EntityType Player::getType() {
@@ -242,22 +287,20 @@ void Player::setMovementDirection(sf::Vector2f direction, Game* g) {
 }
 
 void Player::sendPosition(Game*g) const {
-	
-		sf::Vector2f position = positionComponent->getPosition();
-		sf::Vector2f movement = positionComponent->getMovement();
+	sf::Vector2f position = positionComponent->getPosition();
+	sf::Vector2f movement = positionComponent->getMovement();
 
-		EventMovementChange e;
-		e.playerId = id;
-		e.x = position.x;
-		e.y = position.y;
-		e.velX = movement.x;
-		e.velY = movement.y;
-		e.speed = positionComponent->getSpeed();
+	EventMovementChange e;
+	e.playerId = id;
+	e.x = position.x;
+	e.y = position.y;
+	e.velX = movement.x;
+	e.velY = movement.y;
 
-		sf::Packet* packet = e.toPacket();
-		g->packet_manager->sendPacket(packet);
+	sf::Packet* packet = e.toPacket();
+	g->packet_manager->sendPacket(packet);
 
-		delete packet;
+	delete packet;
 }
 
 

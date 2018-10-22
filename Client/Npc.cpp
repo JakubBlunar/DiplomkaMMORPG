@@ -30,6 +30,20 @@ void Npc::handleEvent(GameEvent* event) {
 			if(temp->spawnId != id)
 				return;
 
+			lsp.velocityX = temp->velX;
+			lsp.velocityY = temp->velY;
+			lsp.x = temp->x;
+			lsp.y = temp->y;
+
+			sf::Vector2f position = positionComponent->getPosition();
+			if (sqrt(pow(position.x - lsp.x, 2) + pow(position.y - lsp.y, 2)) > 64) {
+				positionComponent->setPosition(sf::Vector2f(temp->x, temp->y));
+				if (body) {
+					body->SetTransform(b2Vec2(temp->x * PIXTOMET, temp->y * PIXTOMET), body->GetAngle());
+				}
+			}
+			
+			/*
 			positionComponent->setPosition(sf::Vector2f(temp->x, temp->y));
 			positionComponent->setSpeed(temp->speed);
 			positionComponent->setMovement(sf::Vector2f(temp->velX, temp->velY));
@@ -37,8 +51,9 @@ void Npc::handleEvent(GameEvent* event) {
 				body->SetTransform(b2Vec2(temp->x * PIXTOMET, temp->y * PIXTOMET),body->GetAngle());
 				body->SetLinearVelocity(b2Vec2(temp->velX * PIXTOMET, temp->velY * PIXTOMET));
 			}
-			
-			updateMovementAnimation();
+			*/
+
+			//updateMovementAnimation();
 			break;
 		}
 		default:
@@ -63,7 +78,42 @@ uint16 Npc::getCollisionMask() {
 void Npc::update(sf::Time elapsedTime, Map* map, Game* g) {
 	Entity::update(elapsedTime, map, g);
 
-	body->SetLinearVelocity(b2Vec2(positionComponent->getMovement().x * PIXTOMET, positionComponent->getMovement().y * PIXTOMET));
+	bool wasMovingLeft = positionComponent->isMovingLeft;
+	bool wasMovingDown = positionComponent->isMovingDown;
+	bool wasMovingUp = positionComponent->isMovingUp;
+	bool wasMovingRight = positionComponent->isMovingRight;
+
+	lsp.x += lsp.velocityX * elapsedTime.asSeconds();
+	lsp.y += lsp.velocityY * elapsedTime.asSeconds();
+
+	sf::Vector2f expectation;
+	expectation.x = lsp.x + lsp.velocityX;
+	expectation.y = lsp.y + lsp.velocityY;
+
+	sf::Vector2f position = positionComponent->getPosition();
+
+	sf::Vector2f neededMovement;
+	neededMovement.x = expectation.x - position.x;
+	neededMovement.y = expectation.y - position.y;
+
+	if (abs(neededMovement.x) < 1) {
+		neededMovement.x = 0;
+	}
+
+	if (abs(neededMovement.y) < 1) {
+		neededMovement.y = 0;
+	}
+
+	positionComponent->setMovement(neededMovement);
+	body->SetLinearVelocity(b2Vec2(neededMovement.x * PIXTOMET, neededMovement.y * PIXTOMET));
+
+	if (wasMovingLeft != positionComponent->isMovingLeft ||
+		wasMovingDown != positionComponent->isMovingDown ||
+		wasMovingUp != positionComponent->isMovingUp ||
+		wasMovingRight != positionComponent->isMovingRight) {
+		updateMovementAnimation();
+	}
+
 }
 
 RenderComponent* Npc::getRenderComponent() const {
@@ -129,9 +179,14 @@ void Npc::loadFromJson(json serverData)
 	float positionY = (float)serverData["positionY"].get<json::number_float_t>();
 
 	positionComponent->setPosition(sf::Vector2f(positionX, positionY));
+	lsp.x = positionX;
+	lsp.y = positionY;
 
 	float movementX = (float)serverData["movementX"].get<json::number_float_t>();
 	float movementY = (float)serverData["movementY"].get<json::number_float_t>();
+	lsp.velocityX = movementX;
+	lsp.velocityY = movementY;
+
 
 	positionComponent->setMovement(sf::Vector2f(movementX, movementY));
 

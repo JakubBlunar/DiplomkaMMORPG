@@ -30,12 +30,12 @@ public:
 	void setBodyType(BodyType type);
 	BodyType getBodyType() const;
 
-private:
 	bool isMovingUp;
 	bool isMovingDown;
 	bool isMovingRight;
 	bool isMovingLeft;
-
+private:
+	
 	float speed;
 	sf::Vector2f movement;
 	sf::Vector2f lastMovement;

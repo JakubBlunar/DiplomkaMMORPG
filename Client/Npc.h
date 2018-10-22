@@ -6,6 +6,8 @@
 #include "PositionComponent.h"
 #include "JsonLoader.h"
 
+class GameEvent;
+
 class Npc :
 	public Entity
 {
@@ -14,6 +16,7 @@ class Npc :
 	PositionComponent* positionComponent;
 	RenderComponent* renderComponent;
 
+	LastServerPosition lsp;
 public:
 	Npc();
 	~Npc();

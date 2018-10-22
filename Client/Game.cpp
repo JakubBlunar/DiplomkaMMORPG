@@ -20,8 +20,6 @@ Game::Game():
 	this->keyboardManager = new KeyboardManager();
 	this->eventActions = new ClientEventActions(this);
 
-	
-
 	mStatisticsText.setFont(ResourceHolder<sf::Font>::instance()->get("Sansation.ttf"));
 	mStatisticsText.setPosition(5.f, 5.f);
 	mStatisticsText.setCharacterSize(16);

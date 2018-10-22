@@ -8,7 +8,7 @@ class EventMovementChange :
 public:
 	EventMovementChange();
 
-	float x, y, velX, velY, speed;
+	float x, y, velX, velY;
 	int playerId;
 
 	void accept(class EventVisitor* v) override;

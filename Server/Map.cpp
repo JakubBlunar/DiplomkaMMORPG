@@ -387,7 +387,6 @@ void s::Map::handleEvent(GameEvent* event, Session* playerSession, Server* serve
 
 			character->position = sf::Vector2f(e->x, e->y);
 			character->movement = sf::Vector2f(e->velX, e->velY);
-			character->speed = e->speed;
 			sendEventToAnotherPlayers(event, character->id);
 
 			lock.unlock();

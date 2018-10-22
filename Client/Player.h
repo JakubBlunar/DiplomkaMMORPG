@@ -41,6 +41,7 @@ public:
 	void setMovementDirection(sf::Vector2f direction, Game* g);
 
 	PositionComponent* positionComponent;
+	LastServerPosition lsp;
 private:
 	bool playerControlled;
 	RenderComponent* renderComponent;

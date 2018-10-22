@@ -8,6 +8,14 @@
 #include "EntityConstants.h"
 #include <SFML/System.hpp>
 
+struct LastServerPosition {
+	float x;
+	float y;
+	float velocityX;
+	float velocityY;
+};
+
+
 class Game;
 class Map;
 
