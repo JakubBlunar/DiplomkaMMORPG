@@ -15,6 +15,7 @@ public:
 	string id;
 	Entity* entity;
 	void setEntity(Entity* entity);
+	Entity* getEntity() const;
 protected:
 	void render(Game* g, IGManager* manager) override;
 };

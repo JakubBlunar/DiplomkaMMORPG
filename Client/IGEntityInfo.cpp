@@ -21,6 +21,10 @@ void IGEntityInfo::setEntity(Entity* entity) {
 	this->entity = entity;
 }
 
+Entity* IGEntityInfo::getEntity() const {
+	return entity;
+}
+
 void IGEntityInfo::render(Game * g, IGManager * manager)
 {
 	if (!entity) {

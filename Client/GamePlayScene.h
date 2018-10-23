@@ -16,6 +16,8 @@ public:
 	void render() override;
 private:
 	IGEntityInfo* targetInfoWindow;
+	sf::CircleShape targetArrow;
+	Entity* targetEntity;
 
 	void onClick(sf::Mouse::Button event, sf::Vector2f position) override;
 

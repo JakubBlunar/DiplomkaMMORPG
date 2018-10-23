@@ -13,7 +13,7 @@ GamePlayScene::GamePlayScene(SceneType sceneType, Game* g) : Scene(sceneType, g)
 	escPressed = false;
 	fonePressed = false;
 	drawDebugData = true;
-
+	targetEntity = nullptr;
 	
 	windowManager->addWindow("GameMenu", new IGGameMenu());
 	targetInfoWindow = new IGEntityInfo("target", sf::Vector2f(300, 50));
@@ -26,6 +26,11 @@ GamePlayScene::GamePlayScene(SceneType sceneType, Game* g) : Scene(sceneType, g)
 	nameOfScene.setPosition(50, 50);
 	nameOfScene.setCharacterSize(20);
 	nameOfScene.setFillColor(sf::Color::Black);
+
+	targetArrow.setRadius(8);
+	targetArrow.setRotation(180);
+	targetArrow.setPointCount(3);
+	targetArrow.setFillColor(sf::Color::Yellow);
 }
 
 
@@ -190,7 +195,6 @@ void GamePlayScene::render() {
 		}
 	}
 
-
 	b2World* w = map->getB2World();
 
 	aabb.lowerBound = b2Vec2(offset.x * PIXTOMET, offset.y * PIXTOMET);
@@ -211,17 +215,13 @@ void GamePlayScene::render() {
 
 			b2Vec2 position = queryCallback.foundBodies[i]->GetPosition();
 			sf::Vector2i renderOffset = renderComponent->getOffset();
-			sprite->setPosition(
-				ceilNumber(METTOPIX * position.x + renderOffset.x), ceilNumber(METTOPIX * position.y + renderOffset.y));
+			sf::Vector2f spritePosition = sf::Vector2f(ceilNumber(METTOPIX * position.x + renderOffset.x), ceilNumber(METTOPIX * position.y + renderOffset.y));
+			sprite->setPosition(spritePosition);
 
 			game->window->draw(*sprite);
-		}
-		else {
-			if (entity->getType() == EntityType::PLAYER) {
-				b2Vec2 position = queryCallback.foundBodies[i]->GetPosition();
-				Sprite.setPosition(ceilNumber(METTOPIX * position.x), ceilNumber(METTOPIX * position.y));
-				//std::cout << Sprite.getPosition().x << "-" <<Sprite.getPosition().y << std::endl; 
-				game->window->draw(Sprite);
+			if (targetEntity && targetEntity == entity) {
+				targetArrow.setPosition(spritePosition.x + renderComponent->getSize().x / 2.f + 8, spritePosition.y);
+				game->window->draw(targetArrow);
 			}
 		}
 	}
@@ -259,6 +259,7 @@ void GamePlayScene::onClick(sf::Mouse::Button event, sf::Vector2f position)
 			if (type == EntityType::PLAYER || type == EntityType::NPC) {
 				if (entity->containsPoint(position)) {
 					targetInfoWindow->setEntity(entity);
+					targetEntity = entity;
 					windowManager->Open("TargetInfo");
 					found = true;
 				}
@@ -267,6 +268,7 @@ void GamePlayScene::onClick(sf::Mouse::Button event, sf::Vector2f position)
 
 		if (!found) {
 			targetInfoWindow->setEntity(nullptr);
+			targetEntity = nullptr;
 			windowManager->close("TargetInfo");
 		}
 
