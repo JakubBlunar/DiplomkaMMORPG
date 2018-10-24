@@ -17,8 +17,8 @@ s::NpcCommandMoveTo::~NpcCommandMoveTo()
 {
 }
 
-void s::NpcCommandMoveTo::update(sf::Time elapsedTime) {
-	NpcCommand::update(elapsedTime);
+void s::NpcCommandMoveTo::update(sf::Time elapsedTime, NpcUpdateEvents * npcUpdateEvents) {
+	NpcCommand::update(elapsedTime, npcUpdateEvents);
 
 	if (finished) {
 		return;
@@ -54,12 +54,12 @@ void s::NpcCommandMoveTo::update(sf::Time elapsedTime) {
 			direction.y = -1;
 		}
 
-		npc->setMovementDirection(direction, npc->getSpeed());
+		npc->setMovementDirection(direction, npc->getSpeed(), npcUpdateEvents);
 	} else {
 		if(!finished)
 			finished = true;
 
-		npc->setMovementDirection(sf::Vector2f(0, 0), npc->getSpeed());
+		npc->setMovementDirection(sf::Vector2f(0, 0), npc->getSpeed(), npcUpdateEvents);
 	}
 }
 
@@ -68,6 +68,11 @@ void s::NpcCommandMoveTo::init() {
 	MapGrid* mapGrid = map->getGrid();
 
 	sf::Vector2f pathFindingFrom = npc->getPosition();
+	if(pathFindingFrom.x < 0)
+		pathFindingFrom.x = 50;
+
+	if(pathFindingFrom.y < 0)
+		pathFindingFrom.y = 50;
 	
 	Astar astar(mapGrid);
 	int res = astar.findPath(pathFindingFrom, endPosition);

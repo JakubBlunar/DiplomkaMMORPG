@@ -38,13 +38,13 @@ void Player::handleEvent(GameEvent* event) {
 			if(temp->playerId != id || playerControlled)
 				return;
 
-			lsp.velocityX = temp->velX;
-			lsp.velocityY = temp->velY;
-			lsp.x = temp->x;
-			lsp.y = temp->y;
+			lastServerPosition.velocityX = temp->velX;
+			lastServerPosition.velocityY = temp->velY;
+			lastServerPosition.x = temp->x;
+			lastServerPosition.y = temp->y;
 
 			sf::Vector2f position = positionComponent->getPosition();
-			if (sqrt(pow(position.x - lsp.x, 2) + pow(position.y - lsp.y, 2)) > 64) {
+			if (sqrt(pow(position.x - lastServerPosition.x, 2) + pow(position.y - lastServerPosition.y, 2)) > 64) {
 				positionComponent->setPosition(sf::Vector2f(temp->x, temp->y));
 				if (body) {
 					body->SetTransform(b2Vec2(temp->x * PIXTOMET, temp->y * PIXTOMET), body->GetAngle());
@@ -106,12 +106,12 @@ void Player::update(sf::Time elapsedTime, Map* map, Game* g) {
 		bool wasMovingUp = positionComponent->isMovingUp;
 		bool wasMovingRight = positionComponent->isMovingRight;
 
-		lsp.x += lsp.velocityX * elapsedTime.asSeconds();
-		lsp.y += lsp.velocityY * elapsedTime.asSeconds();
+		lastServerPosition.x += lastServerPosition.velocityX * elapsedTime.asSeconds();
+		lastServerPosition.y += lastServerPosition.velocityY * elapsedTime.asSeconds();
 
 		sf::Vector2f expectation;
-		expectation.x = lsp.x + lsp.velocityX;
-		expectation.y = lsp.y + lsp.velocityY;
+		expectation.x = lastServerPosition.x + lastServerPosition.velocityX;
+		expectation.y = lastServerPosition.y + lastServerPosition.velocityY;
 
 		sf::Vector2f position = positionComponent->getPosition();
 
@@ -239,11 +239,15 @@ void Player::loadFromJson(json jsonData) {
 	float positionY = (float)jsonData["positionY"].get<json::number_float_t>();
 
 	positionComponent->setPosition(sf::Vector2f(positionX, positionY));
+	lastServerPosition.x = positionX;
+	lastServerPosition.y = positionY;
 
 	float movementX = (float)jsonData["movementX"].get<json::number_float_t>();
 	float movementY = (float)jsonData["movementY"].get<json::number_float_t>();
 
 	positionComponent->setMovement(sf::Vector2f(movementX, movementY));
+	lastServerPosition.velocityX = movementX;
+	lastServerPosition.velocityY = movementY;
 
 	float speed = (float)jsonData["speed"].get<json::number_float_t>();
 	positionComponent->setSpeed(speed);

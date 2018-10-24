@@ -13,7 +13,7 @@ namespace s {
 	public:
 		NpcCommandStay(Npc* npc, Map* m, Server *s, sf::Time duration);
 		~NpcCommandStay();
-		void update(sf::Time elapsedTime) override;
+		void update(sf::Time elapsedTime, NpcUpdateEvents* npcUpdateEvents) override;
 	};
 }
 

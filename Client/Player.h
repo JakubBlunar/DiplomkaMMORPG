@@ -7,6 +7,7 @@
 #include "RenderComponent.h"
 #include <list>
 
+class GameEvent;
 using json = nlohmann::json;
 
 class Player :
@@ -41,7 +42,7 @@ public:
 	void setMovementDirection(sf::Vector2f direction, Game* g);
 
 	PositionComponent* positionComponent;
-	LastServerPosition lsp;
+	MovementData lastServerPosition;
 private:
 	bool playerControlled;
 	RenderComponent* renderComponent;

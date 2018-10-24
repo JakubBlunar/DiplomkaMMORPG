@@ -21,7 +21,7 @@ namespace s {
 		~NpcCommandMoveTo() override;
 
 
-		void update(sf::Time elapsedTime) override;
+		void update(sf::Time elapsedTime, NpcUpdateEvents * npcUpdateEvents) override;
 
 		void init();
 	};

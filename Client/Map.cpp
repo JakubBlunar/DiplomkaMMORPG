@@ -10,6 +10,8 @@
 #include "EventCharacterMapLeave.h"
 #include "TileSetsHolder.h"
 #include "Utils.h"
+#include <Box2D/Box2D.h>
+#include "b2GLDraw.h"
 
 Map::Map(Game* g) {
 	this->game = g;
@@ -19,7 +21,7 @@ Map::Map(Game* g) {
 Map::~Map() {
 	unsubscribe();
 
-	for (int i = 0; i < entities.size(); i++)
+	for (unsigned int i = 0; i < entities.size(); i++)
 	{
 		if (entities[i] != player) {
 			delete entities[i];
@@ -285,7 +287,7 @@ void Map::removeNpc(Npc* npc) {
 }
 
 void Map::loadFromFile(int id) {
-	debugDrawInstance = new SFMLDebugDraw(*game->window);
+	debugDrawInstance = (b2Draw*)new SFMLDebugDraw(*game->window);
 	world = new b2World(b2Vec2(0.f, 0.f));
 	world->SetAllowSleeping(true);
 

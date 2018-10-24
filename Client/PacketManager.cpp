@@ -7,6 +7,7 @@
 #include "EventDispatcher.h"
 #include "EventMovementChange.h"
 #include "EventCharacterMapLeave.h"
+#include "EventNpcsMovementChange.h"
 
 PacketManager::PacketManager(Game* g) : game(nullptr), latencyCheckThread(nullptr) {
 	game = g;
@@ -127,6 +128,15 @@ void PacketManager::startRecieve() {
 					e = new EventNpcMovementChange();
 					if (e->loadFromPacket(&packet)) {
 						EventDispatcher<EventNpcMovementChange>::dispatchEvent(e);
+					}
+					else {
+						game->print("Error while parsing packet " + std::to_string(pt));
+					}
+					break;
+				case NPCS_MOVEMENT_CHANGE:
+					e = new EventNpcsMovementChange();
+					if (e->loadFromPacket(&packet)) {
+						EventDispatcher<EventNpcsMovementChange>::dispatchEvent(e);
 					}
 					else {
 						game->print("Error while parsing packet " + std::to_string(pt));

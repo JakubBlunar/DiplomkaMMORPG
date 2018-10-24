@@ -99,6 +99,9 @@
     <ClInclude Include="ObjectPoolItem.h">
       <Filter>Header Files\Tools</Filter>
     </ClInclude>
+    <ClInclude Include="EventNpcsMovementChange.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -150,7 +153,10 @@
       <Filter>Source Files\Tools</Filter>
     </ClCompile>
     <ClCompile Include="EventNpcMovementChange.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="EventNpcsMovementChange.cpp">
+      <Filter>Source Files\Events</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -18,4 +18,12 @@ enum EntityCategory {
 	NPC = 0x0400
 };
 
+struct MovementData {
+	float x;
+	float y;
+	float velocityX;
+	float velocityY;
+};
+
+
 #endif

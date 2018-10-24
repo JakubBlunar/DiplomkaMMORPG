@@ -14,12 +14,12 @@ s::NpcCommandStay::~NpcCommandStay()
 
 }
 
-void s::NpcCommandStay::update(sf::Time elapsedTime)
+void s::NpcCommandStay::update(sf::Time elapsedTime, NpcUpdateEvents * npcUpdateEvents)
 {
-	NpcCommand::update(elapsedTime);
+	NpcCommand::update(elapsedTime, npcUpdateEvents);
 
 	if (!inited) {
-		npc->setMovementDirection(sf::Vector2f(0, 0), npc->getSpeed());
+		npc->setMovementDirection(sf::Vector2f(0, 0), npc->getSpeed(), npcUpdateEvents);
 		inited = true;
 	}
 }

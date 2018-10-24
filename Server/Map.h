@@ -22,6 +22,9 @@ namespace s {
 		std::map<int, s::Location*> locations;
 
 		ObjectPool<MapGrid> mapGridObjectPool;
+
+		sf::Time lastUpdateNpc;
+		sf::Time npcUpdateInterval;
 	public:
 		Map();
 		~Map();

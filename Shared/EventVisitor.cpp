@@ -36,3 +36,5 @@ void EventVisitor::visit(EventCharacterLogout * e)
 void EventVisitor::visit(EventNpcMovementChange * e)
 {
 }
+
+void EventVisitor::visit(EventNpcsMovementChange* e) {}

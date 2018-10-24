@@ -57,7 +57,8 @@ namespace s {
 		void setName(std::string name);
 		std::string getName() const;
 
-		void setMovement(sf::Vector2f movement);
+		void setMovement(float movementX, float movementY);
+		void setMovement(sf::Vector2f movement, NpcUpdateEvents * npcUpdateEvents);
 		sf::Vector2f getMovement() const;
 
 		void setSize(sf::Vector2i size);
@@ -71,7 +72,7 @@ namespace s {
 
 		sf::Vector2f getLastMovement() const;
 
-		void setMovementDirection(sf::Vector2f direction, float speed);
+		void setMovementDirection(sf::Vector2f direction, float speed, NpcUpdateEvents * npcUpdateEvents);
 
 		void setLocation(Location* l);
 		Location* getLocation() const;

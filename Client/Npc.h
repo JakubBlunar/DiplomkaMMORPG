@@ -16,7 +16,7 @@ class Npc :
 	PositionComponent* positionComponent;
 	RenderComponent* renderComponent;
 
-	LastServerPosition lsp;
+	MovementData lastServerPosition;
 public:
 	Npc();
 	~Npc();

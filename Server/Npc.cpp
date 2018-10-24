@@ -58,7 +58,7 @@ s::Npc* s::Npc::clone() const {
 	Npc* copy = new Npc();
 
 	copy->setSize(size);
-	copy->setMovement(sf::Vector2f(0, 0));
+	copy->setMovement(0, 0);
 	copy->setType(type);
 	copy->setName(name);
 	copy->setSpeed(speed);
@@ -118,7 +118,16 @@ string s::Npc::getName() const {
 	return name;
 }
 
-void s::Npc::setMovement(sf::Vector2f movement) {
+void s::Npc::setMovement(float movementX, float movementY) {
+	if (lastMovement == movement) {
+		return;
+	}
+
+	this->lastMovement = this->movement;
+	this->movement = sf::Vector2f(movementX, movementY);
+}
+
+void s::Npc::setMovement(sf::Vector2f movement, NpcUpdateEvents * npcUpdateEvents) {
 	if (lastMovement == movement) {
 		return;
 	}
@@ -130,15 +139,22 @@ void s::Npc::setMovement(sf::Vector2f movement) {
 		body->SetLinearVelocity(b2Vec2(movement.x * PIXTOMET, movement.y * PIXTOMET));
 
 		if (map) {
-			EventNpcMovementChange e;
-			e.spawnId = spawnId;
-			e.speed = speed;
-			e.velX = this->movement.x;
-			e.velY = this->movement.y;
-			e.x = position.x;
-			e.y = position.y;
+			if (!npcUpdateEvents) {
+				EventNpcMovementChange e;
+				e.spawnId = spawnId;
+				e.speed = speed;
+				e.velX = this->movement.x;
+				e.velY = this->movement.y;
+				e.x = position.x;
+				e.y = position.y;
 
-			map->sendEventToAllPlayers(&e);
+				map->sendEventToAllPlayers(&e);
+			} else {
+				if (!npcUpdateEvents->npcsMovementChange) {
+					npcUpdateEvents->npcsMovementChange = new EventNpcsMovementChange();
+				}
+				npcUpdateEvents->npcsMovementChange->addNpcInfo(spawnId, position.x, position.y, this->movement.x, this->movement.y);
+			}
 		}
 	}
 }
@@ -174,9 +190,9 @@ sf::Vector2f s::Npc::getLastMovement() const {
 	return lastMovement;
 }
 
-void s::Npc::setMovementDirection(sf::Vector2f direction, float speed) {
+void s::Npc::setMovementDirection(sf::Vector2f direction, float speed, NpcUpdateEvents * npcUpdateEvents) {
 	this->speed = speed;
-	this->setMovement(sf::Vector2f(direction.x * speed, direction.y * speed));
+	this->setMovement(sf::Vector2f(direction.x * speed, direction.y * speed), npcUpdateEvents);
 }
 
 void s::Npc::setLocation(Location* l) {

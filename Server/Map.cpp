@@ -13,7 +13,9 @@
 #include "Location.h"
 #include "Spawn.h"
 
-s::Map::Map(): id(0), world(nullptr), width(0), height(0) {}
+s::Map::Map(): id(0), world(nullptr), width(0), height(0) {
+	npcUpdateInterval = sf::milliseconds(200);
+}
 
 s::Map::~Map() {
 }
@@ -86,6 +88,8 @@ void s::Map::removeNpc(Npc * npc)
 }
 
 void s::Map::update(sf::Time deltaTime, Server* s) {
+	lastUpdateNpc += deltaTime;
+
 	lock.lock();
 	
 	if (characters.empty()) {
@@ -110,15 +114,29 @@ void s::Map::update(sf::Time deltaTime, Server* s) {
 			character->movement.y = velocity.y * METTOPIX;
 	    });
 
+	
 	for (std::pair<int, Location*> element : locations) {
 		element.second->update(deltaTime, s, this);
 	}
 
-	for (Npc* npc : npcs) {
-		s->npcManager.updateNpc(deltaTime, npc, s);
-	}
+	NpcUpdateEvents eventsContainer;
+	eventsContainer.npcsMovementChange = nullptr;
 
+	if (lastUpdateNpc > npcUpdateInterval) {
+		for (Npc* npc : npcs) {
+			s->npcManager.updateNpc(lastUpdateNpc, npc, s, &eventsContainer);
+		}
+		lastUpdateNpc = sf::Time::Zero;
+	}
+	
 	lock.unlock();
+
+	if (eventsContainer.npcsMovementChange != nullptr) {
+		if (!eventsContainer.npcsMovementChange->npcsMovements.empty()) {
+			sendEventToAllPlayers(eventsContainer.npcsMovementChange);
+		}
+		delete eventsContainer.npcsMovementChange;
+	}
 }
 
 void s::Map::loadFromJson(std::string path, Server *s) {
@@ -140,10 +158,10 @@ void s::Map::loadFromJson(std::string path, Server *s) {
 	world->SetAllowSleeping(true);
 
 
-	createBox(b2_staticBody, 0, -2, width * FIELD_SIZE, 2, BOUNDARY, PLAYER | NPC);
-	createBox(b2_staticBody, -2, 0, 2, FIELD_SIZE * height, BOUNDARY, PLAYER | NPC);
-	createBox(b2_staticBody, width * FIELD_SIZE, 0, 2, FIELD_SIZE * height, BOUNDARY, PLAYER | NPC);
-	createBox(b2_staticBody, 0, height * FIELD_SIZE, FIELD_SIZE * width, 2, BOUNDARY, PLAYER | NPC);
+	createBox(b2_staticBody, -6, -5, width * FIELD_SIZE + 12, 5, BOUNDARY, PLAYER | NPC);
+	createBox(b2_staticBody, -5, -6, 5, FIELD_SIZE * height + 12, BOUNDARY, PLAYER | NPC);
+	createBox(b2_staticBody, width * FIELD_SIZE, -6, 5, FIELD_SIZE * height + 12, BOUNDARY, PLAYER | NPC);
+	createBox(b2_staticBody, -6, height * FIELD_SIZE, FIELD_SIZE * width + 12, 5, BOUNDARY, PLAYER | NPC);
 
 	int initGridCount = 10;
 	vector<MapGrid*> grids;

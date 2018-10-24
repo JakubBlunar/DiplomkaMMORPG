@@ -4,7 +4,7 @@
 #include "ResourceHolder.h"
 #include "EventDispatcher.h"
 #include "EventNpcMovementChange.h"
-
+#include "EventNpcsMovementChange.h"
 
 
 Npc::Npc(): Entity(-1)
@@ -30,13 +30,13 @@ void Npc::handleEvent(GameEvent* event) {
 			if(temp->spawnId != id)
 				return;
 
-			lsp.velocityX = temp->velX;
-			lsp.velocityY = temp->velY;
-			lsp.x = temp->x;
-			lsp.y = temp->y;
+			lastServerPosition.velocityX = temp->velX;
+			lastServerPosition.velocityY = temp->velY;
+			lastServerPosition.x = temp->x;
+			lastServerPosition.y = temp->y;
 
 			sf::Vector2f position = positionComponent->getPosition();
-			if (sqrt(pow(position.x - lsp.x, 2) + pow(position.y - lsp.y, 2)) > 64) {
+			if (sqrt(pow(position.x - lastServerPosition.x, 2) + pow(position.y - lastServerPosition.y, 2)) > 64) {
 				positionComponent->setPosition(sf::Vector2f(temp->x, temp->y));
 				if (body) {
 					body->SetTransform(b2Vec2(temp->x * PIXTOMET, temp->y * PIXTOMET), body->GetAngle());
@@ -54,6 +54,24 @@ void Npc::handleEvent(GameEvent* event) {
 			*/
 
 			//updateMovementAnimation();
+			break;
+		}
+		case NPCS_MOVEMENT_CHANGE: {
+			EventNpcsMovementChange* temp = (EventNpcsMovementChange*) event;
+			auto found = temp->npcsMovements.find(id);
+			if (found == temp->npcsMovements.end()) {
+				return;
+			}
+
+			lastServerPosition = found->second;
+
+			sf::Vector2f position = positionComponent->getPosition();
+			if (sqrt(pow(position.x - lastServerPosition.x, 2) + pow(position.y - lastServerPosition.y, 2)) > 64) {
+				positionComponent->setPosition(sf::Vector2f(lastServerPosition.x, lastServerPosition.y));
+				if (body) {
+					body->SetTransform(b2Vec2(lastServerPosition.x * PIXTOMET, lastServerPosition.y * PIXTOMET), body->GetAngle());
+				}
+			}
 			break;
 		}
 		default:
@@ -83,12 +101,12 @@ void Npc::update(sf::Time elapsedTime, Map* map, Game* g) {
 	bool wasMovingUp = positionComponent->isMovingUp;
 	bool wasMovingRight = positionComponent->isMovingRight;
 
-	lsp.x += lsp.velocityX * elapsedTime.asSeconds();
-	lsp.y += lsp.velocityY * elapsedTime.asSeconds();
+	lastServerPosition.x += lastServerPosition.velocityX * elapsedTime.asSeconds();
+	lastServerPosition.y += lastServerPosition.velocityY * elapsedTime.asSeconds();
 
 	sf::Vector2f expectation;
-	expectation.x = lsp.x + lsp.velocityX;
-	expectation.y = lsp.y + lsp.velocityY;
+	expectation.x = lastServerPosition.x + lastServerPosition.velocityX;
+	expectation.y = lastServerPosition.y + lastServerPosition.velocityY;
 
 	sf::Vector2f position = positionComponent->getPosition();
 
@@ -96,11 +114,11 @@ void Npc::update(sf::Time elapsedTime, Map* map, Game* g) {
 	neededMovement.x = expectation.x - position.x;
 	neededMovement.y = expectation.y - position.y;
 
-	if (abs(neededMovement.x) < 1) {
+	if (abs(neededMovement.x) < 2) {
 		neededMovement.x = 0;
 	}
 
-	if (abs(neededMovement.y) < 1) {
+	if (abs(neededMovement.y) < 2) {
 		neededMovement.y = 0;
 	}
 
@@ -179,13 +197,13 @@ void Npc::loadFromJson(json serverData)
 	float positionY = (float)serverData["positionY"].get<json::number_float_t>();
 
 	positionComponent->setPosition(sf::Vector2f(positionX, positionY));
-	lsp.x = positionX;
-	lsp.y = positionY;
+	lastServerPosition.x = positionX;
+	lastServerPosition.y = positionY;
 
 	float movementX = (float)serverData["movementX"].get<json::number_float_t>();
 	float movementY = (float)serverData["movementY"].get<json::number_float_t>();
-	lsp.velocityX = movementX;
-	lsp.velocityY = movementY;
+	lastServerPosition.velocityX = movementX;
+	lastServerPosition.velocityY = movementY;
 
 
 	positionComponent->setMovement(sf::Vector2f(movementX, movementY));
@@ -238,9 +256,11 @@ void Npc::loadFromJson(json serverData)
 }
 
 void Npc::subscribe() {
+	EventDispatcher<EventNpcsMovementChange>::addSubscriber(this);
 	EventDispatcher<EventNpcMovementChange>::addSubscriber(this);
 }
 
 void Npc::unsubscribe() {
 	EventDispatcher<EventNpcMovementChange>::removeSubscriber(this);
+	EventDispatcher<EventNpcsMovementChange>::removeSubscriber(this);
 }

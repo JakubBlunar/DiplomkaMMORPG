@@ -183,6 +183,7 @@
     <ClInclude Include="EventVisitor.h" />
     <ClInclude Include="GameEvent.h" />
     <ClInclude Include="EventId.h" />
+    <ClInclude Include="EventNpcsMovementChange.h" />
     <ClInclude Include="ObjectPoolItem.h" />
     <ClInclude Include="MapGrid.h" />
     <ClInclude Include="MapGridSpot.h" />
@@ -208,6 +209,7 @@
     <ClCompile Include="GameEvent.cpp" />
     <ClCompile Include="MapGrid.cpp" />
     <ClCompile Include="MapGridSpot.cpp" />
+    <ClCompile Include="EventNpcsMovementChange.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

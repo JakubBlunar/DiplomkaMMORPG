@@ -1,5 +1,5 @@
 #include "NpcCommand.h"
-
+#include "Npc.h"
 
 
 s::NpcCommand::NpcCommand(): finished(false) {
@@ -17,7 +17,7 @@ bool s::NpcCommand::isFinished() const
 	return finished;
 }
 
-void s::NpcCommand::update(sf::Time elapsedTime)
+void s::NpcCommand::update(sf::Time elapsedTime, NpcUpdateEvents * npcUpdateEvents)
 {
 	if (finished) {
 		return;

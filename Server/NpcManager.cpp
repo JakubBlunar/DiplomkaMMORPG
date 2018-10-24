@@ -50,14 +50,14 @@ s::Npc* s::NpcManager::findNpc(int spawnId)
 	return nullptr;
 }
 
-void s::NpcManager::updateNpc(sf::Time elapsedTime, Npc* npc, Server * s)
+void s::NpcManager::updateNpc(sf::Time elapsedTime, Npc* npc, Server * s, NpcUpdateEvents * npcUpdateEvents)
 {
 	b2Body* body = npc->getBody();
 	b2Vec2 position = body->GetPosition();
-	b2Vec2 velocity = body->GetLinearVelocity();
+	
+	sf::Vector2f transformedPosition = sf::Vector2f(position.x * METTOPIX, position.y * METTOPIX); 
 
-	npc->setPosition(sf::Vector2f(position.x * METTOPIX, position.y * METTOPIX));
-	npc->setMovement(sf::Vector2f(velocity.x * METTOPIX, velocity.y * METTOPIX));
+	npc->setPosition(transformedPosition);
 
 	NpcCommand* command = npc->getNpcCommand();
 	if (!command || command->isFinished()) {
@@ -76,7 +76,7 @@ void s::NpcManager::updateNpc(sf::Time elapsedTime, Npc* npc, Server * s)
 			npc->setNpcCommand(newCommand);
 		}
 	} else {
-		command->update(elapsedTime);
+		command->update(elapsedTime, npcUpdateEvents);
 	}
 }
 

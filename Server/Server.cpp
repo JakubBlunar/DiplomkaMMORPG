@@ -66,19 +66,14 @@ void s::Server::start() {
 
 
 	sf::Clock clock;
-	sf::Time timePerFrame = sf::seconds(1.f / 60.f);
-	sf::Time timeSinceLastUpdate = sf::Time::Zero;
 	while (running) {
 		const sf::Time elapsedTime = clock.restart();
-		timeSinceLastUpdate += elapsedTime;
-		while (timeSinceLastUpdate > timePerFrame) {
-			timeSinceLastUpdate -= timePerFrame;
-		}
+
 		bool isConsoleWindowFocussed = (GetConsoleWindow() == GetForegroundWindow());
 
 		update(elapsedTime);
 
-		if(isConsoleWindowFocussed && GetAsyncKeyState(VK_ESCAPE)) {
+		if (isConsoleWindowFocussed && GetAsyncKeyState(VK_ESCAPE)) {
 			running = false;
 		}
 	}

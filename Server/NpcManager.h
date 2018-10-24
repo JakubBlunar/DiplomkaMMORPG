@@ -4,9 +4,14 @@
 #include <SFML/System/Mutex.hpp>
 #include <map>
 #include "Manager.h"
+#include "EventNpcsMovementChange.h"
 
 namespace s {
 	class Npc;
+
+	struct NpcUpdateEvents {
+		EventNpcsMovementChange* npcsMovementChange;
+	};
 
 	class NpcManager: public Manager
 	{
@@ -19,7 +24,7 @@ namespace s {
 		Npc* createNpc(int npcType);
 		Npc* findNpc(int spawnId);
 
-		void updateNpc(sf::Time elapsedTime, Npc* npc, Server* s);
+		void updateNpc(sf::Time elapsedTime, Npc* npc, Server* s, NpcUpdateEvents * npcUpdateEvents);
 	};
 }
 

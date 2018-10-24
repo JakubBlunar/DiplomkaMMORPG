@@ -7,6 +7,7 @@
 #include "EventCharacterMapJoin.h"
 #include "EventNpcMovementChange.h"
 
+class EventNpcsMovementChange;
 class EventCharacterMapLeave;
 class EventLoginResponse;
 class EventMovementChange;
@@ -25,7 +26,7 @@ public:
 	virtual void visit(EventCharacterMapLeave* e);
 	virtual void visit(EventCharacterLogout* e);
 	virtual void visit(EventNpcMovementChange* e);
+	virtual void visit(EventNpcsMovementChange* e);
 };
-
 
 #endif // !EVENT_VISITOR_H
