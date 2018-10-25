@@ -27,8 +27,8 @@ int Astar::findPath(sf::Vector2f from, sf::Vector2f to)
 	end = nullptr;
 
 	bool found = false;
-	for (int i = fromX; i <= fromX + 1; i++ ) {
-		for (int j = fromY; j <= fromY + 1; j++) {
+	for (int i = fromX; i < fromX + 1; i++ ) {
+		for (int j = fromY; j < fromY + 1; j++) {
 		;	MapGridSpot * temp = grid->grid->get(i, j);
 			if (!found && temp && !temp->isWall()) {
 				start = temp;

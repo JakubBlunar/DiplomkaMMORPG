@@ -42,6 +42,10 @@ void s::NpcCommandMoveTo::update(sf::Time elapsedTime, NpcUpdateEvents * npcUpda
 			direction.x = 1;
 		}
 
+		if (start.x < 32) {
+			direction.x = 0;
+		}
+
 		if(start.x > finish.x && (start.x - finish.x) > 8) {
 			direction.x = -1;
 		}
@@ -52,6 +56,10 @@ void s::NpcCommandMoveTo::update(sf::Time elapsedTime, NpcUpdateEvents * npcUpda
 
 		if(start.y > finish.y && (start.y - finish.y) > 8) {
 			direction.y = -1;
+		}
+
+		if (start.y < 32) {
+			direction.y = 0;
 		}
 
 		npc->setMovementDirection(direction, npc->getSpeed(), npcUpdateEvents);
@@ -68,10 +76,10 @@ void s::NpcCommandMoveTo::init() {
 	MapGrid* mapGrid = map->getGrid();
 
 	sf::Vector2f pathFindingFrom = npc->getPosition();
-	if(pathFindingFrom.x < 0)
+	if(pathFindingFrom.x < 50)
 		pathFindingFrom.x = 50;
 
-	if(pathFindingFrom.y < 0)
+	if(pathFindingFrom.y < 50)
 		pathFindingFrom.y = 50;
 	
 	Astar astar(mapGrid);
