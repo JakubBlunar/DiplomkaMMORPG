@@ -46,6 +46,12 @@
     <Filter Include="Source Files\NpcCommands">
       <UniqueIdentifier>{69f15386-735c-41be-b100-785925994a50}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Entities\Parts">
+      <UniqueIdentifier>{38623bed-81c1-4712-b3b6-ae018db92910}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities\Parts">
+      <UniqueIdentifier>{c4af6dd6-71b9-4b39-a606-79cdedc6baa1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -122,6 +128,12 @@
     </ClCompile>
     <ClCompile Include="NpcCommandStay.cpp">
       <Filter>Source Files\NpcCommands</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityPosition.cpp">
+      <Filter>Source Files\Entities\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityAttributes.cpp">
+      <Filter>Source Files\Entities\Parts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -205,6 +217,12 @@
     </ClInclude>
     <ClInclude Include="NpcCommandStay.h">
       <Filter>Header Files\NpcCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityAttributes.h">
+      <Filter>Header Files\Entities\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityPosition.h">
+      <Filter>Header Files\Entities\Parts</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

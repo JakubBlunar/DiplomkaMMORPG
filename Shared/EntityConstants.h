@@ -26,4 +26,18 @@ struct MovementData {
 };
 
 
+enum class EntityAttributeType {
+	HP = 0,
+	MP = 1,
+	STRENGTH = 2,
+	AGILITY = 3,
+	INTELECT = 4,
+	SPRITIT = 5,
+	STAMINA = 6,
+	ARMOR = 7,
+	COUNT = 8
+};
+
+
+
 #endif

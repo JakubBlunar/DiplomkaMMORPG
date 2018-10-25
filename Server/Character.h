@@ -3,9 +3,9 @@
 #include <string>
 #include "../Shared/CharacterConstants.h"
 #include <vector>
-#include "../Server/json.hpp"
-#include <SFML/System/Vector2.hpp>
-#include <Box2D/Dynamics/b2Body.h>
+#include "json.hpp"
+#include "EntityAttributes.h"
+#include "EntityPosition.h"
 
 using json = nlohmann::json;
 
@@ -15,14 +15,11 @@ namespace s {
 }
 
 namespace s {
-	class Character {
-		Map* actualMap;
+	class Character: public EntityAttributes, public EntityPosition {
 		Account* account;
 	public:
 		Character();
 
-		Map* getMap() const;
-		void setMap(Map* map);
 		void setAccount(Account* account);
 		Account* getAccount() const;
 
@@ -30,13 +27,6 @@ namespace s {
 		std::string name;
 		CharacterType type;
 		CharacterFaction faction;
-
-		sf::Vector2f movement;
-		sf::Vector2f position;
-		float speed;
-		int mapId;
-
-		b2Body* body;
 
 		bool isBot;
 

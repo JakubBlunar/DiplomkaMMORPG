@@ -3,7 +3,7 @@
 #include "ServerGlobals.h"
 #include "EventNpcMovementChange.h"
 
-s::Npc::Npc(): location(nullptr), command(nullptr) {
+s::Npc::Npc(): command(nullptr) {
 	body = nullptr;
 	name = "";
 	spawnId = -1;
@@ -86,30 +86,6 @@ json s::Npc::toJson() const {
 	return json;
 }
 
-void s::Npc::setBody(b2Body* body) {
-	this->body = body;
-}
-
-b2Body* s::Npc::getBody() const {
-	return body;
-}
-
-void s::Npc::setSpeed(float speed) {
-	this->speed = speed;
-}
-
-float s::Npc::getSpeed() const {
-	return speed;
-}
-
-void s::Npc::setMap(Map* map) {
-	this->map = map;
-}
-
-s::Map* s::Npc::getMap() const {
-	return map;
-}
-
 void s::Npc::setName(string name) {
 	this->name = name;
 }
@@ -162,21 +138,6 @@ sf::Vector2f s::Npc::getMovement() const {
 	return movement;
 }
 
-void s::Npc::setSize(sf::Vector2i size) {
-	this->size = size;
-}
-sf::Vector2i s::Npc::getSize() const {
-	return size;
-}
-
-void s::Npc::setPosition(sf::Vector2f position) {
-	this->position = position;
-}
-
-sf::Vector2f s::Npc::getPosition() const {
-	return position;
-}
-
 void s::Npc::setType(int type) {
 	this->type = type;
 }
@@ -186,18 +147,7 @@ int s::Npc::getType() const
 	return type;
 }
 
-sf::Vector2f s::Npc::getLastMovement() const {
-	return lastMovement;
-}
-
 void s::Npc::setMovementDirection(sf::Vector2f direction, float speed, NpcUpdateEvents * npcUpdateEvents) {
 	this->speed = speed;
 	this->setMovement(sf::Vector2f(direction.x * speed, direction.y * speed), npcUpdateEvents);
-}
-
-void s::Npc::setLocation(Location* l) {
-	this->location = l;
-}
-s::Location* s::Npc::getLocation() const {
-	return location;
 }

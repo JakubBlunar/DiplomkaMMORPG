@@ -7,12 +7,11 @@
 #include "EventNpcsMovementChange.h"
 
 
-Npc::Npc(): Entity(-1)
-{
+Npc::Npc(): Entity(-1), lastServerPosition() {
 	positionComponent = new PositionComponent();
 	components.push_back(positionComponent);
 	positionComponent->setSize(sf::Vector2f(32.f, 32.f));
-
+	type = -1;
 	renderComponent = new RenderComponent();
 	components.push_back(renderComponent);
 }
@@ -27,7 +26,7 @@ void Npc::handleEvent(GameEvent* event) {
 		case NPC_MOVEMENT_CHANGE: {
 			EventNpcMovementChange* temp = (EventNpcMovementChange*) event;
 
-			if(temp->spawnId != id)
+			if(temp->spawnId != (int)id)
 				return;
 
 			lastServerPosition.velocityX = temp->velX;

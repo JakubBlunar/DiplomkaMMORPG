@@ -5,6 +5,23 @@
         "spawns": [{
             "npcType": 1,
             "maxCount": 10
+        }, {
+            "npcType": 2,
+            "maxCount": 5
         }]
+    },
+    {
+        "id": 4,
+        "spawns": [
+            {
+                "npcType": 2,
+                "maxCount": 6
+            },
+            {
+                "npcType": 3,
+                "maxCount": 5
+            }
+        ]
     }]
+   
 }

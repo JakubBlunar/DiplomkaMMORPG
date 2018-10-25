@@ -10,17 +10,6 @@ s::Character::Character() {
 	movement = sf::Vector2f(0,0);
 }
 
-s::Map* s::Character::getMap() const {
-	return actualMap;
-}
-
-void s::Character::setMap(Map* map) {
-	if(map) {
-		mapId = map->getId();
-	}
-	actualMap = map;
-}
-
 void s::Character::setAccount(s::Account* account) {
 	this->account = account;
 }

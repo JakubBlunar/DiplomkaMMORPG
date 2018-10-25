@@ -150,6 +150,8 @@
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="Crypto.cpp" />
     <ClCompile Include="Database.cpp" />
+    <ClCompile Include="EntityAttributes.cpp" />
+    <ClCompile Include="EntityPosition.cpp" />
     <ClCompile Include="IDManager.cpp" />
     <ClCompile Include="JsonLoader.cpp" />
     <ClCompile Include="Location.cpp" />
@@ -177,6 +179,8 @@
     <ClInclude Include="Character.h" />
     <ClInclude Include="Crypto.h" />
     <ClInclude Include="Database.h" />
+    <ClInclude Include="EntityAttributes.h" />
+    <ClInclude Include="EntityPosition.h" />
     <ClInclude Include="IDManager.h" />
     <ClInclude Include="INIReader.h" />
     <ClInclude Include="json.hpp" />

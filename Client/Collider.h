@@ -4,6 +4,8 @@
 #include "Entity.h"
 #include "PositionComponent.h"
 
+class GameEvent;
+
 class Collider : public Entity {
 public:
 	explicit Collider(sf::Uint32 id);
