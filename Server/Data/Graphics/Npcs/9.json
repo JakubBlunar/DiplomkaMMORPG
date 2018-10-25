@@ -1,6 +1,6 @@
 {
     "offsetX": -7,
-    "offsetY": -21,
+    "offsetY": -18,
     "width": 48,
     "height": 48,
 	"animations": [
@@ -8,6 +8,10 @@
         "name": "down",
 	    "frameTime": 200,
         "steps": [
+            {
+                "x": 48,
+                "y": 0
+            },
             {
                 "x": 0,
                 "y": 0
@@ -27,6 +31,10 @@
 	    "frameTime": 200,
         "steps": [
             {
+                "x": 48,
+                "y": 48
+            },
+            {
                 "x": 0,
                 "y": 48
             },
@@ -44,6 +52,10 @@
         "name": "right",
 	    "frameTime": 200,
         "steps": [
+            {
+                "x": 48,
+                "y": 96
+            },
             {
                 "x": 0,
                 "y": 96
@@ -63,6 +75,10 @@
         "name": "up",
 	    "frameTime": 200,
         "steps": [
+            {
+                "x": 48,
+                "y": 144
+            },
             {
                 "x": 0,
                 "y": 144

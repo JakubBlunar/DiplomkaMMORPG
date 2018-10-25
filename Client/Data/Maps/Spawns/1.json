@@ -11,7 +11,7 @@
         }]
     },
     {
-        "id": 4,
+        "id": 3,
         "spawns": [
             {
                 "npcType": 2,
@@ -20,6 +20,30 @@
             {
                 "npcType": 3,
                 "maxCount": 5
+            }
+        ]
+    }, {
+        "id": 0,
+        "spawns": [
+            {
+                "npcType": 3,
+                "maxCount": 4
+            },
+            {
+                "npcType": 4,
+                "maxCount": 50
+            }, {
+                "npcType": 6,
+                "maxCount": 50
+            }, {
+                "npcType": 7,
+                "maxCount": 50
+            }, {
+                "npcType": 8,
+                "maxCount": 50
+            }, {
+                "npcType": 9,
+                "maxCount": 50
             }
         ]
     }]

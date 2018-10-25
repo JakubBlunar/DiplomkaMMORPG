@@ -50,20 +50,20 @@
                  "y":838
                 }, 
                 {
-                 "height":4800,
+                 "height":4720,
                  "id":28,
                  "name":"0",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":4802,
-                 "x":-4,
-                 "y":2
+                 "width":4720,
+                 "x":40,
+                 "y":40
                 }, 
                 {
                  "height":0,
                  "id":31,
-                 "name":"4",
+                 "name":"3",
                  "polygon":[
                         {
                          "x":0,
