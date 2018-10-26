@@ -46,11 +46,13 @@ int Astar::findPath(sf::Vector2f from, sf::Vector2f to)
 
 	openSet.insert(std::make_pair(start->id, start));
 
+	int maxNumberOfSteps = abs(fromX - toX) * abs(fromY - toY);
+	int steps = 0;
 	int res = 0;
-	while (res == 0) {
+	while (res == 0 && steps < maxNumberOfSteps) {
 		res = step();
+		steps++;
 	}
-
 
     MapGridSpot* temp = current;
 
