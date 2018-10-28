@@ -90,9 +90,6 @@
     <ClInclude Include="Random.h">
       <Filter>Header Files\Tools</Filter>
     </ClInclude>
-    <ClInclude Include="EventNpcMovementChange.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ObjectPool.h">
       <Filter>Header Files\Tools</Filter>
     </ClInclude>
@@ -100,6 +97,9 @@
       <Filter>Header Files\Tools</Filter>
     </ClInclude>
     <ClInclude Include="EventNpcsMovementChange.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="EventNpcMovementChange.h">
       <Filter>Header Files\Events</Filter>
     </ClInclude>
   </ItemGroup>

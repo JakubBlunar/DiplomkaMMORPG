@@ -6,6 +6,7 @@
 #include "../Client/json.hpp"
 #include "RenderComponent.h"
 #include <list>
+#include "AttributesComponent.h"
 
 class GameEvent;
 using json = nlohmann::json;
@@ -43,7 +44,11 @@ public:
 
 	PositionComponent* positionComponent;
 	MovementData lastServerPosition;
+
+	AttributesComponent* getAttributesComponent() const;
 private:
+	AttributesComponent* attributesComponent;
+
 	bool playerControlled;
 	RenderComponent* renderComponent;
 

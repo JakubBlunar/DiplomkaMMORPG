@@ -8,7 +8,8 @@ class Entity;
 
 enum class ComponentType {
 	POSITION = 0,
-	RENDER = 1
+	RENDER = 1,
+	ATTRIBUTES = 2
 };
 
 class Component {

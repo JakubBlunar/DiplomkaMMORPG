@@ -2,7 +2,6 @@
 #include <SFML/Window/Mouse.hpp>
 #include "Game.h"
 #include "SceneManager.h"
-#include <iostream>
 #include "Globals.h"
 
 #define MIN_SCALE 0.8f
@@ -75,7 +74,6 @@ void Camera::update(sf::Time elapsedTime, Game* g) {
 		sf::FloatRect viewPort = sf::FloatRect(offset, resolution);
 
 		if (viewPort != lastView) {
-			std::cout << "Viewport changed 2 " << viewPort.left << " " << viewPort.top << std::endl;
 			lastView = viewPort;
 			view.reset(viewPort);
 			view.zoom(scale);
@@ -86,7 +84,6 @@ void Camera::update(sf::Time elapsedTime, Game* g) {
 		offset = sf::Vector2f(0, 0);
 		sf::FloatRect viewPort = sf::FloatRect(offset, resolution);
 		if (viewPort != lastView) {
-			std::cout << "Viewport changed" << std::endl;
 			lastView = viewPort;
 			view.reset(viewPort);
 			g->window->setView(view);

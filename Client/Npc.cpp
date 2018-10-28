@@ -5,20 +5,33 @@
 #include "EventDispatcher.h"
 #include "EventNpcMovementChange.h"
 #include "EventNpcsMovementChange.h"
+#include "PositionComponent.h"
+#include "RenderComponent.h"
+#include "AttributesComponent.h"
 
 
 Npc::Npc(): Entity(-1), lastServerPosition() {
+	type = -1;
+
 	positionComponent = new PositionComponent();
 	components.push_back(positionComponent);
 	positionComponent->setSize(sf::Vector2f(32.f, 32.f));
-	type = -1;
+	
 	renderComponent = new RenderComponent();
 	components.push_back(renderComponent);
+
+	attributesComponent = new AttributesComponent();
+	components.push_back(attributesComponent);
 }
 
 Npc::~Npc()
 {
 	unsubscribe();
+	components.clear();
+
+	delete positionComponent;
+	delete renderComponent;
+	delete attributesComponent;
 }
 
 void Npc::handleEvent(GameEvent* event) {
@@ -140,6 +153,10 @@ RenderComponent* Npc::getRenderComponent() const {
 PositionComponent * Npc::getPositionComponent() const
 {
 	return positionComponent;
+}
+
+AttributesComponent* Npc::getAttributesComponent() const {
+	return attributesComponent;
 }
 
 void Npc::updateMovementAnimation()

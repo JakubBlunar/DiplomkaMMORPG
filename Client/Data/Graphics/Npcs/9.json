@@ -6,7 +6,7 @@
 	"animations": [
     {
         "name": "down",
-	    "frameTime": 200,
+	    "frameTime": 150,
         "steps": [
             {
                 "x": 48,
@@ -28,7 +28,7 @@
     },
     {
         "name": "left",
-	    "frameTime": 200,
+	    "frameTime": 150,
         "steps": [
             {
                 "x": 48,
@@ -50,7 +50,7 @@
     },
     {
         "name": "right",
-	    "frameTime": 200,
+	    "frameTime": 150,
         "steps": [
             {
                 "x": 48,
@@ -73,7 +73,7 @@
     },
     {
         "name": "up",
-	    "frameTime": 200,
+	    "frameTime": 150,
         "steps": [
             {
                 "x": 48,

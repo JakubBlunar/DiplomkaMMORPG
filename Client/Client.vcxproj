@@ -136,6 +136,7 @@
     <ClCompile Include="Account.cpp" />
     <ClCompile Include="AnimatedSprite.cpp" />
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="AttributesComponent.cpp" />
     <ClCompile Include="b2GLDraw.cpp" />
     <ClCompile Include="BotCommand.cpp" />
     <ClCompile Include="BotCommandMoveTo.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="Account.h" />
     <ClInclude Include="AnimatedSprite.h" />
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="AttributesComponent.h" />
     <ClInclude Include="b2GLDraw.h" />
     <ClInclude Include="BotCommand.h" />
     <ClInclude Include="BotCommandMoveTo.h" />

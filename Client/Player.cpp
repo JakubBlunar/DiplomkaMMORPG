@@ -14,20 +14,29 @@
 Player::Player(bool playerControlled) : Entity(0) {
 	this->playerControlled = playerControlled;
 	lastMovement = sf::Vector2f(0, 0);
+	
 	positionComponent = new PositionComponent();
 	components.push_back(positionComponent);
 	positionComponent->setSize(sf::Vector2f(32.f, 32.f));
 
 	renderComponent = new RenderComponent();
 	components.push_back(renderComponent);
+
+	attributesComponent = new AttributesComponent();
+	components.push_back(attributesComponent);
+
 	sendingTime = sf::Time::Zero;
+
 	EventDispatcher<EventMovementChange>::addSubscriber(this);
 }
 
 Player::~Player() {
 	EventDispatcher<EventMovementChange>::removeSubscriber(this);
 	components.clear();
+
 	delete positionComponent;
+	delete attributesComponent;
+	delete renderComponent;
 }
 
 void Player::handleEvent(GameEvent* event) {
@@ -288,6 +297,10 @@ void Player::setMovementDirection(sf::Vector2f direction, Game* g) {
 		body->SetLinearVelocity(b2Vec2(movement.x * PIXTOMET, movement.y * PIXTOMET));
 		sendPosition(g);
 	}
+}
+
+AttributesComponent* Player::getAttributesComponent() const {
+	return attributesComponent;
 }
 
 void Player::sendPosition(Game*g) const {

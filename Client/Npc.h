@@ -2,11 +2,12 @@
 #define NPC_H
 
 #include "Entity.h"
-#include "RenderComponent.h"
-#include "PositionComponent.h"
 #include "JsonLoader.h"
 
 class GameEvent;
+class AttributesComponent;
+class PositionComponent;
+class RenderComponent;
 
 class Npc :
 	public Entity
@@ -15,6 +16,7 @@ class Npc :
 
 	PositionComponent* positionComponent;
 	RenderComponent* renderComponent;
+	AttributesComponent* attributesComponent;
 
 	MovementData lastServerPosition;
 public:
@@ -30,6 +32,7 @@ public:
 
 	RenderComponent* getRenderComponent() const;
 	PositionComponent* getPositionComponent() const;
+	AttributesComponent* getAttributesComponent() const;
 
 	void updateMovementAnimation();
 
