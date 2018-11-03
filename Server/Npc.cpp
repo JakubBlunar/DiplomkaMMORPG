@@ -13,6 +13,8 @@ s::Npc::Npc(): command(nullptr) {
 	movement = sf::Vector2f(0, 0);
 	map = nullptr;
 	body = nullptr;
+	deadTimestamp = sf::Time::Zero;
+	state = NpcState::IDLE;
 }
 
 
@@ -44,6 +46,9 @@ void s::Npc::loadFromJson(std::string file)
 	type = (int) jsonData["type"].get<json::number_integer_t>();
 	speed = (float) jsonData["speed"].get<json::number_float_t>();
 
+	respawnTime = sf::seconds((float) jsonData["respawnTime"].get<json::number_float_t>());
+	deadTimestamp = sf::Time::Zero;
+
 	std::string renderFile = jsonData["render"].get<json::string_t>();
 	json renderData = JsonLoader::instance()->loadJson("Graphics/Npcs/" + renderFile);
 
@@ -65,6 +70,8 @@ s::Npc* s::Npc::clone() const {
 	copy->setBody(nullptr);
 	copy->setMap(nullptr);
 
+	copy->setRespawnTime(respawnTime);
+
 	return copy;
 }
 
@@ -79,6 +86,9 @@ json s::Npc::toJson() const {
 	json["positionX"] = position.x;
 	json["positionY"] = position.y;
 	json["speed"] = speed;
+
+	json["state"] = static_cast<sf::Uint8>(state);
+
 	if (map) {
 		json["mapId"] = map->getId();
 	}
@@ -94,6 +104,13 @@ string s::Npc::getName() const {
 	return name;
 }
 
+void s::Npc::setNpcState(NpcState state) {
+	this->state = state;
+}
+NpcState s::Npc::getNpcState() const {
+	return state;
+}
+
 void s::Npc::setMovement(float movementX, float movementY) {
 	if (lastMovement == movement) {
 		return;
@@ -106,6 +123,10 @@ void s::Npc::setMovement(float movementX, float movementY) {
 void s::Npc::setMovement(sf::Vector2f movement, NpcUpdateEvents * npcUpdateEvents) {
 	if (lastMovement == movement) {
 		return;
+	}
+
+	if (state == NpcState::DEAD) {
+		movement = sf::Vector2f(0, 0);
 	}
 
 	this->lastMovement = this->movement;
@@ -134,6 +155,7 @@ void s::Npc::setMovement(sf::Vector2f movement, NpcUpdateEvents * npcUpdateEvent
 		}
 	}
 }
+
 sf::Vector2f s::Npc::getMovement() const {
 	return movement;
 }
@@ -145,6 +167,26 @@ void s::Npc::setType(int type) {
 int s::Npc::getType() const
 {
 	return type;
+}
+
+sf::Time s::Npc::getRespawnTime() const {
+	return respawnTime;
+}
+
+void s::Npc::setRespawnTime(sf::Time respawnTime) {
+	this->respawnTime = respawnTime;
+}
+
+void s::Npc::setDeadTimestamp(sf::Time deadTimestamp) {
+	this->deadTimestamp = deadTimestamp;
+}
+
+sf::Time s::Npc::getDeadTimestamp() const {
+	return deadTimestamp;
+}
+
+bool s::Npc::isAlive() const {
+	return deadTimestamp == sf::Time::Zero && state != NpcState::DEAD;
 }
 
 void s::Npc::setMovementDirection(sf::Vector2f direction, float speed, NpcUpdateEvents * npcUpdateEvents) {

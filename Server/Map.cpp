@@ -124,7 +124,9 @@ void s::Map::update(sf::Time deltaTime, Server* s) {
 
 	if (lastUpdateNpc > npcUpdateInterval) {
 		for (Npc* npc : npcs) {
-			s->npcManager.updateNpc(lastUpdateNpc, npc, s, &eventsContainer);
+			if (npc->isAlive()) {
+				s->npcManager.updateNpc(lastUpdateNpc, npc, s, &eventsContainer);
+			}
 		}
 		lastUpdateNpc = sf::Time::Zero;
 	}

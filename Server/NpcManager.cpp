@@ -50,8 +50,8 @@ s::Npc* s::NpcManager::findNpc(int spawnId)
 	return nullptr;
 }
 
-void s::NpcManager::updateNpc(sf::Time elapsedTime, Npc* npc, Server * s, NpcUpdateEvents * npcUpdateEvents)
-{
+void s::NpcManager::updateNpc(sf::Time elapsedTime, Npc* npc, Server * s, NpcUpdateEvents * npcUpdateEvents) const {
+
 	b2Body* body = npc->getBody();
 	b2Vec2 position = body->GetPosition();
 	

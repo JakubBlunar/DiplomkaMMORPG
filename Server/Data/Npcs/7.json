@@ -2,5 +2,6 @@
     "type": 7,
     "name": "Skeleton",
     "render": "7",
-    "speed": 20
+    "speed": 20,
+    "respawnTime": 30
 }

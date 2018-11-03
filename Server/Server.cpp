@@ -53,6 +53,8 @@ void s::Server::init() {
 
 void s::Server::start() {
 	running = true;
+	serverTime.restart();
+
 	listener.listen(static_cast<short>(serverSettings->port));
 	selector.add(listener);
 
@@ -91,6 +93,10 @@ void s::Server::start() {
 	database->executeQuery("UPDATE realmStatuses SET onlineCount=0, lightFactionOnline=0, darkFactionOnline=0, updatedAt=NOW(), endTime=NOW() WHERE id = 1;");
 	database->executeQuery("DELETE from onlineplayers;");
 	database->disconnect();
+}
+
+sf::Time s::Server::getServerTime() const {
+	return serverTime.getElapsedTime();
 }
 
 void s::Server::update(sf::Time elapsedTime) {

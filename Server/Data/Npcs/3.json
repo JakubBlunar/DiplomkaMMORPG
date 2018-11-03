@@ -2,5 +2,6 @@
     "type": 3,
     "name": "Orc",
     "render": "3",
-    "speed": 25
+    "speed": 25,
+    "respawnTime": 30
 }

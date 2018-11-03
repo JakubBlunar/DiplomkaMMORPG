@@ -38,3 +38,7 @@ void EventVisitor::visit(EventNpcMovementChange * e)
 }
 
 void EventVisitor::visit(EventNpcsMovementChange* e) {}
+
+void EventVisitor::visit(EventNpcChanges* e) {}
+void EventVisitor::visit(EventNpcStatusChanged* e) {}
+void EventVisitor::visit(EventNpcAttributesChanged* e) {}

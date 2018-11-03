@@ -52,7 +52,7 @@ void ClientEventActions::visit(EventLoginResponse* e) {
 }
 
 void ClientEventActions::visit(EventCharacterChooseResponse* e) {
-	game->print(e->toString());
+	//game->print(e->toString());
 	if (e->success) {
 		json response = json::parse(e->characterData);
 		//game->print("Character DATA: " + response.dump());

@@ -24,7 +24,7 @@ namespace s {
 		Npc* createNpc(int npcType);
 		Npc* findNpc(int spawnId);
 
-		void updateNpc(sf::Time elapsedTime, Npc* npc, Server* s, NpcUpdateEvents * npcUpdateEvents);
+		void updateNpc(sf::Time elapsedTime, Npc* npc, Server* s, NpcUpdateEvents * npcUpdateEvents) const;
 	};
 }
 

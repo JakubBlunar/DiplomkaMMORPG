@@ -25,6 +25,9 @@
     <Filter Include="Source Files\Tools">
       <UniqueIdentifier>{60d4932f-ee7f-434f-a183-f47874107c9c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Libraries">
+      <UniqueIdentifier>{c85fbb60-7bba-45db-9fe8-be3180196035}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -102,6 +105,24 @@
     <ClInclude Include="EventNpcMovementChange.h">
       <Filter>Header Files\Events</Filter>
     </ClInclude>
+    <ClInclude Include="NpcConstants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="json.hpp">
+      <Filter>Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="EventNpcChanges.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="DeleteElementPointer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EventNpcAttributesChanged.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="EventNpcStatusChanged.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -156,6 +177,15 @@
       <Filter>Source Files\Events</Filter>
     </ClCompile>
     <ClCompile Include="EventNpcsMovementChange.cpp">
+      <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="EventNpcChanges.cpp">
+      <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="EventNpcAttributesChanged.cpp">
+      <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="EventNpcStatusChanged.cpp">
       <Filter>Source Files\Events</Filter>
     </ClCompile>
   </ItemGroup>

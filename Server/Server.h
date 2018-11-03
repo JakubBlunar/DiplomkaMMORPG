@@ -34,6 +34,10 @@ namespace s {
 		BotManager botManager;
 		NpcManager npcManager;
 		vector<Manager*> managers;
+
+		sf::Time getServerTime() const;
+
+
 	private:
 		void update(sf::Time elapsedTime);
 
@@ -52,6 +56,8 @@ namespace s {
 		sf::Packet errorPacket;
 		sf::Packet wrongType;
 		ServerTasks* tasks;
+
+		sf::Clock serverTime;
 	};
 }
 #endif // !SERVER_H

@@ -2,5 +2,6 @@
     "type": 1,
     "name": "Kubo",
     "render": "1",
-    "speed": 30
+    "speed": 30,
+    "respawnTime": 30
 }

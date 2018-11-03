@@ -2,5 +2,6 @@
     "type": 2,
     "name": "Slime",
     "render": "2",
-    "speed": 10
+    "speed": 10,
+    "respawnTime": 30
 }

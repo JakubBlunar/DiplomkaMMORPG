@@ -10,6 +10,7 @@ class GameEvent {
 protected:
 	EventId id;
 public:
+	virtual ~GameEvent() = default;
 	GameEvent();
 
 	EventId getId();

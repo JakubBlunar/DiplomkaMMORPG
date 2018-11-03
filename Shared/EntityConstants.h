@@ -35,9 +35,9 @@ enum class EntityAttributeType: sf::Uint8 {
 	ARMOR = 7,
 	EXPERIENCE = 9,
 	MONEY = 10,
-	COUNT = 11
+	BASE_HP = 11,
+	BASE_MP = 12,
+	COUNT = 13
 };
-
-
 
 #endif
