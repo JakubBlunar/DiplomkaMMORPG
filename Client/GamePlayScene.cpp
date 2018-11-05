@@ -208,8 +208,10 @@ void GamePlayScene::render() {
 	auto bodySize = queryCallback.foundBodies.size();
 	for (unsigned int i = 0; i < bodySize; i++) {
 		Entity* entity = (Entity*)queryCallback.foundBodies[i]->GetUserData();
+
 		RenderComponent* renderComponent = (RenderComponent*)entity->getComponent(ComponentType::RENDER);
 		PositionComponent* positionComponent = (PositionComponent*)entity->getComponent(ComponentType::POSITION);
+
 		if (renderComponent && positionComponent) {
 			AnimatedSprite* sprite = renderComponent->getCurrentAnimation();
 
@@ -218,11 +220,24 @@ void GamePlayScene::render() {
 			sf::Vector2f spritePosition = sf::Vector2f(ceilNumber(METTOPIX * position.x + renderOffset.x), ceilNumber(METTOPIX * position.y + renderOffset.y));
 			sprite->setPosition(spritePosition);
 
-			game->window->draw(*sprite);
-			if (targetEntity && targetEntity == entity) {
-				targetArrow.setPosition(spritePosition.x + renderComponent->getSize().x / 2.f + 8, spritePosition.y);
-				game->window->draw(targetArrow);
+			
+			if (entity->getType() == EntityType::NPC) {
+				Npc* npc = (Npc*)entity;
+				if (npc->getState() == NpcState::DEAD) {
+					continue;
+				} 
+				game->window->draw(*sprite);
+			} else {
+				game->window->draw(*sprite);
+				if (targetEntity && targetEntity == entity) {
+					targetArrow.setPosition(spritePosition.x + renderComponent->getSize().x / 2.f + 8, spritePosition.y);
+					game->window->draw(targetArrow);
+				}
 			}
+
+			
+
+			
 		}
 	}
 	ClientSettings::instance()->eventsMutex.unlock();

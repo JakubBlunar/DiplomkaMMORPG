@@ -8,15 +8,16 @@
 #include "PositionComponent.h"
 #include "RenderComponent.h"
 #include "AttributesComponent.h"
+#include "EventNpcStatusChanged.h"
+#include "EventNpcAttributesChanged.h"
 
-
-Npc::Npc(): Entity(-1), lastServerPosition() {
+Npc::Npc(): Entity(-1), npcState(NpcState::IDLE), lastServerPosition() {
 	type = -1;
 
 	positionComponent = new PositionComponent();
 	components.push_back(positionComponent);
 	positionComponent->setSize(sf::Vector2f(32.f, 32.f));
-	
+
 	renderComponent = new RenderComponent();
 	components.push_back(renderComponent);
 
@@ -83,6 +84,24 @@ void Npc::handleEvent(GameEvent* event) {
 				if (body) {
 					body->SetTransform(b2Vec2(lastServerPosition.x * PIXTOMET, lastServerPosition.y * PIXTOMET), body->GetAngle());
 				}
+			}
+			break;
+		}
+		case NPC_STATUS_CHANGED: {
+			EventNpcStatusChanged* temp = (EventNpcStatusChanged*) event;
+			if(temp->spawnId != (int)id)
+				return;
+
+			npcState = temp->npcState;
+			break;
+		}
+		case NPC_ATTRIBUTES_CHANGED: {
+			EventNpcAttributesChanged* temp = (EventNpcAttributesChanged*) event;
+			if (temp->spawnId != (int)id)
+				return;
+
+			for (auto change: temp->changes) {
+				attributesComponent->setAttribute(change.first, change.second);
 			}
 			break;
 		}
@@ -230,7 +249,8 @@ void Npc::loadFromJson(json serverData)
 	json jsonData = JsonLoader::instance()->loadJson("Npcs/" + std::to_string(type));
 
 	name = jsonData["name"].get<json::string_t>();
-		
+	npcState = static_cast<NpcState>(serverData["state"].get<json::number_integer_t>());
+
 	std::string renderFile = jsonData["render"].get<json::string_t>();
 
 	json animationData = JsonLoader::instance()->loadJson("Graphics/Npcs/" + std::to_string(type));
@@ -271,12 +291,20 @@ void Npc::loadFromJson(json serverData)
 	subscribe();
 }
 
+NpcState Npc::getState() const {
+	return npcState;
+}
+
 void Npc::subscribe() {
 	EventDispatcher<EventNpcsMovementChange>::addSubscriber(this);
 	EventDispatcher<EventNpcMovementChange>::addSubscriber(this);
+	EventDispatcher<EventNpcStatusChanged>::addSubscriber(this);
+	EventDispatcher<EventNpcAttributesChanged>::addSubscriber(this);
 }
 
 void Npc::unsubscribe() {
 	EventDispatcher<EventNpcMovementChange>::removeSubscriber(this);
 	EventDispatcher<EventNpcsMovementChange>::removeSubscriber(this);
+	EventDispatcher<EventNpcAttributesChanged>::removeSubscriber(this);
+	EventDispatcher<EventNpcStatusChanged>::removeSubscriber(this);
 }

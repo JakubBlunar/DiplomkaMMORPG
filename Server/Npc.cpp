@@ -87,7 +87,7 @@ json s::Npc::toJson() const {
 	json["positionY"] = position.y;
 	json["speed"] = speed;
 
-	json["state"] = static_cast<sf::Uint8>(state);
+	json["state"] = static_cast<int>(state);
 
 	if (map) {
 		json["mapId"] = map->getId();
@@ -186,7 +186,7 @@ sf::Time s::Npc::getDeadTimestamp() const {
 }
 
 bool s::Npc::isAlive() const {
-	return deadTimestamp == sf::Time::Zero && state != NpcState::DEAD;
+	return state != NpcState::DEAD;
 }
 
 void s::Npc::setMovementDirection(sf::Vector2f direction, float speed, NpcUpdateEvents * npcUpdateEvents) {

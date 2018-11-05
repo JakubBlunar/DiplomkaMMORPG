@@ -51,7 +51,9 @@ s::Npc* s::NpcManager::findNpc(int spawnId)
 }
 
 void s::NpcManager::updateNpc(sf::Time elapsedTime, Npc* npc, Server * s, NpcUpdateEvents * npcUpdateEvents) const {
-
+	if (!npc->isAlive()) {
+		return;
+	}
 	b2Body* body = npc->getBody();
 	b2Vec2 position = body->GetPosition();
 	

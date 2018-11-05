@@ -52,9 +52,6 @@ void s::Spawn::update(sf::Time elapsedTime, s::Server* s, Location* l) {
 			sf::Time respawnTime = npc->getRespawnTime();
 			sf::Time deadTimestamp = npc->getDeadTimestamp();
 			if (serverTime.asSeconds() - respawnTime.asSeconds() >= deadTimestamp.asSeconds()) {
-				npc->setNpcState(NpcState::IDLE);
-				npc->setDeadTimestamp(sf::Time::Zero);
-
 				float hp = npc->getAttribute(EntityAttributeType::BASE_HP);
 				float mp = npc->getAttribute(EntityAttributeType::BASE_MP);
 
@@ -67,10 +64,15 @@ void s::Spawn::update(sf::Time elapsedTime, s::Server* s, Location* l) {
 				attributeChanges.setChange(EntityAttributeType::MP, mp);
 				l->getMap()->sendEventToAllPlayers(&attributeChanges);
 
+				npc->setNpcState(NpcState::IDLE);
+				npc->setDeadTimestamp(sf::Time::Zero);
+
 				EventNpcStatusChanged statusChange;
 				statusChange.spawnId = npc->getSpawnId();
-				statusChange.npcState = npc->getNpcState();
+				statusChange.npcState = NpcState::IDLE;
 				l->getMap()->sendEventToAllPlayers(&statusChange);
+
+				spdlog::get("log")->trace("Npc resurect :{}", npc->getSpawnId());
 			}
 		}
 	}

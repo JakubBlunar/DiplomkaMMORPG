@@ -3,6 +3,7 @@
 
 #include "Entity.h"
 #include "JsonLoader.h"
+#include "../Shared/NpcConstants.h"
 
 class GameEvent;
 class AttributesComponent;
@@ -13,6 +14,7 @@ class Npc :
 	public Entity
 {
 	int type;
+	NpcState npcState;
 
 	PositionComponent* positionComponent;
 	RenderComponent* renderComponent;
@@ -37,6 +39,8 @@ public:
 	void updateMovementAnimation();
 
 	void loadFromJson(json serverData);
+
+	NpcState getState() const;
 
 	void subscribe();
 	void unsubscribe();
