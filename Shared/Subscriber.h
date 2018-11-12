@@ -1,12 +1,13 @@
 #ifndef SUBSCRIBER_H
 #define SUBSCRIBER_H
 
-#include "GameEvent.h"
+
+class GameEvent;
 
 class Subscriber {
 public:
 	virtual void handleEvent(GameEvent* event) = 0;
-public:
+protected:
 	Subscriber();
 };
 

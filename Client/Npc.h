@@ -4,6 +4,8 @@
 #include "Entity.h"
 #include "JsonLoader.h"
 #include "../Shared/NpcConstants.h"
+#include <Box2D/Dynamics/Joints/b2DistanceJoint.h>
+#include "EventNpcsMovementChange.h"
 
 class GameEvent;
 class AttributesComponent;

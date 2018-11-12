@@ -11,6 +11,8 @@
 #include "EventNpcStatusChanged.h"
 #include "EventNpcAttributesChanged.h"
 
+#include "Box2D/Box2D.h"
+
 Npc::Npc(): Entity(-1), npcState(NpcState::IDLE), lastServerPosition() {
 	type = -1;
 

@@ -121,6 +121,10 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)/ExternalLibraries/Box2D/include;$(SolutionDir)ExternalLibraries\SFML\include;$(SolutionDir)/ExternalLibraries/Imgui;$(SolutionDir)/ExternalLibraries/MySQL/include;$(SolutionDir)/Shared;$(SolutionDir)/ExternalLibraries/CryptLib;$(SolutionDir)/ExternalLibraries/spdlog/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard>
+      </LanguageStandard>
+      <EnableModules>
+      </EnableModules>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -155,6 +159,39 @@
     <ClCompile Include="IDManager.cpp" />
     <ClCompile Include="JsonLoader.cpp" />
     <ClCompile Include="Location.cpp" />
+    <ClCompile Include="Lua\lapi.c" />
+    <ClCompile Include="Lua\lauxlib.c" />
+    <ClCompile Include="Lua\lbaselib.c" />
+    <ClCompile Include="Lua\lbitlib.c" />
+    <ClCompile Include="Lua\lcode.c" />
+    <ClCompile Include="Lua\lcorolib.c" />
+    <ClCompile Include="Lua\lctype.c" />
+    <ClCompile Include="Lua\ldblib.c" />
+    <ClCompile Include="Lua\ldebug.c" />
+    <ClCompile Include="Lua\ldo.c" />
+    <ClCompile Include="Lua\ldump.c" />
+    <ClCompile Include="Lua\lfunc.c" />
+    <ClCompile Include="Lua\lgc.c" />
+    <ClCompile Include="Lua\linit.c" />
+    <ClCompile Include="Lua\liolib.c" />
+    <ClCompile Include="Lua\llex.c" />
+    <ClCompile Include="Lua\lmathlib.c" />
+    <ClCompile Include="Lua\lmem.c" />
+    <ClCompile Include="Lua\loadlib.c" />
+    <ClCompile Include="Lua\lobject.c" />
+    <ClCompile Include="Lua\lopcodes.c" />
+    <ClCompile Include="Lua\loslib.c" />
+    <ClCompile Include="Lua\lparser.c" />
+    <ClCompile Include="Lua\lstate.c" />
+    <ClCompile Include="Lua\lstring.c" />
+    <ClCompile Include="Lua\lstrlib.c" />
+    <ClCompile Include="Lua\ltable.c" />
+    <ClCompile Include="Lua\ltablib.c" />
+    <ClCompile Include="Lua\ltm.c" />
+    <ClCompile Include="Lua\lundump.c" />
+    <ClCompile Include="Lua\lutf8lib.c" />
+    <ClCompile Include="Lua\lvm.c" />
+    <ClCompile Include="Lua\lzio.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Manager.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -163,6 +200,8 @@
     <ClCompile Include="NpcCommand.cpp" />
     <ClCompile Include="NpcCommandMoveTo.cpp" />
     <ClCompile Include="NpcCommandStay.cpp" />
+    <ClCompile Include="NpcEvent.cpp" />
+    <ClCompile Include="NpcEventNpcIsIdle.cpp" />
     <ClCompile Include="NpcHolder.cpp" />
     <ClCompile Include="NpcManager.cpp" />
     <ClCompile Include="Server.cpp" />
@@ -181,11 +220,40 @@
     <ClInclude Include="Database.h" />
     <ClInclude Include="EntityAttributes.h" />
     <ClInclude Include="EntityPosition.h" />
+    <ClInclude Include="EventDispatcher.h" />
     <ClInclude Include="IDManager.h" />
     <ClInclude Include="INIReader.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="JsonLoader.h" />
     <ClInclude Include="Location.h" />
+    <ClInclude Include="Lua\lapi.h" />
+    <ClInclude Include="Lua\lauxlib.h" />
+    <ClInclude Include="Lua\lcode.h" />
+    <ClInclude Include="Lua\lctype.h" />
+    <ClInclude Include="Lua\ldebug.h" />
+    <ClInclude Include="Lua\ldo.h" />
+    <ClInclude Include="Lua\lfunc.h" />
+    <ClInclude Include="Lua\lgc.h" />
+    <ClInclude Include="Lua\llex.h" />
+    <ClInclude Include="Lua\llimits.h" />
+    <ClInclude Include="Lua\lmem.h" />
+    <ClInclude Include="Lua\lobject.h" />
+    <ClInclude Include="Lua\lopcodes.h" />
+    <ClInclude Include="Lua\lparser.h" />
+    <ClInclude Include="Lua\lprefix.h" />
+    <ClInclude Include="Lua\lstate.h" />
+    <ClInclude Include="Lua\lstring.h" />
+    <ClInclude Include="Lua\ltable.h" />
+    <ClInclude Include="Lua\ltm.h" />
+    <ClInclude Include="Lua\lua.h" />
+    <ClInclude Include="Lua\lua.hpp" />
+    <ClInclude Include="Lua\luaconf.h" />
+    <ClInclude Include="Lua\lualib.h" />
+    <ClInclude Include="Lua\lundump.h" />
+    <ClInclude Include="Lua\lvm.h" />
+    <ClInclude Include="Lua\lzio.h" />
+    <ClInclude Include="Lua\sol.hpp" />
+    <ClInclude Include="Lua\sol_forward.hpp" />
     <ClInclude Include="Manager.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapsManager.h" />
@@ -193,6 +261,8 @@
     <ClInclude Include="NpcCommand.h" />
     <ClInclude Include="NpcCommandMoveTo.h" />
     <ClInclude Include="NpcCommandStay.h" />
+    <ClInclude Include="NpcEvent.h" />
+    <ClInclude Include="NpcEventNpcIsIdle.h" />
     <ClInclude Include="NpcHolder.h" />
     <ClInclude Include="NpcManager.h" />
     <ClInclude Include="Server.h" />

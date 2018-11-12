@@ -1,7 +1,6 @@
 #ifndef S_NPC_H
 #define S_NPC_H
 #include <string>
-#include <Box2D/Box2D.h>
 #include <SFML/System/Vector2.hpp>
 #include "Map.h"
 #include "NpcCommand.h"

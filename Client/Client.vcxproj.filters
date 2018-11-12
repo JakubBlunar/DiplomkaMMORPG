@@ -126,9 +126,6 @@
     <ClCompile Include="ClientEventActions.cpp">
       <Filter>Source Files\Events</Filter>
     </ClCompile>
-    <ClCompile Include="Subscriber.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GamePlayScene.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
@@ -273,9 +270,6 @@
       <Filter>Header Files\Events</Filter>
     </ClInclude>
     <ClInclude Include="EventDispatcher.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Subscriber.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GamePlayScene.h">

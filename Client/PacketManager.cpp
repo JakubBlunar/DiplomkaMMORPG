@@ -9,6 +9,10 @@
 #include "EventCharacterMapLeave.h"
 #include "EventNpcsMovementChange.h"
 #include "EventNpcAttributesChanged.h"
+#include "EventCharacterChooseResponse.h"
+#include "EventCharacterMapJoin.h"
+#include "EventNpcMovementChange.h"
+#include "EventNpcStatusChanged.h"
 
 PacketManager::PacketManager(Game* g) : game(nullptr), latencyCheckThread(nullptr) {
 	game = g;

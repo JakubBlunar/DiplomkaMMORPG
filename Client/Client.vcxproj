@@ -180,7 +180,6 @@
     <ClCompile Include="ResourceHolder.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
-    <ClCompile Include="Subscriber.cpp" />
     <ClCompile Include="TileSetsHolder.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -233,7 +232,6 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="sfLine.h" />
-    <ClInclude Include="Subscriber.h" />
     <ClInclude Include="TileSetsHolder.h" />
     <ClInclude Include="VisibleObjectsCast.h" />
   </ItemGroup>

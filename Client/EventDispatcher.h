@@ -1,9 +1,9 @@
 #ifndef EVENT_DISPATCHER_H
 #define EVENT_DISPATCHER_H
 
-#include <vector>
+#include <list>
 #include "GameEvent.h"
-#include "Subscriber.h"
+#include "../Shared/Subscriber.h"
 #include "ClientSettings.h"
 
 using namespace std;
@@ -11,7 +11,7 @@ using namespace std;
 template <class T>
 class EventDispatcher {
 public:
-	static vector<Subscriber *> subscribers;
+	static list<Subscriber *> subscribers;
 
 	static void addSubscriber(Subscriber* sub) {
 		ClientSettings::instance()->eventsMutex.lock();
@@ -38,6 +38,6 @@ public:
 };
 
 template <typename T>
-vector<Subscriber*> EventDispatcher<T>::subscribers;
+list<Subscriber*> EventDispatcher<T>::subscribers;
 
 #endif

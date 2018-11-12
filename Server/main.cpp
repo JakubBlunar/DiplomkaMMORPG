@@ -16,6 +16,10 @@
 #include "NpcHolder.h"
 #include "Spawn.h"
 
+#include "Lua/lua.hpp"
+#include "Lua/sol.hpp"
+#include "NpcEventNpcIsIdle.h"
+
 s::ServerSettings* initSettings() {
 	INIReader reader("config.ini");
 
@@ -28,6 +32,7 @@ s::ServerSettings* initSettings() {
 
 	settings->port = reader.GetInteger("connection", "port", 55001);
 	settings->max_threads = reader.GetInteger("server", "max_thread_count", 1);
+	settings->maxNpcThreads = reader.GetInteger("server", "max_npc_thread_count", 1);
 
 	settings->dbHost = reader.Get("database", "host", "");
 	settings->dbName = reader.Get("database", "database", "");
@@ -56,28 +61,28 @@ void initLogger() {
 }
 
 int main() {
-	
-	/*b2Vec2* vertices = new b2Vec2[5];
-	vertices[0].Set(-1,  2);
-	vertices[1].Set(-1,  0);
-	vertices[2].Set( 0, -3);
-	vertices[3].Set( 1,  0);
-	vertices[4].Set( 1,  1);
-
-	s::Location l(1, vertices);
-	for (int i = 0; i < 10; i++) {
-		l.generateRandomPoint();
-	}*/
-
 	srand((unsigned int)time(nullptr));
-
 	initLogger();
-	
 	s::ServerSettings* settings = initSettings();
+	
 	if (settings == nullptr) {
 		return EXIT_FAILURE;
 	}
 
+	s::Server* ss = new s::Server(settings);
+
+	s::NpcManager npcManager;
+	npcManager.init(ss);
+
+	for(int i = 0; i < 10000; i++) {
+		npcManager.handleEvent(new s::NpcEventNpcIsIdle());
+	}
+
+	sf::sleep(sf::seconds(60));
+	system("pause");
+	return 0;
+
+	
 	s::Server* s = new s::Server(settings);
 
 	s->init();

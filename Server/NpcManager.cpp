@@ -5,17 +5,45 @@
 #include "NpcCommandMoveTo.h"
 #include "Location.h"
 #include "NpcCommandStay.h"
+#include <spdlog/spdlog.h>
 
-
-s::NpcManager::NpcManager()
-{
+s::NpcManager::NpcManager(): runningThreads(0), MAX_RUNNING_NPC_THREADS(0) {
 	dynamic = false;
 }
 
 
 s::NpcManager::~NpcManager()
 {
+	for (int i = 0; i < MAX_RUNNING_NPC_THREADS; i++) {
+		if (npcEventExecutuionThreads[i]) {
+			npcEventExecutuionThreads[i]->terminate();
+		}
+
+		if (afterExecution[i]) {
+			afterExecution[i]->terminate();
+		}
+	}
+	unsubscribe();
 }
+
+void s::NpcManager::init(Server* s) {
+	MAX_RUNNING_NPC_THREADS = s->serverSettings->maxNpcThreads;
+	npcEventExecutuionThreads.reserve(MAX_RUNNING_NPC_THREADS);
+	npcEventExecutuionThreads.clear();
+	for (int i = 0; i < MAX_RUNNING_NPC_THREADS; i++) {
+		npcEventExecutuionThreads.push_back(nullptr);
+		afterExecution.push_back(nullptr);
+	}
+	runningThreads = 0;
+	subscribe();
+}
+
+void s::NpcManager::subscribe()
+{
+
+}
+
+void s::NpcManager::unsubscribe() {}
 
 s::Npc* s::NpcManager::createNpc(int npcType) {
 	lock.lock();
@@ -81,5 +109,73 @@ void s::NpcManager::updateNpc(sf::Time elapsedTime, Npc* npc, Server * s, NpcUpd
 		command->update(elapsedTime, npcUpdateEvents);
 	}
 }
+
+void s::NpcManager::handleEvent(GameEvent* event) {
+	NpcEvent* npcEvent = dynamic_cast<NpcEvent*>(event);
+	if (npcEvent) {
+		sf::Lock mutexLock(lock);
+		if (runningThreads < MAX_RUNNING_NPC_THREADS) {
+			int index = -1;
+			for (int i = 0; i < MAX_RUNNING_NPC_THREADS; i++) {
+				if (!npcEventExecutuionThreads[i]) {
+					index = i;
+					break;
+				}
+			}
+
+			if (index == -1) {
+				throw "Should find index";
+			}
+
+			executeEvent(npcEvent, index);
+		} else {
+			npcEventQueue.push(npcEvent);
+		}
+	}
+}
+
+void s::NpcManager::executeEvent(NpcEvent* npcEvent, int index) {
+	sf::Lock mutexLock(lock);
+	sf::Thread* t = new sf::Thread(std::bind(&NpcManager::eventExecutionThread, this, npcEvent, index));
+
+	npcEventExecutuionThreads[index] = t;
+	runningThreads++;
+	npcEventExecutuionThreads[index]->launch();
+}
+
+void s::NpcManager::threadEnded(NpcEvent* npcEvent, int index) {
+	npcEventExecutuionThreads[index]->wait();
+	sf::Lock mutexLock(lock);
+
+	delete npcEvent;
+	runningThreads--;
+
+	delete npcEventExecutuionThreads[index];
+	npcEventExecutuionThreads[index] = nullptr;
+
+	if (!npcEventQueue.empty()) {
+		NpcEvent* nextEvent = npcEventQueue.front();
+		npcEventQueue.pop();
+		executeEvent(nextEvent, index);
+	}
+}
+
+void s::NpcManager::eventExecutionThread(NpcEvent* npcEvent, int index) {
+	
+	//spdlog::get("log")->info("Npc is idle {}", npcEvent->npc->getSpawnId());
+	
+	/*int sleep = Random::instance()->randomUniformInt(1, 2);
+
+	spdlog::get("log")->info("Thread {} execution time {} seconds", index, sleep);
+
+	sf::sleep(sf::seconds(sleep));*/
+
+	//creates handler for new thread that will wait into end of current thread and then replace it with new thread
+	delete afterExecution[index];
+	sf::Thread* t = new sf::Thread(std::bind(&NpcManager::threadEnded, this, npcEvent, index));
+	afterExecution[index] = t;
+	afterExecution[index]->launch();
+}
+
 
 
