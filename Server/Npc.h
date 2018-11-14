@@ -20,12 +20,13 @@ namespace s {
 		sf::Time deadTimestamp;
 
 		NpcCommand* command;
+		sf::Mutex mutex;
 	public:
 	
 		Npc();
 		~Npc();
 
-		NpcCommand* getNpcCommand() const;
+		NpcCommand* getNpcCommand();
 		void setNpcCommand(NpcCommand* command);
 
 		void setSpawnId(int id);

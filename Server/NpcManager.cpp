@@ -6,6 +6,8 @@
 #include "Location.h"
 #include "NpcCommandStay.h"
 #include <spdlog/spdlog.h>
+#include "EventDispatcher.h"
+#include "NpcEventNpcIsIdle.h"
 
 s::NpcManager::NpcManager(): runningThreads(0), MAX_RUNNING_NPC_THREADS(0) {
 	dynamic = false;
@@ -14,19 +16,22 @@ s::NpcManager::NpcManager(): runningThreads(0), MAX_RUNNING_NPC_THREADS(0) {
 
 s::NpcManager::~NpcManager()
 {
+	unsubscribe();
 	for (int i = 0; i < MAX_RUNNING_NPC_THREADS; i++) {
 		if (npcEventExecutuionThreads[i]) {
 			npcEventExecutuionThreads[i]->terminate();
+			delete npcEventExecutuionThreads[i];
 		}
 
 		if (afterExecution[i]) {
 			afterExecution[i]->terminate();
+			delete afterExecution[i];
 		}
 	}
-	unsubscribe();
 }
 
 void s::NpcManager::init(Server* s) {
+	server = s;
 	MAX_RUNNING_NPC_THREADS = s->serverSettings->maxNpcThreads;
 	npcEventExecutuionThreads.reserve(MAX_RUNNING_NPC_THREADS);
 	npcEventExecutuionThreads.clear();
@@ -40,10 +45,12 @@ void s::NpcManager::init(Server* s) {
 
 void s::NpcManager::subscribe()
 {
-
+	EventDispatcher<NpcEventNpcIsIdle>::addSubscriber(this, server);
 }
 
-void s::NpcManager::unsubscribe() {}
+void s::NpcManager::unsubscribe() {
+	EventDispatcher<NpcEventNpcIsIdle>::removeSubscriber(this, server);
+}
 
 s::Npc* s::NpcManager::createNpc(int npcType) {
 	lock.lock();
@@ -88,9 +95,13 @@ void s::NpcManager::updateNpc(sf::Time elapsedTime, Npc* npc, Server * s, NpcUpd
 	sf::Vector2f transformedPosition = sf::Vector2f(position.x * METTOPIX, position.y * METTOPIX); 
 
 	npc->setPosition(transformedPosition);
-
 	NpcCommand* command = npc->getNpcCommand();
-	if (!command || command->isFinished()) {
+	if(command && !command->isFinished()) {
+		command->update(elapsedTime, npcUpdateEvents);
+	}
+
+
+	/*if (!command || command->isFinished()) {
 		delete command;
 
 		Random* rand = Random::instance();
@@ -107,7 +118,7 @@ void s::NpcManager::updateNpc(sf::Time elapsedTime, Npc* npc, Server * s, NpcUpd
 		}
 	} else {
 		command->update(elapsedTime, npcUpdateEvents);
-	}
+	}*/
 }
 
 void s::NpcManager::handleEvent(GameEvent* event) {
@@ -161,7 +172,16 @@ void s::NpcManager::threadEnded(NpcEvent* npcEvent, int index) {
 }
 
 void s::NpcManager::eventExecutionThread(NpcEvent* npcEvent, int index) {
-	
+	EventId eventId = npcEvent->getId();
+	switch (eventId) {
+		case NPC_IS_IDLE: {
+			//spdlog::get("log")->info("Npc is idle {}", npcEvent->npc->getSpawnId());
+			break;
+		}
+		default:
+			break;
+	}
+
 	//spdlog::get("log")->info("Npc is idle {}", npcEvent->npc->getSpawnId());
 	
 	/*int sleep = Random::instance()->randomUniformInt(1, 2);

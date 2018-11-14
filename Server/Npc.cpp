@@ -12,7 +12,6 @@ s::Npc::Npc(): command(nullptr) {
 	size = sf::Vector2i(0, 0);
 	movement = sf::Vector2f(0, 0);
 	map = nullptr;
-	body = nullptr;
 	deadTimestamp = sf::Time::Zero;
 	state = NpcState::IDLE;
 }
@@ -22,10 +21,12 @@ s::Npc::~Npc() {
 	
 }
 
-s::NpcCommand* s::Npc::getNpcCommand() const {
+s::NpcCommand* s::Npc::getNpcCommand() {
+	sf::Lock lock(mutex);
 	return command;
 }
 void s::Npc::setNpcCommand(NpcCommand* command) {
+	sf::Lock lock(mutex);
 	this->command = command;
 }
 

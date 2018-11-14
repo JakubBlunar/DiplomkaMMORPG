@@ -24,6 +24,7 @@ namespace s {
 
 	class NpcManager: public Manager, public Subscriber
 	{
+		Server* server;
 		std::map<int, Npc*> npcs;
 		std::queue<NpcEvent*> npcEventQueue;
 		int runningThreads;

@@ -5,6 +5,8 @@
 #include "EventNpcChanges.h"
 #include "EventNpcStatusChanged.h"
 #include "EventNpcAttributesChanged.h"
+#include "NpcEventNpcIsIdle.h"
+#include "EventDispatcher.h"
 
 s::Spawn::Spawn(int npcType, int maxSpawnedNpcs, Location* l) {
 	this->npcType = npcType;
@@ -72,7 +74,10 @@ void s::Spawn::update(sf::Time elapsedTime, s::Server* s, Location* l) {
 				statusChange.npcState = NpcState::IDLE;
 				l->getMap()->sendEventToAllPlayers(&statusChange);
 
-				spdlog::get("log")->trace("Npc resurect :{}", npc->getSpawnId());
+				NpcEventNpcIsIdle* e = new NpcEventNpcIsIdle();
+				e->npc = npc;
+				EventDispatcher<NpcEventNpcIsIdle>::dispatchEvent(e, s) ;
+				//spdlog::get("log")->trace("Npc resurect :{}", npc->getSpawnId());
 			}
 		}
 	}

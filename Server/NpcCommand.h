@@ -4,6 +4,7 @@
 #include <SFML/System/Time.hpp>
 
 namespace s {
+	class NpcEvent;
 	struct NpcUpdateEvents;
 	class Npc;
 	class Server;
@@ -12,16 +13,21 @@ namespace s {
 	{
 	public:
 		NpcCommand();
-		NpcCommand(sf::Time maxDuration);
+		NpcCommand(sf::Time maxDuration, Server* s);
 		virtual ~NpcCommand();
 
 		sf::Time maxDuration;
 		sf::Time duration;
-
+		Server* server;
 		bool finished;
 
 		bool isFinished() const;
 		virtual void update(sf::Time elapsedTime, NpcUpdateEvents* npcUpdateEvents);
+
+		void dispatchFinishEvent(NpcEvent* e);
+
+	protected:
+		bool finishedEventDispatched;
 	};
 }
 

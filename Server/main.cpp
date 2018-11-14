@@ -68,7 +68,7 @@ int main() {
 	if (settings == nullptr) {
 		return EXIT_FAILURE;
 	}
-
+	/*
 	s::Server* ss = new s::Server(settings);
 
 	s::NpcManager npcManager;
@@ -81,7 +81,7 @@ int main() {
 	sf::sleep(sf::seconds(60));
 	system("pause");
 	return 0;
-
+	*/
 	
 	s::Server* s = new s::Server(settings);
 

@@ -2,8 +2,9 @@
 #include "Astar.h"
 #include "Npc.h"
 #include "ServerGlobals.h"
+#include "NpcEventNpcIsIdle.h"
 
-s::NpcCommandMoveTo::NpcCommandMoveTo(sf::Vector2f position, Npc* npc, Map* m, Server* s, sf::Time maxDuration): NpcCommand(maxDuration)
+s::NpcCommandMoveTo::NpcCommandMoveTo(sf::Vector2f position, Npc* npc, Map* m, Server* s, sf::Time maxDuration): NpcCommand(maxDuration, s)
 {
 	this->endPosition = position;
 	this->npc = npc;
@@ -21,6 +22,12 @@ void s::NpcCommandMoveTo::update(sf::Time elapsedTime, NpcUpdateEvents * npcUpda
 	NpcCommand::update(elapsedTime, npcUpdateEvents);
 
 	if (finished) {
+		if (!finishedEventDispatched) {
+			NpcEventNpcIsIdle* e = new NpcEventNpcIsIdle();
+			e->npc = npc;
+			dispatchFinishEvent(e);
+		}
+		
 		return;
 	}
 
@@ -64,8 +71,12 @@ void s::NpcCommandMoveTo::update(sf::Time elapsedTime, NpcUpdateEvents * npcUpda
 
 		npc->setMovementDirection(direction, npc->getSpeed(), npcUpdateEvents);
 	} else {
-		if(!finished)
+		if(!finished) {
 			finished = true;
+			NpcEventNpcIsIdle* e = new NpcEventNpcIsIdle();
+			e->npc = npc;
+			dispatchFinishEvent(e);
+		}
 
 		npc->setMovementDirection(sf::Vector2f(0, 0), npc->getSpeed(), npcUpdateEvents);
 	}
