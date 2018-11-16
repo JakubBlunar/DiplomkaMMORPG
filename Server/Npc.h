@@ -6,11 +6,12 @@
 #include "NpcCommand.h"
 #include "EntityPosition.h"
 #include "NpcConstants.h"
+#include "Lua/sol.hpp"
 
 namespace s {
 	class Npc: public EntityPosition, public EntityAttributes {
 		NpcState state;
-
+		
 		int spawnId;
 		int type;
 
@@ -55,10 +56,15 @@ namespace s {
 		void setDeadTimestamp(sf::Time deadTimestamp);
 		sf::Time getDeadTimestamp() const;
 		
-
+		sol::state* getLuaState();
+		
 		bool isAlive() const;
 
 		void setMovementDirection(sf::Vector2f direction, float speed, NpcUpdateEvents * npcUpdateEvents);
+
+		sol::state luaState;
+		void lock();
+		void unlock();
 	};
 }
 

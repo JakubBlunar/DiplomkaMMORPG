@@ -49,7 +49,7 @@ void s::NpcCommandMoveTo::update(sf::Time elapsedTime, NpcUpdateEvents * npcUpda
 			direction.x = 1;
 		}
 
-		if (start.x < 32) {
+		if (start.x < 70) {
 			direction.x = 0;
 		}
 
@@ -65,7 +65,7 @@ void s::NpcCommandMoveTo::update(sf::Time elapsedTime, NpcUpdateEvents * npcUpda
 			direction.y = -1;
 		}
 
-		if (start.y < 32) {
+		if (start.y < 70) {
 			direction.y = 0;
 		}
 
@@ -87,11 +87,11 @@ void s::NpcCommandMoveTo::init() {
 	MapGrid* mapGrid = map->getGrid();
 
 	sf::Vector2f pathFindingFrom = npc->getPosition();
-	if(pathFindingFrom.x < 50)
-		pathFindingFrom.x = 50;
+	if(pathFindingFrom.x < 100)
+		pathFindingFrom.x = 100;
 
-	if(pathFindingFrom.y < 50)
-		pathFindingFrom.y = 50;
+	if(pathFindingFrom.y < 100)
+		pathFindingFrom.y = 100;
 	
 	Astar astar(mapGrid);
 	int res = astar.findPath(pathFindingFrom, endPosition);

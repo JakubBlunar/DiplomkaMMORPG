@@ -340,11 +340,10 @@ json s::Map::getCharactersJson() {
 json s::Map::getNpcsJson()
 {
 	json jsonNpcs = json::array();
-	lock.lock();
+	sf::Lock mutexLock(lock);
 	for (auto& npc : npcs) {
 		jsonNpcs.push_back(npc->toJson());
 	}
-	lock.unlock();
 	return jsonNpcs;
 }
 
@@ -353,12 +352,13 @@ MapGrid* s::Map::getGrid() {
 }
 
 void s::Map::returnGrid(MapGrid* grid) {
+	sf::Lock mutexLock(lock);
 	mapGridObjectPool.addObject(grid);
 }
 
 void s::Map::sendEventToAnotherPlayers(GameEvent* event, int characterId)
 {
-	lock.lock();
+	sf::Lock mutexLock(lock);
 
 	sf::Packet* p = event->toPacket();
 
@@ -374,11 +374,10 @@ void s::Map::sendEventToAnotherPlayers(GameEvent* event, int characterId)
 	    });
 
 	delete p;
-	lock.unlock();
 }
 
 void s::Map::sendEventToAllPlayers(GameEvent* event) {
-	lock.lock();
+	sf::Lock mutexLock(lock);
 
 	sf::Packet* p = event->toPacket();
 
@@ -392,7 +391,6 @@ void s::Map::sendEventToAllPlayers(GameEvent* event) {
 	    });
 
 	delete p;
-	lock.unlock();
 }
 
 void s::Map::handleEvent(GameEvent* event, Session* playerSession, Server* server) {

@@ -10,6 +10,7 @@ class ObjectPool
 public:
 	ObjectPool() {}
 	~ObjectPool() {
+		sf::Lock mutexLock(lock);
 		while (!pool.empty()) 
 	    { 
 			ObjectPoolItem* temp = pool.top();
@@ -19,18 +20,17 @@ public:
 	}
 
 	void addObject(T* object) {
+		sf::Lock mutexLock(lock);
 		if (dynamic_cast<ObjectPoolItem*>(object) == nullptr) {
 			throw "param does not inherit from ObjectPoolItem";
 		}
 
-		lock.lock();
 		object->reset();
 		pool.push(object);
-		lock.unlock();
 	}
 
 	T* getObject() {
-		lock.lock();
+		sf::Lock mutexLock(lock);
 		if (pool.empty()) {
 			throw "Object pool cannot be empty";
 		}
@@ -42,7 +42,6 @@ public:
 
 		ObjectPoolItem* temp = pool.top();
 		pool.pop();
-		lock.unlock();
 		return (T*)temp;
 	}
 

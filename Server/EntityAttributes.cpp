@@ -14,6 +14,10 @@ float s::EntityAttributes::getAttribute(EntityAttributeType type) const {
 	return attributes[attributeTypeToInt(type)];
 }
 
+float s::EntityAttributes::getAttributeByIndex(int index) const {
+	return attributes[index];
+}
+
 void s::EntityAttributes::setAttribute(EntityAttributeType type, float value) {
 	attributes[attributeTypeToInt(type)] = value;
 }

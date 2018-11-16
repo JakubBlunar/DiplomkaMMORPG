@@ -14,6 +14,19 @@ s::Npc::Npc(): command(nullptr) {
 	map = nullptr;
 	deadTimestamp = sf::Time::Zero;
 	state = NpcState::IDLE;
+
+	luaState.open_libraries(sol::lib::base, sol::lib::package, sol::lib::io, sol::lib::string, sol::lib::os, sol::lib::math);
+	luaState["npc"] = this;
+	// make usertype metatable
+    luaState.new_usertype<Npc>("Npc",
+        "name", &Npc::name,
+        "speed", &Npc::speed,
+		"spawnId", &Npc::spawnId,
+		"getAttribute", &Npc::getAttribute,
+		"getState", &Npc::getNpcState
+    );
+
+	luaState.script("math.randomseed(os.time())");
 }
 
 
@@ -193,4 +206,12 @@ bool s::Npc::isAlive() const {
 void s::Npc::setMovementDirection(sf::Vector2f direction, float speed, NpcUpdateEvents * npcUpdateEvents) {
 	this->speed = speed;
 	this->setMovement(sf::Vector2f(direction.x * speed, direction.y * speed), npcUpdateEvents);
+}
+
+void s::Npc::lock() {
+	mutex.lock();
+}
+
+void s::Npc::unlock() {
+	mutex.unlock();
 }
