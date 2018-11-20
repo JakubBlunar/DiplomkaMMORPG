@@ -2,6 +2,8 @@
 #include "JsonLoader.h"
 #include "ServerGlobals.h"
 #include "EventNpcMovementChange.h"
+#include <spdlog/spdlog.h>
+#include "TextFileLoader.h"
 
 s::Npc::Npc(): command(nullptr) {
 	body = nullptr;
@@ -71,6 +73,21 @@ void s::Npc::loadFromJson(std::string file)
 	size = sf::Vector2i(width, width);
 	movement = sf::Vector2f(0, 0);
 
+	auto exists = jsonData.find("script");
+    if (exists == jsonData.end()) {
+		npc_script = TextFileLoader::instance()->loadFile("Npcs/Scripts/dummy_npc.lua");
+    } else {
+		string scriptFile = jsonData["script"].get<json::string_t>();
+		npc_script = TextFileLoader::instance()->loadFile("Npcs/Scripts/"+ scriptFile +".lua");
+    }
+
+	sol::load_result loadResult = luaState.load(npc_script);
+	if (!loadResult.valid()) {
+		sol::error err = loadResult;
+		sol::load_status status = loadResult.status();
+		spdlog::get("log")->error("Cannot load lua script from npc: {} , ERROR: {}", sol::to_string(status), err.what());
+		throw "cannot parse lua";
+	}
 }
 
 s::Npc* s::Npc::clone() const {
@@ -85,6 +102,7 @@ s::Npc* s::Npc::clone() const {
 	copy->setMap(nullptr);
 
 	copy->setRespawnTime(respawnTime);
+	copy->npc_script = npc_script;
 
 	return copy;
 }

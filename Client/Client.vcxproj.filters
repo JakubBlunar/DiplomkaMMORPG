@@ -384,4 +384,7 @@
       <Filter>Header Files\Entities\Components</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
 </Project>

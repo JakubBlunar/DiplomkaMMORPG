@@ -21,6 +21,7 @@ namespace s {
 		sf::Time deadTimestamp;
 
 		NpcCommand* command;
+		
 		sf::Mutex mutex;
 	public:
 	
@@ -63,6 +64,8 @@ namespace s {
 		void setMovementDirection(sf::Vector2f direction, float speed, NpcUpdateEvents * npcUpdateEvents);
 
 		sol::state luaState;
+		std::string npc_script;
+
 		void lock();
 		void unlock();
 	};

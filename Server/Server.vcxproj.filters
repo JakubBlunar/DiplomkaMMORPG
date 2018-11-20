@@ -252,6 +252,9 @@
     <ClCompile Include="NpcEventNpcIsIdle.cpp">
       <Filter>Source Files\NpcEvents</Filter>
     </ClCompile>
+    <ClCompile Include="TextFileLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INIReader.h">
@@ -433,6 +436,9 @@
     </ClInclude>
     <ClInclude Include="NpcEventNpcIsIdle.h">
       <Filter>Header Files\NpcEvents</Filter>
+    </ClInclude>
+    <ClInclude Include="TextFileLoader.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

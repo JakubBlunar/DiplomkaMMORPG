@@ -174,6 +174,7 @@ void s::NpcManager::threadEnded(NpcEvent* npcEvent, int index) {
 void s::NpcManager::eventExecutionThread(NpcEvent* npcEvent, int index) {
 	EventId eventId = npcEvent->getId();
 	Npc* npc = npcEvent->npc;
+	
 	npc->lock();
 	NpcCommand* c = npc->getNpcCommand();
 	delete c;
@@ -183,69 +184,46 @@ void s::NpcManager::eventExecutionThread(NpcEvent* npcEvent, int index) {
 		"id", eventId
 	);
 
+	
 	npc->unlock();
 
-	const char* script = R"(
-		printf = function(s,...)
-           return io.write(s:format(...))
-        end
-		
-		function tableHasKey(table,key)
-		    return table[key] ~= nil
-		end
-
-		events = {}
-		resultEvents = {}
-
-		--[Npc is idle]--
-		events[18] = function()
-			rand = math.random()
-			if rand < 0.5 then
-				resultEvents[1] = {
-					maxDuration = 30
-				}
-			else 
-				resultEvents[0] = {
-					duration = math.random(10, 20)
-				}
-			end	
-		end
-		
-		if (tableHasKey(events, event.id))
-		then
-			events[event.id]()
-		end
-	)";
-
-	npc->luaState.script(script);
-
-	sol::table result = npc->luaState["resultEvents"];
+	sol::protected_function_result scriptResult = npc->luaState.script(npc->npc_script);
+    if (!scriptResult.valid()) {
+        sol::error err = scriptResult;
+        std::string what = err.what();
+        spdlog::get("log")->error("Lua script failed, npc {}, Exception: {}", npc->getType(), what);
+		npc->setNpcCommand(new NpcCommandStay(npc, npc->getMap(), server,  sf::seconds(20)));
+    } else {
+	    sol::table result = npc->luaState["resultEvents"];
 	
-	result.for_each([&](sol::object const& key, sol::object const& value) {
-		int newEventId = key.as<int>();
-		sol::table eventData = value.as<sol::table>();
+		result.for_each([&](sol::object const& key, sol::object const& value) {
+			int newEventId = key.as<int>();
+			sol::table eventData = value.as<sol::table>();
 
-		switch (newEventId) {
-			case 0: {//stay param duration
-				NpcCommandStay* commandStay = new NpcCommandStay(npc, npc->getMap(), server,  sf::seconds(eventData["duration"]));
-				npc->setNpcCommand(commandStay);
-				break;
-			}
-			case 1: { // move to random params maxDuration
-				Location * l = npc->getLocation();
-				if (l) {
-					NpcCommandMoveTo* commandMoveToRandom = new NpcCommandMoveTo(l->generateRandomPoint(), npc, npc->getMap(), server,  sf::seconds(eventData["maxDuration"]));
-					commandMoveToRandom->init();
-					npc->setNpcCommand(commandMoveToRandom);
-				} else {
-					npc->setNpcCommand(new NpcCommandStay(npc, npc->getMap(), server,  sf::seconds(eventData["maxDuration"])));
+			switch (newEventId) {
+				case 0: {//stay param duration
+					NpcCommandStay* commandStay = new NpcCommandStay(npc, npc->getMap(), server,  sf::seconds(eventData["duration"]));
+					npc->setNpcCommand(commandStay);
+					break;
 				}
+				case 1: { // move to random params maxDuration
+					Location * l = npc->getLocation();
+					if (l) {
+						NpcCommandMoveTo* commandMoveToRandom = new NpcCommandMoveTo(l->generateRandomPoint(), npc, npc->getMap(), server,  sf::seconds(eventData["maxDuration"]));
+						commandMoveToRandom->init();
+						npc->setNpcCommand(commandMoveToRandom);
+					} else {
+						npc->setNpcCommand(new NpcCommandStay(npc, npc->getMap(), server,  sf::seconds(eventData["maxDuration"])));
+					}
+					break;
+				}
+				default:
 				break;
 			}
-			default:
-			break;
-		}
-    });
+	    });
+    }
+
+	
 
 	//creates handler for new thread that will wait into end of current thread and then replace it with new thread
 	delete afterExecution[index];
