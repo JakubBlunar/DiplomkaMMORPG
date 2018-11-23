@@ -1,5 +1,6 @@
-#ifndef ENTITY_POSITION
-#define ENTITY_POSITION
+#ifndef ENTITY_POSITION_H
+#define ENTITY_POSITION_H
+
 #include <SFML/System/Vector2.hpp>
 #include <Box2D/Dynamics/b2Body.h>
 
@@ -43,7 +44,6 @@ namespace s {
 		void setLocation(Location* l);
 		Location* getLocation() const;
 	};
+}
 
-};
-
-#endif;
+#endif

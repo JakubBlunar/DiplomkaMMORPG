@@ -1,4 +1,7 @@
 #include "EntityPosition.h"
+#include "Box2D/Box2D.h"
+#include <SFML/System/Vector2.hpp>
+#include "ServerGlobals.h"
 #include "Map.h"
 
 
@@ -12,6 +15,7 @@ s::EntityPosition::EntityPosition()
 	map = nullptr;
 	movement = sf::Vector2f(0,0);
 	size = sf::Vector2i(0,0);
+	mapId = -1;
 }
 
 s::Map* s::EntityPosition::getMap() const {
@@ -49,6 +53,9 @@ sf::Vector2i s::EntityPosition::getSize() const {
 
 void s::EntityPosition::setPosition(sf::Vector2f position) {
 	this->position = position;
+	if (this->body) {
+		this->body->SetTransform(b2Vec2(position.x * PIXTOMET, position.y * PIXTOMET), this->body->GetAngle());
+	}
 }
 sf::Vector2f s::EntityPosition::getPosition() const {
 	return position;

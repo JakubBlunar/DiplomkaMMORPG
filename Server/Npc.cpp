@@ -16,6 +16,7 @@ s::Npc::Npc(): command(nullptr) {
 	map = nullptr;
 	deadTimestamp = sf::Time::Zero;
 	state = NpcState::IDLE;
+	spawnPosition = sf::Vector2f(-1,-1);
 
 	luaState.open_libraries(sol::lib::base, sol::lib::package, sol::lib::io, sol::lib::string, sol::lib::os, sol::lib::math);
 	luaState["npc"] = this;
@@ -104,6 +105,7 @@ s::Npc* s::Npc::clone() const {
 	copy->setRespawnTime(respawnTime);
 	copy->npc_script = npc_script;
 
+	copy->setSpawnPosition(spawnPosition);
 	return copy;
 }
 
@@ -219,6 +221,19 @@ sf::Time s::Npc::getDeadTimestamp() const {
 
 bool s::Npc::isAlive() const {
 	return state != NpcState::DEAD;
+}
+
+bool s::Npc::hasSpawnPosition() const
+{
+	return spawnPosition.x < 0;
+}
+
+void s::Npc::setSpawnPosition(sf::Vector2f position) {
+	spawnPosition = position;
+}
+
+sf::Vector2f s::Npc::getSpawnPosition() const {
+	return spawnPosition;
 }
 
 void s::Npc::setMovementDirection(sf::Vector2f direction, float speed, NpcUpdateEvents * npcUpdateEvents) {

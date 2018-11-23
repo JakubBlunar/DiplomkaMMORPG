@@ -1,0 +1,8 @@
+{
+    "type": 10,
+    "name": "City guard",
+    "render": "10",
+    "speed": 25,
+    "respawnTime": 60,
+    "script": "guard1"
+}

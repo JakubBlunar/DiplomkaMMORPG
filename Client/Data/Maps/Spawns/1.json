@@ -45,6 +45,18 @@
                 "npcType": 9,
                 "maxCount": 50
             }
+        ],
+        "npcs": [
+            {
+                "npcType": 10,
+                "posX": 500,
+                "posY": 500
+            },
+            {
+                "npcType": 10,
+                "posX": 1000,
+                "posY": 1000
+            }
         ]
     }]
    

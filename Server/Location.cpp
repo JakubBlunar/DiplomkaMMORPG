@@ -2,19 +2,24 @@
 #include "Box2D/Box2D.h"
 #include "Random.h"
 #include "Spawn.h"
+#include "EventNpcAttributesChanged.h"
+#include "EventNpcStatusChanged.h"
+#include "NpcEventNpcIsIdle.h"
+#include "EventDispatcher.h"
+#include "EventNpcMovementChange.h"
 
 
-s::Location::Location(int id, b2Vec2* vertices, int verticesCount,  Map* m)
+s::Location::Location(int id, b2Vec2* vertices, int verticesCount, sf::Vector2f position, Map* m)
 {
 	this->id = id;
 	this->vertices = vertices;
 	this->verticesCount = verticesCount;
 	this->map = m;
+	this->position = position;
 
 	shape = new b2PolygonShape();
 	shape->Set(this->vertices, this->verticesCount);
 	transform.Set(b2Vec2(0, 0), 0);
-
 	shape->ComputeAABB(&rect, transform,  1);
 }
 
@@ -41,6 +46,10 @@ sf::Vector2f s::Location::generateRandomPoint() const {
 	return sf::Vector2f(point.x, point.y);
 }
 
+sf::Vector2f s::Location::getPosition() const {
+	return position;
+}
+
 s::Map* s::Location::getMap() const {
 	return map;
 }
@@ -50,9 +59,68 @@ void s::Location::addSpawn(Spawn * spawn)
 	spawns.push_back(spawn);
 }
 
+void s::Location::addNpc(Npc * npc)
+{
+	locationNpcs.push_back(npc);
+	npc->setLocation(this);
+}
+
 void s::Location::update(sf::Time elapsedTime, s::Server * s, Map * map)
 {
+	sf::Time serverTime = s->getServerTime();
+
+	for (Npc* npc : locationNpcs) {
+		if (npc->getNpcState() == NpcState::DEAD) {
+			checkNpcRespawn(npc, serverTime, s);
+		}
+	}
+
 	for (Spawn* spawn : spawns) {
 		spawn->update(elapsedTime, s, this);
+	}
+}
+
+void s::Location::checkNpcRespawn(Npc* npc, sf::Time serverTime, Server* s) const {
+	sf::Time respawnTime = npc->getRespawnTime();
+	sf::Time deadTimestamp = npc->getDeadTimestamp();
+	if (serverTime.asSeconds() - respawnTime.asSeconds() >= deadTimestamp.asSeconds()) {
+		if (npc->hasSpawnPosition()) {
+			sf::Vector2f spawnPosition = npc->getSpawnPosition();
+			npc->setPosition(spawnPosition);
+			npc->setMovement(0, 0);
+			EventNpcMovementChange movChanged;
+			movChanged.spawnId = npc->getSpawnId();
+			movChanged.speed = npc->getSpeed();
+			movChanged.velX = 0;
+			movChanged.velY = 0;
+			movChanged.x = spawnPosition.x;
+			movChanged.y = spawnPosition.y;
+			map->sendEventToAllPlayers(&movChanged);
+		}
+
+		float hp = npc->getAttribute(EntityAttributeType::BASE_HP);
+		float mp = npc->getAttribute(EntityAttributeType::BASE_MP);
+
+		npc->setAttribute(EntityAttributeType::HP, hp);
+		npc->setAttribute(EntityAttributeType::MP, mp);
+
+		EventNpcAttributesChanged attributeChanges;
+		attributeChanges.spawnId = npc->getSpawnId();
+		attributeChanges.setChange(EntityAttributeType::HP, hp);
+		attributeChanges.setChange(EntityAttributeType::MP, mp);
+		map->sendEventToAllPlayers(&attributeChanges);
+
+		npc->setNpcState(NpcState::IDLE);
+		npc->setDeadTimestamp(sf::Time::Zero);
+
+		EventNpcStatusChanged statusChange;
+		statusChange.spawnId = npc->getSpawnId();
+		statusChange.npcState = NpcState::IDLE;
+		map->sendEventToAllPlayers(&statusChange);
+
+		NpcEventNpcIsIdle* e = new NpcEventNpcIsIdle();
+		e->npc = npc;
+		EventDispatcher<NpcEventNpcIsIdle>::dispatchEvent(e, s) ;
+		//spdlog::get("log")->trace("Npc resurect :{}", npc->getSpawnId());
 	}
 }

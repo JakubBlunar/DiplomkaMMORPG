@@ -3,5 +3,6 @@
     "name": "Kubo",
     "render": "1",
     "speed": 30,
-    "respawnTime": 30
+    "respawnTime": 30,
+    "script": "default_creature"
 }

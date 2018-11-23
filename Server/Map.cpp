@@ -9,9 +9,11 @@
 #include "EventCharacterMapJoin.h"
 #include "EventCharacterMapLeave.h"
 #include "Npc.h"
-#include <iostream>
 #include "Location.h"
 #include "Spawn.h"
+#include "Random.h"
+#include "NpcEventNpcIsIdle.h"
+#include "EventDispatcher.h"
 
 s::Map::Map(): id(0), world(nullptr), width(0), height(0) {
 	npcUpdateInterval = sf::milliseconds(200);
@@ -205,7 +207,7 @@ void s::Map::loadFromJson(std::string path, Server *s) {
 						vertices[i].Set(positionX + x, positionY + y);
 						i++;
 					}
-					loc = new Location(id, vertices, size, this);
+					loc = new Location(id, vertices, size, sf::Vector2f(positionX, positionY), this);
 				} else if(jsonLoc.find("width") != jsonLoc.end() && jsonLoc.find("height") != jsonLoc.end()) {
 					int size = 4;
 					b2Vec2* vertices = new b2Vec2[size];
@@ -218,7 +220,7 @@ void s::Map::loadFromJson(std::string path, Server *s) {
 					vertices[2].Set(positionX, positionY + height);
 					vertices[3].Set(positionX + width, positionY + height);
 
-					loc = new Location(id, vertices, size, this);
+					loc = new Location(id, vertices, size, sf::Vector2f(positionX, positionY), this);
 				}
 
 				if (loc) {
@@ -318,9 +320,43 @@ void s::Map::loadFromJson(std::string path, Server *s) {
 					}
 				}
 
+				if (spawnLocation.find("npcs") != spawnLocation.end()) {
+					json spawnLocationNpcs = spawnLocation["npcs"].get<json::array_t>();
+					for (json::iterator npcOnLocationIterator = spawnLocationNpcs.begin(); npcOnLocationIterator != spawnLocationNpcs.end(); npcOnLocationIterator++) {
+						json locationNpc = *npcOnLocationIterator;
+						int npcType = (int)locationNpc["npcType"].get<json::number_integer_t>();
+						int posX = (int)locationNpc["posX"].get<json::number_integer_t>();
+						int posY = (int)locationNpc["posY"].get<json::number_integer_t>();
+
+						sf::Vector2f locationPosition = loc->getPosition();
+						sf::Vector2f spawnPosition;
+						spawnPosition.x = posX + locationPosition.x;
+						spawnPosition.y = posY + locationPosition.y;
+
+						Npc* npc = s->npcManager.createNpc(npcType);
+						npc->setSpawnPosition(spawnPosition);
+						npc->setPosition(spawnPosition);
+
+						addNpc(npc);
+						loc->addNpc(npc);
+
+						int prob = Random::instance()->randomUniformInt(0, 100);
+						if (prob < 20) {
+							npc->setDeadTimestamp(sf::seconds(s->getServerTime().asSeconds() - npc->getRespawnTime().asSeconds() * Random::instance()->randomUniformFloat(0.1f, 0.9f)));
+							npc->setNpcState(NpcState::DEAD);
+						} else {
+							NpcEventNpcIsIdle* e = new NpcEventNpcIsIdle();
+							e->npc = npc;
+							EventDispatcher<NpcEventNpcIsIdle>::dispatchEvent(e, s);
+						}
+					}
+				}
+
 			}
 
 		}
+
+		
 
 	}
 

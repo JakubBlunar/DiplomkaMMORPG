@@ -11,7 +11,7 @@
 namespace s {
 	class Npc: public EntityPosition, public EntityAttributes {
 		NpcState state;
-		
+		sf::Vector2f spawnPosition;
 		int spawnId;
 		int type;
 
@@ -56,10 +56,11 @@ namespace s {
 		void setRespawnTime(sf::Time respawnTime);
 		void setDeadTimestamp(sf::Time deadTimestamp);
 		sf::Time getDeadTimestamp() const;
-		
-		sol::state* getLuaState();
-		
+				
 		bool isAlive() const;
+		bool hasSpawnPosition() const;
+		void setSpawnPosition(sf::Vector2f position);
+		sf::Vector2f getSpawnPosition() const;
 
 		void setMovementDirection(sf::Vector2f direction, float speed, NpcUpdateEvents * npcUpdateEvents);
 

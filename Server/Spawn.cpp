@@ -55,34 +55,7 @@ void s::Spawn::update(sf::Time elapsedTime, s::Server* s, Location* l) {
 
 	for (Npc* npc : spawnedNpcs) {
 		if (npc->getNpcState() == NpcState::DEAD) {
-			sf::Time respawnTime = npc->getRespawnTime();
-			sf::Time deadTimestamp = npc->getDeadTimestamp();
-			if (serverTime.asSeconds() - respawnTime.asSeconds() >= deadTimestamp.asSeconds()) {
-				float hp = npc->getAttribute(EntityAttributeType::BASE_HP);
-				float mp = npc->getAttribute(EntityAttributeType::BASE_MP);
-
-				npc->setAttribute(EntityAttributeType::HP, hp);
-				npc->setAttribute(EntityAttributeType::MP, mp);
-
-				EventNpcAttributesChanged attributeChanges;
-				attributeChanges.spawnId = npc->getSpawnId();
-				attributeChanges.setChange(EntityAttributeType::HP, hp);
-				attributeChanges.setChange(EntityAttributeType::MP, mp);
-				l->getMap()->sendEventToAllPlayers(&attributeChanges);
-
-				npc->setNpcState(NpcState::IDLE);
-				npc->setDeadTimestamp(sf::Time::Zero);
-
-				EventNpcStatusChanged statusChange;
-				statusChange.spawnId = npc->getSpawnId();
-				statusChange.npcState = NpcState::IDLE;
-				l->getMap()->sendEventToAllPlayers(&statusChange);
-
-				NpcEventNpcIsIdle* e = new NpcEventNpcIsIdle();
-				e->npc = npc;
-				EventDispatcher<NpcEventNpcIsIdle>::dispatchEvent(e, s) ;
-				//spdlog::get("log")->trace("Npc resurect :{}", npc->getSpawnId());
-			}
+			l->checkNpcRespawn(npc, serverTime, s);
 		}
 	}
 
