@@ -4,6 +4,7 @@ Scene::Scene(SceneType sceneType, Game* g) {
 	this->type = sceneType;
 	this->game = g;
 	windowManager = new IGManager();
+	canChange = true;
 }
 
 

@@ -74,6 +74,13 @@ void s::Npc::loadFromJson(std::string file)
 	size = sf::Vector2i(width, width);
 	movement = sf::Vector2f(0, 0);
 
+	json attributes = jsonData["attributes"].get<json::array_t>();
+	int index = 0;
+	for (json::iterator it = attributes.begin(); it != attributes.end(); ++it) {
+		setAttributeByIndex(index, *it);
+		index++;
+	}
+
 	auto exists = jsonData.find("script");
     if (exists == jsonData.end()) {
 		npc_script = TextFileLoader::instance()->loadFile("Npcs/Scripts/dummy_npc.lua");
@@ -105,29 +112,34 @@ s::Npc* s::Npc::clone() const {
 	copy->setRespawnTime(respawnTime);
 	copy->npc_script = npc_script;
 
+	int count = attributes.size();
+	for (int i = 0; i < count; i++) {
+		copy->setAttributeByIndex(i, attributes[i]);
+	}
+
 	copy->setSpawnPosition(spawnPosition);
 	return copy;
 }
 
 json s::Npc::toJson() const {
-	json json;
+	json jsonData;
 
-	json["spawnId"] = spawnId;
-	json["name"] = name;
-	json["type"] = type;
-	json["movementX"] = movement.x;
-	json["movementY"] = movement.y;
-	json["positionX"] = position.x;
-	json["positionY"] = position.y;
-	json["speed"] = speed;
+	jsonData["spawnId"] = spawnId;
+	jsonData["name"] = name;
+	jsonData["type"] = type;
+	jsonData["movementX"] = movement.x;
+	jsonData["movementY"] = movement.y;
+	jsonData["positionX"] = position.x;
+	jsonData["positionY"] = position.y;
+	jsonData["speed"] = speed;
 
-	json["state"] = static_cast<int>(state);
-
+	jsonData["state"] = static_cast<int>(state);
+	jsonData["attributes"] = json(attributes);
 	if (map) {
-		json["mapId"] = map->getId();
+		jsonData["mapId"] = map->getId();
 	}
 
-	return json;
+	return jsonData;
 }
 
 void s::Npc::setName(string name) {

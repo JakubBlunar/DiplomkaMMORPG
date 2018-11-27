@@ -38,7 +38,6 @@ void Game::run() {
 	ImGuiIO& io = ImGui::GetIO();
 	io.Fonts->Clear(); // clear fonts if you loaded some before (even if only default one was loaded)
 	io.Fonts->AddFontFromFileTTF("Data/ProggyTiny.ttf", 100);
-
 	ImGui::SFML::UpdateFontTexture();
 
 	window->resetGLStates();

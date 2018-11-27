@@ -15,6 +15,7 @@ public:
 	void update(sf::Time elapsedTime) override;
 	void render() override;
 private:
+	IGEntityInfo* playerInfoWindow;
 	IGEntityInfo* targetInfoWindow;
 	sf::CircleShape targetArrow;
 	Entity* targetEntity;
@@ -27,8 +28,6 @@ private:
 
 	VisibleObjectsCast queryCallback;
 	b2AABB aabb;
-
-	sf::Text nameOfScene;
 
 	bool drawDebugData;
 	bool fonePressed;

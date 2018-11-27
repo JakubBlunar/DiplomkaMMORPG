@@ -1,6 +1,7 @@
 #ifndef ENTITY_CONSTANTS_H
 #define ENTITY_CONSTANTS_H
-#include <SFML/Graphics/Font.hpp>
+
+#include <SFML/System.hpp>
 
 enum class BodyType {
 	RECTANGLE = 0,
@@ -27,16 +28,17 @@ struct MovementData {
 enum class EntityAttributeType: sf::Uint8 {
 	HP = 0,
 	MP = 1,
-	STRENGTH = 2,
-	AGILITY = 3,
-	INTELECT = 4,
-	SPIRIT = 5,
-	STAMINA = 6,
-	ARMOR = 7,
-	EXPERIENCE = 9,
-	MONEY = 10,
-	BASE_HP = 11,
-	BASE_MP = 12,
+	BASE_HP = 2,
+	BASE_MP = 3,
+	LEVEL = 4,
+	STRENGTH = 5,
+	AGILITY = 6,
+	INTELECT = 7,
+	SPIRIT = 8,
+	STAMINA = 9,
+	ARMOR = 10,
+	EXPERIENCE = 11,
+	MONEY = 12,
 	COUNT = 13
 };
 

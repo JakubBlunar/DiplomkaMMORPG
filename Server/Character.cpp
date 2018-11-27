@@ -33,19 +33,20 @@ bool s::Character::save() const {
 }
 
 json s::Character::toJson() const {
-	json json({});
+	json jsonData({});
 
-	json["id"] = this->id;
-	json["name"] = this->name;
-	json["faction"] = static_cast<int>(faction);
-	json["type"] = static_cast<int>(type);
-	json["mapId"] = mapId;
-	json["positionX"] = position.x;
-	json["positionY"] = position.y;
-	json["movementX"] = movement.x;
-	json["movementY"] = movement.y;
-	json["speed"] = speed;
-	return json;
+	jsonData["id"] = this->id;
+	jsonData["name"] = this->name;
+	jsonData["faction"] = static_cast<int>(faction);
+	jsonData["type"] = static_cast<int>(type);
+	jsonData["mapId"] = mapId;
+	jsonData["positionX"] = position.x;
+	jsonData["positionY"] = position.y;
+	jsonData["movementX"] = movement.x;
+	jsonData["movementY"] = movement.y;
+	jsonData["speed"] = speed;
+	jsonData["attributes"] = json(attributes);
+	return jsonData;
 }
 
 s::Character* s::Character::getCharacterById(int characterId) {

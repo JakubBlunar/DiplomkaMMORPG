@@ -228,6 +228,9 @@
     <ClCompile Include="AttributesComponent.cpp">
       <Filter>Source Files\Entities\Components</Filter>
     </ClCompile>
+    <ClCompile Include="ImGuiFonts.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="json.hpp">
@@ -382,6 +385,9 @@
     </ClInclude>
     <ClInclude Include="AttributesComponent.h">
       <Filter>Header Files\Entities\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuiFonts.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -9,6 +9,9 @@
 class SceneManager {
 	std::map<SceneType, Scene*> scenes;
 	Scene* actualScene;
+	Scene* sceneToChange;
+
+	void switchScene(Scene* scene);
 public:
 	SceneManager(Game* g);
 	~SceneManager();
@@ -17,7 +20,7 @@ public:
 	Scene* getActualScene() const;
 	void changeScene(SceneType sceneType);
 	void render() const;
-	void update(sf::Time elapsedTime) const;
+	void update(sf::Time elapsedTime);
 };
 
 #endif

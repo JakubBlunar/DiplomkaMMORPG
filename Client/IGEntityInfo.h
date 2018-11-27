@@ -18,6 +18,8 @@ public:
 	Entity* getEntity() const;
 protected:
 	void render(Game* g, IGManager* manager) override;
+
+	string convertFloatToString(float number, int precision) const;
 };
 
 #endif

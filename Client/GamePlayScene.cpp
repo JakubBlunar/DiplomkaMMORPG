@@ -12,20 +12,17 @@
 GamePlayScene::GamePlayScene(SceneType sceneType, Game* g) : Scene(sceneType, g), mousePressed(false) {
 	escPressed = false;
 	fonePressed = false;
-	drawDebugData = true;
+	drawDebugData = false;
 	targetEntity = nullptr;
 	
 	windowManager->addWindow("GameMenu", new IGGameMenu());
 	targetInfoWindow = new IGEntityInfo("target", sf::Vector2f(300, 50));
 	windowManager->addWindow("TargetInfo", targetInfoWindow);
 
-	mFont = ResourceHolder<sf::Font>::instance()->get("Sansation.ttf");
+	playerInfoWindow = new IGEntityInfo("playerInfo", sf::Vector2f(50, 50));
+	windowManager->addWindow("PlayerInfo", playerInfoWindow);
 
-	nameOfScene.setString("Game play screen");
-	nameOfScene.setFont(mFont);
-	nameOfScene.setPosition(50, 50);
-	nameOfScene.setCharacterSize(20);
-	nameOfScene.setFillColor(sf::Color::Black);
+	mFont = ResourceHolder<sf::Font>::instance()->get("Sansation.ttf");
 
 	targetArrow.setRadius(8);
 	targetArrow.setRotation(180);
@@ -43,6 +40,8 @@ void GamePlayScene::beforeChange() {
 
 void GamePlayScene::afterChange() {
 	Scene::afterChange();
+	playerInfoWindow->setEntity(game->getAccount()->getPlayerEntity());
+	windowManager->Open("PlayerInfo");
 }
 
 void GamePlayScene::update(sf::Time elapsedTime) {
@@ -226,23 +225,16 @@ void GamePlayScene::render() {
 				if (npc->getState() == NpcState::DEAD) {
 					continue;
 				} 
-				game->window->draw(*sprite);
-			} else {
-				game->window->draw(*sprite);
-				if (targetEntity && targetEntity == entity) {
-					targetArrow.setPosition(spritePosition.x + renderComponent->getSize().x / 2.f + 8, spritePosition.y);
-					game->window->draw(targetArrow);
-				}
 			}
 
-			
-
-			
+			game->window->draw(*sprite);
+			if (targetEntity && targetEntity == entity) {
+				targetArrow.setPosition(spritePosition.x + renderComponent->getSize().x / 2.f + 8, spritePosition.y);
+				game->window->draw(targetArrow);
+			}			
 		}
 	}
 	ClientSettings::instance()->eventsMutex.unlock();
-
-	game->window->draw(nameOfScene);
 
 	if (drawDebugData)
 		w->DrawDebugData();

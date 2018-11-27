@@ -12,6 +12,7 @@
 #include "Map.h"
 #include "Camera.h"
 #include "Account.h"
+#include "ImGuiFonts.h"
 
 class SceneManager;
 
@@ -41,6 +42,7 @@ public:
 
 	void handleEvent(GameEvent* event) override;
 
+	ImGuiFonts fonts;
 protected:
 	void processEvents();
 	virtual void update(sf::Time elapsedTime);

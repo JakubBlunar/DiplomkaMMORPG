@@ -163,6 +163,7 @@
     <ClCompile Include="IGWindow.cpp" />
     <ClCompile Include="imgui-SFML.cpp" />
     <ClCompile Include="imgui.cpp" />
+    <ClCompile Include="ImGuiFonts.cpp" />
     <ClCompile Include="imgui_draw.cpp" />
     <ClCompile Include="JsonLoader.cpp" />
     <ClCompile Include="KeyboardManager.cpp" />
@@ -213,6 +214,7 @@
     <ClInclude Include="IGManager.h" />
     <ClInclude Include="IGPopup.h" />
     <ClInclude Include="IGWindow.h" />
+    <ClInclude Include="ImGuiFonts.h" />
     <ClInclude Include="INIReader.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="JsonLoader.h" />

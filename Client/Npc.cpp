@@ -290,6 +290,13 @@ void Npc::loadFromJson(json serverData)
 	}
 	renderComponent->changeAnimation("down");
 	updateMovementAnimation();
+
+	json attributes = serverData["attributes"].get<json::array_t>();
+	int index = 0;
+	for (json::iterator it = attributes.begin(); it != attributes.end(); ++it) {
+		attributesComponent->setAttributeByIndex(index, *it);
+		index++;
+	}
 	subscribe();
 }
 

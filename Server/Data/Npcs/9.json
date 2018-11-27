@@ -3,5 +3,19 @@
     "name": "Bat",
     "render": "9",
     "speed": 40,
-    "respawnTime": 30
+    "respawnTime": 30,
+    "attributes": [
+        15,
+        0,
+        15,
+        0,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ]
 }

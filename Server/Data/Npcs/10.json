@@ -4,5 +4,18 @@
     "render": "10",
     "speed": 25,
     "respawnTime": 60,
-    "script": "guard1"
+    "attributes": [
+        80,
+        50,
+        100,
+        50,
+        8,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ]
 }

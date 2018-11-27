@@ -13,9 +13,14 @@ namespace s {
 
 		float getAttribute(EntityAttributeType type) const;
 		float getAttributeByIndex(int index) const;
+
+		void setAttributeByIndex(int index, float value);
 		void setAttribute(EntityAttributeType type, float value);
 		float modifyAttribute(EntityAttributeType type, float value);
 		int attributeTypeToInt(EntityAttributeType type) const;
+
+		int recalcLevel();
+		float getXpForLevel(int level) const;
 	};
 }
 

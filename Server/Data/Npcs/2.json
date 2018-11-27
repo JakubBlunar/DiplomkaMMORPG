@@ -3,5 +3,6 @@
     "name": "Slime",
     "render": "2",
     "speed": 10,
-    "respawnTime": 30
+    "respawnTime": 30,
+    "attributes": [10, 0, 10, 0, 1, 1, 1, 1, 1, 1, 1, 1]
 }

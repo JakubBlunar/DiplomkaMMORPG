@@ -18,6 +18,7 @@ public:
 
 	float getAttribute(EntityAttributeType type) const;
 	void setAttribute(EntityAttributeType type, float value);
+	void setAttributeByIndex(int index, float value);
 	float modifyAttribute(EntityAttributeType type, float value);
 	int attributeTypeToInt(EntityAttributeType type) const;
 };

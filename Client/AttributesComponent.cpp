@@ -30,6 +30,10 @@ void AttributesComponent::setAttribute(EntityAttributeType type, float value) {
 	attributes[attributeTypeToInt(type)] = value;
 }
 
+void AttributesComponent::setAttributeByIndex(int index, float value) {
+	attributes[index] = value;
+}
+
 float AttributesComponent::modifyAttribute(EntityAttributeType type, float value) {
 	int index = attributeTypeToInt(type);
 	attributes[index] += value;
