@@ -11,6 +11,7 @@ IGEntityInfo::IGEntityInfo(string id, sf::Vector2f position)
 {
 	this->id = id;
 	entity = nullptr;
+	setAlpha(0.1f);
 	setPosition(position, false);
 	setSize(sf::Vector2f(220, 80));
 }

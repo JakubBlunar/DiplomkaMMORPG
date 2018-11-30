@@ -28,7 +28,23 @@ bool s::Character::save() const {
 	query.append(" positionY=" + Database::escapeString(std::to_string(position.y)));
 	query.append(" WHERE id=" + std::to_string(id) + ";");
 
+	string queryAttr = "UPDATE character_attributes SET";
+	queryAttr.append(" experience=" +std::to_string(getAttribute(EntityAttributeType::EXPERIENCE)) + ",");
+	queryAttr.append(" money=" +std::to_string(getAttribute(EntityAttributeType::MONEY)) + ",");
+	queryAttr.append(" stamina=" +std::to_string(getAttribute(EntityAttributeType::STAMINA)) + ",");
+	queryAttr.append(" agility=" +std::to_string(getAttribute(EntityAttributeType::AGILITY)) + ",");
+	queryAttr.append(" intelect=" +std::to_string(getAttribute(EntityAttributeType::INTELECT)) + ",");
+	queryAttr.append(" spirit=" +std::to_string(getAttribute(EntityAttributeType::SPIRIT)) + ",");
+	queryAttr.append(" strength=" +std::to_string(getAttribute(EntityAttributeType::STRENGTH)) + ",");
+	queryAttr.append(" armor=" +std::to_string(getAttribute(EntityAttributeType::ARMOR)));
+	queryAttr.append("WHERE characterId=" + std::to_string(id));
+
 	bool success = Database::i()->executeModify(query) > 0;
+	if (success) {
+		success = Database::i()->executeModify(queryAttr) > 0;
+	}
+
+
 	return success;
 }
 
@@ -72,7 +88,29 @@ s::Character* s::Character::getCharacterById(int characterId) {
 	character->movement = sf::Vector2f(0, 0);
 	character->speed = 48;
 	character->isBot = false;
+
+	std::string attributeQuery = "SELECT experience, money, stamina, agility, intelect, spirit, armor FROM character_attributes WHERE characterId=" +
+		std::to_string(character->id) + ";";
+	MYSQL_RES* resAttr = Database::i()->executeQuery(attributeQuery);
+	MYSQL_ROW attributesRow = mysql_fetch_row(resAttr);
+
+
+	character->setAttribute(EntityAttributeType::EXPERIENCE, std::stof(attributesRow[0]));
+	character->setAttribute(EntityAttributeType::MONEY, std::stof(attributesRow[1]));
+	character->setAttribute(EntityAttributeType::STAMINA, std::stof(attributesRow[2]));
+	character->setAttribute(EntityAttributeType::AGILITY, std::stof(attributesRow[3]));
+	character->setAttribute(EntityAttributeType::INTELECT, std::stof(attributesRow[4]));
+	character->setAttribute(EntityAttributeType::SPIRIT, std::stof(attributesRow[5]));
+	character->setAttribute(EntityAttributeType::ARMOR, std::stof(attributesRow[6]));
+
+	character->recalcLevel();
+	character->recalcMaxHealth();
+	character->recalcMaxMana();
+	character->setAttribute(EntityAttributeType::HP, character->getAttribute(EntityAttributeType::BASE_HP));
+	character->setAttribute(EntityAttributeType::MP, character->getAttribute(EntityAttributeType::BASE_MP));
+
 	mysql_free_result(res);
+	mysql_free_result(resAttr);
 
 	return character;
 }

@@ -19,6 +19,8 @@ namespace s {
 		float modifyAttribute(EntityAttributeType type, float value);
 		int attributeTypeToInt(EntityAttributeType type) const;
 
+		void recalcMaxHealth();
+		void recalcMaxMana();
 		int recalcLevel();
 		float getXpForLevel(int level) const;
 	};

@@ -38,6 +38,21 @@ int s::EntityAttributes::attributeTypeToInt(EntityAttributeType type) const
 	return static_cast<int>(type);
 }
 
+void s::EntityAttributes::recalcMaxHealth() {
+	float level = getAttribute(EntityAttributeType::LEVEL);
+	float stamina = getAttribute(EntityAttributeType::STAMINA);
+	float maxHealth = level * 15 + stamina * 10;
+	setAttribute(EntityAttributeType::BASE_HP, maxHealth);
+}
+
+void s::EntityAttributes::recalcMaxMana()
+{
+	float level = getAttribute(EntityAttributeType::LEVEL);
+	float intelect = getAttribute(EntityAttributeType::INTELECT);
+	float maxHealth = level * 10 + intelect * 5;
+	setAttribute(EntityAttributeType::BASE_MP, maxHealth);
+}
+
 
 int s::EntityAttributes::recalcLevel()
 {
@@ -49,7 +64,7 @@ int s::EntityAttributes::recalcLevel()
 		level++;
 		temp = getXpForLevel(level);
 	}
-	while(temp <= experience);
+	while(temp < experience);
 
 	setAttribute(EntityAttributeType::LEVEL, level);
 	return level;

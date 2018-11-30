@@ -2,7 +2,6 @@
 
 #include "INIReader.h"
 #include "SFML/System.hpp"
-#include "SFML/Network.hpp"
 
 #include "ServerSettings.h"
 #include "Server.h"
@@ -10,15 +9,8 @@
 #include "spdlog/async.h"
 #include "spdlog/sinks/basic_file_sink.h"
 #include "spdlog/sinks/stdout_color_sinks.h" //support for stdout logging
-#include <Box2D/Collision/Shapes/b2PolygonShape.h>
 #include "Location.h"
-#include "Npc.h"
-#include "NpcHolder.h"
-#include "Spawn.h"
-
-#include "Lua/lua.hpp"
 #include "Lua/sol.hpp"
-#include "NpcEventNpcIsIdle.h"
 
 s::ServerSettings* initSettings() {
 	INIReader reader("config.ini");
