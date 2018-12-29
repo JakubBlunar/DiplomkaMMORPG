@@ -15,7 +15,8 @@ enum EntityCategory {
 	GAME_OBJECT = 0x0008,
 	SENSOR = 0x0010,
 	PLAYER_SENSOR = 0x0200,
-	NPC = 0x0400
+	NPC = 0x0400,
+	SPELL = 0x800
 };
 
 struct MovementData {

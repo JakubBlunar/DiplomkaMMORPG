@@ -21,6 +21,9 @@ GamePlayScene::GamePlayScene(SceneType sceneType, Game* g) : Scene(sceneType, g)
 
 	playerInfoWindow = new IGEntityInfo("playerInfo", sf::Vector2f(50, 50));
 	windowManager->addWindow("PlayerInfo", playerInfoWindow);
+	
+	actionBarWindow = new IGActionBar();
+	windowManager->addWindow("ActionBar", actionBarWindow);
 
 	mFont = ResourceHolder<sf::Font>::instance()->get("Sansation.ttf");
 
@@ -40,8 +43,12 @@ void GamePlayScene::beforeChange() {
 
 void GamePlayScene::afterChange() {
 	Scene::afterChange();
-	playerInfoWindow->setEntity(game->getAccount()->getPlayerEntity());
+	Player* p = game->getAccount()->getPlayerEntity();
+	playerInfoWindow->setEntity(p);
+	actionBarWindow->setPlayer(p);
+
 	windowManager->Open("PlayerInfo");
+	windowManager->Open("ActionBar");
 }
 
 void GamePlayScene::update(sf::Time elapsedTime) {

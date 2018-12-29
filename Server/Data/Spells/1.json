@@ -1,0 +1,8 @@
+{
+    "id": 1,
+    "name": "Attack",
+    "mana": 0,
+    "cooldown": 3000,
+    "castingTime": 0,
+    "icon": "attack.png"
+}

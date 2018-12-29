@@ -17,6 +17,7 @@
 #include <SFML/Graphics/BlendMode.hpp>
 #include <cstdint>
 #include "NpcHolder.h"
+#include "SpellHolder.h"
 
 s::Server::Server(ServerSettings* settings):
 	running(false) {
@@ -44,7 +45,9 @@ void s::Server::init() {
 		recieveThreads.push_back(t);
 	}
 
+	SpellHolder::instance()->init();
 	NpcHolder::instance()->init();
+	
 	npcManager.init(this);
 	managers.push_back(&mapsManager);
 

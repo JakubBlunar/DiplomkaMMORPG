@@ -1,0 +1,9 @@
+{
+    "id": 2,
+    "name": "Fireball",
+    "mana": 2,
+    "cooldown": 0,
+    "castingTime": 2000,
+    "icon": "fireball.png",
+    "entityAnimation": "2"
+}

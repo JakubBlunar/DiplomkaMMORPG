@@ -12,6 +12,7 @@
 #include "Utils.h"
 #include <Box2D/Box2D.h>
 #include "b2GLDraw.h"
+#include "Spell.h"
 
 Map::Map(Game* g) {
 	this->game = g;
@@ -84,6 +85,8 @@ void Map::init() {
 
 	subscribe();
 	*/
+
+
 }
 
 void Map::update(sf::Time elapsedTime, Game* game) {
@@ -284,6 +287,31 @@ void Map::removeNpc(Npc* npc) {
 	world->DestroyBody(npc->getBody());
 	entities.erase(std::remove(entities.begin(), entities.end(), npc), entities.end());
 	npcs.erase(std::remove(npcs.begin(), npcs.end(), npc), npcs.end());
+}
+
+void Map::addSpell(Spell* spell) {
+	PositionComponent* po = spell->getPositionComponent();
+	if (po == nullptr) {
+		return;
+	}
+
+	entities.push_back(spell);
+	sf::Vector2f position = po->getPosition();
+	sf::Vector2f size = po->getSize();
+	BodyType bodyType = po->getBodyType();
+	if (bodyType == BodyType::RECTANGLE) {
+		Box2DTools::addBox(b2_kinematicBody, position.x, position.y, size.x, size.y, spell, this,
+		                   spell->getEntityCategory(), spell->getCollisionMask());
+	}
+	else {
+		Box2DTools::addCircle(b2_kinematicBody, position.x, position.y, size.x, spell, this,
+		                      spell->getEntityCategory(), spell->getCollisionMask());
+	}
+}
+
+void Map::removeSpell(Spell* spell) {
+	world->DestroyBody(spell->getBody());
+	entities.erase(std::remove(entities.begin(), entities.end(), spell), entities.end());
 }
 
 void Map::loadFromFile(int id) {

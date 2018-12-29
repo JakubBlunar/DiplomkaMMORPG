@@ -3,11 +3,13 @@
 #include "Database.h"
 #include "../Server/json.hpp"
 #include "Map.h"
+#include "SpellHolder.h"
+#include <spdlog/spdlog.h>
 
 using json = nlohmann::json;
 
-s::Character::Character() {
-	movement = sf::Vector2f(0,0);
+s::Character::Character(): account(nullptr), id(0), type(), faction(), isBot(false) {
+	movement = sf::Vector2f(0, 0);
 }
 
 void s::Character::setAccount(s::Account* account) {
@@ -29,14 +31,14 @@ bool s::Character::save() const {
 	query.append(" WHERE id=" + std::to_string(id) + ";");
 
 	string queryAttr = "UPDATE character_attributes SET";
-	queryAttr.append(" experience=" +std::to_string(getAttribute(EntityAttributeType::EXPERIENCE)) + ",");
-	queryAttr.append(" money=" +std::to_string(getAttribute(EntityAttributeType::MONEY)) + ",");
-	queryAttr.append(" stamina=" +std::to_string(getAttribute(EntityAttributeType::STAMINA)) + ",");
-	queryAttr.append(" agility=" +std::to_string(getAttribute(EntityAttributeType::AGILITY)) + ",");
-	queryAttr.append(" intelect=" +std::to_string(getAttribute(EntityAttributeType::INTELECT)) + ",");
-	queryAttr.append(" spirit=" +std::to_string(getAttribute(EntityAttributeType::SPIRIT)) + ",");
-	queryAttr.append(" strength=" +std::to_string(getAttribute(EntityAttributeType::STRENGTH)) + ",");
-	queryAttr.append(" armor=" +std::to_string(getAttribute(EntityAttributeType::ARMOR)));
+	queryAttr.append(" experience=" + std::to_string(getAttribute(EntityAttributeType::EXPERIENCE)) + ",");
+	queryAttr.append(" money=" + std::to_string(getAttribute(EntityAttributeType::MONEY)) + ",");
+	queryAttr.append(" stamina=" + std::to_string(getAttribute(EntityAttributeType::STAMINA)) + ",");
+	queryAttr.append(" agility=" + std::to_string(getAttribute(EntityAttributeType::AGILITY)) + ",");
+	queryAttr.append(" intelect=" + std::to_string(getAttribute(EntityAttributeType::INTELECT)) + ",");
+	queryAttr.append(" spirit=" + std::to_string(getAttribute(EntityAttributeType::SPIRIT)) + ",");
+	queryAttr.append(" strength=" + std::to_string(getAttribute(EntityAttributeType::STRENGTH)) + ",");
+	queryAttr.append(" armor=" + std::to_string(getAttribute(EntityAttributeType::ARMOR)));
 	queryAttr.append("WHERE characterId=" + std::to_string(id));
 
 	bool success = Database::i()->executeModify(query) > 0;
@@ -62,11 +64,18 @@ json s::Character::toJson() const {
 	jsonData["movementY"] = movement.y;
 	jsonData["speed"] = speed;
 	jsonData["attributes"] = json(attributes);
+
+	jsonData["spells"] = json::array();
+	for (SpellInfo* const spell : spells) {
+		jsonData["spells"].push_back(spell->id);
+	}
+
 	return jsonData;
 }
 
 s::Character* s::Character::getCharacterById(int characterId) {
-	std::string query = "SELECT id, name, faction, type, mapId, positionX, positionY FROM characters WHERE id='" + Database
+	std::string query = "SELECT id, name, faction, type, mapId, positionX, positionY FROM characters WHERE id='" +
+		Database
 		::escapeString(std::to_string(characterId)) + "';";
 
 	MYSQL_RES* res = Database::i()->executeQuery(query);
@@ -89,7 +98,9 @@ s::Character* s::Character::getCharacterById(int characterId) {
 	character->speed = 48;
 	character->isBot = false;
 
-	std::string attributeQuery = "SELECT experience, money, stamina, agility, intelect, spirit, armor FROM character_attributes WHERE characterId=" +
+	std::string attributeQuery =
+		"SELECT experience, money, stamina, agility, intelect, spirit, armor FROM character_attributes WHERE characterId="
+		+
 		std::to_string(character->id) + ";";
 	MYSQL_RES* resAttr = Database::i()->executeQuery(attributeQuery);
 	MYSQL_ROW attributesRow = mysql_fetch_row(resAttr);
@@ -109,15 +120,40 @@ s::Character* s::Character::getCharacterById(int characterId) {
 	character->setAttribute(EntityAttributeType::HP, character->getAttribute(EntityAttributeType::BASE_HP));
 	character->setAttribute(EntityAttributeType::MP, character->getAttribute(EntityAttributeType::BASE_MP));
 
+
+	std::string spellsQuery = "SELECT spellType FROM character_spells WHERE characterId=" +
+		std::to_string(character->id) + " ORDER BY spellType ASC;";
+	MYSQL_RES* resSpells = Database::i()->executeQuery(spellsQuery);
+
+
+	SpellHolder* sh = SpellHolder::instance();
+	MYSQL_ROW spellsRow;
+	while ((spellsRow = mysql_fetch_row(resSpells))) {
+		if (spellsRow[0]) {
+			int spellType = std::stoi(spellsRow[0]);
+			try {
+				SpellInfo* si = sh->getSpellInfo(spellType);
+				character->spells.push_back(si);
+			} catch (std::string& e) {
+				spdlog::get("log")->error(e);
+			} catch (...) {
+				spdlog::get("log")->error("Error while loading character spells");
+			}
+		}
+		
+	}
+
 	mysql_free_result(res);
 	mysql_free_result(resAttr);
+	mysql_free_result(resSpells);
 
 	return character;
 }
 
 std::vector<s::Character*>* s::Character::getAccountCharacters(int accountId) {
 	std::vector<Character*>* characters = new std::vector<Character*>();
-	std::string query = "SELECT id FROM characters WHERE accountId='" + Database::escapeString(std::to_string(accountId)) +
+	std::string query = "SELECT id FROM characters WHERE accountId='" + Database::escapeString(
+			std::to_string(accountId)) +
 		"';";
 
 	MYSQL_RES* res = Database::i()->executeQuery(query);

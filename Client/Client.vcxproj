@@ -149,11 +149,13 @@
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="EntityPrototypes.cpp" />
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="FieldLayer.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GamePlayScene.cpp" />
+    <ClCompile Include="IGActionBar.cpp" />
     <ClCompile Include="IGAvailableCharacters.cpp" />
     <ClCompile Include="IGEntityInfo.cpp" />
     <ClCompile Include="IGGameMenu.cpp" />
@@ -181,6 +183,7 @@
     <ClCompile Include="ResourceHolder.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="Spell.cpp" />
     <ClCompile Include="TileSetsHolder.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -200,6 +203,7 @@
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="EntityPrototypes.h" />
     <ClInclude Include="EventDispatcher.h" />
     <ClInclude Include="Field.h" />
     <ClInclude Include="FieldLayer.h" />
@@ -207,6 +211,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GamePlayScene.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="IGActionBar.h" />
     <ClInclude Include="IGAvailableCharacters.h" />
     <ClInclude Include="IGEntityInfo.h" />
     <ClInclude Include="IGGameMenu.h" />
@@ -234,6 +239,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="sfLine.h" />
+    <ClInclude Include="Spell.h" />
     <ClInclude Include="TileSetsHolder.h" />
     <ClInclude Include="VisibleObjectsCast.h" />
   </ItemGroup>

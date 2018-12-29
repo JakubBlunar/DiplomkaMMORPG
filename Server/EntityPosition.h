@@ -43,6 +43,10 @@ namespace s {
 	
 		void setLocation(Location* l);
 		Location* getLocation() const;
+
+		sf::Vector2f getMovement() const {
+			return movement;
+		}
 	};
 }
 

@@ -1,5 +1,7 @@
 #include "IGWindow.h"
 #include <imgui.h>
+#include <iomanip>
+#include <sstream>
 
 
 IGWindow::IGWindow() : prevAlpha(0) {
@@ -73,4 +75,10 @@ void IGWindow::setSize(sf::Vector2f size) {
 void IGWindow::setPosition(sf::Vector2f position, bool centered) {
 	this->position = position;
 	this->centeredPosition = true;
+}
+
+std::string IGWindow::convertFloatToString(float number, int precision) const {
+	std::stringstream stream;
+	stream << std::fixed << std::setprecision(precision) << number;
+	return stream.str();
 }

@@ -231,6 +231,15 @@
     <ClCompile Include="ImGuiFonts.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Spell.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityPrototypes.cpp">
+      <Filter>Source Files\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="IGActionBar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="json.hpp">
@@ -387,6 +396,15 @@
       <Filter>Header Files\Entities\Components</Filter>
     </ClInclude>
     <ClInclude Include="ImGuiFonts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Spell.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityPrototypes.h">
+      <Filter>Header Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="IGActionBar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

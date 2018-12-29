@@ -3,6 +3,7 @@
 #include "VisibleObjectsCast.h"
 #include "Astar.h"
 #include "IGEntityInfo.h"
+#include "IGActionBar.h"
 
 class GamePlayScene :
 	public Scene {
@@ -17,6 +18,8 @@ public:
 private:
 	IGEntityInfo* playerInfoWindow;
 	IGEntityInfo* targetInfoWindow;
+	IGActionBar* actionBarWindow;
+
 	sf::CircleShape targetArrow;
 	Entity* targetEntity;
 

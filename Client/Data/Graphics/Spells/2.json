@@ -1,0 +1,61 @@
+{
+    "offsetX": 0,
+    "offsetY": -4,
+    "width": 16,
+    "height": 16,
+	"animations": [
+    {
+        "name": "down",
+	    "frameTime": 200,
+        "steps": [
+            {
+                "x": 16,
+                "y": 0
+            },
+            {
+                "x": 0,
+                "y": 0
+            }
+        ]
+    },
+    {
+        "name": "left",
+	    "frameTime": 200,
+        "steps": [{
+                "x": 0,
+                "y": 0
+            },
+            {
+                "x": 16,
+                "y": 0
+            }
+        ]
+    },
+    {
+        "name": "right",
+	    "frameTime": 200,
+        "steps": [{
+                "x": 0,
+                "y": 0
+            },
+            {
+                "x": 16,
+                "y": 0
+            }
+        ]
+    },
+    {
+        "name": "up",
+	    "frameTime": 200,
+        "steps": [{
+                "x": 0,
+                "y": 0
+            },
+            {
+                "x": 16,
+                "y": 0
+            }
+        ]
+    }
+    ]
+}

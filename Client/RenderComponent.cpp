@@ -28,6 +28,10 @@ void RenderComponent::addAnimation(std::string animationName, Animation* animati
 }
 
 void RenderComponent::changeAnimation(std::string animationName) {
+	if (currentAnimationName == animationName) {
+		return;
+	}
+
 	auto found = possibleAnimations.find(animationName);
 	if (found == possibleAnimations.end()) {
 		throw "Animation dont exists with name " + animationName;
@@ -36,6 +40,7 @@ void RenderComponent::changeAnimation(std::string animationName) {
 	if (currentAnimation != nullptr)
 		currentAnimation->stop();
 
+	currentAnimationName = animationName;
 	Animation* animation = found->second;
 	currentAnimation->setFrameTime(animation->getFrameTime());
 	currentAnimation->setAnimation(*animation);

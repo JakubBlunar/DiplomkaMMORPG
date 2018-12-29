@@ -41,7 +41,6 @@ void IGAvailableCharacters::render(Game* g, IGManager* manager) {
 
 	const sf::Texture* texture = sprite->getTexture();
 
-	bool open = false;
 	if (ImGui::Begin("chooseCharacter", &visible,
 	                 ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar |
 	                 ImGuiWindowFlags_NoScrollbar)) {

@@ -64,6 +64,12 @@
     <Filter Include="Header Files\NpcEvents">
       <UniqueIdentifier>{e1f1199f-e636-4597-a21d-402c812f6b1d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Effects">
+      <UniqueIdentifier>{9d237f7e-7a3e-439d-9169-66262aba9492}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Effects">
+      <UniqueIdentifier>{7e0d46a8-fd7f-408f-aff0-c3e6b47f885b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -252,8 +258,26 @@
     <ClCompile Include="NpcEventNpcIsIdle.cpp">
       <Filter>Source Files\NpcEvents</Filter>
     </ClCompile>
+    <ClCompile Include="Effect.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="SpellManager.cpp">
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Spell.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="SpellHolder.cpp">
+      <Filter>Source Files\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="MovableSpell.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
     <ClCompile Include="TextFileLoader.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectHolder.cpp">
+      <Filter>Source Files\Tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -437,8 +461,29 @@
     <ClInclude Include="NpcEventNpcIsIdle.h">
       <Filter>Header Files\NpcEvents</Filter>
     </ClInclude>
+    <ClInclude Include="Effect.h">
+      <Filter>Header Files\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Spell.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="SpellManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="MovableSpell.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="SpellHolder.h">
+      <Filter>Header Files\Tools</Filter>
+    </ClInclude>
     <ClInclude Include="TextFileLoader.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectHolder.h">
+      <Filter>Header Files\Tools</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -15,7 +15,8 @@ enum class EntityType {
 	PLAYER,
 	GAMEOBJECT,
 	COLLIDER,
-	NPC
+	NPC,
+	SPELL
 };
 
 class Entity : public Subscriber {

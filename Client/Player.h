@@ -7,6 +7,7 @@
 #include "RenderComponent.h"
 #include <list>
 #include "AttributesComponent.h"
+#include "Spell.h"
 
 class GameEvent;
 using json = nlohmann::json;
@@ -46,6 +47,10 @@ public:
 	MovementData lastServerPosition;
 
 	AttributesComponent* getAttributesComponent() const;
+
+	std::vector<SpellInfo*>* getSpells() {
+		return &spells;
+	}
 private:
 	AttributesComponent* attributesComponent;
 
@@ -61,6 +66,8 @@ private:
 	sf::Time lastSendedMovementTime;
 
 	void sendPosition(Game* g) const;
+
+	std::vector<SpellInfo*> spells;
 };
 
 #endif

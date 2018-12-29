@@ -29,6 +29,7 @@ private:
 	AnimatedSprite* currentAnimation;
 	sf::Vector2i size;
 	sf::Vector2i offset;
+	std::string currentAnimationName;
 };
 
 #endif

@@ -9,12 +9,13 @@
 #include "Map.h"
 #include "Game.h"
 #include <iostream>
+#include "EntityPrototypes.h"
 
 
 Player::Player(bool playerControlled) : Entity(0) {
 	this->playerControlled = playerControlled;
 	lastMovement = sf::Vector2f(0, 0);
-	
+
 	positionComponent = new PositionComponent();
 	components.push_back(positionComponent);
 	positionComponent->setSize(sf::Vector2f(32.f, 32.f));
@@ -42,9 +43,9 @@ Player::~Player() {
 void Player::handleEvent(GameEvent* event) {
 	switch (event->getId()) {
 		case MOVEMENT: {
-			EventMovementChange* temp = (EventMovementChange*) event;
+			EventMovementChange* temp = (EventMovementChange*)event;
 
-			if(temp->playerId != id || playerControlled)
+			if (temp->playerId != id || playerControlled)
 				return;
 
 			lastServerPosition.velocityX = temp->velX;
@@ -71,7 +72,7 @@ void Player::handleEvent(GameEvent* event) {
 			break;
 		}
 		default:
-		break;
+			break;
 	}
 
 }
@@ -109,7 +110,8 @@ void Player::update(sf::Time elapsedTime, Map* map, Game* g) {
 			}
 			setMovementDirection(direction, g);
 		}
-	} else {
+	}
+	else {
 		bool wasMovingLeft = positionComponent->isMovingLeft;
 		bool wasMovingDown = positionComponent->isMovingDown;
 		bool wasMovingUp = positionComponent->isMovingUp;
@@ -145,7 +147,7 @@ void Player::update(sf::Time elapsedTime, Map* map, Game* g) {
 			wasMovingRight != positionComponent->isMovingRight) {
 			updateMovementAnimation();
 		}
-	}	
+	}
 }
 
 EntityType Player::getType() {
@@ -180,7 +182,7 @@ void Player::updateMovementAnimation() {
 		renderComponent->changeAnimation("down");
 		renderComponent->getCurrentAnimation()->setLooped(true);
 		body->SetTransform(b2Vec2(position.x * PIXTOMET, position.y * PIXTOMET), 0);
-		
+
 	}
 	else if (movement.x < 0 && movement.y == 0) //left
 	{
@@ -191,7 +193,7 @@ void Player::updateMovementAnimation() {
 	else if (movement.x > 0 && movement.y == 0) {
 		renderComponent->changeAnimation("right");
 		renderComponent->getCurrentAnimation()->setLooped(true);
-		body->SetTransform(b2Vec2(position.x * PIXTOMET, position.y * PIXTOMET), 270 * DEGTORAD);	
+		body->SetTransform(b2Vec2(position.x * PIXTOMET, position.y * PIXTOMET), 270 * DEGTORAD);
 	}
 	else if (movement.x > 0) {
 		renderComponent->changeAnimation("right");
@@ -268,34 +270,42 @@ void Player::loadFromJson(json jsonData) {
 		attributesComponent->setAttributeByIndex(index, *it);
 		index++;
 	}
+
+	if (playerControlled) {
+		json spellIds = jsonData["spells"].get<json::array_t>();
+		EntityPrototypes* ep = EntityPrototypes::instance();
+		for (json::iterator it = spellIds.begin(); it != spellIds.end(); ++it) {
+			int spellId = *it;
+			try {
+				spells.push_back(ep->getSpellInfo(spellId));
+			}
+			catch (...) {}
+		}
+	}
 }
 
 b2Fixture* Player::getMelleView() const {
 	return melleView;
 }
 
-void Player::setMelleView(b2Fixture * fixture)
-{
+void Player::setMelleView(b2Fixture* fixture) {
 	melleView = fixture;
 }
 
-b2Fixture * Player::getMelleRange() const
-{
+b2Fixture* Player::getMelleRange() const {
 	return melleRange;
 }
 
-void Player::setMelleRange(b2Fixture * fixture)
-{
+void Player::setMelleRange(b2Fixture* fixture) {
 	melleRange = fixture;
 }
 
-bool Player::isControlledByPlayer() const
-{
+bool Player::isControlledByPlayer() const {
 	return playerControlled;
 }
 
 void Player::setMovementDirection(sf::Vector2f direction, Game* g) {
-	
+
 	positionComponent->setMovementDirection(direction);
 	sf::Vector2f movement = positionComponent->getMovement();
 
@@ -311,7 +321,7 @@ AttributesComponent* Player::getAttributesComponent() const {
 	return attributesComponent;
 }
 
-void Player::sendPosition(Game*g) const {
+void Player::sendPosition(Game* g) const {
 	sf::Vector2f position = positionComponent->getPosition();
 	sf::Vector2f movement = positionComponent->getMovement();
 
@@ -327,5 +337,3 @@ void Player::sendPosition(Game*g) const {
 
 	delete packet;
 }
-
-

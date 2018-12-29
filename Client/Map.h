@@ -11,6 +11,7 @@
 #include "MapGrid.h"
 #include "Npc.h"
 
+class Spell;
 class GameEvent;
 class Collider;
 class Game;
@@ -46,6 +47,9 @@ public:
 	void removeGameObject(GameObject* gameObject);
 	void addNpc(Npc* npc);
 	void removeNpc(Npc* npc);
+
+	void addSpell(Spell* spell);
+	void removeSpell(Spell* spell);
 
 	void loadFromFile(int id);
 

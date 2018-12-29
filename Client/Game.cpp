@@ -8,6 +8,7 @@
 #include "ClientEventActions.h"
 #include "EventDispatcher.h"
 #include "ResourceHolder.h"
+#include "EntityPrototypes.h"
 
 
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
@@ -30,17 +31,22 @@ Game::Game():
 
 void Game::run() {
 	running = true;
+
+
+	EntityPrototypes::instance()->init();
+
 	window = new sf::RenderWindow(sf::VideoMode(1360, 768), "SFML Application", sf::Style::Resize | sf::Style::Close),
 	window->setFramerateLimit(60);
 	window->setVerticalSyncEnabled(true);
 	ImGui::SFML::Init(*window, false);
 
+	window->resetGLStates();
+
 	ImGuiIO& io = ImGui::GetIO();
 	io.Fonts->Clear(); // clear fonts if you loaded some before (even if only default one was loaded)
 	io.Fonts->AddFontFromFileTTF("Data/ProggyTiny.ttf", 100);
+	fonts.init();
 	ImGui::SFML::UpdateFontTexture();
-
-	window->resetGLStates();
 
 	recieveThread = new sf::Thread(&PacketManager::startRecieve, packet_manager);
 	recieveThread->launch();

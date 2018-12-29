@@ -40,6 +40,7 @@ protected:
 
 	void setSize(sf::Vector2f size);
 	void setPosition(sf::Vector2f position, bool centered);
+	std::string convertFloatToString(float number, int precision) const;
 private:
 	float prevAlpha;
 

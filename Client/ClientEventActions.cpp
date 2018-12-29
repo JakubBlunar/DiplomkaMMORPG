@@ -8,6 +8,7 @@
 #include "SceneManager.h"
 #include <iostream>
 #include "BotGame.h"
+#include "Spell.h"
 
 ClientEventActions::ClientEventActions(Game* g) {
 	this->game = g;
@@ -58,6 +59,8 @@ void ClientEventActions::visit(EventCharacterChooseResponse* e) {
 		//game->print("Character DATA: " + response.dump());
 		json characterData = response["character"].get<json::object_t>();
 
+		std::cout << characterData.dump(2) << std::endl;
+
 		Player* p = new Player(true);
 		p->loadFromJson(characterData);
 
@@ -68,6 +71,20 @@ void ClientEventActions::visit(EventCharacterChooseResponse* e) {
 
 		game->getAccount()->setPlayerEntity(p);
 		map->addPlayer(p);
+
+		json j;
+		j["entityAnimation"] = "2";
+
+		Spell* spell = new Spell(1);
+		spell->loadFromJson(j);
+
+		PositionComponent* po = spell->getPositionComponent();
+		po->setPosition(sf::Vector2f(400, 400));
+
+
+		spell->setTarget(p);
+
+		map->addSpell(spell);
 
 		json otherPlayers = response["otherPlayers"].get<json::array_t>();
 		for (json::iterator it = otherPlayers.begin(); it != otherPlayers.end(); ++it) {

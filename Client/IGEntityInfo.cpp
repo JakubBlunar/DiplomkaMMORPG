@@ -3,9 +3,7 @@
 #include "Npc.h"
 #include "Player.h"
 #include "Game.h"
-#include <iomanip>
 #include <imgui-SFML.h>
-#include "../Server/EntityAttributes.h"
 
 IGEntityInfo::IGEntityInfo(string id, sf::Vector2f position)
 {
@@ -101,8 +99,3 @@ void IGEntityInfo::render(Game * g, IGManager * manager)
 	ImGui::End(); // end window
 }
 
-string IGEntityInfo::convertFloatToString(float number, int precision) const {
-	stringstream stream;
-	stream << fixed << setprecision(precision) << number;
-	return stream.str();
-}

@@ -6,6 +6,7 @@
 #include "json.hpp"
 #include "EntityAttributes.h"
 #include "EntityPosition.h"
+#include "Spell.h"
 
 using json = nlohmann::json;
 
@@ -27,11 +28,14 @@ namespace s {
 		std::string name;
 		CharacterType type;
 		CharacterFaction faction;
+		std::vector<SpellInfo*> spells;
 
 		bool isBot;
 
 		bool save() const;
 		json toJson() const;
+
+
 
 		static Character* getCharacterById(int characterId);
 		static std::vector<Character*>* getAccountCharacters(int accountId);
