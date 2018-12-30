@@ -18,7 +18,6 @@ Game::Game():
 	
 	this->packet_manager = new PacketManager(this);
 	this->sceneManager = new SceneManager(this);
-	this->keyboardManager = new KeyboardManager();
 	this->eventActions = new ClientEventActions(this);
 
 	mStatisticsText.setFont(ResourceHolder<sf::Font>::instance()->get("Sansation.ttf"));
@@ -117,12 +116,33 @@ void Game::processEvents() {
 		}*/
 
 		switch (event.type) {
-		case sf::Event::KeyPressed:
-			keyboardManager->handlePlayerInput(event.key.code, true);
+		case sf::Event::KeyPressed: {
+			sf::Keyboard::Key key = event.key.code;
+			if (pressedKeys.find(key) == pressedKeys.end()) {
+				sceneManager->onKeyPress(key);
+				pressedKeys.insert(key);
+			}
 			break;
-		case sf::Event::KeyReleased:
-			keyboardManager->handlePlayerInput(event.key.code, false);
+		}
+		case sf::Event::KeyReleased: {
+			sf::Keyboard::Key key = event.key.code;
+			sceneManager->onKeyRelease(key);
+			pressedKeys.erase(key);
 			break;
+		}
+		case sf::Event::MouseButtonPressed: {
+			sf::Mouse::Button button = event.mouseButton.button;
+			if (pressedButtons.find(button) == pressedButtons.end() && window) {
+				sf::Vector2i position = sf::Vector2i(event.mouseButton.x, event.mouseButton.y);
+				sceneManager->onClick(button, window->mapPixelToCoords(position));
+				pressedButtons.insert(button);
+			}
+			break;
+		}
+		case sf::Event::MouseButtonReleased: {
+			pressedButtons.erase(event.mouseButton.button);
+			break;
+		}
 		case sf::Event::Resized:
 			window->setView(*camera.getView());
 			break;

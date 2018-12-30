@@ -114,9 +114,6 @@
     <ClCompile Include="LoginScene.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="KeyboardManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="IGWindow.cpp">
       <Filter>Source Files\Scenes\IMGui</Filter>
     </ClCompile>
@@ -238,7 +235,7 @@
       <Filter>Source Files\Tools</Filter>
     </ClCompile>
     <ClCompile Include="IGActionBar.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Scenes\IMGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -268,9 +265,6 @@
     </ClInclude>
     <ClInclude Include="LoginScene.h">
       <Filter>Header Files\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="KeyboardManager.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IGWindow.h">
       <Filter>Header Files\Scenes\IMGui</Filter>

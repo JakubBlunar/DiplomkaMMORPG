@@ -5,7 +5,6 @@
 
 IGGameMenu::IGGameMenu() {
 	size = sf::Vector2f(250, 260);
-	centeredPosition = true;
 }
 
 
@@ -16,7 +15,6 @@ void IGGameMenu::render(Game* g, IGManager* manager) {
 
 	ImGui::SetNextWindowSize(size, ImGuiCond_Always);
 	ImGui::SetNextWindowPos(position);
-	ImGui::SetNextWindowPosCenter(centeredPosition);
 
 	if (!ImGui::Begin("GameMenu", &visible,
 	                  ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove)) {
@@ -37,13 +35,11 @@ void IGGameMenu::render(Game* g, IGManager* manager) {
 	if (ImGui::Button("Logout", sf::Vector2f(ImGui::GetWindowWidth() * 0.935f, 40))) {
 		ImGui::OpenPopup("LogoutCharacterPrompt");
 		ImGui::SetNextWindowPos(position);
-		ImGui::SetNextWindowPosCenter(centeredPosition);
 	}
 
 	if (ImGui::Button("Exit", sf::Vector2f(ImGui::GetWindowWidth() * 0.935f, 40))) {
 		ImGui::OpenPopup("ExitPrompt");
 		ImGui::SetNextWindowPos(position);
-		ImGui::SetNextWindowPosCenter(centeredPosition);
 	}
 
 	bool open = true;
@@ -108,8 +104,9 @@ void IGGameMenu::render(Game* g, IGManager* manager) {
 void IGGameMenu::beforeRender(Game* game) {
 	IGWindow::beforeRender(game);
 
-	float left = game->window->getView().getViewport().left + game->window->getView().getViewport().width / 2.0f;
-	float top = game->window->getView().getViewport().top + game->window->getView().getViewport().height / 2.0f;
-	setPosition(sf::Vector2f(left, top), true);
+	Camera* c = game->getCamera();
 
+	float left = c->getResolution().x / 2 - size.x / 2;
+	float top = c->getResolution().y / 2 - size.y / 2;
+	setPosition(sf::Vector2f(left, top));
 }

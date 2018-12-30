@@ -4,7 +4,6 @@
 #include <SFML/Graphics.hpp>
 #include "PacketManager.h"
 #include "ClientSettings.h"
-#include "KeyboardManager.h"
 #include <queue>
 #include "GameEvent.h"
 #include "ClientEventActions.h"
@@ -13,6 +12,7 @@
 #include "Camera.h"
 #include "Account.h"
 #include "ImGuiFonts.h"
+#include <unordered_set>
 
 class SceneManager;
 
@@ -28,7 +28,6 @@ public:
 	void print(const std::string& message);
 
 	SceneManager* sceneManager;
-	KeyboardManager* keyboardManager;
 	PacketManager* packet_manager;
 	bool running;
 
@@ -43,6 +42,9 @@ public:
 	void handleEvent(GameEvent* event) override;
 
 	ImGuiFonts fonts;
+
+	std::unordered_set<sf::Keyboard::Key> pressedKeys;
+	std::unordered_set<sf::Mouse::Button> pressedButtons;
 protected:
 	void processEvents();
 	virtual void update(sf::Time elapsedTime);

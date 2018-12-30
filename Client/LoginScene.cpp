@@ -10,9 +10,7 @@ LoginScene::LoginScene(SceneType sceneType, Game* g): Scene(sceneType, g) {
 	windowManager->OpenAll();
 }
 
-LoginScene::~LoginScene() {
-
-}
+LoginScene::~LoginScene() {}
 
 void LoginScene::beforeChange() {
 	Scene::beforeChange();
@@ -24,14 +22,19 @@ void LoginScene::afterChange() {
 
 void LoginScene::update(sf::Time elapsedTime) {
 	Scene::update(elapsedTime);
-
-	if (game->keyboardManager->isKeyPressed(sf::Keyboard::Escape)) {
-		game->running = false;
-	}
 }
 
 void LoginScene::render() {
 	game->window->clear(sf::Color::Green);
 
 	Scene::render();
+}
+
+void LoginScene::onKeyPress(sf::Keyboard::Key key) {
+	switch (key) {
+		case sf::Keyboard::Escape:
+			game->running = false;
+			break;
+		default: break;
+	}
 }

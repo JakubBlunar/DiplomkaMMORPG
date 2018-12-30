@@ -9,19 +9,17 @@
 #include "Astar.h"
 #include "sfLine.h"
 
-GamePlayScene::GamePlayScene(SceneType sceneType, Game* g) : Scene(sceneType, g), mousePressed(false) {
-	escPressed = false;
-	fonePressed = false;
+GamePlayScene::GamePlayScene(SceneType sceneType, Game* g) : Scene(sceneType, g) {
 	drawDebugData = false;
 	targetEntity = nullptr;
-	
+
 	windowManager->addWindow("GameMenu", new IGGameMenu());
 	targetInfoWindow = new IGEntityInfo("target", sf::Vector2f(300, 50));
 	windowManager->addWindow("TargetInfo", targetInfoWindow);
 
 	playerInfoWindow = new IGEntityInfo("playerInfo", sf::Vector2f(50, 50));
 	windowManager->addWindow("PlayerInfo", playerInfoWindow);
-	
+
 	actionBarWindow = new IGActionBar();
 	windowManager->addWindow("ActionBar", actionBarWindow);
 
@@ -34,8 +32,7 @@ GamePlayScene::GamePlayScene(SceneType sceneType, Game* g) : Scene(sceneType, g)
 }
 
 
-GamePlayScene::~GamePlayScene() {
-}
+GamePlayScene::~GamePlayScene() {}
 
 void GamePlayScene::beforeChange() {
 	Scene::beforeChange();
@@ -57,29 +54,6 @@ void GamePlayScene::update(sf::Time elapsedTime) {
 	if (map) {
 		map->update(elapsedTime, game);
 	}
-
-	if(game->window) {
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape) && game->window->hasFocus()) {
-			if (!escPressed) {
-				if (windowManager->isVisible("GameMenu"))
-					windowManager->close("GameMenu");
-				else
-					windowManager->Open("GameMenu");
-			}
-			escPressed = true;
-		}
-		else
-			escPressed = false;
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F1) && game->window->hasFocus()) {
-			if (!fonePressed)
-				drawDebugData = !drawDebugData;
-			fonePressed = true;
-		}
-		else
-			fonePressed = false;
-	}
-	
 }
 
 void GamePlayScene::render() {
@@ -125,42 +99,9 @@ void GamePlayScene::render() {
 		}
 	}
 
-	if(drawDebugData) {
+	if (drawDebugData) {
 		MapGrid* mapGrid = map->getGrid();
 
-		if(game->window->hasFocus()) {
-			if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-				if(!mousePressed) {
-					sf::Vector2i mousePos = sf::Mouse::getPosition(*game->window);
-
-					int mouseX = (int)offset.x + mousePos.x;
-					int mouseY = (int)offset.y + mousePos.y;
-
-					Player* player = map->getPlayer();
-					
-					sf::Vector2f pathFindingFrom = sf::Vector2f(24, 24);
-					if (player) {
-						sf::Vector2f playerSize = player->getSize();
-						pathFindingFrom = player->getPosition();
-						pathFindingFrom.x += playerSize.x / 2;
-						pathFindingFrom.y += playerSize.y / 2;
-					}
-					Astar astar(mapGrid);
-					int res = astar.findPath(pathFindingFrom, sf::Vector2f((float)mouseX, (float)mouseY)); 
-					if (res == 1) {
-						path = astar.path;
-					}
-				}
-				mousePressed = true;
-				
-			} else {
-				mousePressed = false;
-			}
-			
-		}
-		
-
-		
 		if (mapGrid) {
 			sf::CircleShape shape(4);
 			shape.setOrigin(2, 2);
@@ -172,12 +113,13 @@ void GamePlayScene::render() {
 			toY = (int)ceil(mapGrid->transformYToGrid(offset.y + resolution.y));
 
 			for (int i = fromX; i < toX; i++) {
-				for(int j = fromY; j < toY; j++) {
+				for (int j = fromY; j < toY; j++) {
 					MapGridSpot* spot = mapGrid->grid->get(i, j);
-					if(spot) {
+					if (spot) {
 						if (spot->isWall()) {
 							shape.setFillColor(sf::Color::Black);
-						}else {
+						}
+						else {
 							shape.setFillColor(sf::Color::White);
 						}
 						shape.setPosition((float)spot->positionX, (float)spot->positionY);
@@ -187,9 +129,8 @@ void GamePlayScene::render() {
 				}
 			}
 
-			for (std::list<sf::Vector2f>::const_iterator it = path.begin(); it != path.end(); it++)
-			{
-				if(std::next(it) != path.end()) {
+			for (std::list<sf::Vector2f>::const_iterator it = path.begin(); it != path.end(); ++it) {
+				if (std::next(it) != path.end()) {
 
 					sfLine line(sf::Vector2f(it->x, it->y), sf::Vector2f(next(it)->x, next(it)->y));
 					line.color = sf::Color::Red;
@@ -223,22 +164,23 @@ void GamePlayScene::render() {
 
 			b2Vec2 position = queryCallback.foundBodies[i]->GetPosition();
 			sf::Vector2i renderOffset = renderComponent->getOffset();
-			sf::Vector2f spritePosition = sf::Vector2f(ceilNumber(METTOPIX * position.x + renderOffset.x), ceilNumber(METTOPIX * position.y + renderOffset.y));
+			sf::Vector2f spritePosition = sf::Vector2f(
+				ceilNumber(METTOPIX * position.x + renderOffset.x), ceilNumber(METTOPIX * position.y + renderOffset.y));
 			sprite->setPosition(spritePosition);
 
-			
+
 			if (entity->getType() == EntityType::NPC) {
 				Npc* npc = (Npc*)entity;
 				if (npc->getState() == NpcState::DEAD) {
 					continue;
-				} 
+				}
 			}
 
 			game->window->draw(*sprite);
 			if (targetEntity && targetEntity == entity) {
 				targetArrow.setPosition(spritePosition.x + renderComponent->getSize().x / 2.f + 8, spritePosition.y);
 				game->window->draw(targetArrow);
-			}			
+			}
 		}
 	}
 	ClientSettings::instance()->eventsMutex.unlock();
@@ -249,13 +191,61 @@ void GamePlayScene::render() {
 	Scene::render();
 }
 
-void GamePlayScene::onClick(sf::Mouse::Button event, sf::Vector2f position)
-{
+void GamePlayScene::onKeyPress(sf::Keyboard::Key key) {
+	if(!game->window || !game->window->hasFocus()) {
+		return;
+	}
+
+	switch (key) {
+		case sf::Keyboard::Key::Escape: {
+			if (windowManager->isVisible("GameMenu")) {
+				windowManager->close("GameMenu");
+			}		
+			else
+				windowManager->Open("GameMenu");
+			break;
+		}
+		case sf::Keyboard::F1: 
+			drawDebugData = !drawDebugData;
+			break;
+		default: break;
+	}
+}
+
+void GamePlayScene::onClick(sf::Mouse::Button event, sf::Vector2f position) {
+	sf::Vector2f offset = game->getCamera()->getOffset();
+	sf::Vector2f relativePosition(position.x - offset.x, position.y - offset.y);
+
+	if (drawDebugData) {
+		if (game->window->hasFocus()) {
+			Map* map = game->getMap();
+			MapGrid* mapGrid = map->getGrid();
+
+			Player* player = map->getPlayer();
+
+			sf::Vector2f pathFindingFrom = sf::Vector2f(24, 24);
+			if (player) {
+				sf::Vector2f playerSize = player->getSize();
+				pathFindingFrom = player->getPosition();
+				pathFindingFrom.x += playerSize.x / 2;
+				pathFindingFrom.y += playerSize.y / 2;
+			}
+			Astar aStar(mapGrid);
+			int res = aStar.findPath(pathFindingFrom, position);
+			if (res == 1) {
+				path = aStar.path;
+			}
+		}
+	}
+
+	if (windowManager->anyWindowContainsPoint(relativePosition)) {
+		return;
+	}
+
 	if (event == sf::Mouse::Left) {
 		Map* map = game->getMap();
 		b2World* w = map->getB2World();
 
-		sf::Vector2f offset = game->getCamera()->getOffset();
 		sf::Vector2f resolution = game->getCamera()->getResolution();
 		aabb.lowerBound = b2Vec2(offset.x * PIXTOMET, offset.y * PIXTOMET);
 		aabb.upperBound = b2Vec2((offset.x + resolution.x) * PIXTOMET, (offset.y + resolution.y) * PIXTOMET);

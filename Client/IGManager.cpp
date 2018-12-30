@@ -101,6 +101,15 @@ IGPopup* IGManager::getActualPopup() const {
 	return nullptr;
 }
 
+bool IGManager::anyWindowContainsPoint(sf::Vector2f point) const {
+	for (auto &pair: windows) {
+		if (pair.second->isOpened() && pair.second->containsPosition(point)) {
+			return true;
+		}
+	}
+	return false;
+}
+
 void IGManager::IGManagerSetupImGuiStyle(bool bStyleDark_, float alpha_) {
 	ImGuiStyle& style = ImGui::GetStyle();
 

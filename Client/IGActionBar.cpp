@@ -6,7 +6,7 @@
 
 
 IGActionBar::IGActionBar() {
-	centeredPosition = false;
+	
 }
 
 
@@ -93,7 +93,7 @@ void IGActionBar::beforeRender(Game* game) {
 
 	float left = c->getResolution().x / 2 - size.x / 2;
 	float top = c->getResolution().y - size.y;
-	setPosition(sf::Vector2f(left, top), false);
+	setPosition(sf::Vector2f(left, top));
 
 
 }

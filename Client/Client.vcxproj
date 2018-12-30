@@ -168,7 +168,6 @@
     <ClCompile Include="ImGuiFonts.cpp" />
     <ClCompile Include="imgui_draw.cpp" />
     <ClCompile Include="JsonLoader.cpp" />
-    <ClCompile Include="KeyboardManager.cpp" />
     <ClCompile Include="LoginScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -223,7 +222,6 @@
     <ClInclude Include="INIReader.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="JsonLoader.h" />
-    <ClInclude Include="KeyboardManager.h" />
     <ClInclude Include="LoginScene.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapContactListener.h" />

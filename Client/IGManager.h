@@ -29,6 +29,7 @@ public:
 	bool isShowingPopup() const;
 	IGPopup* getActualPopup() const;
 
+	bool anyWindowContainsPoint(sf::Vector2f point) const;
 private:
 	std::map<std::string, IGWindow*> windows;
 	std::queue<IGPopup*> popups;

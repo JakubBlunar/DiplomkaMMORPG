@@ -34,7 +34,6 @@ void IGPopup::render(Game* g, IGManager* manager) {
 
 	ImGui::SetNextWindowSize(size, ImGuiCond_Always);
 	ImGui::SetNextWindowPos(position);
-	ImGui::SetNextWindowPosCenter(centeredPosition);
 	ImGui::SetNextWindowFocus();
 
 	if (ImGui::BeginPopupModal("popup", &visible,
@@ -71,7 +70,9 @@ void IGPopup::render(Game* g, IGManager* manager) {
 void IGPopup::beforeRender(Game* g) {
 	IGWindow::beforeRender(g);
 
-	float left = g->window->getView().getViewport().left + g->window->getView().getViewport().width / 2.0f;
-	float top = g->window->getView().getViewport().top + g->window->getView().getViewport().height / 2.0f;
-	setPosition(sf::Vector2f(left, top), true);
+	Camera* c = g->getCamera();
+
+	float left = c->getResolution().x / 2 - size.x / 2;
+	float top = c->getResolution().y / 2 - size.y / 2;
+	setPosition(sf::Vector2f(left, top));
 }

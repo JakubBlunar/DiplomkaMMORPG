@@ -20,6 +20,8 @@ public:
 	void close();
 	bool isOpened() const;
 	bool isFocused() const;
+	
+	bool containsPosition(sf::Vector2f point) const;
 
 	float getAlpha() const;
 	void setAlpha(float alpha);
@@ -36,11 +38,11 @@ protected:
 
 	sf::Vector2f size = sf::Vector2f(-1, -1);
 	sf::Vector2f position = sf::Vector2f(-1, -1);
-	bool centeredPosition = false;
 
 	void setSize(sf::Vector2f size);
-	void setPosition(sf::Vector2f position, bool centered);
+	void setPosition(sf::Vector2f position);
 	std::string convertFloatToString(float number, int precision) const;
+
 private:
 	float prevAlpha;
 

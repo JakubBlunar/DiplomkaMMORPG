@@ -19,7 +19,6 @@ void IGLoginCredentials::render(Game* game, IGManager* manager) {
 
 	ImGui::SetNextWindowSize(size, ImGuiCond_Always);
 	ImGui::SetNextWindowPos(position);
-	ImGui::SetNextWindowPosCenter(centeredPosition);
 
 	if (!ImGui::Begin("Login", &visible,
 	                  ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove)) {
@@ -68,8 +67,9 @@ void IGLoginCredentials::render(Game* game, IGManager* manager) {
 void IGLoginCredentials::beforeRender(Game* game) {
 	IGWindow::beforeRender(game);
 
-	float left = game->window->getView().getViewport().left + game->window->getView().getViewport().width / 2.0f;
-	float top = game->window->getView().getViewport().top + game->window->getView().getViewport().height / 2.0f;
-	setPosition(sf::Vector2f(left, top), true);
+	Camera* c = game->getCamera();
 
+	float left = c->getResolution().x / 2 - size.x / 2;
+	float top = c->getResolution().y / 2 - size.y / 2;
+	setPosition(sf::Vector2f(left, top));
 }

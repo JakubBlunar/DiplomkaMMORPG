@@ -17,18 +17,15 @@ protected:
 	~Scene();
 	IGManager* windowManager;
 	Game* game;
-
-	bool isLeftClicked;
-	bool isRightClicked;
-	
-	virtual void onClick(sf::Mouse::Button event, sf::Vector2f position);
 public:
 	bool canChange;
 	std::string name;
 	SceneType type;
 	sf::FloatRect playerBorders;
-	
 
+	virtual void onKeyPress(sf::Keyboard::Key key);
+	virtual void onKeyRelease(sf::Keyboard::Key key);
+	virtual void onClick(sf::Mouse::Button event, sf::Vector2f position);
 
 	SceneType getType() const;
 	IGManager* getWindowManager() const;

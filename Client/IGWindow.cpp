@@ -2,6 +2,7 @@
 #include <imgui.h>
 #include <iomanip>
 #include <sstream>
+#include <SFML/Graphics/Rect.hpp>
 
 
 IGWindow::IGWindow() : prevAlpha(0) {
@@ -72,13 +73,22 @@ void IGWindow::setSize(sf::Vector2f size) {
 	this->size = size;
 }
 
-void IGWindow::setPosition(sf::Vector2f position, bool centered) {
+void IGWindow::setPosition(sf::Vector2f position) {
 	this->position = position;
-	this->centeredPosition = true;
 }
 
 std::string IGWindow::convertFloatToString(float number, int precision) const {
 	std::stringstream stream;
 	stream << std::fixed << std::setprecision(precision) << number;
 	return stream.str();
+}
+
+bool IGWindow::containsPosition(sf::Vector2f point) const {
+	sf::Rect<float> window;
+	window.top = position.y;
+	window.left = position.x;
+	window.width = size.x;
+	window.height = size.y;
+
+	return window.contains(point);
 }

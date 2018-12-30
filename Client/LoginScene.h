@@ -14,6 +14,8 @@ public:
 	void afterChange() override;
 	void update(sf::Time elapsedTime) override;
 	void render() override;
+
+	void onKeyPress(sf::Keyboard::Key key) override;
 };
 
 #endif

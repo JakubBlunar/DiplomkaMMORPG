@@ -15,6 +15,9 @@ public:
 	void afterChange() override;
 	void update(sf::Time elapsedTime) override;
 	void render() override;
+	void onKeyPress(sf::Keyboard::Key key) override;
+
+	void onClick(sf::Mouse::Button event, sf::Vector2f position) override;
 private:
 	IGEntityInfo* playerInfoWindow;
 	IGEntityInfo* targetInfoWindow;
@@ -23,9 +26,6 @@ private:
 	sf::CircleShape targetArrow;
 	Entity* targetEntity;
 
-	void onClick(sf::Mouse::Button event, sf::Vector2f position) override;
-
-	bool escPressed;
 	sf::Texture BoxTexture;
 	sf::Font mFont;
 
@@ -33,10 +33,7 @@ private:
 	b2AABB aabb;
 
 	bool drawDebugData;
-	bool fonePressed;
 	sf::Sprite Sprite;
 
 	std::list<sf::Vector2f> path;
-
-	bool mousePressed;
 };

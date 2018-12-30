@@ -3,9 +3,10 @@
 #include "Scene.h"
 #include "GamePlayScene.h"
 #include "CharacterChooseScene.h"
+#include <iostream>
 
 
-SceneManager::SceneManager(Game *g) {
+SceneManager::SceneManager(Game *g): sceneToChange(nullptr) {
 	LoginScene* logS = new LoginScene(SceneType::LOGIN, g);
 	scenes.insert(std::pair<SceneType, Scene*>(SceneType::LOGIN, logS));
 	actualScene = logS;
@@ -51,9 +52,24 @@ void SceneManager::update(sf::Time elapsedTime) {
 	}
 }
 
+void SceneManager::onKeyPress(sf::Keyboard::Key key) const {
+	actualScene->onKeyPress(key);
+}
+
+void SceneManager::onKeyRelease(sf::Keyboard::Key key) const {
+	actualScene->onKeyRelease(key);
+}
+
+void SceneManager::onClick(sf::Mouse::Button button, sf::Vector2f position) const
+{
+	actualScene->onClick(button, position);
+}
+
 void SceneManager::switchScene(Scene* scene) {
 	scene->beforeChange();
 	sceneToChange = nullptr;
 	actualScene = scene;
 	scene->afterChange();
 }
+
+
