@@ -11,7 +11,6 @@
 
 GamePlayScene::GamePlayScene(SceneType sceneType, Game* g) : Scene(sceneType, g) {
 	drawDebugData = false;
-	targetEntity = nullptr;
 
 	windowManager->addWindow("GameMenu", new IGGameMenu());
 	targetInfoWindow = new IGEntityInfo("target", sf::Vector2f(300, 50));
@@ -40,9 +39,9 @@ void GamePlayScene::beforeChange() {
 
 void GamePlayScene::afterChange() {
 	Scene::afterChange();
-	Player* p = game->getAccount()->getPlayerEntity();
-	playerInfoWindow->setEntity(p);
-	actionBarWindow->setPlayer(p);
+	player = game->getAccount()->getPlayerEntity();
+	playerInfoWindow->setEntity(player);
+	actionBarWindow->setPlayer(player);
 
 	windowManager->Open("PlayerInfo");
 	windowManager->Open("ActionBar");
@@ -177,7 +176,7 @@ void GamePlayScene::render() {
 			}
 
 			game->window->draw(*sprite);
-			if (targetEntity && targetEntity == entity) {
+			if (player->getTarget() && player->getTarget() == entity) {
 				targetArrow.setPosition(spritePosition.x + renderComponent->getSize().x / 2.f + 8, spritePosition.y);
 				game->window->draw(targetArrow);
 			}
@@ -200,8 +199,8 @@ void GamePlayScene::onKeyPress(sf::Keyboard::Key key) {
 		return;
 	}
 
-	Player* p = game->getAccount()->getPlayerEntity();
-	std::vector<SpellInfo*>* spells = p->getSpells();
+	Map* map = game->getMap();
+	std::vector<SpellInfo*>* spells = player->getSpells();
 
 	switch (key) {
 		case sf::Keyboard::Key::Escape: {
@@ -218,61 +217,61 @@ void GamePlayScene::onKeyPress(sf::Keyboard::Key key) {
 		case sf::Keyboard::Num1:
 		case sf::Keyboard::Key::Numpad1:
 			if (!spells->empty()) {
-				p->castSpell(spells->at(0));
+				player->castSpell(spells->at(0), map);
 			}
 			break;
 		case sf::Keyboard::Num2:
 		case sf::Keyboard::Key::Numpad2:
 			if (spells->size() > 1) {
-				p->castSpell(spells->at(1));
+				player->castSpell(spells->at(1), map);
 			}
 			break;
 		case sf::Keyboard::Num3:
 		case sf::Keyboard::Key::Numpad3:
 			if (spells->size() > 2) {
-				p->castSpell(spells->at(2));
+				player->castSpell(spells->at(2), map);
 			}
 			break;
 		case sf::Keyboard::Num4:
 		case sf::Keyboard::Key::Numpad4:
 			if (spells->size() > 3) {
-				p->castSpell(spells->at(3));
+				player->castSpell(spells->at(3), map);
 			}
 			break;
 		case sf::Keyboard::Num5:
 		case sf::Keyboard::Key::Numpad5:
 			if (spells->size() > 4) {
-				p->castSpell(spells->at(4));
+				player->castSpell(spells->at(4), map);
 			}
 			break;
 		case sf::Keyboard::Num6:
 		case sf::Keyboard::Key::Numpad6:
 			if (spells->size() > 5) {
-				p->castSpell(spells->at(5));
+				player->castSpell(spells->at(5), map);
 			}
 			break;
 		case sf::Keyboard::Num7:
 		case sf::Keyboard::Key::Numpad7:
 			if (spells->size() > 6) {
-				p->castSpell(spells->at(6));
+				player->castSpell(spells->at(6), map);
 			}
 			break;
 		case sf::Keyboard::Num8:
 		case sf::Keyboard::Key::Numpad8:
 			if (spells->size() > 7) {
-				p->castSpell(spells->at(7));
+				player->castSpell(spells->at(7), map);
 			}
 			break;
 		case sf::Keyboard::Num9:
 		case sf::Keyboard::Key::Numpad9:
 			if (spells->size() > 8) {
-				p->castSpell(spells->at(8));
+				player->castSpell(spells->at(8), map);
 			}
 			break;
 		case sf::Keyboard::Num0:
 		case sf::Keyboard::Key::Numpad0:
 			if (spells->size() > 9) {
-				p->castSpell(spells->at(9));
+				player->castSpell(spells->at(9), map);
 			}
 			break;
 		default: break;
@@ -330,7 +329,7 @@ void GamePlayScene::onClick(sf::Mouse::Button event, sf::Vector2f position) {
 			if (type == EntityType::PLAYER || type == EntityType::NPC) {
 				if (entity->containsPoint(position)) {
 					targetInfoWindow->setEntity(entity);
-					targetEntity = entity;
+					player->setTarget(entity);
 					windowManager->Open("TargetInfo");
 					found = true;
 				}
@@ -339,7 +338,7 @@ void GamePlayScene::onClick(sf::Mouse::Button event, sf::Vector2f position) {
 
 		if (!found) {
 			targetInfoWindow->setEntity(nullptr);
-			targetEntity = nullptr;
+			player->setTarget(nullptr);
 			windowManager->close("TargetInfo");
 		}
 

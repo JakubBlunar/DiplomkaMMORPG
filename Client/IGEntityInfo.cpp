@@ -94,7 +94,7 @@ void IGEntityInfo::render(Game * g, IGManager * manager)
 
 	ImGui::PopItemWidth();
 
-	focused = ImGui::IsWindowFocused();
+	focused = false;
 
 	ImGui::End(); // end window
 }

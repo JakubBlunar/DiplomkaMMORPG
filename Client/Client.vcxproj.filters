@@ -237,6 +237,9 @@
     <ClCompile Include="IGActionBar.cpp">
       <Filter>Source Files\Scenes\IMGui</Filter>
     </ClCompile>
+    <ClCompile Include="EntityToEntityRayCast.cpp">
+      <Filter>Source Files\Core\Map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="json.hpp">
@@ -400,6 +403,9 @@
     </ClInclude>
     <ClInclude Include="IGActionBar.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityToEntityRayCast.h">
+      <Filter>Header Files\Core\Map</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

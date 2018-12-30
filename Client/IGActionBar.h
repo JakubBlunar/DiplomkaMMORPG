@@ -5,16 +5,16 @@
 #include "Player.h"
 
 class IGActionBar :
-	public IGWindow
-{
+	public IGWindow {
 public:
 	IGActionBar();
 	virtual ~IGActionBar();
 
 	void setPlayer(Player* player) {
 		this->player = player;
-		this->spells = player->getSpells(); 
-	} 
+		this->spells = player->getSpells();
+	}
+
 protected:
 	void render(Game* g, IGManager* manager) override;
 	void beforeRender(Game* game) override;

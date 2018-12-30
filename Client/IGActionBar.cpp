@@ -5,10 +5,7 @@
 #include "ImGuiFonts.h"
 
 
-IGActionBar::IGActionBar() {
-	
-}
-
+IGActionBar::IGActionBar(): player(nullptr), spells(nullptr) { }
 
 IGActionBar::~IGActionBar() {}
 
@@ -19,7 +16,7 @@ void IGActionBar::render(Game* g, IGManager* manager) {
 	ImGui::SetNextWindowPos(position);
 
 	if (!ImGui::Begin("ActionBar", &visible,
-	                  ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove)) {
+	                  ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBringToFrontOnFocus)) {
 		focused = false;
 		ImGui::End();
 		return;
@@ -33,7 +30,7 @@ void IGActionBar::render(Game* g, IGManager* manager) {
 		SpellInfo* si = spells->at(i);
 		ImGui::SameLine();
 		if (ImGui::ImageButton(si->icon)) {
-			player->castSpell(si);
+			//player->castSpell(si, );
 		}
 		if (ImGui::IsItemHovered()) {
 			ImGui::BeginTooltip();
@@ -66,7 +63,7 @@ void IGActionBar::render(Game* g, IGManager* manager) {
 
 	ImGui::PopItemWidth();
 
-	focused = ImGui::IsWindowFocused();
+	focused = false;
 	ImGui::SetWindowFontScale(1);
 
 	ImGui::End(); // end window

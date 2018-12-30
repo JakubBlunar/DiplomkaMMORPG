@@ -18,6 +18,8 @@ public:
 	Player(bool playerControlled);
 	~Player();
 
+	Entity* target;
+
 	void handleEvent(GameEvent* event) override;
 	void update(sf::Time elapsedTime, Map* map, Game* g) override;
 
@@ -52,7 +54,14 @@ public:
 		return &spells;
 	}
 
-	void castSpell(SpellInfo* spellInfo);
+	void castSpell(SpellInfo* spellInfo, Map* map);
+
+	void setTarget(Entity* target) {
+		this->target = target;
+	}
+	Entity* getTarget() const {
+		return target;
+	}
 private:
 	AttributesComponent* attributesComponent;
 

@@ -8,8 +8,7 @@ IGGameMenu::IGGameMenu() {
 }
 
 
-IGGameMenu::~IGGameMenu() {
-}
+IGGameMenu::~IGGameMenu() {}
 
 void IGGameMenu::render(Game* g, IGManager* manager) {
 
@@ -59,7 +58,8 @@ void IGGameMenu::render(Game* g, IGManager* manager) {
 		ImGui::EndPopup();
 	}
 
-	if (ImGui::BeginPopupModal("LogoutCharacterPrompt", &open, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize)) {
+	if (ImGui::BeginPopupModal("LogoutCharacterPrompt", &open,
+	                           ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize)) {
 		ImGui::SetWindowFontScale(0.2f);
 		ImGui::Text("Do you realy wish to logout?");
 		ImGui::NewLine();

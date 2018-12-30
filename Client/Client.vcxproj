@@ -150,6 +150,7 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityPrototypes.cpp" />
+    <ClCompile Include="EntityToEntityRayCast.cpp" />
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="FieldLayer.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -203,6 +204,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityPrototypes.h" />
+    <ClInclude Include="EntityToEntityRayCast.h" />
     <ClInclude Include="EventDispatcher.h" />
     <ClInclude Include="Field.h" />
     <ClInclude Include="FieldLayer.h" />

@@ -10,6 +10,7 @@
 #include "MapContactListener.h"
 #include "MapGrid.h"
 #include "Npc.h"
+#include "EntityToEntityRayCast.h"
 
 class Spell;
 class GameEvent;
@@ -63,6 +64,8 @@ public:
 	int getHeight() const;
 	b2World* getB2World() const;
 	MapGrid* getGrid() const;
+
+	EntityToEntityRayCast* makeRayCast(Entity* startEntity, Entity* endEntity) const;
 
 	std::vector<Entity*>* getEntities();
 

@@ -116,6 +116,16 @@ MapGrid* Map::getGrid() const {
 	return grid;
 }
 
+EntityToEntityRayCast* Map::makeRayCast(Entity* startEntity, Entity* endEntity) const {
+	EntityToEntityRayCast callback(startEntity, endEntity);
+
+	b2Vec2 start = startEntity->getBody()->GetPosition();
+	b2Vec2 end = endEntity->getBody()->GetPosition();
+
+	world->RayCast(&callback, start, end);
+	return &callback;
+}
+
 std::vector<Entity*>* Map::getEntities() {
 	return &entities;
 }

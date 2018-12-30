@@ -28,21 +28,14 @@ void Scene::afterChange() {
 	canChange = true;
 }
 
-void Scene::update(sf::Time elapsedTime) {
-
-}
+void Scene::update(sf::Time elapsedTime) {}
 
 void Scene::render() {
 	windowManager->drawAll(game);
 }
 
-void Scene::onClick(sf::Mouse::Button event, sf::Vector2f position) {
-	
-}
+void Scene::onClick(sf::Mouse::Button event, sf::Vector2f position) { }
 
 void Scene::onKeyPress(sf::Keyboard::Key key) {}
 
-void Scene::onKeyRelease(sf::Keyboard::Key key)
-{
-}
-
+void Scene::onKeyRelease(sf::Keyboard::Key key) {}

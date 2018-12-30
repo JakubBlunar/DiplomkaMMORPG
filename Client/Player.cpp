@@ -321,10 +321,15 @@ AttributesComponent* Player::getAttributesComponent() const {
 	return attributesComponent;
 }
 
-void Player::castSpell(SpellInfo* spellInfo) {
+void Player::castSpell(SpellInfo* spellInfo, Map* map) {
 	auto exists = std::find(spells.begin(), spells.end(), spellInfo);
 	if (exists == spells.end()) {
 		return;
+	}
+
+	Entity* spellTarget = target;
+	if(!target) {
+		spellTarget = this;
 	}
 
 	float actualMana = attributesComponent->getAttribute(EntityAttributeType::MP);
@@ -332,8 +337,20 @@ void Player::castSpell(SpellInfo* spellInfo) {
 		return;
 	}
 
-	cout << "Casting spell " << spellInfo->name << endl;
+	bool canCast = spellTarget == this;
+	if (!canCast) {
+		EntityToEntityRayCast* result = map->makeRayCast(this, spellTarget);
+		canCast = result->closestEntity == target;
+	}
+
+	if (canCast) {
+		cout << "Casting spell " << spellInfo->name << endl;
+	} else {
+		cout << "Cant see entity" << spellInfo->name << endl;
+	}
 }
+
+
 
 void Player::sendPosition(Game* g) const {
 	sf::Vector2f position = positionComponent->getPosition();

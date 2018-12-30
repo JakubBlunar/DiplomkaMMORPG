@@ -24,7 +24,7 @@ private:
 	IGActionBar* actionBarWindow;
 
 	sf::CircleShape targetArrow;
-	Entity* targetEntity;
+	Player* player;
 
 	sf::Texture BoxTexture;
 	sf::Font mFont;
