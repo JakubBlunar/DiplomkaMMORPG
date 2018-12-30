@@ -192,9 +192,16 @@ void GamePlayScene::render() {
 }
 
 void GamePlayScene::onKeyPress(sf::Keyboard::Key key) {
-	if(!game->window || !game->window->hasFocus()) {
+	if (!game->window || !game->window->hasFocus()) {
 		return;
 	}
+
+	if (windowManager->AnyWindowFocused()) {
+		return;
+	}
+
+	Player* p = game->getAccount()->getPlayerEntity();
+	std::vector<SpellInfo*>* spells = p->getSpells();
 
 	switch (key) {
 		case sf::Keyboard::Key::Escape: {
@@ -207,6 +214,66 @@ void GamePlayScene::onKeyPress(sf::Keyboard::Key key) {
 		}
 		case sf::Keyboard::F1: 
 			drawDebugData = !drawDebugData;
+			break;
+		case sf::Keyboard::Num1:
+		case sf::Keyboard::Key::Numpad1:
+			if (!spells->empty()) {
+				p->castSpell(spells->at(0));
+			}
+			break;
+		case sf::Keyboard::Num2:
+		case sf::Keyboard::Key::Numpad2:
+			if (spells->size() > 1) {
+				p->castSpell(spells->at(1));
+			}
+			break;
+		case sf::Keyboard::Num3:
+		case sf::Keyboard::Key::Numpad3:
+			if (spells->size() > 2) {
+				p->castSpell(spells->at(2));
+			}
+			break;
+		case sf::Keyboard::Num4:
+		case sf::Keyboard::Key::Numpad4:
+			if (spells->size() > 3) {
+				p->castSpell(spells->at(3));
+			}
+			break;
+		case sf::Keyboard::Num5:
+		case sf::Keyboard::Key::Numpad5:
+			if (spells->size() > 4) {
+				p->castSpell(spells->at(4));
+			}
+			break;
+		case sf::Keyboard::Num6:
+		case sf::Keyboard::Key::Numpad6:
+			if (spells->size() > 5) {
+				p->castSpell(spells->at(5));
+			}
+			break;
+		case sf::Keyboard::Num7:
+		case sf::Keyboard::Key::Numpad7:
+			if (spells->size() > 6) {
+				p->castSpell(spells->at(6));
+			}
+			break;
+		case sf::Keyboard::Num8:
+		case sf::Keyboard::Key::Numpad8:
+			if (spells->size() > 7) {
+				p->castSpell(spells->at(7));
+			}
+			break;
+		case sf::Keyboard::Num9:
+		case sf::Keyboard::Key::Numpad9:
+			if (spells->size() > 8) {
+				p->castSpell(spells->at(8));
+			}
+			break;
+		case sf::Keyboard::Num0:
+		case sf::Keyboard::Key::Numpad0:
+			if (spells->size() > 9) {
+				p->castSpell(spells->at(9));
+			}
 			break;
 		default: break;
 	}

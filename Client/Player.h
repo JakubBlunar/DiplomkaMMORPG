@@ -51,6 +51,8 @@ public:
 	std::vector<SpellInfo*>* getSpells() {
 		return &spells;
 	}
+
+	void castSpell(SpellInfo* spellInfo);
 private:
 	AttributesComponent* attributesComponent;
 

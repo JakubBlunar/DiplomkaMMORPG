@@ -321,6 +321,20 @@ AttributesComponent* Player::getAttributesComponent() const {
 	return attributesComponent;
 }
 
+void Player::castSpell(SpellInfo* spellInfo) {
+	auto exists = std::find(spells.begin(), spells.end(), spellInfo);
+	if (exists == spells.end()) {
+		return;
+	}
+
+	float actualMana = attributesComponent->getAttribute(EntityAttributeType::MP);
+	if (actualMana - spellInfo->manaCost < 0) {
+		return;
+	}
+
+	cout << "Casting spell " << spellInfo->name << endl;
+}
+
 void Player::sendPosition(Game* g) const {
 	sf::Vector2f position = positionComponent->getPosition();
 	sf::Vector2f movement = positionComponent->getMovement();

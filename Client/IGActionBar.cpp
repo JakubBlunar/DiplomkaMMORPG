@@ -33,7 +33,7 @@ void IGActionBar::render(Game* g, IGManager* manager) {
 		SpellInfo* si = spells->at(i);
 		ImGui::SameLine();
 		if (ImGui::ImageButton(si->icon)) {
-			std::cout << "Casting spell " << si->name << std::endl;
+			player->castSpell(si);
 		}
 		if (ImGui::IsItemHovered()) {
 			ImGui::BeginTooltip();
