@@ -14,6 +14,7 @@
 #include "ImGuiFonts.h"
 #include <unordered_set>
 
+struct GameMessage;
 class SceneManager;
 
 class Game :
@@ -45,6 +46,13 @@ public:
 
 	std::unordered_set<sf::Keyboard::Key> pressedKeys;
 	std::unordered_set<sf::Mouse::Button> pressedButtons;
+
+	void addGameMessage(GameMessage* message) const;
+
+	sf::Time getGameTime() const {
+		return gameTime.getElapsedTime();
+	}
+
 protected:
 	void processEvents();
 	virtual void update(sf::Time elapsedTime);
@@ -75,6 +83,7 @@ protected:
 	Map* gameMap;
 	Camera camera;
 	Account* account;
+	sf::Clock gameTime;
 };
 
 #endif

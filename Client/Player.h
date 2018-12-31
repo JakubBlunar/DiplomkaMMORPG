@@ -54,7 +54,7 @@ public:
 		return &spells;
 	}
 
-	void castSpell(SpellInfo* spellInfo, Map* map);
+	void castSpell(SpellInfo* spellInfo, Map* map, Game* g);
 
 	void setTarget(Entity* target) {
 		this->target = target;

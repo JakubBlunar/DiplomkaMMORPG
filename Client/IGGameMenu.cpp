@@ -104,9 +104,9 @@ void IGGameMenu::render(Game* g, IGManager* manager) {
 void IGGameMenu::beforeRender(Game* game) {
 	IGWindow::beforeRender(game);
 
-	Camera* c = game->getCamera();
+	sf::Vector2u windowSize = game->window->getSize();
 
-	float left = c->getResolution().x / 2 - size.x / 2;
-	float top = c->getResolution().y / 2 - size.y / 2;
+	float left = windowSize.x / 2 - size.x / 2;
+	float top = windowSize.y / 2 - size.y / 2;
 	setPosition(sf::Vector2f(left, top));
 }

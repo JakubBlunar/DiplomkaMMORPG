@@ -217,61 +217,61 @@ void GamePlayScene::onKeyPress(sf::Keyboard::Key key) {
 		case sf::Keyboard::Num1:
 		case sf::Keyboard::Key::Numpad1:
 			if (!spells->empty()) {
-				player->castSpell(spells->at(0), map);
+				player->castSpell(spells->at(0), map, game);
 			}
 			break;
 		case sf::Keyboard::Num2:
 		case sf::Keyboard::Key::Numpad2:
 			if (spells->size() > 1) {
-				player->castSpell(spells->at(1), map);
+				player->castSpell(spells->at(1), map, game);
 			}
 			break;
 		case sf::Keyboard::Num3:
 		case sf::Keyboard::Key::Numpad3:
 			if (spells->size() > 2) {
-				player->castSpell(spells->at(2), map);
+				player->castSpell(spells->at(2), map, game);
 			}
 			break;
 		case sf::Keyboard::Num4:
 		case sf::Keyboard::Key::Numpad4:
 			if (spells->size() > 3) {
-				player->castSpell(spells->at(3), map);
+				player->castSpell(spells->at(3), map, game);
 			}
 			break;
 		case sf::Keyboard::Num5:
 		case sf::Keyboard::Key::Numpad5:
 			if (spells->size() > 4) {
-				player->castSpell(spells->at(4), map);
+				player->castSpell(spells->at(4), map, game);
 			}
 			break;
 		case sf::Keyboard::Num6:
 		case sf::Keyboard::Key::Numpad6:
 			if (spells->size() > 5) {
-				player->castSpell(spells->at(5), map);
+				player->castSpell(spells->at(5), map, game);
 			}
 			break;
 		case sf::Keyboard::Num7:
 		case sf::Keyboard::Key::Numpad7:
 			if (spells->size() > 6) {
-				player->castSpell(spells->at(6), map);
+				player->castSpell(spells->at(6), map, game);
 			}
 			break;
 		case sf::Keyboard::Num8:
 		case sf::Keyboard::Key::Numpad8:
 			if (spells->size() > 7) {
-				player->castSpell(spells->at(7), map);
+				player->castSpell(spells->at(7), map, game);
 			}
 			break;
 		case sf::Keyboard::Num9:
 		case sf::Keyboard::Key::Numpad9:
 			if (spells->size() > 8) {
-				player->castSpell(spells->at(8), map);
+				player->castSpell(spells->at(8), map, game);
 			}
 			break;
 		case sf::Keyboard::Num0:
 		case sf::Keyboard::Key::Numpad0:
 			if (spells->size() > 9) {
-				player->castSpell(spells->at(9), map);
+				player->castSpell(spells->at(9), map, game);
 			}
 			break;
 		default: break;

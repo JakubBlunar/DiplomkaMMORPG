@@ -11,12 +11,25 @@ enum class SceneType {
 	CHARACTER_CHOOSE
 };
 
+struct GameMessage {
+	std::string message;
+	sf::Time displayTime;
+	sf::Time startTime;
+	sf::Color color = sf::Color::Yellow;
+	int size = 20;
+};
+
 class Scene {
+	sf::Text messageText;
 protected:
 	Scene(SceneType sceneType, Game* g);
 	~Scene();
 	IGManager* windowManager;
 	Game* game;
+
+	std::queue<GameMessage*> waitingMessages;
+	std::vector<GameMessage*> messages;
+
 public:
 	bool canChange;
 	std::string name;
@@ -35,6 +48,7 @@ public:
 	virtual void update(sf::Time elapsedTime);
 	virtual void render();
 
+	void addGameMessage(GameMessage* message);
 	
 };
 

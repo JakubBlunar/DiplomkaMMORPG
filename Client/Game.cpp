@@ -50,6 +50,7 @@ void Game::run() {
 	recieveThread = new sf::Thread(&PacketManager::startRecieve, packet_manager);
 	recieveThread->launch();
 
+	gameTime.restart();
 	afterStart();
 
 	sf::Clock clock;
@@ -96,6 +97,10 @@ void Game::setAccount(Account* account) {
 
 void Game::handleEvent(GameEvent* event) {
 	event->accept(eventActions);
+}
+
+void Game::addGameMessage(GameMessage* message) const {
+	sceneManager->getActualScene()->addGameMessage(message);
 }
 
 void Game::processEvents() {

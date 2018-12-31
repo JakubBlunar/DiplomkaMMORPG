@@ -30,7 +30,7 @@ void IGActionBar::render(Game* g, IGManager* manager) {
 		SpellInfo* si = spells->at(i);
 		ImGui::SameLine();
 		if (ImGui::ImageButton(si->icon)) {
-			//player->castSpell(si, );
+			player->castSpell(si, g->getMap(), g);
 		}
 		if (ImGui::IsItemHovered()) {
 			ImGui::BeginTooltip();
@@ -85,11 +85,11 @@ void IGActionBar::beforeRender(Game* game) {
 		}
 		setSize(size);
 	}
+	
+	sf::Vector2u windowSize = game->window->getSize();
 
-	Camera* c = game->getCamera();
-
-	float left = c->getResolution().x / 2 - size.x / 2;
-	float top = c->getResolution().y - size.y;
+	float left = windowSize.x / 2 - size.x / 2;
+	float top = windowSize.y - size.y;
 	setPosition(sf::Vector2f(left, top));
 
 

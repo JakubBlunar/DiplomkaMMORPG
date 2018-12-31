@@ -10,6 +10,7 @@
 #include "Game.h"
 #include <iostream>
 #include "EntityPrototypes.h"
+#include "Scene.h"
 
 
 Player::Player(bool playerControlled) : Entity(0) {
@@ -321,7 +322,7 @@ AttributesComponent* Player::getAttributesComponent() const {
 	return attributesComponent;
 }
 
-void Player::castSpell(SpellInfo* spellInfo, Map* map) {
+void Player::castSpell(SpellInfo* spellInfo, Map* map, Game* g) {
 	auto exists = std::find(spells.begin(), spells.end(), spellInfo);
 	if (exists == spells.end()) {
 		return;
@@ -344,9 +345,15 @@ void Player::castSpell(SpellInfo* spellInfo, Map* map) {
 	}
 
 	if (canCast) {
-		cout << "Casting spell " << spellInfo->name << endl;
+		GameMessage* m = new GameMessage();
+		m->message = "Casting spell" + spellInfo->name;
+		m->displayTime = sf::seconds(2);
+		g->addGameMessage(m);
 	} else {
-		cout << "Cant see entity" << spellInfo->name << endl;
+		GameMessage* m = new GameMessage();
+		m->message = "Cant see entity " + spellInfo->name;
+		m->displayTime = sf::seconds(2);
+		g->addGameMessage(m);
 	}
 }
 
