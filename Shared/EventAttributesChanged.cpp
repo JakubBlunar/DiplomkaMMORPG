@@ -1,9 +1,10 @@
 #include "stdafx.h"
 #include "EventAttributesChanged.h"
+#include "EntityConstants.h"
 
 
 EventAttributesChanged::EventAttributesChanged(): spawnId(0) {
-	id = NPC_ATTRIBUTES_CHANGED;
+	id = ATTRIBUTES_CHANGED;
 }
 
 
@@ -26,7 +27,9 @@ void EventAttributesChanged::accept(EventVisitor* v) {
 
 bool EventAttributesChanged::loadFromPacket(sf::Packet* p) {
 	sf::Uint8 count;
-	if (*p >> spawnId >> count) {
+	sf::Uint32 entityTypeNum;
+	if (*p >> entityTypeNum >> spawnId >> count) {
+		entityType = static_cast<EntityCategory>(entityTypeNum);
 		for (int i = 0; i < count; i++) {
 			sf::Uint8 at;
 			float newValue;
@@ -46,7 +49,7 @@ sf::Packet* EventAttributesChanged::toPacket() {
 	sf::Packet* p = new sf::Packet();
 
 	sf::Uint8 size = (sf::Uint8)changes.size();
-	if (*p << id << spawnId << size) {
+	if (*p << id << static_cast<sf::Uint32>(entityType)  << spawnId << size) {
 		for (std::map<EntityAttributeType, float>::iterator it = changes.begin(); it != changes.end(); ++it)
 		{
 		    if (*p << static_cast<sf::Uint8>(it->first) << it->second) {

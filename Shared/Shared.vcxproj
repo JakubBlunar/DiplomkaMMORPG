@@ -172,6 +172,7 @@
     <ClInclude Include="CharacterConstants.h" />
     <ClInclude Include="DeleteElementPointer.h" />
     <ClInclude Include="EntityConstants.h" />
+    <ClInclude Include="EventAttributeBonusesChanged.h" />
     <ClInclude Include="EventCharacterChoose.h" />
     <ClInclude Include="EventCharacterChooseResponse.h" />
     <ClInclude Include="EventCharacterLogout.h" />
@@ -180,7 +181,7 @@
     <ClInclude Include="EventLoginRequest.h" />
     <ClInclude Include="EventLoginResponse.h" />
     <ClInclude Include="EventMovementChange.h" />
-    <ClInclude Include="EventNpcAttributesChanged.h" />
+    <ClInclude Include="EventAttributesChanged.h" />
     <ClInclude Include="EventNpcChanges.h" />
     <ClInclude Include="EventNpcMovementChange.h" />
     <ClInclude Include="EventNpcStatusChanged.h" />
@@ -203,6 +204,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Astar.cpp" />
+    <ClCompile Include="EventAttributeBonusesChanged.cpp" />
     <ClCompile Include="EventCharacterChoose.cpp" />
     <ClCompile Include="EventCharacterChooseResponse.cpp" />
     <ClCompile Include="EventCharacterLogout.cpp" />
@@ -211,7 +213,7 @@
     <ClCompile Include="EventLoginRequest.cpp" />
     <ClCompile Include="EventLoginResponse.cpp" />
     <ClCompile Include="EventMovementChange.cpp" />
-    <ClCompile Include="EventNpcAttributesChanged.cpp" />
+    <ClCompile Include="EventAttributesChanged.cpp" />
     <ClCompile Include="EventNpcChanges.cpp" />
     <ClCompile Include="EventNpcMovementChange.cpp" />
     <ClCompile Include="EventNpcStatusChanged.cpp" />

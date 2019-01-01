@@ -12,9 +12,12 @@ struct SpellInfo {
 	std::string name;
 	float manaCost;
 	sf::Time cooldownTime;
+	sf::Time globalCooldownTime;
 	sf::Time castingTime;
 	int id;
 	RenderSprite icon;
+	float maxRange;
+	std::string description;
 };
 
 class Spell: public Entity {

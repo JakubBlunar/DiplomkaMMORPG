@@ -10,6 +10,7 @@ class AttributesComponent :
 	public Component
 {
 	std::vector<float> attributes;
+	std::vector<float> bonuses;
 public:
 	AttributesComponent();
 	~AttributesComponent();
@@ -19,6 +20,11 @@ public:
 	float getAttribute(EntityAttributeType type) const;
 	void setAttribute(EntityAttributeType type, float value);
 	void setAttributeByIndex(int index, float value);
+
+	float getBonus(EntityAttributeType type) const; 
+	void setBonus(EntityAttributeType type, float value);
+	void setBonusByIndex(int index, float value);
+
 	float modifyAttribute(EntityAttributeType type, float value);
 	int attributeTypeToInt(EntityAttributeType type) const;
 };

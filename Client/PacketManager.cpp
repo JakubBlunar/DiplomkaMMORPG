@@ -8,7 +8,7 @@
 #include "EventMovementChange.h"
 #include "EventCharacterMapLeave.h"
 #include "EventNpcsMovementChange.h"
-#include "EventNpcAttributesChanged.h"
+#include "EventAttributesChanged.h"
 #include "EventCharacterChooseResponse.h"
 #include "EventCharacterMapJoin.h"
 #include "EventNpcMovementChange.h"
@@ -147,10 +147,10 @@ void PacketManager::startRecieve() {
 						game->print("Error while parsing packet " + std::to_string(pt));
 					}
 					break;
-				case NPC_ATTRIBUTES_CHANGED:
-					e = new EventNpcAttributesChanged();
+				case ATTRIBUTES_CHANGED:
+					e = new EventAttributesChanged();
 					if (e->loadFromPacket(&packet)) {
-						EventDispatcher<EventNpcAttributesChanged>::dispatchEvent(e);
+						EventDispatcher<EventAttributesChanged>::dispatchEvent(e);
 					} else {
 						game->print("Error while parsing packet " + std::to_string(pt));
 					}

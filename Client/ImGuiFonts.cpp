@@ -22,7 +22,7 @@ void ImGuiFonts::init() {
 void ImGuiFonts::loadFont(std::string font, int size)
 {
 	ImGuiIO& io = ImGui::GetIO();
-	ImFont* loadedFont = io.Fonts->AddFontFromFileTTF(font.c_str(), size);
+	ImFont* loadedFont = io.Fonts->AddFontFromFileTTF(font.c_str(), (float)size);
 	fonts.insert(std::make_pair(std::make_pair(font, size), loadedFont));
 }
 

@@ -43,11 +43,12 @@ void Scene::update(sf::Time elapsedTime) {
 		messages.push_back(message);
 	}
 
-
-	for (int i = 0; i < messages.size(); i++) {
+	int count = messages.size();
+	for (int i = 0; i < count; i++) {
 		GameMessage* message = messages.at(i);
 		if (gameTime > message->startTime + message->displayTime) {
 			messages.erase(std::find(messages.begin(), messages.end(), message));
+			count = messages.size();
 			delete message;
 		}
 	}

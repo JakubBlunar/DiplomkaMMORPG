@@ -4,7 +4,7 @@
 #include "Random.h"
 #include "EventNpcChanges.h"
 #include "EventNpcStatusChanged.h"
-#include "EventNpcAttributesChanged.h"
+#include "EventAttributesChanged.h"
 #include "NpcEventNpcIsIdle.h"
 #include "EventDispatcher.h"
 

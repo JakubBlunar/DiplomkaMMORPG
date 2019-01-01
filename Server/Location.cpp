@@ -2,7 +2,7 @@
 #include "Box2D/Box2D.h"
 #include "Random.h"
 #include "Spawn.h"
-#include "EventNpcAttributesChanged.h"
+#include "EventAttributesChanged.h"
 #include "EventNpcStatusChanged.h"
 #include "NpcEventNpcIsIdle.h"
 #include "EventDispatcher.h"
@@ -98,14 +98,15 @@ void s::Location::checkNpcRespawn(Npc* npc, sf::Time serverTime, Server* s) cons
 			map->sendEventToAllPlayers(&movChanged);
 		}
 
-		float hp = npc->getAttribute(EntityAttributeType::BASE_HP);
-		float mp = npc->getAttribute(EntityAttributeType::BASE_MP);
+		float hp = npc->getAttribute(EntityAttributeType::BASE_HP, true);
+		float mp = npc->getAttribute(EntityAttributeType::BASE_MP, true);
 
 		npc->setAttribute(EntityAttributeType::HP, hp);
 		npc->setAttribute(EntityAttributeType::MP, mp);
 
-		EventNpcAttributesChanged attributeChanges;
+		EventAttributesChanged attributeChanges;
 		attributeChanges.spawnId = npc->getSpawnId();
+		attributeChanges.entityType = NPC;
 		attributeChanges.setChange(EntityAttributeType::HP, hp);
 		attributeChanges.setChange(EntityAttributeType::MP, mp);
 		map->sendEventToAllPlayers(&attributeChanges);

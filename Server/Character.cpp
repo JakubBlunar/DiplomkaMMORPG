@@ -31,14 +31,14 @@ bool s::Character::save() const {
 	query.append(" WHERE id=" + std::to_string(id) + ";");
 
 	string queryAttr = "UPDATE character_attributes SET";
-	queryAttr.append(" experience=" + std::to_string(getAttribute(EntityAttributeType::EXPERIENCE)) + ",");
-	queryAttr.append(" money=" + std::to_string(getAttribute(EntityAttributeType::MONEY)) + ",");
-	queryAttr.append(" stamina=" + std::to_string(getAttribute(EntityAttributeType::STAMINA)) + ",");
-	queryAttr.append(" agility=" + std::to_string(getAttribute(EntityAttributeType::AGILITY)) + ",");
-	queryAttr.append(" intelect=" + std::to_string(getAttribute(EntityAttributeType::INTELECT)) + ",");
-	queryAttr.append(" spirit=" + std::to_string(getAttribute(EntityAttributeType::SPIRIT)) + ",");
-	queryAttr.append(" strength=" + std::to_string(getAttribute(EntityAttributeType::STRENGTH)) + ",");
-	queryAttr.append(" armor=" + std::to_string(getAttribute(EntityAttributeType::ARMOR)));
+	queryAttr.append(" experience=" + std::to_string(getAttribute(EntityAttributeType::EXPERIENCE, false)) + ",");
+	queryAttr.append(" money=" + std::to_string(getAttribute(EntityAttributeType::MONEY, false)) + ",");
+	queryAttr.append(" stamina=" + std::to_string(getAttribute(EntityAttributeType::STAMINA, false)) + ",");
+	queryAttr.append(" agility=" + std::to_string(getAttribute(EntityAttributeType::AGILITY, false)) + ",");
+	queryAttr.append(" intelect=" + std::to_string(getAttribute(EntityAttributeType::INTELECT, false)) + ",");
+	queryAttr.append(" spirit=" + std::to_string(getAttribute(EntityAttributeType::SPIRIT, false)) + ",");
+	queryAttr.append(" strength=" + std::to_string(getAttribute(EntityAttributeType::STRENGTH, false)) + ",");
+	queryAttr.append(" armor=" + std::to_string(getAttribute(EntityAttributeType::ARMOR, false)));
 	queryAttr.append("WHERE characterId=" + std::to_string(id));
 
 	bool success = Database::i()->executeModify(query) > 0;
@@ -117,8 +117,8 @@ s::Character* s::Character::getCharacterById(int characterId) {
 	character->recalcLevel();
 	character->recalcMaxHealth();
 	character->recalcMaxMana();
-	character->setAttribute(EntityAttributeType::HP, character->getAttribute(EntityAttributeType::BASE_HP));
-	character->setAttribute(EntityAttributeType::MP, character->getAttribute(EntityAttributeType::BASE_MP));
+	character->setAttribute(EntityAttributeType::HP, character->getAttribute(EntityAttributeType::BASE_HP, false));
+	character->setAttribute(EntityAttributeType::MP, character->getAttribute(EntityAttributeType::BASE_MP, false));
 
 
 	std::string spellsQuery = "SELECT spellType FROM character_spells WHERE characterId=" +

@@ -9,7 +9,7 @@
 #include "RenderComponent.h"
 #include "AttributesComponent.h"
 #include "EventNpcStatusChanged.h"
-#include "EventNpcAttributesChanged.h"
+#include "EventAttributesChanged.h"
 
 #include "Box2D/Box2D.h"
 
@@ -97,8 +97,11 @@ void Npc::handleEvent(GameEvent* event) {
 			npcState = temp->npcState;
 			break;
 		}
-		case NPC_ATTRIBUTES_CHANGED: {
-			EventNpcAttributesChanged* temp = (EventNpcAttributesChanged*) event;
+		case ATTRIBUTES_CHANGED: {
+			EventAttributesChanged* temp = (EventAttributesChanged*) event;
+			if (temp->entityType != NPC) 
+				return;
+
 			if (temp->spawnId != (int)id)
 				return;
 
@@ -308,12 +311,12 @@ void Npc::subscribe() {
 	EventDispatcher<EventNpcsMovementChange>::addSubscriber(this);
 	EventDispatcher<EventNpcMovementChange>::addSubscriber(this);
 	EventDispatcher<EventNpcStatusChanged>::addSubscriber(this);
-	EventDispatcher<EventNpcAttributesChanged>::addSubscriber(this);
+	EventDispatcher<EventAttributesChanged>::addSubscriber(this);
 }
 
 void Npc::unsubscribe() {
 	EventDispatcher<EventNpcMovementChange>::removeSubscriber(this);
 	EventDispatcher<EventNpcsMovementChange>::removeSubscriber(this);
-	EventDispatcher<EventNpcAttributesChanged>::removeSubscriber(this);
+	EventDispatcher<EventAttributesChanged>::removeSubscriber(this);
 	EventDispatcher<EventNpcStatusChanged>::removeSubscriber(this);
 }

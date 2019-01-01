@@ -45,12 +45,12 @@ void IGActionBar::render(Game* g, IGManager* manager) {
 			}
 
 			if (si->cooldownTime != sf::Time::Zero) {
-				std::string cooldown = "Cooldown: " + convertFloatToString(si->cooldownTime.asMilliseconds(), 0) +
+				std::string cooldown = "Cooldown: " + convertFloatToString((float)si->cooldownTime.asMilliseconds(), 0) +
 					" ms";
 				ImGui::Text(cooldown.c_str());
 			}
 			if (si->castingTime != sf::Time::Zero) {
-				std::string castingTime = "CastingTime: " + convertFloatToString(si->castingTime.asMilliseconds(), 0) +
+				std::string castingTime = "CastingTime: " + convertFloatToString((float)si->castingTime.asMilliseconds(), 0) +
 					" ms";
 				ImGui::Text(castingTime.c_str());
 			}
@@ -74,14 +74,14 @@ void IGActionBar::beforeRender(Game* game) {
 	IGWindow::beforeRender(game);
 
 	if (player) {
-		sf::Vector2f size(32 * 15, 0);
+		sf::Vector2f size(32 * 15.f, 0);
 		int spellCount = spells->size();
 		int rows = spellCount / 10 + 1;
-		size.y = rows * 54;
-		size.x = 10 * 50;
+		size.y = rows * 54.f;
+		size.x = 10.f * 50.f;
 
-		if (spellCount < 10) {
-			size.x = spellCount * 55.f + 10;
+		if (spellCount < 10.f) {
+			size.x = spellCount * 55.f + 10.f;
 		}
 		setSize(size);
 	}

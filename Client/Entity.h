@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "Subscriber.h"
 #include "Component.h"
-#include <Box2D/Dynamics/b2Body.h>
+#include <Box2D/Box2D.h>
 #include "EntityConstants.h"
 #include <SFML/System.hpp>
 

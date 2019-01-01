@@ -9,7 +9,7 @@
 #include "Astar.h"
 #include "sfLine.h"
 
-GamePlayScene::GamePlayScene(SceneType sceneType, Game* g) : Scene(sceneType, g) {
+GamePlayScene::GamePlayScene(SceneType sceneType, Game* g) : Scene(sceneType, g), player(nullptr) {
 	drawDebugData = false;
 
 	windowManager->addWindow("GameMenu", new IGGameMenu());
@@ -206,12 +206,12 @@ void GamePlayScene::onKeyPress(sf::Keyboard::Key key) {
 		case sf::Keyboard::Key::Escape: {
 			if (windowManager->isVisible("GameMenu")) {
 				windowManager->close("GameMenu");
-			}		
+			}
 			else
 				windowManager->Open("GameMenu");
 			break;
 		}
-		case sf::Keyboard::F1: 
+		case sf::Keyboard::F1:
 			drawDebugData = !drawDebugData;
 			break;
 		case sf::Keyboard::Num1:

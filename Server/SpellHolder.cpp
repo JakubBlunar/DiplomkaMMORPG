@@ -39,7 +39,7 @@ void s::SpellHolder::init()
 		SpellInfo* si = new SpellInfo();
 		si->id = (int)jsonData["id"].get<json::number_integer_t>();
 		si->name = jsonData["name"].get<json::string_t>();
-		si->manaCost = jsonData["mana"].get<json::number_float_t>();
+		si->manaCost = (float)jsonData["mana"].get<json::number_float_t>();
 		si->castingTime = sf::milliseconds((int)jsonData["castingTime"].get<json::number_integer_t>());
 		si->cooldownTime = sf::milliseconds((int)jsonData["cooldown"].get<json::number_integer_t>());
 

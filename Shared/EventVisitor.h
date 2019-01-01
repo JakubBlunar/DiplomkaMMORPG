@@ -8,13 +8,14 @@
 #include "EventNpcMovementChange.h"
 #include "EventNpcStatusChanged.h"
 
-class EventNpcAttributesChanged;
+class EventAttributesChanged;
 class EventNpcChanges;
 class EventNpcsMovementChange;
 class EventCharacterMapLeave;
 class EventLoginResponse;
 class EventMovementChange;
 class EventCharacterLogout;
+class EventAttributeBonusesChanged;
 
 class EventVisitor {
 public:
@@ -32,7 +33,8 @@ public:
 	virtual void visit(EventNpcsMovementChange* e);
 	virtual void visit(EventNpcChanges* e);
 	virtual void visit(EventNpcStatusChanged *e);
-	virtual void visit(EventNpcAttributesChanged* e);
+	virtual void visit(EventAttributesChanged* e);
+	virtual void visit(EventAttributeBonusesChanged* e);
 };
 
 #endif // !EVENT_VISITOR_H

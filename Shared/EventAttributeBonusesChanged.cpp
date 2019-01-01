@@ -1,17 +1,17 @@
 #include "stdafx.h"
-#include "EventAttributesChanged.h"
+#include "EventAttributeBonusesChanged.h"
+#include "EntityConstants.h"
 
-
-EventAttributesChanged::EventAttributesChanged(): spawnId(0) {
-	id = NPC_ATTRIBUTES_CHANGED;
+EventAttributeBonusesChanged::EventAttributeBonusesChanged(): spawnId(0), entityType() {
+	id = ATTRIBUTES_BONUSES_CHANGES;
 }
 
 
-EventAttributesChanged::~EventAttributesChanged()
+EventAttributeBonusesChanged::~EventAttributeBonusesChanged()
 {
 }
 
-void EventAttributesChanged::setChange(EntityAttributeType type, float newValue) {
+void EventAttributeBonusesChanged::setChange(EntityAttributeType type, float newValue) {
 	auto found = changes.find(type);
 	if (found == changes.end()) {
 		changes.insert(std::make_pair(type, newValue));
@@ -20,13 +20,15 @@ void EventAttributesChanged::setChange(EntityAttributeType type, float newValue)
 	}
 }
 
-void EventAttributesChanged::accept(EventVisitor* v) {
+void EventAttributeBonusesChanged::accept(EventVisitor* v) {
 	v->visit(this);
 }
 
-bool EventAttributesChanged::loadFromPacket(sf::Packet* p) {
+bool EventAttributeBonusesChanged::loadFromPacket(sf::Packet* p) {
 	sf::Uint8 count;
-	if (*p >> spawnId >> count) {
+	sf::Uint32 entityTypeNum;
+	if (*p >> entityTypeNum >> spawnId >> count) {
+		entityType = static_cast<EntityCategory>(entityTypeNum);
 		for (int i = 0; i < count; i++) {
 			sf::Uint8 at;
 			float newValue;
@@ -42,11 +44,11 @@ bool EventAttributesChanged::loadFromPacket(sf::Packet* p) {
 }
 
 
-sf::Packet* EventAttributesChanged::toPacket() {
+sf::Packet* EventAttributeBonusesChanged::toPacket() {
 	sf::Packet* p = new sf::Packet();
 
 	sf::Uint8 size = (sf::Uint8)changes.size();
-	if (*p << id << spawnId << size) {
+	if (*p << static_cast<sf::Uint32>(entityType) << id << spawnId << size) {
 		for (std::map<EntityAttributeType, float>::iterator it = changes.begin(); it != changes.end(); ++it)
 		{
 		    if (*p << static_cast<sf::Uint8>(it->first) << it->second) {

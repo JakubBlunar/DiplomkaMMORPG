@@ -14,6 +14,7 @@ public:
 	~EventAttributesChanged();
 
 	int spawnId;
+	EntityCategory entityType;
 	std::map<EntityAttributeType, float> changes;
 	void setChange(EntityAttributeType type, float newValue);
 

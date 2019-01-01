@@ -8,7 +8,7 @@ enum class BodyType {
 	CIRCLE = 1,
 };
 
-enum EntityCategory {
+enum EntityCategory: sf::Uint32 {
 	BOUNDARY = 0x0001,
 	PLAYER = 0x0002,
 	ENEMY_PLAYER = 0x0004,
