@@ -243,6 +243,9 @@
     <ClCompile Include="IGCharacterInfo.cpp">
       <Filter>Source Files\Scenes\IMGui</Filter>
     </ClCompile>
+    <ClCompile Include="IGConsole.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="json.hpp">
@@ -412,6 +415,9 @@
     </ClInclude>
     <ClInclude Include="IGCharacterInfo.h">
       <Filter>Header Files\Scenes\IMGui</Filter>
+    </ClInclude>
+    <ClInclude Include="IGConsole.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

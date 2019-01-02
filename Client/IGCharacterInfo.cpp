@@ -15,12 +15,13 @@ IGCharacterInfo::~IGCharacterInfo()
 void IGCharacterInfo::render(Game* g, IGManager* manager) {
 	if (!player) return;
 
-	float skills = 0;
+	float skills = 5;
 
 	ImGui::PushFont(g->fonts.getFont(ImGuiFonts::PRODIGY_TINY, 16));
 
-	ImGui::SetNextWindowSizeConstraints(ImVec2(160, 100), ImVec2(-1, FLT_MAX));
-	ImGui::SetNextWindowPos(ImVec2(300, 300), ImGuiCond_FirstUseEver);
+	ImGui::SetNextWindowSizeConstraints(ImVec2(180, 150), ImVec2(-1, FLT_MAX));
+	ImGui::SetNextWindowPos(ImVec2(1055, 225), ImGuiCond_FirstUseEver);
+	ImGui::SetNextWindowSize(ImVec2(180, 255), ImGuiCond_FirstUseEver);
 
 	if (!ImGui::Begin("Character Info", &visible)) {
 		focused = false;
@@ -97,6 +98,8 @@ void IGCharacterInfo::render(Game* g, IGManager* manager) {
 	ImGui::Text(attribute.c_str());
 	ImGui::PopItemWidth();
 
+	position = ImGui::GetWindowPos();
+	size = ImGui::GetWindowSize();
 	focused = ImGui::IsWindowFocused();
 	ImGui::End();
 

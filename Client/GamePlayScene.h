@@ -5,6 +5,7 @@
 #include "IGEntityInfo.h"
 #include "IGActionBar.h"
 #include "IGCharacterInfo.h"
+#include "IGConsole.h"
 
 class GamePlayScene :
 	public Scene {
@@ -24,6 +25,7 @@ private:
 	IGEntityInfo* targetInfoWindow;
 	IGActionBar* actionBarWindow;
 	IGCharacterInfo * characterInfoWindow;
+	IGConsole* console;
 
 	sf::CircleShape targetArrow;
 	Player* player;

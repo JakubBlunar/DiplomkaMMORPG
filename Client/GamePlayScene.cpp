@@ -25,6 +25,9 @@ GamePlayScene::GamePlayScene(SceneType sceneType, Game* g) : Scene(sceneType, g)
 	characterInfoWindow = new IGCharacterInfo();
 	windowManager->addWindow("CharacterInfo", characterInfoWindow);
 
+	console = new IGConsole();
+	windowManager->addWindow("Console", console);
+
 	mFont = ResourceHolder<sf::Font>::instance()->get("Sansation.ttf");
 
 	targetArrow.setRadius(8);
@@ -49,6 +52,7 @@ void GamePlayScene::afterChange() {
 
 	windowManager->Open("PlayerInfo");
 	windowManager->Open("ActionBar");
+	windowManager->Open("Console");
 }
 
 void GamePlayScene::update(sf::Time elapsedTime) {
@@ -199,7 +203,15 @@ void GamePlayScene::onKeyPress(sf::Keyboard::Key key) {
 		return;
 	}
 
+	if (console->isFocused()) {
+		return;
+	}
+
 	switch (key) {
+		case sf::Keyboard::Return: {
+			console->reclaimFocus();
+			break;
+		}
 		case sf::Keyboard::C: {
 			if (characterInfoWindow->isOpened()) {
 				windowManager->close("CharacterInfo");

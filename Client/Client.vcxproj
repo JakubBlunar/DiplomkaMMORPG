@@ -77,7 +77,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)/ExternalLibraries/Box2D/include;$(SolutionDir)/ExternalLibraries/SFML/include;$(SolutionDir)/ExternalLibraries/Imgui;$(SolutionDir)/ExternalLibraries/MysqlConnector/include;$(SolutionDir)/Shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp14</LanguageStandard>
       <BrowseInformation>true</BrowseInformation>
     </ClCompile>
@@ -110,6 +110,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)/ExternalLibraries/Box2D/include;$(SolutionDir)/ExternalLibraries/SFML/include;$(SolutionDir)/ExternalLibraries/Imgui;$(SolutionDir)/Shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -159,6 +160,7 @@
     <ClCompile Include="IGActionBar.cpp" />
     <ClCompile Include="IGAvailableCharacters.cpp" />
     <ClCompile Include="IGCharacterInfo.cpp" />
+    <ClCompile Include="IGConsole.cpp" />
     <ClCompile Include="IGEntityInfo.cpp" />
     <ClCompile Include="IGGameMenu.cpp" />
     <ClCompile Include="IGLoginCredentials.cpp" />
@@ -216,6 +218,7 @@
     <ClInclude Include="IGActionBar.h" />
     <ClInclude Include="IGAvailableCharacters.h" />
     <ClInclude Include="IGCharacterInfo.h" />
+    <ClInclude Include="IGConsole.h" />
     <ClInclude Include="IGEntityInfo.h" />
     <ClInclude Include="IGGameMenu.h" />
     <ClInclude Include="IGLoginCredentials.h" />
