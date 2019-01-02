@@ -246,6 +246,9 @@
     <ClCompile Include="IGConsole.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="IGHelp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="json.hpp">
@@ -417,6 +420,9 @@
       <Filter>Header Files\Scenes\IMGui</Filter>
     </ClInclude>
     <ClInclude Include="IGConsole.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IGHelp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

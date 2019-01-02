@@ -28,6 +28,9 @@ GamePlayScene::GamePlayScene(SceneType sceneType, Game* g) : Scene(sceneType, g)
 	console = new IGConsole();
 	windowManager->addWindow("Console", console);
 
+	helpWindow = new IGHelp();
+	windowManager->addWindow("Help", helpWindow);
+
 	mFont = ResourceHolder<sf::Font>::instance()->get("Sansation.ttf");
 
 	targetArrow.setRadius(8);

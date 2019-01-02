@@ -163,6 +163,7 @@
     <ClCompile Include="IGConsole.cpp" />
     <ClCompile Include="IGEntityInfo.cpp" />
     <ClCompile Include="IGGameMenu.cpp" />
+    <ClCompile Include="IGHelp.cpp" />
     <ClCompile Include="IGLoginCredentials.cpp" />
     <ClCompile Include="IGManager.cpp" />
     <ClCompile Include="IGPopup.cpp" />
@@ -221,6 +222,7 @@
     <ClInclude Include="IGConsole.h" />
     <ClInclude Include="IGEntityInfo.h" />
     <ClInclude Include="IGGameMenu.h" />
+    <ClInclude Include="IGHelp.h" />
     <ClInclude Include="IGLoginCredentials.h" />
     <ClInclude Include="IGManager.h" />
     <ClInclude Include="IGPopup.h" />

@@ -6,6 +6,7 @@
 #include "IGActionBar.h"
 #include "IGCharacterInfo.h"
 #include "IGConsole.h"
+#include "IGHelp.h"
 
 class GamePlayScene :
 	public Scene {
@@ -26,6 +27,7 @@ private:
 	IGActionBar* actionBarWindow;
 	IGCharacterInfo * characterInfoWindow;
 	IGConsole* console;
+	IGHelp* helpWindow;
 
 	sf::CircleShape targetArrow;
 	Player* player;

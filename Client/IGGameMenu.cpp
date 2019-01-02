@@ -27,8 +27,9 @@ void IGGameMenu::render(Game* g, IGManager* manager) {
 	ImGui::SetWindowFontScale(0.3f);
 	ImGui::Text("Game Menu");
 
-	if (ImGui::Button("Settings", sf::Vector2f(ImGui::GetWindowWidth() * 0.935f, 40))) {
+	if (ImGui::Button("Help", sf::Vector2f(ImGui::GetWindowWidth() * 0.935f, 40))) {
 		close();
+		manager->Open("Help");
 	}
 
 	if (ImGui::Button("Logout", sf::Vector2f(ImGui::GetWindowWidth() * 0.935f, 40))) {

@@ -8,9 +8,6 @@ IGConsole::IGConsole() {
 	HistoryPos = -1;
 	Commands.push_back("HELP");
 	Commands.push_back("CLEAR");
-
-	AddLog("Welcome to Dear ImGui!");
-	AddLog("Welcome to Dear ImGui2!");
 }
 
 
