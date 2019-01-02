@@ -57,3 +57,7 @@ float AttributesComponent::modifyAttribute(EntityAttributeType type, float value
 int AttributesComponent::attributeTypeToInt(EntityAttributeType type) const {
 	return static_cast<int>(type);
 }
+
+int AttributesComponent::getXpForLevel(int level) const {
+	return 25 * level * level - 25 * level;
+}

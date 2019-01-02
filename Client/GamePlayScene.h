@@ -4,6 +4,7 @@
 #include "Astar.h"
 #include "IGEntityInfo.h"
 #include "IGActionBar.h"
+#include "IGCharacterInfo.h"
 
 class GamePlayScene :
 	public Scene {
@@ -22,6 +23,7 @@ private:
 	IGEntityInfo* playerInfoWindow;
 	IGEntityInfo* targetInfoWindow;
 	IGActionBar* actionBarWindow;
+	IGCharacterInfo * characterInfoWindow;
 
 	sf::CircleShape targetArrow;
 	Player* player;

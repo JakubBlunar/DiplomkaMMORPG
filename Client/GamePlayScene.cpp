@@ -22,6 +22,9 @@ GamePlayScene::GamePlayScene(SceneType sceneType, Game* g) : Scene(sceneType, g)
 	actionBarWindow = new IGActionBar();
 	windowManager->addWindow("ActionBar", actionBarWindow);
 
+	characterInfoWindow = new IGCharacterInfo();
+	windowManager->addWindow("CharacterInfo", characterInfoWindow);
+
 	mFont = ResourceHolder<sf::Font>::instance()->get("Sansation.ttf");
 
 	targetArrow.setRadius(8);
@@ -42,6 +45,7 @@ void GamePlayScene::afterChange() {
 	player = game->getAccount()->getPlayerEntity();
 	playerInfoWindow->setEntity(player);
 	actionBarWindow->setPlayer(player);
+	characterInfoWindow->setPlayer(player);
 
 	windowManager->Open("PlayerInfo");
 	windowManager->Open("ActionBar");
@@ -195,6 +199,27 @@ void GamePlayScene::onKeyPress(sf::Keyboard::Key key) {
 		return;
 	}
 
+	switch (key) {
+		case sf::Keyboard::C: {
+			if (characterInfoWindow->isOpened()) {
+				windowManager->close("CharacterInfo");
+			} else {
+				windowManager->Open("CharacterInfo");
+			}
+			break;
+		}
+		case sf::Keyboard::Key::Escape: {
+			if (windowManager->isVisible("GameMenu")) {
+				windowManager->close("GameMenu");
+			}
+			else {
+				windowManager->Open("GameMenu");
+			}
+			break;
+		}
+		default: break;
+	}
+
 	if (windowManager->AnyWindowFocused()) {
 		return;
 	}
@@ -203,14 +228,6 @@ void GamePlayScene::onKeyPress(sf::Keyboard::Key key) {
 	std::vector<SpellInfo*>* spells = player->getSpells();
 
 	switch (key) {
-		case sf::Keyboard::Key::Escape: {
-			if (windowManager->isVisible("GameMenu")) {
-				windowManager->close("GameMenu");
-			}
-			else
-				windowManager->Open("GameMenu");
-			break;
-		}
 		case sf::Keyboard::F1:
 			drawDebugData = !drawDebugData;
 			break;

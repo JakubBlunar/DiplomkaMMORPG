@@ -27,6 +27,8 @@ public:
 
 	float modifyAttribute(EntityAttributeType type, float value);
 	int attributeTypeToInt(EntityAttributeType type) const;
+
+	int getXpForLevel(int level) const ;
 };
 
 #endif
