@@ -6,7 +6,7 @@
 
 #include <regex>
 #include <spdlog/spdlog.h>
-
+#include "Spell.h"
 
 s::SpellHolder::SpellHolder():
 	idManager(0, 214748364) {

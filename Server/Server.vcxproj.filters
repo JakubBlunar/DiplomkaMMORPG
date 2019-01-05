@@ -70,6 +70,12 @@
     <Filter Include="Source Files\Effects">
       <UniqueIdentifier>{7e0d46a8-fd7f-408f-aff0-c3e6b47f885b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\SpellEvents">
+      <UniqueIdentifier>{c120e5f8-469e-46f6-aaca-83df005d0bd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SpellEvents">
+      <UniqueIdentifier>{f5ebfa44-b678-4859-91b7-5373e91e5dc6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -279,6 +285,15 @@
     <ClCompile Include="EffectHolder.cpp">
       <Filter>Source Files\Tools</Filter>
     </ClCompile>
+    <ClCompile Include="SpellEvent.cpp">
+      <Filter>Source Files\SpellEvents</Filter>
+    </ClCompile>
+    <ClCompile Include="SpellEventExecute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EntitySpells.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INIReader.h">
@@ -484,6 +499,15 @@
     </ClInclude>
     <ClInclude Include="EffectHolder.h">
       <Filter>Header Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="SpellEvent.h">
+      <Filter>Header Files\SpellEvents</Filter>
+    </ClInclude>
+    <ClInclude Include="SpellEventExecute.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EntitySpells.h">
+      <Filter>Header Files\Entities\Parts</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

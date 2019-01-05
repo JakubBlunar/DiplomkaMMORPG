@@ -2,6 +2,7 @@
 #define S_MOVING_SPELL_H
 
 #include "Spell.h"
+#include "EntityPosition.h"
 
 namespace s {
 	class MovableSpell : public Entity, public EntityPosition, public Spell {

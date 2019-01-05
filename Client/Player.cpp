@@ -11,6 +11,8 @@
 #include <iostream>
 #include "EntityPrototypes.h"
 #include "Scene.h"
+#include "EventPlayerStartCastSpell.h"
+#include "Utils.h"
 
 
 Player::Player(bool playerControlled) : Entity(0) {
@@ -329,19 +331,44 @@ void Player::castSpell(SpellInfo* spellInfo, Map* map, Game* g) {
 	}
 
 	Entity* spellTarget = target;
-	if(!target) {
+	if (!target) {
 		spellTarget = this;
 	}
 
 	float actualMana = attributesComponent->getAttribute(EntityAttributeType::MP);
 	if (actualMana - spellInfo->manaCost < 0) {
+		GameMessage* m = new GameMessage();
+		m->message = "You do not have enough mana";
+		m->displayTime = sf::seconds(2);
+		g->addGameMessage(m);
 		return;
 	}
 
+	if (spellInfo->castingTime > sf::Time::Zero) {
+		sf::Vector2f movement = positionComponent->getMovement();
+		if (movement != sf::Vector2f(0.0,0.0)) {
+			GameMessage* m = new GameMessage();
+			m->message = "Can not cast while moving";
+			m->displayTime = sf::seconds(2);
+			g->addGameMessage(m);
+			return;
+		}
+	}
+
 	bool canCast = spellTarget == this;
+	string message;
 	if (!canCast) {
 		EntityToEntityRayCast* result = map->makeRayCast(this, spellTarget);
-		canCast = result->closestEntity == target;
+		if (result->closestEntity != target) {
+			canCast = false;
+			message = "Your target is not in your point of view";
+		} else if(result->closestEntityDistance * METTOPIX> spellInfo->maxRange) {
+			canCast = false;
+			message = "Your target is too far";
+		} else {
+			canCast = true;
+		}
+		delete result;
 	}
 
 	if (canCast) {
@@ -349,9 +376,17 @@ void Player::castSpell(SpellInfo* spellInfo, Map* map, Game* g) {
 		m->message = "Casting spell" + spellInfo->name;
 		m->displayTime = sf::seconds(2);
 		g->addGameMessage(m);
+
+		EventPlayerStartCastSpell e;
+		e.spellId = spellInfo->id;
+		e.startCastTimestamp = Utils::getActualUtcTime();
+
+		sf::Packet* p = e.toPacket();
+		g->packet_manager->sendPacket(p);
+		delete p;
 	} else {
 		GameMessage* m = new GameMessage();
-		m->message = "Cant see entity " + spellInfo->name;
+		m->message = message;
 		m->displayTime = sf::seconds(2);
 		g->addGameMessage(m);
 	}

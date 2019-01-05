@@ -1,6 +1,7 @@
 #include "MovableSpell.h"
 #include "ServerGlobals.h"
-
+#include "Box2D/Box2D.h"
+#include "EntityPosition.h"
 
 s::MovableSpell::MovableSpell()
 {

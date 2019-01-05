@@ -8,6 +8,7 @@
 #include "EventNpcMovementChange.h"
 #include "EventNpcStatusChanged.h"
 
+class EventPlayerStartCastSpell;
 class EventAttributesChanged;
 class EventNpcChanges;
 class EventNpcsMovementChange;
@@ -35,6 +36,7 @@ public:
 	virtual void visit(EventNpcStatusChanged *e);
 	virtual void visit(EventAttributesChanged* e);
 	virtual void visit(EventAttributeBonusesChanged* e);
+	virtual void visit(EventPlayerStartCastSpell* e);
 };
 
 #endif // !EVENT_VISITOR_H

@@ -18,6 +18,7 @@
 #include <cstdint>
 #include "NpcHolder.h"
 #include "SpellHolder.h"
+#include "EventPlayerStartCastSpell.h"
 
 s::Server::Server(ServerSettings* settings):
 	running(false) {
@@ -49,9 +50,11 @@ void s::Server::init() {
 	NpcHolder::instance()->init();
 	
 	npcManager.init(this);
-	managers.push_back(&mapsManager);
 
+	managers.push_back(&mapsManager);
 	mapsManager.init(this);
+
+	managers.push_back(&spellManager);
 }
 
 void s::Server::start() {
@@ -157,6 +160,14 @@ void s::Server::identifyPacket(EventId type, sf::Packet* packet, Session* player
 		EventCharacterLogout* e = new EventCharacterLogout();
 		if(e->loadFromPacket(packet)) {
 			authManager.handleEvent(e, playerSession, this);
+		}
+		delete e;
+		break;
+	}
+	case PLAYER_START_CAST_SPELL: {
+		EventPlayerStartCastSpell* e = new EventPlayerStartCastSpell();
+		if (e->loadFromPacket(packet)) {
+			spellManager.handleEvent(e, playerSession, this);	
 		}
 		delete e;
 		break;

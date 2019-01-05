@@ -43,3 +43,4 @@ void EventVisitor::visit(EventNpcChanges* e) {}
 void EventVisitor::visit(EventNpcStatusChanged* e) {}
 void EventVisitor::visit(EventAttributesChanged* e) {}
 void EventVisitor::visit(EventAttributeBonusesChanged* e) {}
+void EventVisitor::visit(EventPlayerStartCastSpell* e) {}

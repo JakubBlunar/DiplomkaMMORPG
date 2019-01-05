@@ -420,10 +420,10 @@
       <Filter>Header Files\Scenes\IMGui</Filter>
     </ClInclude>
     <ClInclude Include="IGConsole.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Scenes\IMGui</Filter>
     </ClInclude>
     <ClInclude Include="IGHelp.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Scenes\IMGui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

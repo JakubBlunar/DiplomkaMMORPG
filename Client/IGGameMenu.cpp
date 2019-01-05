@@ -45,7 +45,7 @@ void IGGameMenu::render(Game* g, IGManager* manager) {
 	bool open = true;
 	if (ImGui::BeginPopupModal("ExitPrompt", &open, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize)) {
 		ImGui::SetWindowFontScale(0.2f);
-		ImGui::Text("Do you realy wish to end game?");
+		ImGui::Text("Do you really wish to end game?");
 		ImGui::NewLine();
 
 		ImGui::SameLine();
@@ -62,7 +62,7 @@ void IGGameMenu::render(Game* g, IGManager* manager) {
 	if (ImGui::BeginPopupModal("LogoutCharacterPrompt", &open,
 	                           ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize)) {
 		ImGui::SetWindowFontScale(0.2f);
-		ImGui::Text("Do you realy wish to logout?");
+		ImGui::Text("Do you really wish to logout?");
 		ImGui::NewLine();
 
 		ImGui::SameLine();
@@ -90,7 +90,7 @@ void IGGameMenu::render(Game* g, IGManager* manager) {
 	}
 
 	ImGui::NewLine();
-	if (ImGui::Button("Return", sf::Vector2f(ImGui::GetWindowWidth() * 0.935f, 40))) {
+	if (ImGui::Button("Return", sf::Vector2f(ImGui::GetWindowWidth() * 0.935f, 40.f))) {
 		this->close();
 	}
 
@@ -107,7 +107,7 @@ void IGGameMenu::beforeRender(Game* game) {
 
 	sf::Vector2u windowSize = game->window->getSize();
 
-	float left = windowSize.x / 2 - size.x / 2;
-	float top = windowSize.y / 2 - size.y / 2;
+	float left = windowSize.x / 2.f - size.x / 2.f;
+	float top = windowSize.y / 2.f - size.y / 2.f;
 	setPosition(sf::Vector2f(left, top));
 }

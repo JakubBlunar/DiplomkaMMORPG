@@ -5,5 +5,8 @@
     "cooldown": 0,
     "castingTime": 2000,
     "icon": "fireball.png",
-    "entityAnimation": "2"
+    "entityAnimation": "2",
+    "desc": "Throws fireball at target",
+    "gCooldown": 500,
+    "maxRange": 320
 }

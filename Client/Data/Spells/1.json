@@ -4,5 +4,8 @@
     "mana": 0,
     "cooldown": 3000,
     "castingTime": 0,
-    "icon": "attack.png"
+    "icon": "attack.png",
+    "desc": "Melle attack with weapon",
+    "gCooldown": 500,
+    "maxRange": 32
 }

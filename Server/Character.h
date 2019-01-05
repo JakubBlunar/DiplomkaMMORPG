@@ -1,5 +1,6 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
+
 #include <string>
 #include "../Shared/CharacterConstants.h"
 #include <vector>
@@ -7,6 +8,7 @@
 #include "EntityAttributes.h"
 #include "EntityPosition.h"
 #include "Spell.h"
+#include "EntitySpells.h"
 
 using json = nlohmann::json;
 
@@ -16,7 +18,7 @@ namespace s {
 }
 
 namespace s {
-	class Character: public EntityAttributes, public EntityPosition {
+	class Character : public EntityAttributes, public EntityPosition, public EntitySpells {
 		Account* account;
 	public:
 		Character();
@@ -34,7 +36,6 @@ namespace s {
 
 		bool save() const;
 		json toJson() const;
-
 
 
 		static Character* getCharacterById(int characterId);

@@ -158,6 +158,7 @@
     <ClCompile Include="EffectHolder.cpp" />
     <ClCompile Include="EntityAttributes.cpp" />
     <ClCompile Include="EntityPosition.cpp" />
+    <ClCompile Include="EntitySpells.cpp" />
     <ClCompile Include="IDManager.cpp" />
     <ClCompile Include="JsonLoader.cpp" />
     <ClCompile Include="Location.cpp" />
@@ -214,6 +215,8 @@
     <ClCompile Include="Spawn.cpp" />
     <ClCompile Include="SpawnManager.cpp" />
     <ClCompile Include="Spell.cpp" />
+    <ClCompile Include="SpellEvent.cpp" />
+    <ClCompile Include="SpellEventExecute.cpp" />
     <ClCompile Include="SpellHolder.cpp" />
     <ClCompile Include="SpellManager.cpp" />
     <ClCompile Include="TextFileLoader.cpp" />
@@ -230,6 +233,7 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityAttributes.h" />
     <ClInclude Include="EntityPosition.h" />
+    <ClInclude Include="EntitySpells.h" />
     <ClInclude Include="EventDispatcher.h" />
     <ClInclude Include="IDManager.h" />
     <ClInclude Include="INIReader.h" />
@@ -284,6 +288,8 @@
     <ClInclude Include="Spawn.h" />
     <ClInclude Include="SpawnManager.h" />
     <ClInclude Include="Spell.h" />
+    <ClInclude Include="SpellEvent.h" />
+    <ClInclude Include="SpellEventExecute.h" />
     <ClInclude Include="SpellHolder.h" />
     <ClInclude Include="SpellManager.h" />
     <ClInclude Include="TextFileLoader.h" />

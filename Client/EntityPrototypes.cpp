@@ -4,6 +4,7 @@
 #include <windows.h>
 #include <regex>
 #include "ResourceHolder.h"
+#include "JsonLoader.h"
 #undef NOMINMAX
 
 EntityPrototypes::EntityPrototypes()
@@ -35,6 +36,9 @@ void EntityPrototypes::init() {
 		si->manaCost = (float)jsonData["mana"].get<json::number_float_t>();
 		si->castingTime = sf::milliseconds((int)jsonData["castingTime"].get<json::number_integer_t>());
 		si->cooldownTime = sf::milliseconds((int)jsonData["cooldown"].get<json::number_integer_t>());
+		si->description = jsonData["desc"].get<json::string_t>();
+		si->globalCooldownTime = sf::milliseconds((int)jsonData["gCooldown"].get<json::number_integer_t>());
+		si->maxRange =  (float)jsonData["maxRange"].get<json::number_float_t>();
 
 		std::string icon = jsonData["icon"].get<json::string_t>();
 		si->icon.load("Graphics/Icons/"+ icon, sf::Vector2i(32,32), sf::Vector2i(0,0));

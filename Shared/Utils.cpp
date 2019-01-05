@@ -28,9 +28,24 @@ std::vector<std::string> Utils::splitPath(std::string path, std::set<char> delim
 	return result;
 }
 
-std::string Utils::removeExtension(const std::string & filename)
-{
-    size_t lastdot = filename.find_last_of('.');
-    if (lastdot == std::string::npos) return filename;
-    return filename.substr(0, lastdot);
+std::string Utils::removeExtension(const std::string& filename) {
+	size_t lastDot = filename.find_last_of('.');
+	if (lastDot == std::string::npos) return filename;
+	return filename.substr(0, lastDot);
+}
+
+time_t Utils::getActualUtcTime() {
+	time_t now = time(nullptr);
+	struct tm timeInfo;
+	gmtime_s(&timeInfo, &now);
+	return (time_t)difftime(mktime(&timeInfo), 0);
+}
+
+time_t Utils::utcTimeToLocalTime(time_t utcTime) {
+	time_t now = time(nullptr);
+	struct tm timeInfo;
+	gmtime_s(&timeInfo, &now);
+	time_t utcTimeNow = (time_t)difftime(mktime(&timeInfo), 0);
+	time_t timeZone = now - utcTimeNow;
+	return utcTime + timeZone;
 }

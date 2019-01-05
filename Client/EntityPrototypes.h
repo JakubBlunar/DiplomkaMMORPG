@@ -2,7 +2,6 @@
 #define ENTITY_PROTOTYPES_H
 
 #include "json.hpp"
-#include "Npc.h"
 #include "Spell.h"
 using json = nlohmann::json;
 

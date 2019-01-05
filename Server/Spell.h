@@ -2,19 +2,20 @@
 #define S_SPELL_H
 
 #include "Entity.h"
-#include "EntityPosition.h"
 #include "Effect.h"
 #include "EntityAttributes.h"
 
 namespace s {
 	class Server;
-	
+	class SpellEvent;
+
 	struct SpellInfo {
 		std::string name;
 		float manaCost;
 		sf::Time cooldownTime;
 		sf::Time castingTime;
 		int id;
+		SpellEvent* queuedEvent;
 	};
 
 	class Spell {

@@ -2,11 +2,14 @@
 #define S_SPELL_HOLDER_H
 
 #include "json.hpp"
-#include "Npc.h"
-#include "Spell.h"
+#include "IDManager.h"
+#include "SFML/System.hpp"
+
 using json = nlohmann::json;
 
 namespace s {
+	class Spell;
+	struct SpellInfo;
 
 	class SpellHolder {
 	public:

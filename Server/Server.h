@@ -11,6 +11,7 @@
 #include "MapsManager.h"
 #include "BotManager.h"
 #include "NpcManager.h"
+#include "SpellManager.h"
 
 namespace s {
 	class ServerTasks;
@@ -33,7 +34,10 @@ namespace s {
 		MapsManager mapsManager;
 		BotManager botManager;
 		NpcManager npcManager;
+		SpellManager spellManager;
+
 		vector<Manager*> managers;
+
 
 		sf::Time getServerTime() const;
 
