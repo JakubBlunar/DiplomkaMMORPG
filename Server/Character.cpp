@@ -11,6 +11,7 @@ using json = nlohmann::json;
 
 s::Character::Character(): account(nullptr), id(0), type(), faction(), isBot(false) {
 	movement = sf::Vector2f(0, 0);
+	entityType = EntityType::PLAYER;
 }
 
 void s::Character::setAccount(s::Account* account) {

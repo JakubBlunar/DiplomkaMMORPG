@@ -346,7 +346,7 @@ void Player::castSpell(SpellInfo* spellInfo, Map* map, Game* g) {
 
 	if (spellInfo->castingTime > sf::Time::Zero) {
 		sf::Vector2f movement = positionComponent->getMovement();
-		if (movement != sf::Vector2f(0.0,0.0)) {
+		if (movement != sf::Vector2f(0.0, 0.0)) {
 			GameMessage* m = new GameMessage();
 			m->message = "Can not cast while moving";
 			m->displayTime = sf::seconds(2);
@@ -362,10 +362,12 @@ void Player::castSpell(SpellInfo* spellInfo, Map* map, Game* g) {
 		if (result->closestEntity != target) {
 			canCast = false;
 			message = "Your target is not in your point of view";
-		} else if(result->closestEntityDistance * METTOPIX> spellInfo->maxRange) {
+		}
+		else if (result->closestEntityDistance * METTOPIX > spellInfo->maxRange) {
 			canCast = false;
 			message = "Your target is too far";
-		} else {
+		}
+		else {
 			canCast = true;
 		}
 		delete result;
@@ -381,6 +383,27 @@ void Player::castSpell(SpellInfo* spellInfo, Map* map, Game* g) {
 		e.spellId = spellInfo->id;
 		e.startCastTimestamp = Utils::getActualUtcTime();
 
+		EntityType type = spellTarget->getType();
+		switch (type) {
+			case EntityType::NPC: {
+				e.target = SpellTarget::NPC;
+				e.entityId = spellTarget->getId();
+				break;
+			}
+			case EntityType::PLAYER: {
+				e.target = SpellTarget::PLAYER;
+				e.entityId = spellTarget->getId();
+				break;
+			}
+			default: {
+				GameMessage* m = new GameMessage();
+				m->message = "Cannot target this entity";
+				m->displayTime = sf::seconds(2);
+				g->addGameMessage(m);
+				return;
+			}
+		}
+
 		if (spellInfo->castingTime > sf::Time::Zero) {
 			setStartCastTime(g->getGameTime() + g->getLatency() + g->getLatency());
 			setCastingSpell(spellInfo);
@@ -389,14 +412,14 @@ void Player::castSpell(SpellInfo* spellInfo, Map* map, Game* g) {
 		sf::Packet* p = e.toPacket();
 		g->packet_manager->sendPacket(p);
 		delete p;
-	} else {
+	}
+	else {
 		GameMessage* m = new GameMessage();
 		m->message = message;
 		m->displayTime = sf::seconds(2);
 		g->addGameMessage(m);
 	}
 }
-
 
 
 void Player::sendPosition(Game* g) const {

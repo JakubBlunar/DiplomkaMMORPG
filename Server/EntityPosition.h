@@ -3,15 +3,17 @@
 
 #include <SFML/System/Vector2.hpp>
 #include <Box2D/Dynamics/b2Body.h>
+#include "Entity.h"
 
 namespace s {
 	class Location;
 	class Map;
 
-	class EntityPosition
+	class EntityPosition: public Entity
 	{
 	public:
 		EntityPosition();
+		virtual ~EntityPosition() {};
 
 		float speed;
 		b2Body* body;

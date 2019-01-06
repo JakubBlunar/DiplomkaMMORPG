@@ -18,6 +18,8 @@ s::Npc::Npc(): command(nullptr) {
 	state = NpcState::IDLE;
 	spawnPosition = sf::Vector2f(-1,-1);
 
+	entityType = EntityType::NPC;
+
 	luaState.open_libraries(sol::lib::base, sol::lib::package, sol::lib::io, sol::lib::string, sol::lib::os, sol::lib::math);
 	luaState["npc"] = this;
 	// make usertype metatable

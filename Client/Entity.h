@@ -6,18 +6,9 @@
 #include "Component.h"
 #include <Box2D/Box2D.h>
 #include "EntityConstants.h"
-#include <SFML/System.hpp>
 
 class Game;
 class Map;
-
-enum class EntityType {
-	PLAYER,
-	GAMEOBJECT,
-	COLLIDER,
-	NPC,
-	SPELL
-};
 
 class Entity : public Subscriber {
 public:

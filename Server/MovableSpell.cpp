@@ -5,7 +5,7 @@
 
 s::MovableSpell::MovableSpell()
 {
-
+	entityType = EntityType::MOVABLE_SPELL;
 }
 
 

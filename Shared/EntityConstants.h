@@ -3,6 +3,16 @@
 
 #include <SFML/System.hpp>
 
+enum class EntityType {
+	PLAYER,
+	GAMEOBJECT,
+	COLLIDER,
+	NPC,
+	SPELL,
+	MOVABLE_SPELL
+};
+
+
 enum class BodyType {
 	RECTANGLE = 0,
 	CIRCLE = 1,

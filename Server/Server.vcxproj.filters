@@ -294,6 +294,9 @@
     <ClCompile Include="EntitySpells.cpp">
       <Filter>Source Files\Entities\Parts</Filter>
     </ClCompile>
+    <ClCompile Include="EntityToEntityRayCast.cpp">
+      <Filter>Source Files\Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INIReader.h">
@@ -479,9 +482,6 @@
     <ClInclude Include="Effect.h">
       <Filter>Header Files\Effects</Filter>
     </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>Header Files\Entities</Filter>
-    </ClInclude>
     <ClInclude Include="Spell.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
@@ -508,6 +508,12 @@
     </ClInclude>
     <ClInclude Include="SpellEventExecute.h">
       <Filter>Header Files\SpellEvents</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityToEntityRayCast.h">
+      <Filter>Header Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Header Files\Entities\Parts</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

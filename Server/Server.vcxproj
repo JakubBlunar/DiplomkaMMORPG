@@ -166,6 +166,7 @@
     <ClCompile Include="EntityAttributes.cpp" />
     <ClCompile Include="EntityPosition.cpp" />
     <ClCompile Include="EntitySpells.cpp" />
+    <ClCompile Include="EntityToEntityRayCast.cpp" />
     <ClCompile Include="IDManager.cpp" />
     <ClCompile Include="JsonLoader.cpp" />
     <ClCompile Include="Location.cpp" />
@@ -241,6 +242,7 @@
     <ClInclude Include="EntityAttributes.h" />
     <ClInclude Include="EntityPosition.h" />
     <ClInclude Include="EntitySpells.h" />
+    <ClInclude Include="EntityToEntityRayCast.h" />
     <ClInclude Include="EventDispatcher.h" />
     <ClInclude Include="IDManager.h" />
     <ClInclude Include="INIReader.h" />
