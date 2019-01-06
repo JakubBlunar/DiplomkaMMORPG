@@ -15,6 +15,8 @@
 #include "NpcEventNpcIsIdle.h"
 #include "EventDispatcher.h"
 
+#include <execution>
+
 s::Map::Map(): id(0), world(nullptr), width(0), height(0) {
 	npcUpdateInterval = sf::milliseconds(200);
 }
@@ -102,45 +104,54 @@ void s::Map::update(sf::Time deltaTime, Server* s) {
 	world->Step(deltaTime.asSeconds(), 3, 2);
 
 	std::for_each(
+		std::execution::par_unseq,
 		characters.begin(),
 		characters.end(),
 	    [=](Character* character)
 	    {
-			b2Vec2 position = character->body->GetPosition();
-			b2Vec2 velocity = character->body->GetLinearVelocity();
+			character->update(deltaTime, s, this);
+	    });
 
-			character->position.x = position.x * METTOPIX;
-			character->position.y = position.y * METTOPIX;
 
-			character->movement.x = velocity.x * METTOPIX;
-			character->movement.y = velocity.y * METTOPIX;
+	NpcUpdateEvents* eventsContainer = new NpcUpdateEvents();
+	eventsContainer->npcsMovementChange = nullptr;
+
+	if (lastUpdateNpc > npcUpdateInterval) {
+		std::for_each(
+		std::execution::seq,
+			locations.begin(),
+		locations.end(),
+	    [=](std::pair<int, Location*> element)
+	    {
+			element.second->update(deltaTime, s, this);
 	    });
 
 	
-	for (std::pair<int, Location*> element : locations) {
-		element.second->update(deltaTime, s, this);
-	}
-
-	NpcUpdateEvents eventsContainer;
-	eventsContainer.npcsMovementChange = nullptr;
-
-	if (lastUpdateNpc > npcUpdateInterval) {
-		for (Npc* npc : npcs) {
+		std::for_each(
+		std::execution::par_unseq,
+			npcs.begin(),
+		npcs.end(),
+	    [=](Npc* npc)
+	    {
 			if (npc->isAlive()) {
-				s->npcManager.updateNpc(lastUpdateNpc, npc, s, &eventsContainer);
+				s->npcManager.updateNpc(lastUpdateNpc, npc, s, eventsContainer);
 			}
-		}
+	    });
+
 		lastUpdateNpc = sf::Time::Zero;
 	}
 	
 	lock.unlock();
 
-	if (eventsContainer.npcsMovementChange != nullptr) {
-		if (!eventsContainer.npcsMovementChange->npcsMovements.empty()) {
-			sendEventToAllPlayers(eventsContainer.npcsMovementChange);
+	if (eventsContainer->npcsMovementChange != nullptr) {
+		if (!eventsContainer->npcsMovementChange->npcsMovements.empty()) {
+			sendEventToAllPlayers(eventsContainer->npcsMovementChange);
 		}
-		delete eventsContainer.npcsMovementChange;
+		delete eventsContainer->npcsMovementChange;
 	}
+
+	delete eventsContainer;
+
 }
 
 void s::Map::loadFromJson(std::string path, Server *s) {
@@ -168,7 +179,7 @@ void s::Map::loadFromJson(std::string path, Server *s) {
 	createBox(b2_staticBody, -6, height * FIELD_SIZE, FIELD_SIZE * width + 12, 5, BOUNDARY, PLAYER | NPC);
 
 	int initGridCount = 10;
-	vector<MapGrid*> grids;
+	std::vector<MapGrid*> grids;
 	grids.reserve(initGridCount);
 
 	for (int i = 0; i < initGridCount; i++) {
@@ -242,8 +253,8 @@ void s::Map::loadFromJson(std::string path, Server *s) {
 				float positionY = (float) gameObject["y"].get<json::number_float_t>();
 
 				if (gameObject.count("point") && gameObject["point"].get<json::boolean_t>()) {
-						
-					string gameObjectType = gameObject["name"].get<json::string_t>();
+
+					std::string gameObjectType = gameObject["name"].get<json::string_t>();
 				
 					if (!gameObjectType.empty()) {
 						json jsonFile = JsonLoader::instance()->loadJson("GameObjects/" + gameObjectType);

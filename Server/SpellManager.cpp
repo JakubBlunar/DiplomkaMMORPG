@@ -45,14 +45,24 @@ void s::SpellManager::update(sf::Time elapsedTime, s::Server* s) {
 
 }
 
+void s::SpellManager::interruptSpellCast(SpellEventExecute * e)
+{
+	sf::Lock lockThread(eventQueueMutex);
+	e->getCharacter()->setCastingSpell(nullptr);
+	eventQueue.remove(e);
+
+	delete e;
+}
+
 
 void s::SpellManager::threadFunc(SpellEvent* e, s::Server* s, int threadIndex) {
 	e->execute(s);
 	delete e;
 
-	sf::Lock lockThread(eventQueueMutex);
+	eventQueueMutex.lock();
 	threadEnded[threadIndex] = true;
 	runningThreads--;
+	eventQueueMutex.unlock();
 }
 
 
@@ -62,15 +72,24 @@ void s::SpellManager::handleEvent(EventPlayerStartCastSpell* event, s::Session* 
 
 	try {
 		SpellInfo* si = spellHolder->getSpellInfo(event->spellId);
-		sf::Time eventCastEndTime = s->getServerTime() + si->castingTime + sf::seconds(delay);
+		sf::Time eventCastEndTime = s->getServerTime() + si->castingTime + sf::seconds((float)delay);
+
+		Character* character = playerSession->getAccount()->getCharacter();
+
+		SpellEventExecute* existCast = character->getEventWithCastingSpell();
+		if (existCast) {
+			interruptSpellCast(existCast);
+		}
 
 		SpellEventExecute* e = new SpellEventExecute();
 		e->setCharacter(playerSession->getAccount()->getCharacter());
 		e->spellInfo = si;
 		e->executeTime = eventCastEndTime;
 
-		sf::Lock lock(eventQueueMutex);
+		eventQueueMutex.lock();
 		eventQueue.push(e);
+		eventQueueMutex.unlock();
+
 	}
 	catch (...) {}
 }

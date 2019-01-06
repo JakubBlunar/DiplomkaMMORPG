@@ -21,11 +21,11 @@ s::Database::Database(s::ServerSettings* settings):
 		exit(EXIT_FAILURE);
 	}
 
-	cout << "Connected to database " << endl;
-	cout << "Host: " << settings->dbHost << endl;
-	cout << "User: " << settings->dbUser << endl;
-	cout << "Db: " << settings->dbName << endl;
-	cout << "Port: " << settings->dbPort << endl << endl;
+	std::cout << "Connected to database " << std::endl;
+	std::cout << "Host: " << settings->dbHost << std::endl;
+	std::cout << "User: " << settings->dbUser << std::endl;
+	std::cout << "Db: " << settings->dbName << std::endl;
+	std::cout << "Port: " << settings->dbPort << std::endl << std::endl;
 }
 
 MYSQL_RES* s::Database::executeQuery(std::string query) {

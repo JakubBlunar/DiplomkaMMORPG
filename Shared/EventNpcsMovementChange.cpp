@@ -16,6 +16,7 @@ EventNpcsMovementChange::~EventNpcsMovementChange()
 
 void EventNpcsMovementChange::addNpcInfo(sf::Int32 npcId, float posX, float posY, float velX, float velY)
 {
+	sf::Lock lock(mutex);
 	npcsMovements.insert(std::make_pair(npcId, MovementData{ posX, posY, velX, velY }));
 }
 

@@ -37,6 +37,8 @@ namespace s {
 		bool save() const;
 		json toJson() const;
 
+		void update(sf::Time deltaTime, Server* s, Map* map);
+
 
 		static Character* getCharacterById(int characterId);
 		static std::vector<Character*>* getAccountCharacters(int accountId);

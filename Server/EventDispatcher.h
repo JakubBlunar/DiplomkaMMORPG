@@ -8,14 +8,12 @@
 #include "NpcEvent.h"
 #include "Server.h"
 
-using namespace std;
-
 namespace s {
 
 	template <class T>
 	class EventDispatcher {
 	public:
-		static list<Subscriber *> subscribers;
+		static std::list<Subscriber *> subscribers;
 
 		static void addSubscriber(Subscriber* sub, Server* s) {
 			s->serverSettings->eventMutex.lock();
@@ -44,6 +42,6 @@ namespace s {
 	};
 
 	template <typename T>
-	list<Subscriber*> EventDispatcher<T>::subscribers;
+	std::list<Subscriber*> EventDispatcher<T>::subscribers;
 }
 #endif

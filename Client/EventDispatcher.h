@@ -6,12 +6,10 @@
 #include "../Shared/Subscriber.h"
 #include "ClientSettings.h"
 
-using namespace std;
-
 template <class T>
 class EventDispatcher {
 public:
-	static list<Subscriber *> subscribers;
+	static std::list<Subscriber *> subscribers;
 
 	static void addSubscriber(Subscriber* sub) {
 		ClientSettings::instance()->eventsMutex.lock();
@@ -38,6 +36,6 @@ public:
 };
 
 template <typename T>
-list<Subscriber*> EventDispatcher<T>::subscribers;
+std::list<Subscriber*> EventDispatcher<T>::subscribers;
 
 #endif

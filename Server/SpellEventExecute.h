@@ -15,6 +15,9 @@ namespace s {
 		virtual ~SpellEventExecute();
 
 		void setCharacter(Character* character);
+		Character* getCharacter() const {
+			return character;
+		}
 		
 		void execute(Server* s) override;
 	};

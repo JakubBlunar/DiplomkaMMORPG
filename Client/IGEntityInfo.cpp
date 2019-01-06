@@ -5,7 +5,7 @@
 #include "Game.h"
 #include <imgui-SFML.h>
 
-IGEntityInfo::IGEntityInfo(string id, sf::Vector2f position)
+IGEntityInfo::IGEntityInfo(std::string id, sf::Vector2f position)
 {
 	this->id = id;
 	entity = nullptr;
@@ -55,7 +55,7 @@ void IGEntityInfo::render(Game * g, IGManager * manager)
 	ImFont* font = g->fonts.getFont(ImGuiFonts::PRODIGY_TINY, 14);
 	ImGui::PushFont(font);
 
-	string type;
+	std::string type;
 	if (npc != nullptr) {
 		type = "N";
 	}
@@ -64,7 +64,7 @@ void IGEntityInfo::render(Game * g, IGManager * manager)
 	}
 
 	float level = attributes->getAttribute(EntityAttributeType::LEVEL);
-	string head = convertFloatToString(level, 0) + " " + entity->getName() + "("+ type +")";
+	std::string head = convertFloatToString(level, 0) + " " + entity->getName() + "("+ type +")";
 
 	ImGui::Text(head.c_str());
 
@@ -83,7 +83,7 @@ void IGEntityInfo::render(Game * g, IGManager * manager)
 		mpPerc = mp / maxMp;
 	}
 
-	string text = "HP: " + convertFloatToString(hp, 0) + "/" + convertFloatToString(maxHp, 0) + " ("+ convertFloatToString(hpPerc * 100, 0)+"%)";
+	std::string text = "HP: " + convertFloatToString(hp, 0) + "/" + convertFloatToString(maxHp, 0) + " ("+ convertFloatToString(hpPerc * 100, 0)+"%)";
 	ImGui::ProgressBar(hpPerc, ImVec2(-1,0), text.c_str());
 
 	if (maxMp > 0) {

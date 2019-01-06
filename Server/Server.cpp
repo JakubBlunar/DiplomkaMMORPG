@@ -195,9 +195,9 @@ void s::Server::recievePackets() {
 
 					spdlog::get("log")->info("new connection received from {}", client->getRemoteAddress().toString());
 
-					
-					string name;
-					string pass;
+
+					std::string name;
+					std::string pass;
 					int characterId;
 					if(sessions.size() <= 2) {
 						if (sessions.size() == 1) {

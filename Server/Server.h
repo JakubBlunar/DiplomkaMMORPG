@@ -36,7 +36,7 @@ namespace s {
 		NpcManager npcManager;
 		SpellManager spellManager;
 
-		vector<Manager*> managers;
+		std::vector<Manager*> managers;
 
 
 		sf::Time getServerTime() const;

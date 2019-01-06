@@ -10,7 +10,7 @@ Crypto::Crypto() {
 
 }
 
-string Crypto::hashWithSha256(string text) const {
+std::string Crypto::hashWithSha256(std::string text) const {
 	std::string passwordHash;
 	CryptoPP::SHA256 hash;
 	CryptoPP::StringSource stringSource(text, true,

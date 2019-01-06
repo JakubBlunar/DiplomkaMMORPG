@@ -4,15 +4,14 @@
 #include "IGWindow.h"
 
 class Entity;
-using namespace std;
 
 class IGEntityInfo: public IGWindow
 {
 public:
-	IGEntityInfo(string id, sf::Vector2f position);
+	IGEntityInfo(std::string id, sf::Vector2f position);
 	~IGEntityInfo();
 
-	string id;
+	std::string id;
 	Entity* entity;
 	void setEntity(Entity* entity);
 	Entity* getEntity() const;

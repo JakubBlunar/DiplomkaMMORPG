@@ -85,7 +85,7 @@ void s::Npc::loadFromJson(std::string file)
     if (exists == jsonData.end()) {
 		npc_script = TextFileLoader::instance()->loadFile("Npcs/Scripts/dummy_npc.lua");
     } else {
-		string scriptFile = jsonData["script"].get<json::string_t>();
+	    std::string scriptFile = jsonData["script"].get<json::string_t>();
 		npc_script = TextFileLoader::instance()->loadFile("Npcs/Scripts/"+ scriptFile +".lua");
     }
 
@@ -142,11 +142,11 @@ json s::Npc::toJson() const {
 	return jsonData;
 }
 
-void s::Npc::setName(string name) {
+void s::Npc::setName(std::string name) {
 	this->name = name;
 }
 
-string s::Npc::getName() const {
+std::string s::Npc::getName() const {
 	return name;
 }
 

@@ -11,6 +11,8 @@ public:
 	EventNpcsMovementChange();
 	~EventNpcsMovementChange();
 
+	sf::Mutex mutex;
+
 	void addNpcInfo(sf::Int32 npcId, float posX, float posY, float velX, float velY);
 
 	std::map<sf::Int32, MovementData> npcsMovements;

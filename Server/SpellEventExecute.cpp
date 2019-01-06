@@ -3,9 +3,7 @@
 #include "Character.h"
 
 
-s::SpellEventExecute::SpellEventExecute()
-{
-}
+s::SpellEventExecute::SpellEventExecute(): character(nullptr) {}
 
 
 s::SpellEventExecute::~SpellEventExecute()
@@ -18,5 +16,8 @@ void s::SpellEventExecute::setCharacter(Character* character) {
 }
 
 void s::SpellEventExecute::execute(Server* s) {
+	character->setCastingSpell(nullptr);
+
+
 	spdlog::get("log")->info("Casting spell {}: {}", character->name, spellInfo->name);
 }

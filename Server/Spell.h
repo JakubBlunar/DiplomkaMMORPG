@@ -15,7 +15,6 @@ namespace s {
 		sf::Time cooldownTime;
 		sf::Time castingTime;
 		int id;
-		SpellEvent* queuedEvent;
 	};
 
 	class Spell {

@@ -391,7 +391,7 @@ void Map::loadFromFile(int id) {
 		int firstgid = (int)jsonTileset["firstgid"].get<json::number_integer_t>();
 		std::string path = jsonTileset["source"].get<json::string_t>();
 
-		vector<string> splittedPath = Utils::splitPath(path, {'/'});
+		std::vector<std::string> splittedPath = Utils::splitPath(path, {'/'});
 		path = Utils::removeExtension(splittedPath.back());
 
 		TileSet tileSet = TileSetsHolder::instance()->getTileSet(path);
@@ -466,7 +466,7 @@ void Map::loadFromFile(int id) {
 
 				if (gameObject.count("point") && gameObject["point"].get<json::boolean_t>()) {
 
-					string gameObjectType = gameObject["name"].get<json::string_t>();
+					std::string gameObjectType = gameObject["name"].get<json::string_t>();
 					float positionX = (float)gameObject["x"].get<json::number_float_t>();
 					float positionY = (float)gameObject["y"].get<json::number_float_t>();
 					if (!gameObjectType.empty()) {

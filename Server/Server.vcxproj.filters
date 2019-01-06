@@ -289,10 +289,10 @@
       <Filter>Source Files\SpellEvents</Filter>
     </ClCompile>
     <ClCompile Include="SpellEventExecute.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\SpellEvents</Filter>
     </ClCompile>
     <ClCompile Include="EntitySpells.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Entities\Parts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -503,11 +503,11 @@
     <ClInclude Include="SpellEvent.h">
       <Filter>Header Files\SpellEvents</Filter>
     </ClInclude>
-    <ClInclude Include="SpellEventExecute.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="EntitySpells.h">
       <Filter>Header Files\Entities\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="SpellEventExecute.h">
+      <Filter>Header Files\SpellEvents</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

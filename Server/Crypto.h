@@ -3,9 +3,6 @@
 
 #include <string>
 
-using namespace std;
-
-typedef unsigned char byte;
 
 class Crypto {
 	static Crypto* s_instance;
@@ -18,7 +15,7 @@ public:
 		return s_instance;
 	}
 
-	string hashWithSha256(string text) const;
+	std::string hashWithSha256(std::string text) const;
 
 };
 

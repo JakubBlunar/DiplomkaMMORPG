@@ -36,7 +36,7 @@ void s::ServerTasks::fetchOnline() {
 	spdlog::get("log")->info("Updating online players for web and server status");
 	database->executeQuery("DELETE from onlineplayers;");
 
-	string query = "INSERT INTO realmStatuses (id, realmName, startTime, endTime, onlineCount, lightFactionOnline, darkFactionOnline, createdAt, updatedAt) VALUES(1, ";
+	std::string query = "INSERT INTO realmStatuses (id, realmName, startTime, endTime, onlineCount, lightFactionOnline, darkFactionOnline, createdAt, updatedAt) VALUES(1, ";
 	query.append("'Akalitasia realm', NOW(), NOW() - 20, 0, 0, 0, NOW(), NOW() ) ");
 	query.append("ON DUPLICATE KEY UPDATE startTime=NOW(), onlineCount=0, lightFactionOnline=0, darkFactionOnline=0, updatedAt=NOW();");
 	database->executeQuery(query);

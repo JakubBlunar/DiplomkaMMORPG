@@ -267,7 +267,7 @@ void Player::loadFromJson(json jsonData) {
 	positionComponent->setSpeed(speed);
 
 	json attributes = jsonData["attributes"].get<json::array_t>();
-	string attributesS = jsonData.dump();
+	std::string attributesS = jsonData.dump();
 	int index = 0;
 	for (json::iterator it = attributes.begin(); it != attributes.end(); ++it) {
 		attributesComponent->setAttributeByIndex(index, *it);
@@ -356,7 +356,7 @@ void Player::castSpell(SpellInfo* spellInfo, Map* map, Game* g) {
 	}
 
 	bool canCast = spellTarget == this;
-	string message;
+	std::string message;
 	if (!canCast) {
 		EntityToEntityRayCast* result = map->makeRayCast(this, spellTarget);
 		if (result->closestEntity != target) {

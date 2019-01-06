@@ -5,6 +5,11 @@
 #include "Npc.h"
 using json = nlohmann::json;
 
+namespace CryptoPP {
+    
+}
+
+
 namespace s {
 	class NpcHolder {
 	public:

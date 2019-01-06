@@ -17080,14 +17080,14 @@ namespace std
 	@since version 1.0.0
 	*/
 	template<>
-	inline void swap(nlohmann::json& j1,
-		nlohmann::json& j2) noexcept(
-			is_nothrow_move_constructible<nlohmann::json>::value and
-			is_nothrow_move_assignable<nlohmann::json>::value
-			)
-	{
-		j1.swap(j2);
-	}
+    inline void swap<nlohmann::json>(nlohmann::json& first, nlohmann::json& second) noexcept(
+		is_nothrow_move_constructible<nlohmann::json>::value &&
+		is_nothrow_move_assignable<nlohmann::json>::value
+		)
+        
+    {
+        first.swap(second);   
+    }
 
 	/// hash value for JSON objects
 	template<>

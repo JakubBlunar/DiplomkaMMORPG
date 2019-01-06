@@ -123,7 +123,6 @@ void CreateGround(b2World& World, float X, float Y) {
 	Body->CreateFixture(&FixtureDef);
 }
 */
-using namespace std;
 
 bool initSettings() {
 	INIReader reader("ClientConfig.ini");

@@ -8,11 +8,13 @@ namespace s {
 		EntitySpells();
 		virtual ~EntitySpells();
 
-		SpellEventExecute* castingSpell;
+		sf::Mutex spellMutex;
 
+		SpellEventExecute* castingSpell;
 	public:
 
 		void setCastingSpell(SpellEventExecute* castingSpell) {
+			sf::Lock lock(spellMutex);
 			this->castingSpell = castingSpell;
 		}
 

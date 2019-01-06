@@ -33,11 +33,11 @@ void s::MapsManager::init(Server *s) {
 	spdlog::get("log")->info("Started loading maps");
 
 	std::vector<std::string> files;
-	string directory = "./Data/Maps/*.json";
+	std::string directory = "./Data/Maps/*.json";
 
 	read_directory(directory, files);
 	for (const std::string& f : files) {
-		string file = f;
+		std::string file = f;
 
 		file = std::regex_replace(file, std::regex("\\.json"), "");
 		Map* m = new Map();

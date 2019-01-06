@@ -5,6 +5,7 @@
 #include "Map.h"
 #include "SpellHolder.h"
 #include <spdlog/spdlog.h>
+#include "ServerGlobals.h"
 
 using json = nlohmann::json;
 
@@ -30,7 +31,7 @@ bool s::Character::save() const {
 	query.append(" positionY=" + Database::escapeString(std::to_string(position.y)));
 	query.append(" WHERE id=" + std::to_string(id) + ";");
 
-	string queryAttr = "UPDATE character_attributes SET";
+	std::string queryAttr = "UPDATE character_attributes SET";
 	queryAttr.append(" experience=" + std::to_string(getAttribute(EntityAttributeType::EXPERIENCE, false)) + ",");
 	queryAttr.append(" money=" + std::to_string(getAttribute(EntityAttributeType::MONEY, false)) + ",");
 	queryAttr.append(" stamina=" + std::to_string(getAttribute(EntityAttributeType::STAMINA, false)) + ",");
@@ -71,6 +72,26 @@ json s::Character::toJson() const {
 	}
 
 	return jsonData;
+}
+
+void s::Character::update(sf::Time deltaTime, Server* s, Map* map) {
+	b2Vec2 position = body->GetPosition();
+	b2Vec2 velocity = body->GetLinearVelocity();
+
+	position.x = position.x * METTOPIX;
+	position.y = position.y * METTOPIX;
+
+	movement.x = velocity.x * METTOPIX;
+	movement.y = velocity.y * METTOPIX;
+
+	
+	if (movement != sf::Vector2f(0, 0)) {
+		spellMutex.lock();
+		if (castingSpell && castingSpell->spellInfo->castingTime != sf::Time::Zero) {
+			s->spellManager.interruptSpellCast(castingSpell);
+		}
+		spellMutex.unlock();
+	}
 }
 
 s::Character* s::Character::getCharacterById(int characterId) {
@@ -134,13 +155,14 @@ s::Character* s::Character::getCharacterById(int characterId) {
 			try {
 				SpellInfo* si = sh->getSpellInfo(spellType);
 				character->spells.push_back(si);
-			} catch (std::string& e) {
+			}
+			catch (std::string& e) {
 				spdlog::get("log")->error(e);
 			} catch (...) {
 				spdlog::get("log")->error("Error while loading character spells");
 			}
 		}
-		
+
 	}
 
 	mysql_free_result(res);

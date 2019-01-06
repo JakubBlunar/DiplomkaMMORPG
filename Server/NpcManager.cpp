@@ -85,7 +85,7 @@ s::Npc* s::NpcManager::findNpc(int spawnId)
 	return nullptr;
 }
 
-void s::NpcManager::updateNpc(sf::Time elapsedTime, Npc* npc, Server * s, NpcUpdateEvents * npcUpdateEvents) const {
+void s::NpcManager::updateNpc(sf::Time elapsedTime, Npc* npc, Server * s, NpcUpdateEvents* npcUpdateEvents) {
 	if (!npc->isAlive()) {
 		return;
 	}
