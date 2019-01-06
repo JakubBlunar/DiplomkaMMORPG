@@ -31,6 +31,9 @@ GamePlayScene::GamePlayScene(SceneType sceneType, Game* g) : Scene(sceneType, g)
 	helpWindow = new IGHelp();
 	windowManager->addWindow("Help", helpWindow);
 
+	castingBarWindow = new IGCastingBar();
+	windowManager->addWindow("CastingBar", castingBarWindow);
+
 	mFont = ResourceHolder<sf::Font>::instance()->get("Sansation.ttf");
 
 	targetArrow.setRadius(8);
@@ -52,10 +55,12 @@ void GamePlayScene::afterChange() {
 	playerInfoWindow->setEntity(player);
 	actionBarWindow->setPlayer(player);
 	characterInfoWindow->setPlayer(player);
+	castingBarWindow->setPlayer(player);
 
 	windowManager->Open("PlayerInfo");
 	windowManager->Open("ActionBar");
 	windowManager->Open("Console");
+	windowManager->Open("CastingBar");
 }
 
 void GamePlayScene::update(sf::Time elapsedTime) {

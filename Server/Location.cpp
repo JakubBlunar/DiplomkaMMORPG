@@ -32,7 +32,7 @@ s::Location::~Location()
 
 sf::Vector2f s::Location::generateRandomPoint() const {
 	if(!shape) {
-		return sf::Vector2f(-1000, -1000);
+		return sf::Vector2f(40, 40);
 	}
 
 	Random* rand = Random::instance();

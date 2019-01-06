@@ -50,6 +50,7 @@ void Game::run() {
 	recieveThread = new sf::Thread(&PacketManager::startRecieve, packet_manager);
 	recieveThread->launch();
 
+	
 	gameTime.restart();
 	afterStart();
 
@@ -101,6 +102,10 @@ void Game::handleEvent(GameEvent* event) {
 
 void Game::addGameMessage(GameMessage* message) const {
 	sceneManager->getActualScene()->addGameMessage(message);
+}
+
+sf::Time Game::getLatency() const {
+	return sf::microseconds(packet_manager->statistics.lastLatency);
 }
 
 void Game::processEvents() {

@@ -3,6 +3,7 @@
 
 PMStatistics::PMStatistics() : recieved(0), sended(0) {
 	latencyCalc.reset();
+	lastLatency = 0;
 }
 
 

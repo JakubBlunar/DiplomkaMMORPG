@@ -162,6 +162,7 @@
     <ClCompile Include="GamePlayScene.cpp" />
     <ClCompile Include="IGActionBar.cpp" />
     <ClCompile Include="IGAvailableCharacters.cpp" />
+    <ClCompile Include="IGCastingBar.cpp" />
     <ClCompile Include="IGCharacterInfo.cpp" />
     <ClCompile Include="IGConsole.cpp" />
     <ClCompile Include="IGEntityInfo.cpp" />
@@ -221,6 +222,7 @@
     <ClInclude Include="Globals.h" />
     <ClInclude Include="IGActionBar.h" />
     <ClInclude Include="IGAvailableCharacters.h" />
+    <ClInclude Include="IGCastingBar.h" />
     <ClInclude Include="IGCharacterInfo.h" />
     <ClInclude Include="IGConsole.h" />
     <ClInclude Include="IGEntityInfo.h" />

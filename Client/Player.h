@@ -50,6 +50,25 @@ public:
 
 	AttributesComponent* getAttributesComponent() const;
 
+	SpellInfo* castingSpell;
+	sf::Time startCastTime;
+
+	void setCastingSpell(SpellInfo* spell) {
+		this->castingSpell = spell;
+	}
+
+	void setStartCastTime(sf::Time startTime) {
+		this->startCastTime = startTime;
+	}
+
+	SpellInfo* getCastingSpell() const {
+		return castingSpell;
+	}
+
+	sf::Time getStartCastingTime() const {
+		return startCastTime;
+	}
+
 	std::vector<SpellInfo*>* getSpells() {
 		return &spells;
 	}

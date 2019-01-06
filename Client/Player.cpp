@@ -381,6 +381,11 @@ void Player::castSpell(SpellInfo* spellInfo, Map* map, Game* g) {
 		e.spellId = spellInfo->id;
 		e.startCastTimestamp = Utils::getActualUtcTime();
 
+		if (spellInfo->castingTime > sf::Time::Zero) {
+			setStartCastTime(g->getGameTime() + g->getLatency() + g->getLatency());
+			setCastingSpell(spellInfo);
+		}
+
 		sf::Packet* p = e.toPacket();
 		g->packet_manager->sendPacket(p);
 		delete p;

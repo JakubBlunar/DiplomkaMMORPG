@@ -53,6 +53,7 @@ public:
 		return gameTime.getElapsedTime();
 	}
 
+	sf::Time getLatency() const;
 protected:
 	void processEvents();
 	virtual void update(sf::Time elapsedTime);

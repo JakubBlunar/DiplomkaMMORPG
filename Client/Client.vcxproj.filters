@@ -225,9 +225,6 @@
     <ClCompile Include="AttributesComponent.cpp">
       <Filter>Source Files\Entities\Components</Filter>
     </ClCompile>
-    <ClCompile Include="ImGuiFonts.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Spell.cpp">
       <Filter>Source Files\Entities</Filter>
     </ClCompile>
@@ -243,11 +240,17 @@
     <ClCompile Include="IGCharacterInfo.cpp">
       <Filter>Source Files\Scenes\IMGui</Filter>
     </ClCompile>
-    <ClCompile Include="IGConsole.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="IGCastingBar.cpp">
+      <Filter>Source Files\Scenes\IMGui</Filter>
     </ClCompile>
     <ClCompile Include="IGHelp.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Scenes\IMGui</Filter>
+    </ClCompile>
+    <ClCompile Include="IGConsole.cpp">
+      <Filter>Source Files\Scenes\IMGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuiFonts.cpp">
+      <Filter>Source Files\Tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -401,9 +404,6 @@
     <ClInclude Include="AttributesComponent.h">
       <Filter>Header Files\Entities\Components</Filter>
     </ClInclude>
-    <ClInclude Include="ImGuiFonts.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Spell.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
@@ -424,6 +424,12 @@
     </ClInclude>
     <ClInclude Include="IGHelp.h">
       <Filter>Header Files\Scenes\IMGui</Filter>
+    </ClInclude>
+    <ClInclude Include="IGCastingBar.h">
+      <Filter>Header Files\Scenes\IMGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuiFonts.h">
+      <Filter>Header Files\Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
