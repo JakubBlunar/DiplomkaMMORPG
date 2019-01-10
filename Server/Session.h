@@ -11,15 +11,22 @@ namespace s {
 namespace s {
 	class Session {
 		Account* account = nullptr;
+		sf::Mutex sessionLock;
+		sf::TcpSocket* socket;		
 	public:
 		Session();
 		~Session();
-		sf::TcpSocket* socket;
+		sf::TcpSocket* getSocket() const {
+			return socket;
+		}
+		void setSocket(sf::TcpSocket* socket);
 
 		bool isUserLoggedIn() const;
 
 		Account* getAccount() const;
 		void setAccount(s::Account* account);
+
+		void sendPacket(sf::Packet* p);
 	};
 
 }

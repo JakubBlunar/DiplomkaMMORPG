@@ -288,14 +288,17 @@
     <ClCompile Include="SpellEvent.cpp">
       <Filter>Source Files\SpellEvents</Filter>
     </ClCompile>
-    <ClCompile Include="SpellEventExecute.cpp">
-      <Filter>Source Files\SpellEvents</Filter>
-    </ClCompile>
     <ClCompile Include="EntitySpells.cpp">
       <Filter>Source Files\Entities\Parts</Filter>
     </ClCompile>
     <ClCompile Include="EntityToEntityRayCast.cpp">
       <Filter>Source Files\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="SpellEventCharacterExecute.cpp">
+      <Filter>Source Files\SpellEvents</Filter>
+    </ClCompile>
+    <ClCompile Include="SpellEventNpcExecute.cpp">
+      <Filter>Source Files\SpellEvents</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -506,14 +509,17 @@
     <ClInclude Include="EntitySpells.h">
       <Filter>Header Files\Entities\Parts</Filter>
     </ClInclude>
-    <ClInclude Include="SpellEventExecute.h">
-      <Filter>Header Files\SpellEvents</Filter>
-    </ClInclude>
     <ClInclude Include="EntityToEntityRayCast.h">
       <Filter>Header Files\Tools</Filter>
     </ClInclude>
     <ClInclude Include="Entity.h">
       <Filter>Header Files\Entities\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="SpellEventCharacterExecute.h">
+      <Filter>Header Files\SpellEvents</Filter>
+    </ClInclude>
+    <ClInclude Include="SpellEventNpcExecute.h">
+      <Filter>Header Files\SpellEvents</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

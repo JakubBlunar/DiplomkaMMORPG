@@ -1,6 +1,6 @@
 #ifndef ENTITY_SPELLS_H
 #define ENTITY_SPELLS_H
-#include "SpellEventExecute.h"
+#include "SpellEventCharacterExecute.h"
 
 namespace s {
 	class EntitySpells {
@@ -10,15 +10,15 @@ namespace s {
 
 		sf::Mutex spellMutex;
 
-		SpellEventExecute* castingSpell;
+		SpellEvent* castingSpell;
 	public:
 
-		void setCastingSpell(SpellEventExecute* castingSpell) {
+		void setCastingSpell(SpellEvent* castingSpell) {
 			sf::Lock lock(spellMutex);
 			this->castingSpell = castingSpell;
 		}
 
-		SpellEventExecute* getEventWithCastingSpell() const {
+		SpellEvent* getEventWithCastingSpell() const {
 			return castingSpell;
 		}
 

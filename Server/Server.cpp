@@ -144,7 +144,7 @@ void s::Server::identifyPacket(EventId type, sf::Packet* packet, Session* player
 	case LATENCY: {
 		if (*packet >> id) {
 			resPacket << EventId::LATENCY << id;
-			playerSession->socket->send(resPacket);
+			playerSession->sendPacket(&resPacket);
 		}
 		break;
 	}
@@ -186,7 +186,7 @@ void s::Server::recievePackets() {
 				if (listener.accept(*client) == sf::Socket::Done) {
 
 					Session* playerSession = new Session();
-					playerSession->socket = client;
+					playerSession->setSocket(client);
 
 					sf::Packet packet;
 					sessions.push_back(playerSession);
@@ -236,12 +236,12 @@ void s::Server::recievePackets() {
 				for (unsigned int i = 0; i < sessions.size(); i++) {
 					Session* playerSession = sessions[i];
 
-					if (!selector.isReady(*playerSession->socket)) {
+					if (!selector.isReady(*playerSession->getSocket())) {
 						continue;
 					}
 
 					sf::Packet packet;
-					switch (playerSession->socket->receive(packet)) {
+					switch (playerSession->getSocket()->receive(packet)) {
 					case sf::Socket::Done: {
 						int type;
 
@@ -252,7 +252,7 @@ void s::Server::recievePackets() {
 						break;
 					}
 					case sf::Socket::Disconnected: {
-						spdlog::get("log")->info("disconnect from ", playerSession->socket->getRemoteAddress().toString());
+						spdlog::get("log")->info("disconnect from ", playerSession->getSocket()->getRemoteAddress().toString());
 
 						Account* a = playerSession->getAccount();
 						if (a) {
@@ -272,8 +272,8 @@ void s::Server::recievePackets() {
 							
 						}
 
-						selector.remove(*playerSession->socket);
-						playerSession->socket->disconnect();
+						selector.remove(*playerSession->getSocket());
+						playerSession->getSocket()->disconnect();
 
 						sessions.erase(sessions.begin() + i);
 						i--;

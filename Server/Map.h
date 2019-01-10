@@ -6,6 +6,7 @@
 #include <Box2D/Dynamics/b2Body.h>
 #include "MapGrid.h"
 #include "ObjectPool.h"
+#include <map>
 
 namespace s {
 	class Npc;
@@ -15,6 +16,8 @@ namespace s {
 		int id;
 		b2World* world;
 		std::vector<Character *> characters;
+		std::map<int, Character*> charactersById;
+		std::map<int, Npc*> npcsBySpawnId;
 		std::vector<Npc*> npcs;
 		int width, height;
 		sf::Mutex lock;
@@ -54,6 +57,10 @@ namespace s {
 
 		b2Body * createCircle(b2BodyType bodyType, float x, float y, float radius, int16 categoryBits, uint16 maskBits);
 		b2Body* createBox(b2BodyType bodyType, float x, float y, float width, float height, int16 categoryBits, uint16 maskBits);
+
+
+		Character* getCharacterById(int id);
+		Npc* getNpcBySpawnId(int id);
 	};
 
 }

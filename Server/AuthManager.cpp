@@ -62,7 +62,7 @@ void s::AuthManager::handleEvent(EventLoginRequest* event, s::Session* playerSes
 		res.account = accData;
 
 		sf::Packet* p = res.toPacket();
-		playerSession->socket->send(*p);
+		playerSession->sendPacket(p);
 		delete p;
 		return;
 	}
@@ -101,7 +101,7 @@ void s::AuthManager::handleEvent(EventLoginRequest* event, s::Session* playerSes
 	res.account = accData;
 
 	sf::Packet* p = res.toPacket();
-	playerSession->socket->send(*p);
+	playerSession->sendPacket(p);
 	delete p;
 }
 
@@ -177,7 +177,7 @@ void s::AuthManager::handleEvent(EventCharacterChoose* event, s::Session* player
 	res.characterData = characterData;
 
 	sf::Packet* p = res.toPacket();
-	playerSession->socket->send(*p);
+	playerSession->sendPacket(p);
 	delete p;
 }
 

@@ -8,7 +8,34 @@ enum class SpellTarget: sf::Uint8 {
 	POSITION = 2
 };
 
+enum class SpellCastResultCode: sf::Uint8 {
+	SUCCESS = 0,
+	OUT_OF_RANGE = 1,
+	CANT_SEE_TARGET = 2,
+	INTERRUPTED = 3,
+	TARGET_NOT_EXISTS = 4,
+	ALREADY_CASTING = 5,
+	NOT_ENOUGH_MANA = 6
+};
 
+inline std::string getStringSpellErrorByResultCode(SpellCastResultCode code) {
+	switch (code) {
+		case SpellCastResultCode::OUT_OF_RANGE:
+			return "Target is out of range.";
+		case SpellCastResultCode::ALREADY_CASTING:
+			return "You are already casting another spell";
+		case SpellCastResultCode::CANT_SEE_TARGET:
+			return "You can not see target entity";
+		case SpellCastResultCode::INTERRUPTED:
+			return "Your spell was interrupted";
+		case SpellCastResultCode::NOT_ENOUGH_MANA:
+			return "You do not have enough mana";
+		case SpellCastResultCode::TARGET_NOT_EXISTS:
+			return "Your target do not exists";
+		default:
+			return "Your spell has not been casted";
+	}
+}
 
 
 

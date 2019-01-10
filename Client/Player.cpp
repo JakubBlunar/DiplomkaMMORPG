@@ -405,7 +405,7 @@ void Player::castSpell(SpellInfo* spellInfo, Map* map, Game* g) {
 		}
 
 		if (spellInfo->castingTime > sf::Time::Zero) {
-			setStartCastTime(g->getGameTime() + g->getLatency() + g->getLatency());
+			setStartCastTime(g->getGameTime() + g->getLatency());
 			setCastingSpell(spellInfo);
 		}
 

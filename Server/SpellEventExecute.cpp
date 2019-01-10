@@ -1,21 +1,21 @@
-#include "SpellEventExecute.h"
+#include "SpellEventCharacterExecute.h"
 #include <spdlog/spdlog.h>
 #include "Character.h"
 
 
-s::SpellEventExecute::SpellEventExecute(): character(nullptr) {}
+s::SpellEventCharacterExecute::SpellEventCharacterExecute(): character(nullptr) {}
 
 
-s::SpellEventExecute::~SpellEventExecute()
+s::SpellEventCharacterExecute::~SpellEventCharacterExecute()
 {
 }
 
-void s::SpellEventExecute::setCharacter(Character* character) {
+void s::SpellEventCharacterExecute::setCharacter(Character* character) {
 	this->character = character;
 	character->setCastingSpell(this);
 }
 
-void s::SpellEventExecute::execute(Server* s) {
+void s::SpellEventCharacterExecute::execute(Server* s) {
 	character->setCastingSpell(nullptr);
 
 

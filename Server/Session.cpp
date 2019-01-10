@@ -9,6 +9,17 @@ s::Session::Session(): socket(nullptr) {
 s::Session::~Session() {
 }
 
+void s::Session::setSocket(sf::TcpSocket* socket) {
+	sf::Lock lock(sessionLock);
+	this->socket = socket;
+}
+void s::Session::sendPacket(sf::Packet* p) {
+	sf::Lock lock(sessionLock);
+	if (socket) {
+		socket->send(*p);
+	}
+}
+
 bool s::Session::isUserLoggedIn() const {
 	return account != nullptr;
 }

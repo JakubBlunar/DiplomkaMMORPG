@@ -13,6 +13,9 @@
 #include <Box2D/Box2D.h>
 #include "b2GLDraw.h"
 #include "Spell.h"
+#include "EventSpellCastResult.h"
+#include "EntityPrototypes.h"
+#include "GamePlayScene.h"
 
 Map::Map(Game* g) {
 	this->game = g;
@@ -22,8 +25,7 @@ Map::Map(Game* g) {
 Map::~Map() {
 	unsubscribe();
 
-	for (unsigned int i = 0; i < entities.size(); i++)
-	{
+	for (unsigned int i = 0; i < entities.size(); i++) {
 		if (entities[i] != player) {
 			delete entities[i];
 		}
@@ -132,57 +134,75 @@ std::vector<Entity*>* Map::getEntities() {
 
 void Map::handleEvent(GameEvent* event) {
 	switch (event->getId()) {
-	case CHARACTER_MAP_JOIN: {
-		EventCharacterMapJoin* e = (EventCharacterMapJoin*)event;
-		if (e->mapId != id)
-			return;
+		case CHARACTER_MAP_JOIN: {
+			EventCharacterMapJoin* e = (EventCharacterMapJoin*)event;
+			if (e->mapId != id)
+				return;
 
-		json characterData = json::parse(e->characterData);
-		Player* p = new Player(false);
-		p->loadFromJson(characterData);
+			json characterData = json::parse(e->characterData);
+			Player* p = new Player(false);
+			p->loadFromJson(characterData);
 
-		auto exists = std::find_if(players.begin(), players.end(),
-		                           [=](Player* player)-> bool {
-			                           if (player->getId() == p->getId()) {
-				                           return true;
-			                           }
-			                           return false;
-		                           });
-		if (exists != players.end()) {
+			auto exists = players.find(p->getId());
+			if (exists == players.end()) {
+				return;
+			}
+
+			addPlayer(p);
 			return;
 		}
+		case CHARACTER_MAP_LEAVE: {
+			EventCharacterMapLeave* e = (EventCharacterMapLeave*)event;
+			if (e->mapId != this->id)
+				return;
 
-		addPlayer(p);
-	}
-	case CHARACTER_MAP_LEAVE: {
-		EventCharacterMapLeave* e = (EventCharacterMapLeave*)event;
-		if (e->mapId != this->id)
-			return;
+			auto exists = players.find(e->characterId);
+			if (exists == players.end()) {
+				return;
+			}
 
-		auto exists = std::find_if(players.begin(), players.end(),
-		                           [=](Player* player)-> bool {
-			                           if (player->getId() == e->characterId) {
-				                           return true;
-			                           }
-			                           return false;
-		                           });
-		if (exists == players.end()) {
+			Player* p = exists->second;
+			removePlayer(p);
+			delete p;
 			return;
 		}
+		case SPELL_CAST_RESULT: {
+			EventSpellCastResult* e = (EventSpellCastResult*)event;
+			SpellInfo* si = EntityPrototypes::instance()->getSpellInfo(e->spellId);
 
-		Player* p = *exists;
-		removePlayer(p);
-		delete p;
-	}
-	default:
-		break;
+			if (!si) return;
+
+			if (e->entityCategory == PLAYER) {
+				if (e->entityId == (int)player->getId()) {
+					player->setCastingSpell(nullptr);
+					if (e->result != SpellCastResultCode::SUCCESS) {
+						GameMessage* m = new GameMessage();
+						m->message = getStringSpellErrorByResultCode(e->result);
+						m->displayTime = sf::seconds(1.5f);
+						game->addGameMessage(m);
+					}
+				}
+
+				auto playerEntity = players.find(e->entityId);
+				if (playerEntity != players.end()) {
+					if (e->result == SpellCastResultCode::SUCCESS) {
+						AttributesComponent* attributes = playerEntity->second->getAttributesComponent();
+						attributes->modifyAttribute(EntityAttributeType::MP, -si->manaCost);
+					}
+				}
+			}
+
+
+		}
+		default:
+			break;
 	}
 
 }
 
 
 void Map::addPlayer(Player* player) {
-	players.push_back(player);
+	players.insert(std::make_pair(player->getId(), player));
 	entities.push_back(player);
 
 	if (player->isControlledByPlayer()) {
@@ -233,7 +253,7 @@ void Map::removePlayer(Player* player) {
 	world->DestroyBody(player->getBody());
 	player->setBody(nullptr);
 	entities.erase(std::remove(entities.begin(), entities.end(), player), entities.end());
-	players.erase(std::remove(players.begin(), players.end(), player), players.end());
+	players.erase(player->getId());
 }
 
 void Map::addGameObject(GameObject* gameObject) {
@@ -271,7 +291,8 @@ void Map::addCollider(Collider* collider) {
 		                   collider->getEntityCategory(), collider->getCollisionMask());
 	}
 	else {
-		Box2DTools::addCircle(b2_staticBody, position.x, position.y, size.x, collider, this, collider->getEntityCategory(),
+		Box2DTools::addCircle(b2_staticBody, position.x, position.y, size.x, collider, this,
+		                      collider->getEntityCategory(),
 		                      collider->getCollisionMask());
 	}
 }
@@ -283,20 +304,20 @@ void Map::removeGameObject(GameObject* gameObject) {
 }
 
 void Map::addNpc(Npc* npc) {
-	
+
 	sf::Vector2f position = npc->getPosition();
 	sf::Vector2f size = npc->getSize();
 	Box2DTools::addCircle(b2_dynamicBody, position.x, position.y, size.x, npc, this, npc->getEntityCategory(),
 	                      npc->getCollisionMask());
 
 	entities.push_back(npc);
-	npcs.push_back(npc);
+	npcs.insert(std::make_pair(npc->getId(), npc));
 }
 
 void Map::removeNpc(Npc* npc) {
 	world->DestroyBody(npc->getBody());
 	entities.erase(std::remove(entities.begin(), entities.end(), npc), entities.end());
-	npcs.erase(std::remove(npcs.begin(), npcs.end(), npc), npcs.end());
+	npcs.erase(npc->getId());
 }
 
 void Map::addSpell(Spell* spell) {
@@ -416,7 +437,8 @@ void Map::loadFromFile(int id) {
 			json data = layer["data"].get<json::array_t>();
 
 			int counter = 0;
-			for (json::iterator fieldValueIterator = data.begin(); fieldValueIterator != data.end(); fieldValueIterator++) {
+			for (json::iterator fieldValueIterator = data.begin(); fieldValueIterator != data.end(); fieldValueIterator
+			     ++) {
 				int value = *fieldValueIterator;
 				if (value > 0) {
 					int x = counter % width;
@@ -429,7 +451,8 @@ void Map::loadFromFile(int id) {
 
 					int tilesetIdOffset = 0;
 
-					for (std::map<int, TileSet>::iterator tilesetIterator = tilesets.begin(); tilesetIterator != tilesets.end();
+					for (std::map<int, TileSet>::iterator tilesetIterator = tilesets.begin(); tilesetIterator !=
+					     tilesets.end();
 					     tilesetIterator++) {
 						if (tilesetIdOffset <= value) {
 							if (value < tilesetIterator->first) {
@@ -447,7 +470,7 @@ void Map::loadFromFile(int id) {
 
 						RenderSprite* sprite = new RenderSprite();
 						sprite->load(foundTileSet.path, sf::Vector2i((int)FIELD_SIZE, (int)FIELD_SIZE),
-						             sf::Vector2i(tileX * (int)FIELD_SIZE,tileY * (int)FIELD_SIZE));
+						             sf::Vector2i(tileX * (int)FIELD_SIZE, tileY * (int)FIELD_SIZE));
 
 						fields->get(x, y)->addLayer(sprite);
 					}
@@ -475,7 +498,8 @@ void Map::loadFromFile(int id) {
 						po->setPosition(sf::Vector2f(positionX, positionY));
 
 						if (po->getBodyType() == BodyType::CIRCLE) {
-							grid->setWall(sf::Vector2f(positionX, positionY), sf::Vector2f(po->getSize().x, po->getSize().x));
+							grid->setWall(sf::Vector2f(positionX, positionY),
+							              sf::Vector2f(po->getSize().x, po->getSize().x));
 						}
 
 						if (po->getBodyType() == BodyType::RECTANGLE) {
@@ -498,7 +522,8 @@ void Map::loadFromFile(int id) {
 
 					if (width > 0 && height > 0) {
 						Collider* c = new Collider(-1);
-						c->getPositionComponent()->setPosition(sf::Vector2f(positionX + width / 2, positionY + height / 2));
+						c->getPositionComponent()->setPosition(
+							sf::Vector2f(positionX + width / 2, positionY + height / 2));
 						c->getPositionComponent()->setBodyType(BodyType::RECTANGLE);
 						c->getPositionComponent()->setSize(sf::Vector2f(width, height));
 						c->getPositionComponent()->setMovement(sf::Vector2f(0, 0));
@@ -523,11 +548,13 @@ void Map::loadFromFile(int id) {
 void Map::subscribe() {
 	EventDispatcher<EventCharacterMapJoin>::addSubscriber(this);
 	EventDispatcher<EventCharacterMapLeave>::addSubscriber(this);
+	EventDispatcher<EventSpellCastResult>::addSubscriber(this);
 }
 
 void Map::unsubscribe() {
 	EventDispatcher<EventCharacterMapJoin>::removeSubscriber(this);
 	EventDispatcher<EventCharacterMapLeave>::removeSubscriber(this);
+	EventDispatcher<EventSpellCastResult>::removeSubscriber(this);
 }
 
 Player* Map::getPlayer() const {

@@ -9,7 +9,7 @@
 #include "Lua/sol.hpp"
 
 namespace s {
-	class Npc: public EntityPosition, public EntityAttributes {
+	class Npc: public EntityAttributes, public EntitySpells, public EntityPosition {
 		NpcState state;
 		sf::Vector2f spawnPosition;
 		int spawnId;

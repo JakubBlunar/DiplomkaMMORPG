@@ -20,6 +20,7 @@ namespace s {
 
 namespace s {
 	class Server {
+		friend class Session;
 	public:
 		Server(ServerSettings* settings);
 		~Server();

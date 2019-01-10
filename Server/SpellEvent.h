@@ -2,6 +2,7 @@
 #define S_SPELL_EVENT_H
 
 #include <SFML/System.hpp>
+#include "Entity.h"
 
 namespace s {
 	struct SpellInfo;
@@ -16,6 +17,7 @@ namespace s {
 		SpellInfo* spellInfo;
 
 		virtual void execute(Server* s) = 0;
+		virtual void interrupt(bool sendInfo) {};
 	};
 }
 

@@ -13,6 +13,7 @@
 #include "EventCharacterMapJoin.h"
 #include "EventNpcMovementChange.h"
 #include "EventNpcStatusChanged.h"
+#include "EventSpellCastResult.h"
 
 PacketManager::PacketManager(Game* g) : game(nullptr), latencyCheckThread(nullptr) {
 	game = g;
@@ -159,6 +160,14 @@ void PacketManager::startRecieve() {
 					e = new EventNpcStatusChanged();
 					if (e->loadFromPacket(&packet)) {
 						EventDispatcher<EventNpcStatusChanged>::dispatchEvent(e);
+					} else {
+						game->print("Error while parsing packet " + std::to_string(pt));
+					}
+					break;
+				case SPELL_CAST_RESULT: 
+					e = new EventSpellCastResult();
+					if (e->loadFromPacket(&packet)) {
+						EventDispatcher<EventSpellCastResult>::dispatchEvent(e);
 					} else {
 						game->print("Error while parsing packet " + std::to_string(pt));
 					}

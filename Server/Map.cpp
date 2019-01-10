@@ -21,8 +21,7 @@ s::Map::Map(): id(0), world(nullptr), width(0), height(0) {
 	npcUpdateInterval = sf::milliseconds(200);
 }
 
-s::Map::~Map() {
-}
+s::Map::~Map() {}
 
 int s::Map::getId() const {
 	return id;
@@ -32,7 +31,8 @@ void s::Map::addCharacter(Character* character) {
 	lock.lock();
 	sf::Vector2f position = character->position;
 
-	b2Body* characterBody = createCircle(b2_kinematicBody, position.x, position.y, FIELD_SIZE / 2, PLAYER, GAME_OBJECT | BOUNDARY);
+	b2Body* characterBody = createCircle(b2_kinematicBody, position.x, position.y, FIELD_SIZE / 2, PLAYER,
+	                                     GAME_OBJECT | BOUNDARY);
 	character->body = characterBody;
 	character->mapId = id;
 
@@ -43,6 +43,7 @@ void s::Map::addCharacter(Character* character) {
 	sendEventToAnotherPlayers(&eventMapJoin, character->id);
 
 	characters.push_back(character);
+	charactersById.insert(std::make_pair(character->id, character));
 	lock.unlock();
 }
 
@@ -61,24 +62,25 @@ void s::Map::removeCharacter(Character* character) {
 	delete e;
 
 	characters.erase(std::remove(characters.begin(), characters.end(), character), characters.end());
+	charactersById.erase(character->id);
 	lock.unlock();
 }
 
-void s::Map::addNpc(Npc * npc)
-{
+void s::Map::addNpc(Npc* npc) {
 	lock.lock();
 	sf::Vector2f position = npc->getPosition();
 
-	b2Body* npcBody = createCircle(b2_kinematicBody, position.x, position.y, FIELD_SIZE / 2, NPC, GAME_OBJECT | BOUNDARY);
+	b2Body* npcBody = createCircle(b2_kinematicBody, position.x, position.y, FIELD_SIZE / 2, NPC,
+	                               GAME_OBJECT | BOUNDARY);
 	npc->setBody(npcBody);
 	npc->setMap(this);
 
 	npcs.push_back(npc);
+	npcsBySpawnId.insert(std::make_pair(npc->getSpawnId(), npc));
 	lock.unlock();
 }
 
-void s::Map::removeNpc(Npc * npc)
-{
+void s::Map::removeNpc(Npc* npc) {
 	lock.lock();
 	auto body = npc->getBody();
 	if (body) {
@@ -87,7 +89,7 @@ void s::Map::removeNpc(Npc * npc)
 	}
 
 	npcs.erase(std::remove(npcs.begin(), npcs.end(), npc), npcs.end());
-
+	npcsBySpawnId.erase(npc->getSpawnId());
 	lock.unlock();
 }
 
@@ -95,7 +97,7 @@ void s::Map::update(sf::Time deltaTime, Server* s) {
 	lastUpdateNpc += deltaTime;
 
 	lock.lock();
-	
+
 	if (characters.empty()) {
 		lock.unlock();
 		return;
@@ -107,10 +109,9 @@ void s::Map::update(sf::Time deltaTime, Server* s) {
 		std::execution::par_unseq,
 		characters.begin(),
 		characters.end(),
-	    [=](Character* character)
-	    {
+		[=](Character* character) {
 			character->update(deltaTime, s, this);
-	    });
+		});
 
 
 	NpcUpdateEvents* eventsContainer = new NpcUpdateEvents();
@@ -118,29 +119,27 @@ void s::Map::update(sf::Time deltaTime, Server* s) {
 
 	if (lastUpdateNpc > npcUpdateInterval) {
 		std::for_each(
-		std::execution::seq,
+			std::execution::seq,
 			locations.begin(),
-		locations.end(),
-	    [=](std::pair<int, Location*> element)
-	    {
-			element.second->update(deltaTime, s, this);
-	    });
+			locations.end(),
+			[=](std::pair<int, Location*> element) {
+				element.second->update(deltaTime, s, this);
+			});
 
-	
+
 		std::for_each(
-		std::execution::par_unseq,
+			std::execution::par_unseq,
 			npcs.begin(),
-		npcs.end(),
-	    [=](Npc* npc)
-	    {
-			if (npc->isAlive()) {
-				s->npcManager.updateNpc(lastUpdateNpc, npc, s, eventsContainer);
-			}
-	    });
+			npcs.end(),
+			[=](Npc* npc) {
+				if (npc->isAlive()) {
+					s->npcManager.updateNpc(lastUpdateNpc, npc, s, eventsContainer);
+				}
+			});
 
 		lastUpdateNpc = sf::Time::Zero;
 	}
-	
+
 	lock.unlock();
 
 	if (eventsContainer->npcsMovementChange != nullptr) {
@@ -154,7 +153,7 @@ void s::Map::update(sf::Time deltaTime, Server* s) {
 
 }
 
-void s::Map::loadFromJson(std::string path, Server *s) {
+void s::Map::loadFromJson(std::string path, Server* s) {
 
 	spdlog::get("log")->info("Loading map: {}", path);
 	lock.lock();
@@ -196,12 +195,13 @@ void s::Map::loadFromJson(std::string path, Server *s) {
 
 		if (layerType == "objectgroup" && layerName == "locations") {
 			json locations = layer["objects"].get<json::array_t>();
-			for (json::iterator locationIterator = locations.begin(); locationIterator != locations.end(); locationIterator++) {
+			for (json::iterator locationIterator = locations.begin(); locationIterator != locations.end();
+			     locationIterator++) {
 				json jsonLoc = *locationIterator;
 
 				int id = stoi(jsonLoc.value("name", "-100000"));
-				float positionX = (float) jsonLoc["x"].get<json::number_float_t>();
-				float positionY = (float) jsonLoc["y"].get<json::number_float_t>();
+				float positionX = (float)jsonLoc["x"].get<json::number_float_t>();
+				float positionY = (float)jsonLoc["y"].get<json::number_float_t>();
 
 				Location* loc = nullptr;
 
@@ -211,7 +211,8 @@ void s::Map::loadFromJson(std::string path, Server *s) {
 					int size = polygon.size();
 					b2Vec2* vertices = new b2Vec2[size];
 					int i = 0;
-					for (json::iterator polygonIterator = polygon.begin(); polygonIterator != polygon.end(); polygonIterator++) {
+					for (json::iterator polygonIterator = polygon.begin(); polygonIterator != polygon.end();
+					     polygonIterator++) {
 						json point = *polygonIterator;
 						float x = (float)point["x"].get<json::number_float_t>();
 						float y = (float)point["y"].get<json::number_float_t>();
@@ -219,7 +220,8 @@ void s::Map::loadFromJson(std::string path, Server *s) {
 						i++;
 					}
 					loc = new Location(id, vertices, size, sf::Vector2f(positionX, positionY), this);
-				} else if(jsonLoc.find("width") != jsonLoc.end() && jsonLoc.find("height") != jsonLoc.end()) {
+				}
+				else if (jsonLoc.find("width") != jsonLoc.end() && jsonLoc.find("height") != jsonLoc.end()) {
 					int size = 4;
 					b2Vec2* vertices = new b2Vec2[size];
 
@@ -237,60 +239,67 @@ void s::Map::loadFromJson(std::string path, Server *s) {
 				if (loc) {
 					this->locations.insert(std::make_pair(id, loc));
 				}
-				
+
 
 			}
-			
+
 		}
 
-	
+
 		if (layerType == "objectgroup" && layerName == "gameobjects") {
 			json gameObjects = layer["objects"].get<json::array_t>();
 
-			for (json::iterator gameObjectIterator = gameObjects.begin(); gameObjectIterator != gameObjects.end(); gameObjectIterator++) {
+			for (json::iterator gameObjectIterator = gameObjects.begin(); gameObjectIterator != gameObjects.end();
+			     gameObjectIterator++) {
 				json gameObject = *gameObjectIterator;
-				float positionX = (float) gameObject["x"].get<json::number_float_t>();
-				float positionY = (float) gameObject["y"].get<json::number_float_t>();
+				float positionX = (float)gameObject["x"].get<json::number_float_t>();
+				float positionY = (float)gameObject["y"].get<json::number_float_t>();
 
 				if (gameObject.count("point") && gameObject["point"].get<json::boolean_t>()) {
 
 					std::string gameObjectType = gameObject["name"].get<json::string_t>();
-				
+
 					if (!gameObjectType.empty()) {
 						json jsonFile = JsonLoader::instance()->loadJson("GameObjects/" + gameObjectType);
-	
+
 						json position = jsonFile["position"].get<json::object_t>();
 						if (position.is_object()) {
-							BodyType bodyType = static_cast<BodyType>(position["bodyType"].get<json::number_integer_t>());
+							BodyType bodyType = static_cast<BodyType>(position["bodyType"].get<json::number_integer_t>()
+							);
 							float width = (float)position["width"].get<json::number_float_t>();
 							float height = (float)position["height"].get<json::number_float_t>();
 
 							if (bodyType == BodyType::RECTANGLE) {
-								createBox(b2_staticBody, positionX, positionY, width, height, GAME_OBJECT, PLAYER | ENEMY_PLAYER | NPC);
-								for (MapGrid* grid: grids) {
-									grid->setWall(sf::Vector2f(positionX, positionY + height / 2), sf::Vector2f(width, height));
+								createBox(b2_staticBody, positionX, positionY, width, height, GAME_OBJECT,
+								          PLAYER | ENEMY_PLAYER | NPC);
+								for (MapGrid* grid : grids) {
+									grid->setWall(sf::Vector2f(positionX, positionY + height / 2),
+									              sf::Vector2f(width, height));
 								}
 							}
 							if (bodyType == BodyType::CIRCLE) {
-								createCircle(b2_staticBody, positionX, positionY, width, GAME_OBJECT, PLAYER | ENEMY_PLAYER | NPC);
-								for (MapGrid* grid: grids) {
+								createCircle(b2_staticBody, positionX, positionY, width, GAME_OBJECT,
+								             PLAYER | ENEMY_PLAYER | NPC);
+								for (MapGrid* grid : grids) {
 									grid->setWall(sf::Vector2f(positionX, positionY), sf::Vector2f(width, width));
 								}
 							}
-						
+
 						}
 						else
 							throw "cannot load gameObject from file " + gameObjectType;
-				
+
 					}
 
-				} else {
-					float width = (float) gameObject["width"].get<json::number_float_t>();
-					float height = (float) gameObject["height"].get<json::number_float_t>();
+				}
+				else {
+					float width = (float)gameObject["width"].get<json::number_float_t>();
+					float height = (float)gameObject["height"].get<json::number_float_t>();
 
 					if (width > 0 && height > 0) {
-						createBox(b2_staticBody, positionX, positionY, width, height, BOUNDARY, PLAYER | ENEMY_PLAYER | NPC);
-						for (MapGrid* grid: grids) {
+						createBox(b2_staticBody, positionX, positionY, width, height, BOUNDARY,
+						          PLAYER | ENEMY_PLAYER | NPC);
+						for (MapGrid* grid : grids) {
 							grid->setWall(sf::Vector2f(positionX, positionY + height / 2), sf::Vector2f(width, height));
 						}
 					}
@@ -300,7 +309,7 @@ void s::Map::loadFromJson(std::string path, Server *s) {
 
 	}
 
-	for (MapGrid* grid: grids) {
+	for (MapGrid* grid : grids) {
 		grid->initNeighbours();
 		mapGridObjectPool.addObject(grid);
 	}
@@ -309,7 +318,8 @@ void s::Map::loadFromJson(std::string path, Server *s) {
 	int mapId = (int)mapSpawns["mapId"].get<json::number_integer_t>();
 	if (mapId == id) {
 		json mapLocations = mapSpawns["locations"].get<json::array_t>();
-		for (json::iterator locationIterator = mapLocations.begin(); locationIterator != mapLocations.end(); locationIterator++) {
+		for (json::iterator locationIterator = mapLocations.begin(); locationIterator != mapLocations.end();
+		     locationIterator++) {
 			json spawnLocation = *locationIterator;
 			int locationId = (int)spawnLocation["id"].get<json::number_integer_t>();
 
@@ -317,7 +327,8 @@ void s::Map::loadFromJson(std::string path, Server *s) {
 			if (foundLoc != locations.end()) {
 				Location* loc = foundLoc->second;
 				json locationSpawns = spawnLocation["spawns"].get<json::array_t>();
-				for (json::iterator spawniterator = locationSpawns.begin(); spawniterator != locationSpawns.end(); spawniterator++) {
+				for (json::iterator spawniterator = locationSpawns.begin(); spawniterator != locationSpawns.end();
+				     spawniterator++) {
 					json jsonSpawn = *spawniterator;
 
 					int npcType = (int)jsonSpawn["npcType"].get<json::number_integer_t>();
@@ -333,7 +344,8 @@ void s::Map::loadFromJson(std::string path, Server *s) {
 
 				if (spawnLocation.find("npcs") != spawnLocation.end()) {
 					json spawnLocationNpcs = spawnLocation["npcs"].get<json::array_t>();
-					for (json::iterator npcOnLocationIterator = spawnLocationNpcs.begin(); npcOnLocationIterator != spawnLocationNpcs.end(); npcOnLocationIterator++) {
+					for (json::iterator npcOnLocationIterator = spawnLocationNpcs.begin(); npcOnLocationIterator !=
+					     spawnLocationNpcs.end(); npcOnLocationIterator++) {
 						json locationNpc = *npcOnLocationIterator;
 						int npcType = (int)locationNpc["npcType"].get<json::number_integer_t>();
 						int posX = (int)locationNpc["posX"].get<json::number_integer_t>();
@@ -353,9 +365,12 @@ void s::Map::loadFromJson(std::string path, Server *s) {
 
 						int prob = Random::instance()->randomUniformInt(0, 100);
 						if (prob < 20) {
-							npc->setDeadTimestamp(sf::seconds(s->getServerTime().asSeconds() - npc->getRespawnTime().asSeconds() * Random::instance()->randomUniformFloat(0.1f, 0.9f)));
+							npc->setDeadTimestamp(sf::seconds(
+								s->getServerTime().asSeconds() - npc->getRespawnTime().asSeconds() * Random::instance()
+								->randomUniformFloat(0.1f, 0.9f)));
 							npc->setNpcState(NpcState::DEAD);
-						} else {
+						}
+						else {
 							NpcEventNpcIsIdle* e = new NpcEventNpcIsIdle();
 							e->npc = npc;
 							EventDispatcher<NpcEventNpcIsIdle>::dispatchEvent(e, s);
@@ -367,7 +382,6 @@ void s::Map::loadFromJson(std::string path, Server *s) {
 
 		}
 
-		
 
 	}
 
@@ -384,8 +398,7 @@ json s::Map::getCharactersJson() {
 	return jsonCharacters;
 }
 
-json s::Map::getNpcsJson()
-{
+json s::Map::getNpcsJson() {
 	json jsonNpcs = json::array();
 	sf::Lock mutexLock(lock);
 	for (auto& npc : npcs) {
@@ -403,8 +416,7 @@ void s::Map::returnGrid(MapGrid* grid) {
 	mapGridObjectPool.addObject(grid);
 }
 
-void s::Map::sendEventToAnotherPlayers(GameEvent* event, int characterId)
-{
+void s::Map::sendEventToAnotherPlayers(GameEvent* event, int characterId) {
 	sf::Lock mutexLock(lock);
 
 	sf::Packet* p = event->toPacket();
@@ -412,13 +424,12 @@ void s::Map::sendEventToAnotherPlayers(GameEvent* event, int characterId)
 	std::for_each(
 		characters.begin(),
 		characters.end(),
-	    [=](Character* character)
-	    {
+		[=](Character* character) {
 			if (character && character->id != characterId) {
 				Session* s = character->getAccount()->getSession();
-				s->socket->send(*p);
+				s->sendPacket(p);
 			}
-	    });
+		});
 
 	delete p;
 }
@@ -431,17 +442,16 @@ void s::Map::sendEventToAllPlayers(GameEvent* event) {
 	std::for_each(
 		characters.begin(),
 		characters.end(),
-	    [=](Character* character)
-	    {
+		[=](Character* character) {
 			Session* s = character->getAccount()->getSession();
-			s->socket->send(*p);
-	    });
+			s->sendPacket(p);
+		});
 
 	delete p;
 }
 
 void s::Map::handleEvent(GameEvent* event, Session* playerSession, Server* server) {
-	switch(event->getId()) {
+	switch (event->getId()) {
 		case MOVEMENT: {
 			EventMovementChange* e = (EventMovementChange*)event;
 
@@ -488,7 +498,8 @@ b2Body* s::Map::createCircle(b2BodyType bodyType, float x, float y, float radius
 	return bdCircle;
 }
 
-b2Body* s::Map::createBox(b2BodyType bodyType, float x, float y, float width, float height, int16 categoryBits, uint16 maskBits) {
+b2Body* s::Map::createBox(b2BodyType bodyType, float x, float y, float width, float height, int16 categoryBits,
+                          uint16 maskBits) {
 	lock.lock();
 	b2BodyDef bodyDef;
 	bodyDef.type = bodyType;
@@ -506,4 +517,26 @@ b2Body* s::Map::createBox(b2BodyType bodyType, float x, float y, float width, fl
 	bodyBox->CreateFixture(&fixtureDef);
 	lock.unlock();
 	return bodyBox;
+}
+
+s::Character* s::Map::getCharacterById(int id) {
+	lock.lock();
+	auto found = charactersById.find(id);
+	if (found->second) {
+		lock.unlock();
+		return found->second;
+	}
+	lock.unlock();
+	return nullptr;
+}
+
+s::Npc* s::Map::getNpcBySpawnId(int id) {
+	lock.lock();
+	auto found = npcsBySpawnId.find(id);
+	if (found->second) {
+		lock.unlock();
+		return found->second;
+	}
+	lock.unlock();
+	return nullptr;
 }

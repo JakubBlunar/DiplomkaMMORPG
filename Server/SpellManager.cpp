@@ -5,6 +5,9 @@
 #include "EventPlayerStartCastSpell.h"
 #include "Server.h"
 #include "Account.h"
+#include "Map.h"
+#include "Npc.h"
+#include "EventSpellCastResult.h"
 
 s::SpellManager::SpellManager(): spellIds(0, 214748364), effectIds(0, 214748364) {
 	dynamic = true;
@@ -45,10 +48,9 @@ void s::SpellManager::update(sf::Time elapsedTime, s::Server* s) {
 
 }
 
-void s::SpellManager::interruptSpellCast(SpellEventExecute * e)
-{
+void s::SpellManager::interruptSpellCast(SpellEvent* e, bool sendInfo) {
 	sf::Lock lockThread(eventQueueMutex);
-	e->getCharacter()->setCastingSpell(nullptr);
+	e->interrupt(sendInfo);
 	eventQueue.remove(e);
 
 	delete e;
@@ -75,21 +77,73 @@ void s::SpellManager::handleEvent(EventPlayerStartCastSpell* event, s::Session* 
 		sf::Time eventCastEndTime = s->getServerTime() + si->castingTime + sf::seconds((float)delay);
 
 		Character* character = playerSession->getAccount()->getCharacter();
+		Map* characterMap = character->getMap();
 
-		SpellEventExecute* existCast = character->getEventWithCastingSpell();
+		SpellEvent* existCast = character->getEventWithCastingSpell();
 		if (existCast) {
-			interruptSpellCast(existCast);
+			interruptSpellCast(existCast, false);
 		}
 
-		SpellEventExecute* e = new SpellEventExecute();
+		SpellEventCharacterExecute* e = new SpellEventCharacterExecute();
 		e->setCharacter(playerSession->getAccount()->getCharacter());
 		e->spellInfo = si;
 		e->executeTime = eventCastEndTime;
+		e->spellTarget = event->target;
 
+		EventSpellCastResult* error = nullptr;
+
+		switch (event->target) {
+			case SpellTarget::PLAYER: {
+				if (character->id == event->entityId) {
+					e->targetCharacter = character;
+					break;
+				} 
+				
+				if (character->id != event->entityId) {
+					Character* targetCharacter = characterMap->getCharacterById(event->entityId);
+					if (targetCharacter) {
+						e->targetCharacter = targetCharacter;
+						break;
+					}
+				}
+				error = new EventSpellCastResult();
+				error->entityId = character->id;
+				error->entityCategory = PLAYER;
+				error->spellId = si->id;
+				error->result = SpellCastResultCode::TARGET_NOT_EXISTS;
+				break;
+			}
+			case SpellTarget::NPC: {
+				Npc* targetNpc = characterMap->getNpcBySpawnId(event->entityId);
+				if (targetNpc) {
+					e->targetNpc = targetNpc;
+					break;
+				}
+
+				error = new EventSpellCastResult();
+				error->entityId = character->id;
+				error->entityCategory = PLAYER;
+				error->spellId = si->id;
+				error->result = SpellCastResultCode::TARGET_NOT_EXISTS;
+				break;
+			}
+			default: {
+				delete e;
+				return;
+			}
+		}
+
+		if (error) {
+			sf::Packet* p = error->toPacket();
+			playerSession->sendPacket(p);
+			delete p;
+			delete error;
+			return;
+		}
+		
 		eventQueueMutex.lock();
 		eventQueue.push(e);
 		eventQueueMutex.unlock();
-
 	}
 	catch (...) {}
 }

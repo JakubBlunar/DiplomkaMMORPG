@@ -89,7 +89,7 @@ void s::Character::update(sf::Time deltaTime, Server* s, Map* map) {
 	if (movement != sf::Vector2f(0, 0)) {
 		spellMutex.lock();
 		if (castingSpell && castingSpell->spellInfo->castingTime != sf::Time::Zero) {
-			s->spellManager.interruptSpellCast(castingSpell);
+			s->spellManager.interruptSpellCast(castingSpell, true);
 		}
 		spellMutex.unlock();
 	}

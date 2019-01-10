@@ -196,6 +196,7 @@
     <ClInclude Include="EventNpcMovementChange.h" />
     <ClInclude Include="EventNpcStatusChanged.h" />
     <ClInclude Include="EventPlayerStartCastSpell.h" />
+    <ClInclude Include="EventSpellCastResult.h" />
     <ClInclude Include="EventVisitor.h" />
     <ClInclude Include="GameEvent.h" />
     <ClInclude Include="EventId.h" />
@@ -231,6 +232,7 @@
     <ClCompile Include="EventNpcMovementChange.cpp" />
     <ClCompile Include="EventNpcStatusChanged.cpp" />
     <ClCompile Include="EventPlayerStartCastSpell.cpp" />
+    <ClCompile Include="EventSpellCastResult.cpp" />
     <ClCompile Include="EventVisitor.cpp" />
     <ClCompile Include="GameEvent.cpp" />
     <ClCompile Include="MapGrid.cpp" />

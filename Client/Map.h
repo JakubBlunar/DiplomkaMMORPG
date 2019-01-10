@@ -11,6 +11,7 @@
 #include "MapGrid.h"
 #include "Npc.h"
 #include "EntityToEntityRayCast.h"
+#include "Map.h"
 
 class Spell;
 class GameEvent;
@@ -23,9 +24,9 @@ class Map : public Subscriber {
 	int width, height;
 	Matrix<Field>* fields;
 	b2World* world;
-	std::vector<Player*> players;
+	std::map<sf::Uint32, Player*> players;
 	std::vector<Entity*> entities;
-	std::vector<Npc*> npcs;
+	std::map<sf::Uint32, Npc*> npcs;
 
 	b2Draw* debugDrawInstance;
 	int id;
