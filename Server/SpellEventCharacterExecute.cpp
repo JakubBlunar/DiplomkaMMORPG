@@ -5,6 +5,7 @@
 #include "Npc.h"
 #include "Map.h"
 #include "EntityToEntityRayCast.h"
+#include "ServerGlobals.h"
 
 s::SpellEventCharacterExecute::SpellEventCharacterExecute(): character(nullptr), spellTarget(),
                                                              targetCharacter(nullptr),
@@ -30,7 +31,6 @@ void s::SpellEventCharacterExecute::execute(Server* s) {
 		error->entityCategory = PLAYER;
 		error->spellId = spellInfo->id;
 		error->result = SpellCastResultCode::NOT_ENOUGH_MANA;
-		spdlog::get("log")->info("Not enough mana spell {}: {}", character->name, spellInfo->name);
 	}
 
 	if (!error && targetCharacter && targetCharacter != character) {
@@ -41,7 +41,6 @@ void s::SpellEventCharacterExecute::execute(Server* s) {
 			error->entityCategory = PLAYER;
 			error->spellId = spellInfo->id;
 			error->result = SpellCastResultCode::CANT_SEE_TARGET;
-			spdlog::get("log")->info("Cant see target {}: {}", character->name, spellInfo->name);
 		}
 	}
 
@@ -53,7 +52,14 @@ void s::SpellEventCharacterExecute::execute(Server* s) {
 			error->entityCategory = PLAYER;
 			error->spellId = spellInfo->id;
 			error->result = SpellCastResultCode::CANT_SEE_TARGET;
-			spdlog::get("log")->info("Cant see target {}: {}", character->name, spellInfo->name);
+		} else {
+			if (res->closestEntityDistance * METTOPIX > spellInfo->maxRange) {
+				error = new EventSpellCastResult();
+				error->entityId = character->id;
+				error->entityCategory = PLAYER;
+				error->spellId = spellInfo->id;
+				error->result = SpellCastResultCode::OUT_OF_RANGE;
+			}
 		}
 	}
 

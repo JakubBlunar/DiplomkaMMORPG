@@ -1,7 +1,8 @@
 #ifndef S_ENTITY_H
 #define S_ENTITY_H
-#include "../Shared/EntityConstants.h"
 
+#include "../Shared/EntityConstants.h"
+#include <Box2D/Dynamics/b2Body.h>
 
 namespace s {
 
@@ -16,6 +17,8 @@ namespace s {
 		EntityType getEntityType() const {
 			return entityType;
 		}
+
+		virtual b2Body*  getBody() const = 0;
 	};
 }
 

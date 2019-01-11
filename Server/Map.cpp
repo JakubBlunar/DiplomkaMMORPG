@@ -548,18 +548,10 @@ s::Npc* s::Map::getNpcBySpawnId(int id) {
 
 s::EntityToEntityRayCast* s::Map::makeRayCast(Entity* startEntity, Entity* endEntity) {
 
-	EntityPosition* se = dynamic_cast<EntityPosition*>(startEntity);
-	EntityPosition* ee = dynamic_cast<EntityPosition*>(endEntity);
+	EntityToEntityRayCast* callback = new EntityToEntityRayCast(startEntity, endEntity);
 
-	EntityToEntityRayCast* callback = new EntityToEntityRayCast(se, ee);
-
-	if (!se || !ee) {
-		callback->canSee = false;
-		return callback;
-	}
-
-	b2Vec2 start = se->getBody()->GetPosition();
-	b2Vec2 end = ee->getBody()->GetPosition();
+	b2Vec2 start = startEntity->getBody()->GetPosition();
+	b2Vec2 end = endEntity->getBody()->GetPosition();
 
 	sf::Lock mapLock(lock);
 	world->RayCast(callback, start, end);

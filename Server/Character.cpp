@@ -98,6 +98,10 @@ void s::Character::update(sf::Time deltaTime, Server* s, Map* map) {
 	}
 }
 
+b2Body* s::Character::getBody() const {
+	return position.getBody();
+}
+
 s::Character* s::Character::getCharacterById(int characterId) {
 	std::string query = "SELECT id, name, faction, type, mapId, positionX, positionY FROM characters WHERE id='" +
 		Database

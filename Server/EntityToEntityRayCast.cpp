@@ -6,7 +6,7 @@
 
 
 s::EntityToEntityRayCast::
-EntityToEntityRayCast(EntityPosition* startEntity, EntityPosition* endEntity):
+EntityToEntityRayCast(Entity* startEntity, Entity* endEntity):
 	closestEntityDistance(999999999.f) {
 	this->startEntity = startEntity;
 	this->endEntity = endEntity;
@@ -26,8 +26,8 @@ float32 s::EntityToEntityRayCast::ReportFixture(b2Fixture* fixture, const b2Vec2
 
 	void* userData = body->GetUserData();
 	if (userData) {
-		EntityPosition* hitObj = static_cast<EntityPosition*>(userData);
-		if (hitObj != endEntity) { // if not target then continue
+		Entity* hitObj = static_cast<Entity*>(userData);
+		if (hitObj->getEntityType() == EntityType::MOVABLE_SPELL || hitObj != endEntity) { // if not target then continue
 			return 1;
 		}
 	}

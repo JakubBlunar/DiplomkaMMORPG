@@ -72,6 +72,8 @@ namespace s {
 
 		float getAttribute(EntityAttributeType attribute, bool withBonus);
 
+		b2Body* getBody() const override;
+
 		void lock();
 		void unlock();
 	};

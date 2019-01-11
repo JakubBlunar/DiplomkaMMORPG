@@ -9,12 +9,12 @@ namespace s {
 
 	class EntityToEntityRayCast : public b2RayCastCallback {
 	public:
-		EntityPosition* startEntity;
-		EntityPosition* endEntity;
+		Entity* startEntity;
+		Entity* endEntity;
 		bool canSee;
 		float closestEntityDistance;
 
-		EntityToEntityRayCast(EntityPosition* startEntity, EntityPosition* endEntity);
+		EntityToEntityRayCast(Entity* startEntity, Entity* endEntity);
 		virtual ~EntityToEntityRayCast();
 		float32 ReportFixture(b2Fixture* fixture, const b2Vec2& point,
 		                      const b2Vec2& normal, float32 fraction) override;

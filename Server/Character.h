@@ -18,7 +18,7 @@ namespace s {
 }
 
 namespace s {
-	class Character :public Entity {
+	class Character : public Entity {
 		Account* account;
 	public:
 		Character();
@@ -43,6 +43,7 @@ namespace s {
 
 		void update(sf::Time deltaTime, Server* s, Map* map);
 
+		b2Body* getBody() const override;
 
 		static Character* getCharacterById(int characterId);
 		static std::vector<Character*>* getAccountCharacters(int accountId);

@@ -15,6 +15,8 @@ namespace s {
 		sf::Time cooldownTime;
 		sf::Time castingTime;
 		int id;
+		sf::Time globalCooldownTime;
+		float maxRange;
 	};
 
 	class Spell {
@@ -48,7 +50,7 @@ namespace s {
 			return instanceId;
 		}
 
-		void loadFromJson(json json);	
+		void loadFromJson(json data);
 	};
 
 }

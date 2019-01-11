@@ -42,7 +42,9 @@ void s::SpellHolder::init()
 		si->manaCost = (float)jsonData["mana"].get<json::number_float_t>();
 		si->castingTime = sf::milliseconds((int)jsonData["castingTime"].get<json::number_integer_t>());
 		si->cooldownTime = sf::milliseconds((int)jsonData["cooldown"].get<json::number_integer_t>());
-
+		si->cooldownTime = sf::milliseconds((int)jsonData["cooldown"].get<json::number_integer_t>());
+		si->globalCooldownTime = sf::milliseconds((int)jsonData["gCooldown"].get<json::number_integer_t>());
+		si->maxRange =  (float)jsonData["maxRange"].get<json::number_float_t>();
 		spellInfos.insert(std::make_pair(si->id, si));
 
 		Spell* spell = new Spell();

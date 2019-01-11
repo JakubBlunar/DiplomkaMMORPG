@@ -268,6 +268,11 @@ float s::Npc::getAttribute(EntityAttributeType attribute, bool withBonus) {
 	return attributes.getAttribute(attribute, withBonus);
 }
 
+b2Body* s::Npc::getBody() const {
+	return position.getBody();
+}
+
+
 void s::Npc::lock() {
 	mutex.lock();
 }

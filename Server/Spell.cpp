@@ -34,9 +34,7 @@ s::Spell* s::Spell::clone() const {
 	return cloned;
 }
 
-void s::Spell::loadFromJson(json json) {
+void s::Spell::loadFromJson(json data) {
 	
-
-
-
 }
+
