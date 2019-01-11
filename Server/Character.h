@@ -18,19 +18,23 @@ namespace s {
 }
 
 namespace s {
-	class Character : public EntityAttributes, public EntityPosition, public EntitySpells {
+	class Character :public Entity {
 		Account* account;
 	public:
 		Character();
-
+		virtual ~Character();
 		void setAccount(Account* account);
 		Account* getAccount() const;
+
+		EntityAttributes attributes;
+		EntityPosition position;
+		EntitySpells spells;
 
 		int id;
 		std::string name;
 		CharacterType type;
 		CharacterFaction faction;
-		std::vector<SpellInfo*> spells;
+		std::vector<SpellInfo*> availableSpells;
 
 		bool isBot;
 

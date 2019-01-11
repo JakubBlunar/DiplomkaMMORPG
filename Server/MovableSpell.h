@@ -5,10 +5,12 @@
 #include "EntityPosition.h"
 
 namespace s {
-	class MovableSpell : public EntityPosition, public Spell {
+	class MovableSpell : public Entity, public Spell {
 	public:
 		MovableSpell();
 		virtual ~MovableSpell();
+
+		EntityPosition position;
 
 		void update(sf::Time elapsedTime, s::Server* s, Map* map);
 		void cast(Entity* entity) override;

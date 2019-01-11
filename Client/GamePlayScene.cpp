@@ -57,10 +57,10 @@ void GamePlayScene::afterChange() {
 	characterInfoWindow->setPlayer(player);
 	castingBarWindow->setPlayer(player);
 
-	windowManager->Open("PlayerInfo");
-	windowManager->Open("ActionBar");
-	windowManager->Open("Console");
-	windowManager->Open("CastingBar");
+	windowManager->open("PlayerInfo");
+	windowManager->open("ActionBar");
+	windowManager->open("Console");
+	windowManager->open("CastingBar");
 }
 
 void GamePlayScene::update(sf::Time elapsedTime) {
@@ -224,7 +224,7 @@ void GamePlayScene::onKeyPress(sf::Keyboard::Key key) {
 			if (characterInfoWindow->isOpened()) {
 				windowManager->close("CharacterInfo");
 			} else {
-				windowManager->Open("CharacterInfo");
+				windowManager->open("CharacterInfo");
 			}
 			break;
 		}
@@ -233,14 +233,14 @@ void GamePlayScene::onKeyPress(sf::Keyboard::Key key) {
 				windowManager->close("GameMenu");
 			}
 			else {
-				windowManager->Open("GameMenu");
+				windowManager->open("GameMenu");
 			}
 			break;
 		}
 		default: break;
 	}
 
-	if (windowManager->AnyWindowFocused()) {
+	if (windowManager->anyWindowFocused()) {
 		return;
 	}
 
@@ -367,7 +367,7 @@ void GamePlayScene::onClick(sf::Mouse::Button event, sf::Vector2f position) {
 				if (entity->containsPoint(position)) {
 					targetInfoWindow->setEntity(entity);
 					player->setTarget(entity);
-					windowManager->Open("TargetInfo");
+					windowManager->open("TargetInfo");
 					found = true;
 				}
 			}

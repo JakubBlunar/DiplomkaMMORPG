@@ -4,7 +4,7 @@
 CharacterChooseScene::CharacterChooseScene(SceneType sceneType, Game* g) : Scene(sceneType, g) {
 	IGAvailableCharacters* selectCharactersWindow = new IGAvailableCharacters();
 	windowManager->addWindow("selectCharacter", selectCharactersWindow);
-	windowManager->OpenAll();
+	windowManager->openAll();
 }
 
 

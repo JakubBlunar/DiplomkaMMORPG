@@ -29,9 +29,9 @@ void s::AuthManager::handleEvent(EventCharacterLogout* event, s::Session* player
 
 	ch->save();
 
-	Map* map = ch->getMap();
+	Map* map = ch->position.getMap();
 	map->removeCharacter(ch);
-	ch->setMap(nullptr);
+	ch->position.setMap(nullptr);
 	ch->setAccount(nullptr);
 	account->setCharacter(nullptr);
 
@@ -135,14 +135,14 @@ void s::AuthManager::handleEvent(EventCharacterChoose* event, s::Session* player
 			if (character != account->characters->end()) {
 
 				Character* ch = *character;
-				Map* m = s->mapsManager.getMap(ch->mapId);
+				Map* m = s->mapsManager.getMap(ch->position.getMapId());
 				if (m) {
 
 					ch->setAccount(playerSession->getAccount());
 					playerSession->getAccount()->setCharacter(ch);
 
 					m->addCharacter(ch);
-					ch->setMap(m);
+					ch->position.setMap(m);
 
 					EventCharacterMapJoin eventMapJoin;
 					eventMapJoin.mapId = m->getId();

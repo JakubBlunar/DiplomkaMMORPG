@@ -31,7 +31,7 @@ void s::NpcCommandMoveTo::update(sf::Time elapsedTime, NpcUpdateEvents * npcUpda
 		return;
 	}
 
-	b2Vec2 pos = npc->getBody()->GetPosition();
+	b2Vec2 pos = npc->position.getBody()->GetPosition();
 	sf::Vector2f start = sf::Vector2f(pos.x * METTOPIX, pos.y * METTOPIX);
 
 	if(!path.empty()) {
@@ -69,7 +69,7 @@ void s::NpcCommandMoveTo::update(sf::Time elapsedTime, NpcUpdateEvents * npcUpda
 			direction.y = 0;
 		}
 
-		npc->setMovementDirection(direction, npc->getSpeed(), npcUpdateEvents);
+		npc->setMovementDirection(direction, npc->position.getSpeed(), npcUpdateEvents);
 	} else {
 		if(!finished) {
 			finished = true;
@@ -78,7 +78,7 @@ void s::NpcCommandMoveTo::update(sf::Time elapsedTime, NpcUpdateEvents * npcUpda
 			dispatchFinishEvent(e);
 		}
 
-		npc->setMovementDirection(sf::Vector2f(0, 0), npc->getSpeed(), npcUpdateEvents);
+		npc->setMovementDirection(sf::Vector2f(0, 0), npc->position.getSpeed(), npcUpdateEvents);
 	}
 }
 
@@ -86,7 +86,7 @@ void s::NpcCommandMoveTo::init() {
 	
 	MapGrid* mapGrid = map->getGrid();
 
-	sf::Vector2f pathFindingFrom = npc->getPosition();
+	sf::Vector2f pathFindingFrom = npc->position.getPosition();
 	if(pathFindingFrom.x < 100)
 		pathFindingFrom.x = 100;
 

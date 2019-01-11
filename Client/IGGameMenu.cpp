@@ -29,7 +29,7 @@ void IGGameMenu::render(Game* g, IGManager* manager) {
 
 	if (ImGui::Button("Help", sf::Vector2f(ImGui::GetWindowWidth() * 0.935f, 40))) {
 		close();
-		manager->Open("Help");
+		manager->open("Help");
 	}
 
 	if (ImGui::Button("Logout", sf::Vector2f(ImGui::GetWindowWidth() * 0.935f, 40))) {
@@ -75,6 +75,8 @@ void IGGameMenu::render(Game* g, IGManager* manager) {
 			sf::Packet* p = e.toPacket();
 			g->packet_manager->sendPacket(p);
 			delete p;
+
+			manager->closeAll();
 
 			g->sceneManager->changeScene(SceneType::CHARACTER_CHOOSE);
 

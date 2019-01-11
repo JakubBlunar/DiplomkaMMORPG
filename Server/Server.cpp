@@ -127,7 +127,7 @@ void s::Server::identifyPacket(EventId type, sf::Packet* packet, Session* player
 	case MOVEMENT: {
 		EventMovementChange* e = new EventMovementChange();
 		if (e->loadFromPacket(packet)) {
-			Map* map = playerSession->getAccount()->getCharacter()->getMap();
+			Map* map = playerSession->getAccount()->getCharacter()->position.getMap();
 			map->handleEvent(e, playerSession, this);
 		}
 		delete e;
@@ -261,7 +261,7 @@ void s::Server::recievePackets() {
 								if(!a->isBot) {
 									ch->save();
 								}
-								ch->getMap()->removeCharacter(ch);
+								ch->position.getMap()->removeCharacter(ch);
 								delete ch;
 							}
 							if (a->isBot) {

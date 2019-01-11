@@ -26,7 +26,7 @@ float32 s::EntityToEntityRayCast::ReportFixture(b2Fixture* fixture, const b2Vec2
 
 	void* userData = body->GetUserData();
 	if (userData) {
-		Entity* hitObj = static_cast<Entity*>(userData);
+		EntityPosition* hitObj = static_cast<EntityPosition*>(userData);
 		if (hitObj != endEntity) { // if not target then continue
 			return 1;
 		}

@@ -18,12 +18,13 @@ public:
 	IGWindow* getWindow(std::string s);
 	void drawAll(Game* game);
 
-	void Open(std::string n);
+	void open(std::string n);
 	void close(std::string n);
-	void OpenAll();
+	void openAll();
+	void closeAll();
 
 	bool isVisible(std::string n);
-	bool AnyWindowFocused();
+	bool anyWindowFocused();
 
 	void pushPopup(IGPopup* popup);
 	bool isShowingPopup() const;

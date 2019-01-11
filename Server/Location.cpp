@@ -62,7 +62,7 @@ void s::Location::addSpawn(Spawn * spawn)
 void s::Location::addNpc(Npc * npc)
 {
 	locationNpcs.push_back(npc);
-	npc->setLocation(this);
+	npc->position.setLocation(this);
 }
 
 void s::Location::update(sf::Time elapsedTime, s::Server * s, Map * map)
@@ -86,11 +86,11 @@ void s::Location::checkNpcRespawn(Npc* npc, sf::Time serverTime, Server* s) cons
 	if (serverTime.asSeconds() - respawnTime.asSeconds() >= deadTimestamp.asSeconds()) {
 		if (npc->hasSpawnPosition()) {
 			sf::Vector2f spawnPosition = npc->getSpawnPosition();
-			npc->setPosition(spawnPosition);
+			npc->position.setPosition(spawnPosition);
 			npc->setMovement(0, 0);
 			EventNpcMovementChange movChanged;
 			movChanged.spawnId = npc->getSpawnId();
-			movChanged.speed = npc->getSpeed();
+			movChanged.speed = npc->position.getSpeed();
 			movChanged.velX = 0;
 			movChanged.velY = 0;
 			movChanged.x = spawnPosition.x;
@@ -101,8 +101,8 @@ void s::Location::checkNpcRespawn(Npc* npc, sf::Time serverTime, Server* s) cons
 		float hp = npc->getAttribute(EntityAttributeType::BASE_HP, true);
 		float mp = npc->getAttribute(EntityAttributeType::BASE_MP, true);
 
-		npc->setAttribute(EntityAttributeType::HP, hp);
-		npc->setAttribute(EntityAttributeType::MP, mp);
+		npc->attributes.setAttribute(EntityAttributeType::HP, hp);
+		npc->attributes.setAttribute(EntityAttributeType::MP, mp);
 
 		EventAttributesChanged attributeChanges;
 		attributeChanges.spawnId = npc->getSpawnId();

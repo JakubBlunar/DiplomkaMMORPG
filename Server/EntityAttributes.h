@@ -6,9 +6,10 @@
 namespace s {
 	class EntityAttributes
 	{
-	protected:
-		EntityAttributes();
+		
 	public:
+		EntityAttributes();
+
 		std::vector<float> attributes;
 		std::vector<float> attributeBonuses;
 
@@ -30,6 +31,8 @@ namespace s {
 		void recalcMaxMana();
 		int recalcLevel();
 		float getXpForLevel(int level) const;
+
+		int getCount() const { return attributes.size(); }
 	};
 }
 

@@ -7,6 +7,7 @@
 #include "MapGrid.h"
 #include "ObjectPool.h"
 #include <map>
+#include "EntityToEntityRayCast.h"
 
 namespace s {
 	class Npc;
@@ -61,6 +62,9 @@ namespace s {
 
 		Character* getCharacterById(int id);
 		Npc* getNpcBySpawnId(int id);
+
+		EntityToEntityRayCast* makeRayCast(Entity* startEntity, Entity* endEntity);
+
 	};
 
 }

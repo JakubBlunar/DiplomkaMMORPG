@@ -14,6 +14,7 @@
 #include "Random.h"
 #include "NpcEventNpcIsIdle.h"
 #include "EventDispatcher.h"
+#include "EntityPosition.h"
 
 #include <execution>
 
@@ -29,12 +30,13 @@ int s::Map::getId() const {
 
 void s::Map::addCharacter(Character* character) {
 	lock.lock();
-	sf::Vector2f position = character->position;
+	sf::Vector2f position = character->position.getPosition();
 
 	b2Body* characterBody = createCircle(b2_kinematicBody, position.x, position.y, FIELD_SIZE / 2, PLAYER,
 	                                     GAME_OBJECT | BOUNDARY);
-	character->body = characterBody;
-	character->mapId = id;
+	character->position.setBody(characterBody);
+	character->position.setMapId(id);
+	characterBody->SetUserData(character);
 
 	EventCharacterMapJoin eventMapJoin;
 	eventMapJoin.mapId = id;
@@ -49,9 +51,10 @@ void s::Map::addCharacter(Character* character) {
 
 void s::Map::removeCharacter(Character* character) {
 	lock.lock();
-	if (character->body) {
-		world->DestroyBody(character->body);
-		character->body = nullptr;
+	b2Body* body = character->position.getBody();
+	if (body) {
+		world->DestroyBody(body);
+		character->position.setBody(nullptr);
 	}
 
 	EventCharacterMapLeave* e = new EventCharacterMapLeave();
@@ -68,12 +71,13 @@ void s::Map::removeCharacter(Character* character) {
 
 void s::Map::addNpc(Npc* npc) {
 	lock.lock();
-	sf::Vector2f position = npc->getPosition();
+	sf::Vector2f position = npc->position.getPosition();
 
 	b2Body* npcBody = createCircle(b2_kinematicBody, position.x, position.y, FIELD_SIZE / 2, NPC,
 	                               GAME_OBJECT | BOUNDARY);
-	npc->setBody(npcBody);
-	npc->setMap(this);
+	npc->position.setBody(npcBody);
+	npc->position.setMap(this);
+	npcBody->SetUserData(npc);
 
 	npcs.push_back(npc);
 	npcsBySpawnId.insert(std::make_pair(npc->getSpawnId(), npc));
@@ -82,10 +86,10 @@ void s::Map::addNpc(Npc* npc) {
 
 void s::Map::removeNpc(Npc* npc) {
 	lock.lock();
-	auto body = npc->getBody();
+	auto body = npc->position.getBody();
 	if (body) {
 		world->DestroyBody(body);
-		npc->setBody(nullptr);
+		npc->position.setBody(nullptr);
 	}
 
 	npcs.erase(std::remove(npcs.begin(), npcs.end(), npc), npcs.end());
@@ -358,7 +362,7 @@ void s::Map::loadFromJson(std::string path, Server* s) {
 
 						Npc* npc = s->npcManager.createNpc(npcType);
 						npc->setSpawnPosition(spawnPosition);
-						npc->setPosition(spawnPosition);
+						npc->position.setPosition(spawnPosition);
 
 						addNpc(npc);
 						loc->addNpc(npc);
@@ -457,11 +461,12 @@ void s::Map::handleEvent(GameEvent* event, Session* playerSession, Server* serve
 
 			lock.lock();
 			Character* character = playerSession->getAccount()->getCharacter();
-			character->body->SetTransform(b2Vec2(e->x * PIXTOMET, e->y * PIXTOMET), character->body->GetAngle());
-			character->body->SetLinearVelocity(b2Vec2(e->velX * PIXTOMET, e->velY * PIXTOMET));
+			b2Body* body = character->position.getBody(); 
+			body->SetTransform(b2Vec2(e->x * PIXTOMET, e->y * PIXTOMET), body->GetAngle());
+			body->SetLinearVelocity(b2Vec2(e->velX * PIXTOMET, e->velY * PIXTOMET));
 
-			character->position = sf::Vector2f(e->x, e->y);
-			character->movement = sf::Vector2f(e->velX, e->velY);
+			character->position.setPosition(sf::Vector2f(e->x, e->y));
+			character->position.setMovement(sf::Vector2f(e->velX, e->velY));
 			sendEventToAnotherPlayers(event, character->id);
 
 			lock.unlock();
@@ -539,4 +544,24 @@ s::Npc* s::Map::getNpcBySpawnId(int id) {
 	}
 	lock.unlock();
 	return nullptr;
+}
+
+s::EntityToEntityRayCast* s::Map::makeRayCast(Entity* startEntity, Entity* endEntity) {
+
+	EntityPosition* se = dynamic_cast<EntityPosition*>(startEntity);
+	EntityPosition* ee = dynamic_cast<EntityPosition*>(endEntity);
+
+	EntityToEntityRayCast* callback = new EntityToEntityRayCast(se, ee);
+
+	if (!se || !ee) {
+		callback->canSee = false;
+		return callback;
+	}
+
+	b2Vec2 start = se->getBody()->GetPosition();
+	b2Vec2 end = ee->getBody()->GetPosition();
+
+	sf::Lock mapLock(lock);
+	world->RayCast(callback, start, end);
+	return callback;
 }

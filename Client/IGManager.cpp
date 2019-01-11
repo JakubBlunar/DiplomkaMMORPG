@@ -64,20 +64,26 @@ bool IGManager::isVisible(std::string n) {
 	return false;
 }
 
-void IGManager::Open(std::string n) {
+void IGManager::open(std::string n) {
 	IGWindow* w = getWindow(n);
 	if (w != nullptr) {
 		w->open();
 	}
 }
 
-void IGManager::OpenAll() {
+void IGManager::openAll() {
 	for (std::pair<std::string, IGWindow*> window : windows) {
-		Open(window.first);
+		open(window.first);
 	}
 }
 
-bool IGManager::AnyWindowFocused() {
+void IGManager::closeAll() {
+	for (std::pair<std::string, IGWindow*> window : windows) {
+		close(window.first);
+	}
+}
+
+bool IGManager::anyWindowFocused() {
 	for (std::pair<std::string, IGWindow*> window : windows) {
 		if (window.second->isFocused()) {
 			return true;

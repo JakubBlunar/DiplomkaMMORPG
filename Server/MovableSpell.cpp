@@ -16,16 +16,16 @@ s::MovableSpell::~MovableSpell()
 void s::MovableSpell::update(sf::Time elapsedTime, s::Server* s, Map* map) {
 	float speed = 100.f;
 
-	if (target && body) {
+	if (target && position.getBody()) {
 		EntityPosition* epTarget = dynamic_cast<EntityPosition*>(target);
 		if (epTarget) {
 			sf::Vector2f nextMovement;
-		
+			sf::Vector2f actualPosition = position.getPosition();
 			sf::Vector2f targetPosition = epTarget->getPosition();
 			sf::Vector2f targetMovement = epTarget->getLastMovement();
 
-			float diffX = targetPosition.x - position.x;
-			float diffY = targetPosition.y - position.y;
+			float diffX = targetPosition.x - actualPosition.x;
+			float diffY = targetPosition.y - actualPosition.y;
 			float aspectRatio = abs(diffX / diffY);
 
 			if (abs(diffX) > 10) {	
@@ -46,8 +46,8 @@ void s::MovableSpell::update(sf::Time elapsedTime, s::Server* s, Map* map) {
 				nextMovement.y = targetMovement.y;
 			}
 		
-			body->SetLinearVelocity(b2Vec2(nextMovement.x * PIXTOMET, nextMovement.y * PIXTOMET));
-			movement = nextMovement;
+			position.getBody()->SetLinearVelocity(b2Vec2(nextMovement.x * PIXTOMET, nextMovement.y * PIXTOMET));
+			position.setMovement(nextMovement);
 		}
 		
 	}

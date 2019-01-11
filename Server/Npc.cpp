@@ -6,14 +6,9 @@
 #include "TextFileLoader.h"
 
 s::Npc::Npc(): command(nullptr) {
-	body = nullptr;
 	name = "";
 	spawnId = -1;
-	speed = 0;
 	type = 0;
-	size = sf::Vector2i(0, 0);
-	movement = sf::Vector2f(0, 0);
-	map = nullptr;
 	deadTimestamp = sf::Time::Zero;
 	state = NpcState::IDLE;
 	spawnPosition = sf::Vector2f(-1,-1);
@@ -25,7 +20,6 @@ s::Npc::Npc(): command(nullptr) {
 	// make usertype metatable
     luaState.new_usertype<Npc>("Npc",
         "name", &Npc::name,
-        "speed", &Npc::speed,
 		"spawnId", &Npc::spawnId,
 		"getAttribute", &Npc::getAttribute,
 		"getState", &Npc::getNpcState
@@ -63,7 +57,7 @@ void s::Npc::loadFromJson(std::string file)
 
 	name = jsonData["name"].get<json::string_t>();
 	type = (int) jsonData["type"].get<json::number_integer_t>();
-	speed = (float) jsonData["speed"].get<json::number_float_t>();
+	position.setSpeed((float) jsonData["speed"].get<json::number_float_t>());
 
 	respawnTime = sf::seconds((float) jsonData["respawnTime"].get<json::number_float_t>());
 	deadTimestamp = sf::Time::Zero;
@@ -73,13 +67,13 @@ void s::Npc::loadFromJson(std::string file)
 
 	int width = (int)renderData["width"].get<json::number_integer_t>();
 
-	size = sf::Vector2i(width, width);
-	movement = sf::Vector2f(0, 0);
+	position.setSize(sf::Vector2i(width, width));
+	position.setMovement(sf::Vector2f(0, 0));
 
 	json attributes = jsonData["attributes"].get<json::array_t>();
 	int index = 0;
 	for (json::iterator it = attributes.begin(); it != attributes.end(); ++it) {
-		setAttributeByIndex(index, *it);
+		this->attributes.setAttributeByIndex(index, *it);
 		index++;
 	}
 
@@ -103,20 +97,20 @@ void s::Npc::loadFromJson(std::string file)
 s::Npc* s::Npc::clone() const {
 	Npc* copy = new Npc();
 
-	copy->setSize(size);
+	copy->position.setSize(position.getSize());
 	copy->setMovement(0, 0);
 	copy->setType(type);
 	copy->setName(name);
-	copy->setSpeed(speed);
-	copy->setBody(nullptr);
-	copy->setMap(nullptr);
+	copy->position.setSpeed(position.getSpeed());
+	copy->position.setBody(nullptr);
+	copy->position.setMap(nullptr);
 
 	copy->setRespawnTime(respawnTime);
 	copy->npc_script = npc_script;
 
-	int count = attributes.size();
+	int count = attributes.getCount();
 	for (int i = 0; i < count; i++) {
-		copy->setAttributeByIndex(i, attributes[i]);
+		copy->attributes.setAttributeByIndex(i, attributes.getAttributeByIndex(i));
 	}
 
 	copy->setSpawnPosition(spawnPosition);
@@ -126,19 +120,29 @@ s::Npc* s::Npc::clone() const {
 json s::Npc::toJson() const {
 	json jsonData;
 
+	sf::Vector2f actualPosition = position.getPosition();
+	sf::Vector2f actualMovement = position.getMovement();
+
 	jsonData["spawnId"] = spawnId;
 	jsonData["name"] = name;
 	jsonData["type"] = type;
-	jsonData["movementX"] = movement.x;
-	jsonData["movementY"] = movement.y;
-	jsonData["positionX"] = position.x;
-	jsonData["positionY"] = position.y;
-	jsonData["speed"] = speed;
+	jsonData["movementX"] = actualMovement.x;
+	jsonData["movementY"] = actualMovement.y;
+	jsonData["positionX"] = actualPosition.x;
+	jsonData["positionY"] = actualPosition.y;
+	jsonData["speed"] = position.getSpeed();
 
 	jsonData["state"] = static_cast<int>(state);
-	jsonData["attributes"] = json(attributes);
-	if (map) {
-		jsonData["mapId"] = map->getId();
+	jsonData["attributes"] = json::array();
+
+	int attributesCount = attributes.getCount();
+	for(int i = 0; i < attributesCount; i++) {
+		jsonData["attributes"].push_back(attributes.getAttributeByIndex(i));
+	}
+
+
+	if (position.getMap()) {
+		jsonData["mapId"] = position.getMap()->getId();
 	}
 
 	return jsonData;
@@ -160,16 +164,16 @@ NpcState s::Npc::getNpcState() const {
 }
 
 void s::Npc::setMovement(float movementX, float movementY) {
-	if (lastMovement == movement) {
+	if (position.getLastMovement() == position.getMovement()) {
 		return;
 	}
 
-	this->lastMovement = this->movement;
-	this->movement = sf::Vector2f(movementX, movementY);
+	position.setLastMovement(this->position.movement);
+	position.setMovement(sf::Vector2f(movementX, movementY));
 }
 
 void s::Npc::setMovement(sf::Vector2f movement, NpcUpdateEvents * npcUpdateEvents) {
-	if (lastMovement == movement) {
+	if (position.getLastMovement() == movement) {
 		return;
 	}
 
@@ -177,35 +181,40 @@ void s::Npc::setMovement(sf::Vector2f movement, NpcUpdateEvents * npcUpdateEvent
 		movement = sf::Vector2f(0, 0);
 	}
 
-	this->lastMovement = this->movement;
-	this->movement = movement;
+	position.setLastMovement(position.getMovement());
+	position.setMovement(movement);
 
+	b2Body* body = position.getBody();
+	Map* map = position.getMap();
 	if (body) {
 		body->SetLinearVelocity(b2Vec2(movement.x * PIXTOMET, movement.y * PIXTOMET));
 
 		if (map) {
+			sf::Vector2f actualPosition = position.getPosition();
+			sf::Vector2f actualMovement = position.getMovement();
+
 			if (!npcUpdateEvents) {
 				EventNpcMovementChange e;
 				e.spawnId = spawnId;
-				e.speed = speed;
-				e.velX = this->movement.x;
-				e.velY = this->movement.y;
-				e.x = position.x;
-				e.y = position.y;
+				e.speed = position.getSpeed();
+				e.velX = actualMovement.x;
+				e.velY = actualMovement.y;
+				e.x = actualPosition.x;
+				e.y = actualPosition.y;
 
 				map->sendEventToAllPlayers(&e);
 			} else {
 				if (!npcUpdateEvents->npcsMovementChange) {
 					npcUpdateEvents->npcsMovementChange = new EventNpcsMovementChange();
 				}
-				npcUpdateEvents->npcsMovementChange->addNpcInfo(spawnId, position.x, position.y, this->movement.x, this->movement.y);
+				npcUpdateEvents->npcsMovementChange->addNpcInfo(spawnId, actualPosition.x, actualPosition.y,actualMovement.x, actualMovement.y);
 			}
 		}
 	}
 }
 
 sf::Vector2f s::Npc::getMovement() const {
-	return movement;
+	return position.getMovement();
 }
 
 void s::Npc::setType(int type) {
@@ -251,8 +260,12 @@ sf::Vector2f s::Npc::getSpawnPosition() const {
 }
 
 void s::Npc::setMovementDirection(sf::Vector2f direction, float speed, NpcUpdateEvents * npcUpdateEvents) {
-	this->speed = speed;
+	this->position.setSpeed(speed);
 	this->setMovement(sf::Vector2f(direction.x * speed, direction.y * speed), npcUpdateEvents);
+}
+
+float s::Npc::getAttribute(EntityAttributeType attribute, bool withBonus) {
+	return attributes.getAttribute(attribute, withBonus);
 }
 
 void s::Npc::lock() {

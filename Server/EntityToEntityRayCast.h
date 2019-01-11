@@ -2,6 +2,7 @@
 #define S_ENTITY_TO_ENTITY_RAY_CAST_H
 
 #include <Box2D/Dynamics/b2WorldCallbacks.h>
+#include "Entity.h"
 
 namespace s {
 	class EntityPosition;

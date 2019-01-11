@@ -7,7 +7,7 @@ LoginScene::LoginScene(SceneType sceneType, Game* g): Scene(sceneType, g) {
 	IGLoginCredentials* credWindow = new IGLoginCredentials();
 
 	windowManager->addWindow("loginCredentials", credWindow);
-	windowManager->OpenAll();
+	windowManager->openAll();
 }
 
 LoginScene::~LoginScene() {}

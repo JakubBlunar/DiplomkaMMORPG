@@ -357,6 +357,8 @@ void Player::castSpell(SpellInfo* spellInfo, Map* map, Game* g) {
 
 	bool canCast = spellTarget == this;
 	std::string message;
+	canCast = true;
+	/*
 	if (!canCast) {
 		EntityToEntityRayCast* result = map->makeRayCast(this, spellTarget);
 		if (result->closestEntity != target) {
@@ -371,7 +373,7 @@ void Player::castSpell(SpellInfo* spellInfo, Map* map, Game* g) {
 			canCast = true;
 		}
 		delete result;
-	}
+	} */
 
 	if (canCast) {
 		GameMessage* m = new GameMessage();

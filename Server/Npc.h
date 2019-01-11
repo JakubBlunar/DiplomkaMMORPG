@@ -9,7 +9,7 @@
 #include "Lua/sol.hpp"
 
 namespace s {
-	class Npc: public EntityAttributes, public EntitySpells, public EntityPosition {
+	class Npc: public Entity {
 		NpcState state;
 		sf::Vector2f spawnPosition;
 		int spawnId;
@@ -24,9 +24,12 @@ namespace s {
 		
 		sf::Mutex mutex;
 	public:
-	
 		Npc();
 		~Npc();
+
+		EntityAttributes attributes;
+		EntityPosition position;
+		EntitySpells spells;
 
 		NpcCommand* getNpcCommand();
 		void setNpcCommand(NpcCommand* command);
@@ -66,6 +69,8 @@ namespace s {
 
 		sol::state luaState;
 		std::string npc_script;
+
+		float getAttribute(EntityAttributeType attribute, bool withBonus);
 
 		void lock();
 		void unlock();

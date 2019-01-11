@@ -1,6 +1,7 @@
 #include "BotManager.h"
 #include "Account.h"
 #include <spdlog/spdlog.h>
+#include "Character.h"
 
 s::BotManager::BotManager():
 	idCharacterManager(214728364, 214748364),
@@ -38,10 +39,10 @@ s::Character* s::BotManager::createBotCharacter() {
 	c->id = idCharacterManager.getId();
 	c->name = "Bot" + std::to_string(c->id);
 	c->isBot = true;
-	c->position = sf::Vector2f(100, 100);
-	c->mapId = 1;
-	c->movement = sf::Vector2f(0,0);
-	c->speed = 32.f;
+	c->position.setPosition(sf::Vector2f(100, 100));
+	c->position.setMapId(1);
+	c->position.setMovement(sf::Vector2f(0,0));
+	c->position.setSpeed(32.f);
 
 	if (rand() % 100 < 49) {
 		c->type = CharacterType::MALE_KNIGHT;

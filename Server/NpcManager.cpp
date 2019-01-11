@@ -89,12 +89,12 @@ void s::NpcManager::updateNpc(sf::Time elapsedTime, Npc* npc, Server * s, NpcUpd
 	if (!npc->isAlive()) {
 		return;
 	}
-	b2Body* body = npc->getBody();
+	b2Body* body = npc->position.getBody();
 	b2Vec2 position = body->GetPosition();
 	
 	sf::Vector2f transformedPosition = sf::Vector2f(position.x * METTOPIX, position.y * METTOPIX); 
 
-	npc->setPosition(transformedPosition);
+	npc->position.setPosition(transformedPosition);
 	NpcCommand* command = npc->getNpcCommand();
 	if(command && !command->isFinished()) {
 		command->update(elapsedTime, npcUpdateEvents);
@@ -192,7 +192,7 @@ void s::NpcManager::eventExecutionThread(NpcEvent* npcEvent, int index) {
         sol::error err = scriptResult;
         std::string what = err.what();
         spdlog::get("log")->error("Lua script failed, npc {}, Exception: {}", npc->getType(), what);
-		npc->setNpcCommand(new NpcCommandStay(npc, npc->getMap(), server,  sf::seconds(20)));
+		npc->setNpcCommand(new NpcCommandStay(npc, npc->position.getMap(), server,  sf::seconds(20)));
     } else {
 	    sol::table result = npc->luaState["resultEvents"];
 	
@@ -202,18 +202,18 @@ void s::NpcManager::eventExecutionThread(NpcEvent* npcEvent, int index) {
 
 			switch (newEventId) {
 				case 0: {//stay param duration
-					NpcCommandStay* commandStay = new NpcCommandStay(npc, npc->getMap(), server,  sf::seconds(eventData["duration"]));
+					NpcCommandStay* commandStay = new NpcCommandStay(npc, npc->position.getMap(), server,  sf::seconds(eventData["duration"]));
 					npc->setNpcCommand(commandStay);
 					break;
 				}
 				case 1: { // move to random params maxDuration
-					Location * l = npc->getLocation();
+					Location * l = npc->position.getLocation();
 					if (l) {
-						NpcCommandMoveTo* commandMoveToRandom = new NpcCommandMoveTo(l->generateRandomPoint(), npc, npc->getMap(), server,  sf::seconds(eventData["maxDuration"]));
+						NpcCommandMoveTo* commandMoveToRandom = new NpcCommandMoveTo(l->generateRandomPoint(), npc, npc->position.getMap(), server,  sf::seconds(eventData["maxDuration"]));
 						commandMoveToRandom->init();
 						npc->setNpcCommand(commandMoveToRandom);
 					} else {
-						npc->setNpcCommand(new NpcCommandStay(npc, npc->getMap(), server,  sf::seconds(eventData["maxDuration"])));
+						npc->setNpcCommand(new NpcCommandStay(npc, npc->position.getMap(), server,  sf::seconds(eventData["maxDuration"])));
 					}
 					break;
 				}

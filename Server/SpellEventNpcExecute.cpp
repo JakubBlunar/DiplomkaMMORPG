@@ -15,7 +15,7 @@ void s::SpellEventNpcExecute::setNpc(Npc* npc) {
 	this->npc = npc;
 }
 void s::SpellEventNpcExecute::execute(Server* s) {
-	npc->setCastingSpell(nullptr);
+	npc->spells.setCastingSpell(nullptr);
 
 	if(!npc->isAlive()) return;
 

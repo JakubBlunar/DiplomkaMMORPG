@@ -77,9 +77,9 @@ void s::SpellManager::handleEvent(EventPlayerStartCastSpell* event, s::Session* 
 		sf::Time eventCastEndTime = s->getServerTime() + si->castingTime + sf::seconds((float)delay);
 
 		Character* character = playerSession->getAccount()->getCharacter();
-		Map* characterMap = character->getMap();
+		Map* characterMap = character->position.getMap();
 
-		SpellEvent* existCast = character->getEventWithCastingSpell();
+		SpellEvent* existCast = character->spells.getEventWithCastingSpell();
 		if (existCast) {
 			interruptSpellCast(existCast, false);
 		}
