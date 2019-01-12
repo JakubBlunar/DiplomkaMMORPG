@@ -7,6 +7,7 @@
 #include <regex>
 #include <spdlog/spdlog.h>
 #include "Spell.h"
+#include "MovableSpell.h"
 
 s::SpellHolder::SpellHolder():
 	idManager(0, 214748364) {
@@ -47,10 +48,20 @@ void s::SpellHolder::init()
 		si->maxRange =  (float)jsonData["maxRange"].get<json::number_float_t>();
 		spellInfos.insert(std::make_pair(si->id, si));
 
-		Spell* spell = new Spell();
-		spell->loadFromJson(jsonData);
+		
+		Spell* spell;
+		if (jsonData.find("entityAnimation") != jsonData.end()) {
+			spell = new MovableSpell();
+			si->spellCategory = EntityType::MOVABLE_SPELL;
+		} else {
+			spell = new Spell();
+			si->spellCategory = EntityType::SPELL;
+		}
 
-		prototypes.insert(std::make_pair(spell->spellInfo.id, spell));
+		spell->loadFromJson(jsonData);
+		spell->spellInfo = *si;
+
+		prototypes.insert(std::make_pair(si->id, spell));
 	}
 
 	spdlog::get("log")->info("Loading spell prototypes done");
@@ -81,6 +92,26 @@ s::Spell* s::SpellHolder::createSpell(int type)
 
 	throw "SpellHolder: Spell not found " + std::to_string(type);
 }
+
+s::MovableSpell* s::SpellHolder::createMovableSpell(int type)
+{
+	sf::Lock mutexLock(lock);
+
+	auto found = prototypes.find(type);
+	if (found != prototypes.end()) {
+		if (dynamic_cast<MovableSpell*>(found->second) == nullptr) {
+			spdlog::get("log")->critical("Spell with type {} is not movable", type);
+			throw "Spell with type" + std::to_string(type) + "is not movable"; 
+		}
+
+		MovableSpell* spell = (MovableSpell*)found->second->clone();
+		spell->setInstanceId(idManager.getId());
+		return spell;
+	}
+
+	throw "SpellHolder: Spell not found " + std::to_string(type);
+}
+
 
 s::SpellInfo * s::SpellHolder::getSpellInfo(int type)
 {

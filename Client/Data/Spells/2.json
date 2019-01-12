@@ -4,6 +4,7 @@
     "mana": 2,
     "cooldown": 0,
     "castingTime": 2000,
+    "spellSpeed": 100,
     "icon": "fireball.png",
     "entityAnimation": "2",
     "desc": "Throws fireball at target",

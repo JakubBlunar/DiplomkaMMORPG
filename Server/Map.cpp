@@ -97,6 +97,23 @@ void s::Map::removeNpc(Npc* npc) {
 	lock.unlock();
 }
 
+void s::Map::addSpell(MovableSpell* spell) {
+	sf::Lock mapLock(lock);
+	sf::Vector2f position = spell->position.getPosition();
+	b2Body* spellBody = createCircle(b2_kinematicBody, position.x, position.y, FIELD_SIZE / 2, SPELL, 0);
+
+	spell->position.setBody(spellBody);
+	spell->position.setMapId(this->getId());
+	spell->position.setMap(this);
+
+	spellsById.insert(std::make_pair(spell->getInstanceId(), spell));
+}
+
+void s::Map::removeSpell(MovableSpell* spell) {
+	sf::Lock mapLock(lock);
+	spellsToRemove.push(spell->getInstanceId());
+}
+
 void s::Map::update(sf::Time deltaTime, Server* s) {
 	lastUpdateNpc += deltaTime;
 
@@ -117,11 +134,33 @@ void s::Map::update(sf::Time deltaTime, Server* s) {
 			character->update(deltaTime, s, this);
 		});
 
+	std::for_each(
+			std::execution::par_unseq,
+			spellsById.begin(),
+			spellsById.end(),
+			[=](std::pair<int, MovableSpell*> const &pair) {
+				pair.second->update(lastUpdateNpc, s, this);
+			});
+
+		while (!spellsToRemove.empty()) {
+			auto found = spellsById.find(spellsToRemove.front());
+			if (found != spellsById.end()) {
+				if(found->second) {
+					b2Body* body = found->second->getBody();
+					if (body) {
+						world->DestroyBody(body);
+					}
+				}
+				spellsById.erase(spellsToRemove.front());
+			}
+			spellsToRemove.pop();
+		}
 
 	NpcUpdateEvents* eventsContainer = new NpcUpdateEvents();
 	eventsContainer->npcsMovementChange = nullptr;
 
 	if (lastUpdateNpc > npcUpdateInterval) {
+
 		std::for_each(
 			std::execution::seq,
 			locations.begin(),

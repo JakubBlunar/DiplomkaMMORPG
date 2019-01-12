@@ -22,6 +22,13 @@ public:
 	void setSize(sf::Vector2i size);
 	sf::Vector2i getOffset() const;
 	void setOffset(sf::Vector2i offset);
+	std::map<std::string, Animation *>* getPossibleAnimations() {
+		return &possibleAnimations;
+	};
+
+	std::string getCurrentAnimationName() const {
+		return currentAnimationName;	
+	}
 
 	AnimatedSprite* getCurrentAnimation() const;
 private:

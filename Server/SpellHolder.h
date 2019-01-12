@@ -4,6 +4,7 @@
 #include "json.hpp"
 #include "IDManager.h"
 #include "SFML/System.hpp"
+#include "MovableSpell.h"
 
 using json = nlohmann::json;
 
@@ -26,6 +27,7 @@ namespace s {
 		}
 
 		Spell* createSpell(int type);
+		s::MovableSpell* createMovableSpell(int type);
 		SpellInfo* getSpellInfo(int type);
 
 		void read_directory(std::string pattern, std::vector<std::string>& v) const;

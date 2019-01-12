@@ -4,6 +4,7 @@
     "mana": 0,
     "cooldown": 3000,
     "castingTime": 0,
+    "spellSpeed": 0,
     "icon": "attack.png",
     "desc": "Melle attack with weapon",
     "gCooldown": 500,

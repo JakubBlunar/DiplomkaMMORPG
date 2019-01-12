@@ -23,8 +23,6 @@ s::Spell* s::Spell::clone() const {
 	Spell* cloned = new Spell();
 	
 	cloned->setInstanceId(instanceId);
-	cloned->setLastCast(lastCast);
-
 	cloned->spellInfo = spellInfo;
 
 	for (Effect* const effect : effects) {

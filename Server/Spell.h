@@ -17,12 +17,12 @@ namespace s {
 		int id;
 		sf::Time globalCooldownTime;
 		float maxRange;
+		EntityType spellCategory;
 	};
 
 	class Spell {
 	protected:
 		int instanceId;
-		sf::Time lastCast;
 		Entity* target;
 		Entity* owner;
 		std::list<Effect*> effects;
@@ -36,12 +36,7 @@ namespace s {
 
 		virtual void cast(Entity* entity);
 
-		Spell* clone() const;
-
-	
-		void setLastCast(sf::Time lastCast) {
-			this->lastCast = lastCast;
-		}
+		virtual Spell* clone() const;
 
 		void setInstanceId(int id) {
 			this->instanceId = id;
@@ -50,7 +45,27 @@ namespace s {
 			return instanceId;
 		}
 
-		void loadFromJson(json data);
+		void setId(sf::Int32 id) {
+			this->instanceId = id;
+		}
+
+		void setTarget(Entity* target) {
+			this->target = target;
+		}
+
+		Entity* getTarget() {
+			return target;
+		}
+
+		void setOwner(Entity* target) {
+			this->target = target;
+		}
+
+		Entity* getOwner() {
+			return target;
+		};
+
+		virtual void loadFromJson(json data);
 	};
 
 }

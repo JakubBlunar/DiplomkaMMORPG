@@ -9,6 +9,7 @@
 #include <iostream>
 #include "BotGame.h"
 #include "Spell.h"
+#include "EntityPrototypes.h"
 
 ClientEventActions::ClientEventActions(Game* g) {
 	this->game = g;
@@ -72,18 +73,12 @@ void ClientEventActions::visit(EventCharacterChooseResponse* e) {
 		game->getAccount()->setPlayerEntity(p);
 		map->addPlayer(p);
 
-		json j;
-		j["entityAnimation"] = "2";
 
-		Spell* spell = new Spell(1);
-		spell->loadFromJson(j);
-
+		Spell* spell = EntityPrototypes::instance()->createSpell(2);
 		PositionComponent* po = spell->getPositionComponent();
 		po->setPosition(sf::Vector2f(400, 400));
 
-
 		spell->setTarget(p);
-
 		map->addSpell(spell);
 
 		json otherPlayers = response["otherPlayers"].get<json::array_t>();

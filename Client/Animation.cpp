@@ -31,3 +31,14 @@ void Animation::setFrameTime(sf::Time time) {
 sf::Time Animation::getFrameTime() const {
 	return frameTime;
 }
+
+Animation* Animation::clone() const {
+	Animation* clone = new Animation();
+	for (const sf::Rect<int> frame : frames) {
+		clone->addFrame(frame);
+	}
+	clone->texture = texture;
+	clone->frameTime = frameTime;
+
+	return clone;
+}

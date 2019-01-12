@@ -1,4 +1,3 @@
-
 #include "Spell.h"
 #include "PositionComponent.h"
 #include "RenderComponent.h"
@@ -6,24 +5,21 @@
 #include "ResourceHolder.h"
 #include "Globals.h"
 #include "Account.h"
+#include <iostream>
+#include "Map.h"
 
 Spell::Spell(sf::Uint32 id): Entity(id), target(nullptr) {
 
 	positionComponent = new PositionComponent();
 	components.push_back(positionComponent);
-	positionComponent->setSize(sf::Vector2f(32.f, 32.f));
 
 	renderComponent = new RenderComponent();
 	components.push_back(renderComponent);
 }
 
-Spell::~Spell() {
-	
-}
+Spell::~Spell() { }
 
-void Spell::handleEvent(GameEvent* event) {
-	
-}
+void Spell::handleEvent(GameEvent* event) { }
 
 EntityType Spell::getType() {
 	return EntityType::SPELL;
@@ -41,45 +37,28 @@ void Spell::update(sf::Time elapsedTime, Map* map, Game* g) {
 	Entity::update(elapsedTime, map, g);
 
 	sf::Vector2f movement = positionComponent->getMovement();
-	sf::Vector2f position = positionComponent->getPosition();
-
-	float speed = 100.f;
+	float speed = positionComponent->getSpeed();
 
 	if (target) {
-		sf::Vector2f nextMovement;
-		PositionComponent* targetPoComponent = (PositionComponent*)target->getComponent(ComponentType::POSITION);
-		sf::Vector2f targetPosition = targetPoComponent->getPosition();
-		sf::Vector2f targetMovement = targetPoComponent->getMovement();
+		b2Vec2 actualPosition = body->GetPosition();
+		b2Vec2 targetPosition = target->getBody()->GetPosition();
 
-		float diffX = targetPosition.x - position.x;
-		float diffY = targetPosition.y - position.y;
-		float aspectRatio = abs(diffX / diffY);
+		b2Vec2 velocity = targetPosition - actualPosition;
 
-		if (abs(diffX) > 10) {	
-			if (diffX > 0) 
-				nextMovement.x = speed * aspectRatio;
-			else
-				nextMovement.x = -speed * aspectRatio;	
-		} else {
-			nextMovement.x = targetMovement.x;
+		double distance = b2DistanceSquared(actualPosition, targetPosition);
+
+		if (distance * METTOPIX < 5) {
+			map->removeSpell(this);
+			return;
 		}
 
-		if (abs(diffY) > 10) {
-			if (diffY > 0) 
-				nextMovement.y = speed;
-			else
-				nextMovement.y = -speed;
-		} else {
-			nextMovement.y = targetMovement.y;
-		}
-	
-		positionComponent->setMovement(nextMovement);
-		body->SetLinearVelocity(b2Vec2(nextMovement.x * PIXTOMET, nextMovement.y * PIXTOMET));
+		velocity.Normalize();
+		velocity *= speed * PIXTOMET;
+		body->SetLinearVelocity(velocity);
+		positionComponent->setMovement(sf::Vector2f(velocity.x * METTOPIX, velocity.y * METTOPIX));
 	}
 
 
-	
-	
 	if (movement.x == 0 && movement.y == 0) {
 		renderComponent->changeAnimation("down");
 	}
@@ -91,7 +70,7 @@ void Spell::update(sf::Time elapsedTime, Map* map, Game* g) {
 	else if (movement.x == 0 && movement.y > 0) //down
 	{
 		renderComponent->changeAnimation("down");
-		renderComponent->getCurrentAnimation()->setLooped(true);	
+		renderComponent->getCurrentAnimation()->setLooped(true);
 	}
 	else if (movement.x < 0 && movement.y == 0) //left
 	{
@@ -101,7 +80,7 @@ void Spell::update(sf::Time elapsedTime, Map* map, Game* g) {
 	else if (movement.x > 0 && movement.y == 0) {
 		renderComponent->changeAnimation("right");
 		renderComponent->getCurrentAnimation()->setLooped(true);
-		
+
 	}
 	else if (movement.x > 0) {
 		renderComponent->changeAnimation("right");
@@ -116,6 +95,9 @@ void Spell::update(sf::Time elapsedTime, Map* map, Game* g) {
 
 void Spell::loadFromJson(json jsonData) {
 
+	std::cout << jsonData.dump(1) << std::endl;
+	float speed = (float)jsonData["spellSpeed"].get<json::number_integer_t>();
+
 	std::string animationFile = jsonData["entityAnimation"].get<json::string_t>();
 	json animationData = JsonLoader::instance()->loadJson("Graphics/Spells/" + animationFile);
 
@@ -126,6 +108,11 @@ void Spell::loadFromJson(json jsonData) {
 	int width = (int)animationData["width"].get<json::number_integer_t>();
 	int height = (int)animationData["height"].get<json::number_integer_t>();
 	renderComponent->setSize(sf::Vector2i(width, height));
+
+
+	positionComponent->setSpeed(speed);
+	positionComponent->setSize(sf::Vector2f((float)width, (float)height));
+	positionComponent->setBodyType(BodyType::CIRCLE);
 
 	json animations = animationData["animations"].get<json::array_t>();
 
@@ -154,4 +141,25 @@ void Spell::loadFromJson(json jsonData) {
 	renderComponent->getCurrentAnimation()->setLooped(true);
 
 	positionComponent->setBodyType(BodyType::CIRCLE);
+}
+
+Spell* Spell::clone() const {
+	Spell* clone = new Spell(-1);
+	PositionComponent* pc = clone->getPositionComponent();
+	pc->setMovement(sf::Vector2f(0, 0));
+	pc->setSize(positionComponent->getSize());
+	pc->setSpeed(positionComponent->getSpeed());
+	pc->setBodyType(pc->getBodyType());
+
+	RenderComponent* rc = clone->getRenderComponent();
+
+	std::map<std::string, Animation*>* animations = renderComponent->getPossibleAnimations();
+	for (std::map<std::string, Animation*>::iterator it = animations->begin(); it != animations->end(); ++it) {
+		rc->addAnimation(it->first, it->second->clone());
+	}
+	rc->setSize(renderComponent->getSize());
+	rc->setOffset(renderComponent->getOffset());
+	rc->changeAnimation(renderComponent->getCurrentAnimationName());
+
+	return clone;
 }

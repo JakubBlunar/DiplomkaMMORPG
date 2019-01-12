@@ -2,6 +2,8 @@
 #include "ServerGlobals.h"
 #include "Box2D/Box2D.h"
 #include "EntityPosition.h"
+#include <spdlog/spdlog.h>
+#include "Map.h"
 
 s::MovableSpell::MovableSpell()
 {
@@ -14,45 +16,73 @@ s::MovableSpell::~MovableSpell()
 }
 
 void s::MovableSpell::update(sf::Time elapsedTime, s::Server* s, Map* map) {
-	float speed = 100.f;
+	b2Body* body = position.getBody();
+	if (target && body) {
+		this->position.setPosition(sf::Vector2f(body->GetPosition().x * METTOPIX, body->GetPosition().y * METTOPIX));
+		this->position.setMovement(sf::Vector2f(body->GetLinearVelocity().x * METTOPIX, body->GetLinearVelocity().y * METTOPIX));
+		float speed = position.getSpeed();
 
-	if (target && position.getBody()) {
-		EntityPosition* epTarget = dynamic_cast<EntityPosition*>(target);
-		if (epTarget) {
-			sf::Vector2f nextMovement;
-			sf::Vector2f actualPosition = position.getPosition();
-			sf::Vector2f targetPosition = epTarget->getPosition();
-			sf::Vector2f targetMovement = epTarget->getLastMovement();
+		b2Body* targetBody = target->getBody();
+		if (targetBody) {
+			b2Vec2 actualPosition = body->GetPosition();
+			b2Vec2 targetPosition = targetBody->GetPosition();
+			b2Vec2 velocity = targetPosition - actualPosition;
 
-			float diffX = targetPosition.x - actualPosition.x;
-			float diffY = targetPosition.y - actualPosition.y;
-			float aspectRatio = abs(diffX / diffY);
+			double distance = b2DistanceSquared(actualPosition, targetPosition);
 
-			if (abs(diffX) > 10) {	
-				if (diffX > 0) 
-					nextMovement.x = speed * aspectRatio;
-				else
-					nextMovement.x = -speed * aspectRatio;	
-			} else {
-				nextMovement.x = targetMovement.x;
+			if (distance * METTOPIX < 5) {
+				spdlog::get("log")->info("Apply effects of spell {} {}", spellInfo.name, instanceId);
+
+				map->removeSpell(this);
+				return;
 			}
 
-			if (abs(diffY) > 10) {
-				if (diffY > 0) 
-					nextMovement.y = speed;
-				else
-					nextMovement.y = -speed;
-			} else {
-				nextMovement.y = targetMovement.y;
-			}
-		
-			position.getBody()->SetLinearVelocity(b2Vec2(nextMovement.x * PIXTOMET, nextMovement.y * PIXTOMET));
-			position.setMovement(nextMovement);
+			velocity.Normalize();
+			velocity *= speed * PIXTOMET;
+			body->SetLinearVelocity(velocity);
 		}
-		
 	}
 }
 
 void s::MovableSpell::cast(Entity* entity) {
 	
+}
+
+b2Body* s::MovableSpell::getBody() const {
+	return position.getBody();
+}
+
+s::Spell* s::MovableSpell::clone() const {
+	MovableSpell* clone = new MovableSpell();
+
+	EntityPosition* clonedPosition = &clone->position;
+	clonedPosition->setMovement(sf::Vector2f(0,0));
+	clonedPosition->setBody(nullptr);
+	clonedPosition->setLastMovement(sf::Vector2f(0,0));
+	clonedPosition->setLocation(nullptr);
+	clonedPosition->setMap(nullptr);
+	clonedPosition->setMapId(0);
+	clonedPosition->setPosition(sf::Vector2f(0,0));
+	clonedPosition->setSize(position.getSize());
+	clonedPosition->setSpeed(position.getSpeed());
+
+	for (Effect* const effect : effects) {
+		clone->addEffect(effect->clone());
+	}
+	clone->spellInfo = spellInfo;
+
+	return clone;
+}
+
+void s::MovableSpell::loadFromJson(json data) {
+	std::string animationFile = data["entityAnimation"].get<json::string_t>();
+	json animationData = JsonLoader::instance()->loadJson("Graphics/Spells/" + animationFile);
+
+
+	int width = (int)animationData["width"].get<json::number_integer_t>();
+	int height = (int)animationData["height"].get<json::number_integer_t>();
+	position.setSize(sf::Vector2i(width, height));
+
+	float speed = (float) data["spellSpeed"].get<float_t>();
+	position.setSpeed(speed);
 }

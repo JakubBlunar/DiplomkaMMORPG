@@ -19,6 +19,10 @@ namespace s {
 		std::vector<Character *> characters;
 		std::map<int, Character*> charactersById;
 		std::map<int, Npc*> npcsBySpawnId;
+		std::map<int, MovableSpell*> spellsById;
+
+		std::queue<int> spellsToRemove;
+
 		std::vector<Npc*> npcs;
 		int width, height;
 		sf::Mutex lock;
@@ -40,6 +44,10 @@ namespace s {
 
 		void addNpc(Npc* npc);
 		void removeNpc(Npc* npc);
+
+		void addSpell(MovableSpell* spell);
+		void removeSpell(MovableSpell* spell);
+
 
 		void update(sf::Time deltaTime, Server* s);
 

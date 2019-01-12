@@ -18,6 +18,7 @@ struct SpellInfo {
 	RenderSprite icon;
 	float maxRange;
 	std::string description;
+	bool hasEntity;
 };
 
 class Spell: public Entity {
@@ -37,6 +38,8 @@ public:
 	void update(sf::Time elapsedTime, Map* map, Game* g) override;
 
 	void loadFromJson(json jsonData);
+
+	Spell* clone() const;
 
 	PositionComponent* getPositionComponent() const {
 		return positionComponent;

@@ -46,6 +46,7 @@ void EntityPrototypes::init() {
 
 		auto animation = jsonData.find("entityAnimation");
 		if (animation != jsonData.end()) {
+			si->hasEntity = true;
 			Spell* spell = new Spell(-1);
 			spell->loadFromJson(jsonData);
 			spellPrototypes.insert(std::make_pair(si->id, spell));
@@ -56,7 +57,12 @@ void EntityPrototypes::init() {
 
 Spell * EntityPrototypes::createSpell(int type)
 {
-	return nullptr;
+	auto found = spellPrototypes.find(type);
+	if (found != spellPrototypes.end()) {
+		return found->second->clone();
+	}
+
+	throw "Cannot create spell";
 }
 
 SpellInfo * EntityPrototypes::getSpellInfo(int type)

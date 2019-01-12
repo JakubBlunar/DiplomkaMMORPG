@@ -6,6 +6,7 @@
 #include "Map.h"
 #include "EntityToEntityRayCast.h"
 #include "ServerGlobals.h"
+#include "MovableSpell.h"
 
 s::SpellEventCharacterExecute::SpellEventCharacterExecute(): character(nullptr), spellTarget(),
                                                              targetCharacter(nullptr),
@@ -52,7 +53,8 @@ void s::SpellEventCharacterExecute::execute(Server* s) {
 			error->entityCategory = PLAYER;
 			error->spellId = spellInfo->id;
 			error->result = SpellCastResultCode::CANT_SEE_TARGET;
-		} else {
+		}
+		else {
 			if (res->closestEntityDistance * METTOPIX > spellInfo->maxRange) {
 				error = new EventSpellCastResult();
 				error->entityId = character->id;
@@ -70,7 +72,30 @@ void s::SpellEventCharacterExecute::execute(Server* s) {
 
 
 	spdlog::get("log")->info("Casting spell {}: {}", character->name, spellInfo->name);
+	if (spellInfo->spellCategory == EntityType::MOVABLE_SPELL) {
+		MovableSpell* spell = SpellHolder::instance()->createMovableSpell(spellInfo->id);
+		spell->position.setPosition(character->position.getPosition());
+		spell->setOwner(character);
+		switch (spellTarget) {
+			case SpellTarget::PLAYER: {
+				spell->setTarget(targetCharacter);
+				break;
+			}
+			case SpellTarget::NPC: {
+				spell->setTarget(targetNpc);
+				break;
+			default:
+				return;
+			}
+		}
 
+		if (spell->getTarget() != nullptr) {
+			map->addSpell(spell);
+		} else {
+			delete spell;
+		}
+	}
+	else { }
 
 	character->attributes.setAttribute(EntityAttributeType::MP, actualMana - spellInfo->manaCost);
 

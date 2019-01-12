@@ -1,6 +1,5 @@
 #include "JsonLoader.h"
 #include <fstream>
-#include <iostream>
 
 s::JsonLoader::JsonLoader() {
 }

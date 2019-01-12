@@ -18,6 +18,7 @@ public:
 	void setFrameTime(sf::Time time);
 	sf::Time getFrameTime() const;
 
+	Animation* clone() const;
 private:
 	std::vector<sf::IntRect> frames;
 	const sf::Texture* texture;
