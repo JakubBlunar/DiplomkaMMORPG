@@ -7,11 +7,12 @@
 #include "Matrix.h"
 #include "Player.h"
 #include "GameObject.h"
-#include "MapContactListener.h"
 #include "MapGrid.h"
 #include "Npc.h"
 #include "EntityToEntityRayCast.h"
 #include "Map.h"
+#include <queue>
+#include "MapContactListener.h"
 
 class Spell;
 class GameEvent;
@@ -27,6 +28,7 @@ class Map : public Subscriber {
 	std::map<sf::Uint32, Player*> players;
 	std::vector<Entity*> entities;
 	std::map<sf::Uint32, Npc*> npcs;
+	std::queue<Spell*> spellsToRemove;
 
 	b2Draw* debugDrawInstance;
 	int id;
@@ -34,6 +36,8 @@ class Map : public Subscriber {
 	Player* player;
 	MapContactListener* contactListener;
 	MapGrid* grid;
+
+	sf::Mutex mapLock;
 public:
 	Map(Game* g);
 	~Map();
@@ -60,13 +64,13 @@ public:
 
 	Player* getPlayer() const;
 
-	Field* getField(int x, int y) const;
+	Field* getField(int x, int y);
 	int getWidth() const;
 	int getHeight() const;
 	b2World* getB2World() const;
 	MapGrid* getGrid() const;
 
-	EntityToEntityRayCast* makeRayCast(Entity* startEntity, Entity* endEntity) const;
+	EntityToEntityRayCast* makeRayCast(Entity* startEntity, Entity* endEntity);
 
 	std::vector<Entity*>* getEntities();
 

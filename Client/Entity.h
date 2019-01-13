@@ -28,12 +28,16 @@ public:
 	uint32 getId() const;
 	bool containsPoint(sf::Vector2f point) const;
 	std::string getName() const;
+
+	bool isRemoved() const { return removed; }
+
 protected:
 	Entity(sf::Uint32 id);
 	std::vector<Component *> components;
 	b2Body* body;
 	std::string name;
 	sf::Uint32 id;
+	bool removed;
 };
 
 

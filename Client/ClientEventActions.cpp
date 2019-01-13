@@ -73,14 +73,6 @@ void ClientEventActions::visit(EventCharacterChooseResponse* e) {
 		game->getAccount()->setPlayerEntity(p);
 		map->addPlayer(p);
 
-
-		Spell* spell = EntityPrototypes::instance()->createSpell(2);
-		PositionComponent* po = spell->getPositionComponent();
-		po->setPosition(sf::Vector2f(400, 400));
-
-		spell->setTarget(p);
-		map->addSpell(spell);
-
 		json otherPlayers = response["otherPlayers"].get<json::array_t>();
 		for (json::iterator it = otherPlayers.begin(); it != otherPlayers.end(); ++it) {
 			Player* otherPlayer = new Player(false);

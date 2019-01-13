@@ -44,6 +44,7 @@ namespace s {
 		void update(sf::Time elapsedTime, s::Server* s) override;
 		void interruptSpellCast(SpellEvent* e, bool sendInfo);
 		void handleEvent(EventPlayerStartCastSpell* event, s::Session* playerSession, s::Server* s);
+		void queueEvent(SpellEvent* spellEvent);
 	};
 }
 #endif

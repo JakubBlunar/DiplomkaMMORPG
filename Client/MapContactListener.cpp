@@ -1,12 +1,16 @@
 #include "MapContactListener.h"
 #include "Entity.h"
 #include "Player.h"
+#include "Map.h"
 
 void MapContactListener::BeginContact(b2Contact * contact)
 {
 	b2Fixture* first = contact->GetFixtureA();
 	b2Fixture* second = contact->GetFixtureB();
 
+	if (!first || !second) {
+		return;
+	}
 
 	bool firstIsSensor = first->IsSensor();
 	bool secondIsSensor = second->IsSensor();
@@ -28,6 +32,7 @@ void MapContactListener::BeginContact(b2Contact * contact)
 				p->melleViewEntities.push_back(collideWith);
 			}
 		}
+		return;
 	}
 
 	if (secondIsSensor) {
@@ -43,7 +48,26 @@ void MapContactListener::BeginContact(b2Contact * contact)
 				p->melleViewEntities.push_back(collideWith);
 			}
 		}
+		return;
 	}
+
+	Entity* entity = (Entity*)first->GetBody()->GetUserData();
+	Entity* entity2 = (Entity*)second->GetBody()->GetUserData();
+	if (entity->getType() == EntityType::SPELL) {
+		Spell* spell = (Spell*) entity;
+		if (spell->getTarget() == entity2) {
+			map->removeSpell(spell);
+			return;
+		}
+	}
+	if(entity2->getType() == EntityType::SPELL) {
+		Spell* spell = (Spell*) entity2;
+		if (spell->getTarget() == entity) {
+			map->removeSpell(spell);
+		}
+	}
+
+	
 }
 
 void MapContactListener::EndContact(b2Contact * contact)

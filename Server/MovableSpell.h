@@ -13,7 +13,6 @@ namespace s {
 		EntityPosition position;
 
 		void update(sf::Time elapsedTime, s::Server* s, Map* map);
-		void cast(Entity* entity) override;
 		b2Body* getBody() const override;
 		Spell* clone() const override;
 		void loadFromJson(json data) override;

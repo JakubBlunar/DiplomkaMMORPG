@@ -106,6 +106,8 @@ void s::Map::addSpell(MovableSpell* spell) {
 	spell->position.setMapId(this->getId());
 	spell->position.setMap(this);
 
+	spellBody->SetUserData(this);
+
 	spellsById.insert(std::make_pair(spell->getInstanceId(), spell));
 }
 

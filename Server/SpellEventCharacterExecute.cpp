@@ -7,6 +7,7 @@
 #include "EntityToEntityRayCast.h"
 #include "ServerGlobals.h"
 #include "MovableSpell.h"
+#include "SpellEventApplyEffects.h"
 
 s::SpellEventCharacterExecute::SpellEventCharacterExecute(): character(nullptr), spellTarget(),
                                                              targetCharacter(nullptr),
@@ -70,32 +71,37 @@ void s::SpellEventCharacterExecute::execute(Server* s) {
 		return;
 	}
 
-
-	spdlog::get("log")->info("Casting spell {}: {}", character->name, spellInfo->name);
-	if (spellInfo->spellCategory == EntityType::MOVABLE_SPELL) {
-		MovableSpell* spell = SpellHolder::instance()->createMovableSpell(spellInfo->id);
-		spell->position.setPosition(character->position.getPosition());
-		spell->setOwner(character);
-		switch (spellTarget) {
-			case SpellTarget::PLAYER: {
-				spell->setTarget(targetCharacter);
-				break;
-			}
-			case SpellTarget::NPC: {
-				spell->setTarget(targetNpc);
-				break;
-			default:
-				return;
-			}
+	Entity* targetEntity;
+	switch (spellTarget) {
+		case SpellTarget::PLAYER: {
+			targetEntity = targetCharacter;
+			break;
 		}
-
-		if (spell->getTarget() != nullptr) {
-			map->addSpell(spell);
-		} else {
-			delete spell;
+		case SpellTarget::NPC: {
+			targetEntity = targetNpc;
+			break;
+		default:
+			return;
 		}
 	}
-	else { }
+
+
+	spdlog::get("log")->info("Casting spell {}: {}", character->name, spellInfo->name);
+	if (targetEntity) {
+		if (spellInfo->spellCategory == EntityType::MOVABLE_SPELL) {
+			MovableSpell* spell = SpellHolder::instance()->createMovableSpell(spellInfo->id);
+			spell->position.setPosition(character->position.getPosition());
+			spell->setOwner(character);
+			spell->setTarget(targetEntity);
+			map->addSpell(spell);
+		}
+		else {
+			Spell* spell = SpellHolder::instance()->createSpell(spellInfo->id);
+			SpellEventApplyEffects * e = new SpellEventApplyEffects(spell, targetEntity);
+			e->executeTime = s->getServerTime();
+			s->spellManager.queueEvent(e);
+		}
+	}
 
 	character->attributes.setAttribute(EntityAttributeType::MP, actualMana - spellInfo->manaCost);
 

@@ -300,6 +300,9 @@
     <ClCompile Include="SpellEventNpcExecute.cpp">
       <Filter>Source Files\SpellEvents</Filter>
     </ClCompile>
+    <ClCompile Include="SpellEventApplyEffects.cpp">
+      <Filter>Source Files\SpellEvents</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INIReader.h">
@@ -519,6 +522,9 @@
       <Filter>Header Files\SpellEvents</Filter>
     </ClInclude>
     <ClInclude Include="SpellEventNpcExecute.h">
+      <Filter>Header Files\SpellEvents</Filter>
+    </ClInclude>
+    <ClInclude Include="SpellEventApplyEffects.h">
       <Filter>Header Files\SpellEvents</Filter>
     </ClInclude>
   </ItemGroup>

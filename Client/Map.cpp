@@ -96,9 +96,17 @@ void Map::update(sf::Time elapsedTime, Game* game) {
 	for (Entity* entity : entities) {
 		entity->update(elapsedTime, this, game);
 	}
+
+	/*while (!spellsToRemove.empty()) {
+		Spell* spell = spellsToRemove.front();
+		world->DestroyBody(spell->getBody());
+		entities.erase(std::remove(entities.begin(), entities.end(), spell), entities.end());
+		delete spell;
+		spellsToRemove.pop();
+	}*/
 }
 
-Field* Map::getField(int x, int y) const {
+Field* Map::getField(int x, int y) {
 	return fields->get(x, y);
 }
 
@@ -118,7 +126,7 @@ MapGrid* Map::getGrid() const {
 	return grid;
 }
 
-EntityToEntityRayCast* Map::makeRayCast(Entity* startEntity, Entity* endEntity) const {
+EntityToEntityRayCast* Map::makeRayCast(Entity* startEntity, Entity* endEntity) {
 	EntityToEntityRayCast* callback = new EntityToEntityRayCast(startEntity, endEntity);
 
 	b2Vec2 start = startEntity->getBody()->GetPosition();
@@ -364,7 +372,6 @@ void Map::addSpell(Spell* spell) {
 		return;
 	}
 
-	entities.push_back(spell);
 	sf::Vector2f position = po->getPosition();
 	sf::Vector2f size = po->getSize();
 	BodyType bodyType = po->getBodyType();
@@ -376,12 +383,16 @@ void Map::addSpell(Spell* spell) {
 		Box2DTools::addCircle(b2_kinematicBody, position.x, position.y, size.x, spell, this,
 		                      spell->getEntityCategory(), spell->getCollisionMask());
 	}
+
+	entities.push_back(spell);
 }
 
 void Map::removeSpell(Spell* spell) {
-	world->DestroyBody(spell->getBody());
+	spellsToRemove.push(spell);
+	/*world->DestroyBody(spell->getBody());
 	entities.erase(std::remove(entities.begin(), entities.end(), spell), entities.end());
 	delete spell;
+	*/
 }
 
 void Map::loadFromFile(int id) {

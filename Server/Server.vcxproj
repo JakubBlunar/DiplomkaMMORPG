@@ -224,6 +224,7 @@
     <ClCompile Include="SpawnManager.cpp" />
     <ClCompile Include="Spell.cpp" />
     <ClCompile Include="SpellEvent.cpp" />
+    <ClCompile Include="SpellEventApplyEffects.cpp" />
     <ClCompile Include="SpellEventCharacterExecute.cpp" />
     <ClCompile Include="SpellEventNpcExecute.cpp" />
     <ClCompile Include="SpellHolder.cpp" />
@@ -299,6 +300,7 @@
     <ClInclude Include="SpawnManager.h" />
     <ClInclude Include="Spell.h" />
     <ClInclude Include="SpellEvent.h" />
+    <ClInclude Include="SpellEventApplyEffects.h" />
     <ClInclude Include="SpellEventCharacterExecute.h" />
     <ClInclude Include="SpellEventNpcExecute.h" />
     <ClInclude Include="SpellHolder.h" />

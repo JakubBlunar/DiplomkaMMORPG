@@ -8,5 +8,5 @@
     "icon": "attack.png",
     "desc": "Melle attack with weapon",
     "gCooldown": 500,
-    "maxRange": 32
+    "maxRange": 50
 }

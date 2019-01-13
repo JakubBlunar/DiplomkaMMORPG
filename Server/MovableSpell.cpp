@@ -4,6 +4,7 @@
 #include "EntityPosition.h"
 #include <spdlog/spdlog.h>
 #include "Map.h"
+#include "SpellEventApplyEffects.h"
 
 s::MovableSpell::MovableSpell()
 {
@@ -31,9 +32,10 @@ void s::MovableSpell::update(sf::Time elapsedTime, s::Server* s, Map* map) {
 			double distance = b2DistanceSquared(actualPosition, targetPosition);
 
 			if (distance * METTOPIX < 5) {
-				spdlog::get("log")->info("Apply effects of spell {} {}", spellInfo.name, instanceId);
-
 				map->removeSpell(this);
+				SpellEventApplyEffects * e = new SpellEventApplyEffects(this, target);
+				e->executeTime = s->getServerTime();
+				s->spellManager.queueEvent(e);
 				return;
 			}
 
@@ -42,10 +44,6 @@ void s::MovableSpell::update(sf::Time elapsedTime, s::Server* s, Map* map) {
 			body->SetLinearVelocity(velocity);
 		}
 	}
-}
-
-void s::MovableSpell::cast(Entity* entity) {
-	
 }
 
 b2Body* s::MovableSpell::getBody() const {

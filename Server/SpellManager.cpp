@@ -147,3 +147,9 @@ void s::SpellManager::handleEvent(EventPlayerStartCastSpell* event, s::Session* 
 	}
 	catch (...) {}
 }
+
+void s::SpellManager::queueEvent(SpellEvent* spellEvent) {
+		eventQueueMutex.lock();
+		eventQueue.push(spellEvent);
+		eventQueueMutex.unlock();
+}
