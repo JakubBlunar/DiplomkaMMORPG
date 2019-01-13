@@ -14,6 +14,7 @@
 #include "EventNpcMovementChange.h"
 #include "EventNpcStatusChanged.h"
 #include "EventSpellCastResult.h"
+#include "EventSendMessage.h"
 
 PacketManager::PacketManager(Game* g) : game(nullptr), latencyCheckThread(nullptr) {
 	game = g;
@@ -172,6 +173,15 @@ void PacketManager::startRecieve() {
 						game->print("Error while parsing packet " + std::to_string(pt));
 					}
 					break;
+				case SEND_MESSAGE: {
+					e = new EventSendMessage();
+					if (e->loadFromPacket(&packet)) {
+						EventDispatcher<EventSendMessage>::dispatchEvent(e);
+					} else {
+						game->print("Error while parsing packet " + std::to_string(pt));
+					}
+					break;
+				}
 				default:
 					game->print("Unknown packet type " + std::to_string(pt));
 					break;

@@ -4,15 +4,31 @@
 #include <imgui.h>
 #include <locale>
 #include "IGWindow.h"
+#include "Subscriber.h"
+#include "EventSendMessage.h"
 
-class IGConsole: public IGWindow {
+struct ConsoleItem {
+	std::string message;
+	time_t time;
+	MessageType type;
+	std::string player;
+	int playerId;
+};
+
+class IGConsole: public IGWindow, Subscriber {
 public:
-	IGConsole();
+	Game* game;
 
+	IGConsole();
 	~IGConsole();
 
+	void setGame(Game* g) {
+		this->game = g;
+	}
+
+	std::vector<ConsoleItem*> messages;
+
 	char InputBuf[256];
-	ImVector<char*> Items;
 	bool ScrollToBottom;
 	ImVector<char*> History;
 	int HistoryPos; // -1: new line, 0..History.Size-1 browsing history.
@@ -57,29 +73,43 @@ public:
 	}
 
 	void ClearLog() {
-		for (int i = 0; i < Items.Size; i++)
-			free(Items[i]);
-		Items.clear();
+		for (int i = 0; i < messages.size(); i++)
+			delete(messages[i]);
+		messages.clear();
 		ScrollToBottom = true;
 	}
 
-	void AddLog(const char* fmt, ...) IM_FMTARGS(2)
+	void AddLog(ConsoleItem *item) IM_FMTARGS(2)
 	{
-		// FIXME-OPT
-		char buf[1024];
-		va_list args;
-		va_start(args, fmt);
-		vsnprintf(buf, IM_ARRAYSIZE(buf), fmt, args);
-		buf[IM_ARRAYSIZE(buf) - 1] = 0;
-		va_end(args);
-		Items.push_back(Strdup(buf));
+		int count = messages.size();
+
+		if (messages.empty()) {
+			messages.push_back(item);
+			ScrollToBottom = true;
+			return;
+		}
+
+		int i = count - 1;
+		if (messages[i]->time <= item->time) {
+			messages.push_back(item);
+			ScrollToBottom = true;
+			return;
+		}
+
+		
+		while (item->time < messages[i]->time && i > 0) {
+			i--;
+		}
+
+
+		messages.insert(messages.begin() + i, item);
 		ScrollToBottom = true;
 	}
 
 	void ExecCommand(const char* command_line);
 
 	static int TextEditCallbackStub(ImGuiTextEditCallbackData* data)
-	// In C++11 you are better off using lambdas for this sort of forwarding callbacks
+	
 	{
 		IGConsole* console = (IGConsole*)data->UserData;
 		return console->TextEditCallback(data);
@@ -90,6 +120,8 @@ public:
 
 protected:
 	void render(Game* g, IGManager* manager) override;
+public:
+	void handleEvent(GameEvent* event) override;
 };
 
 #endif

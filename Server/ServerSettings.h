@@ -12,6 +12,7 @@ namespace s {
 		long port;
 		int max_threads;
 		int maxNpcThreads;
+		int maxSpellThreads;
 		std::string dbHost;
 		std::string dbUser;
 		std::string dbName;
@@ -19,6 +20,7 @@ namespace s {
 		unsigned int dbPort;
 		bool logsEnabled;
 		sf::Mutex eventMutex;
+		std::string welcomeMessage;
 	};
 }
 

@@ -1,3 +1,4 @@
+#define SPDLOG_FMT_EXTERNAL
 #include "ClientSettings.h"
 #include "INIReader.h"
 #include <iostream>

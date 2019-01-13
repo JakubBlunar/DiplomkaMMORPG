@@ -50,10 +50,10 @@ void s::Server::init() {
 	NpcHolder::instance()->init();
 	
 	npcManager.init(this);
+	mapsManager.init(this);
+	spellManager.init(this);
 
 	managers.push_back(&mapsManager);
-	mapsManager.init(this);
-
 	managers.push_back(&spellManager);
 }
 
@@ -168,6 +168,14 @@ void s::Server::identifyPacket(EventId type, sf::Packet* packet, Session* player
 		EventPlayerStartCastSpell* e = new EventPlayerStartCastSpell();
 		if (e->loadFromPacket(packet)) {
 			spellManager.handleEvent(e, playerSession, this);	
+		}
+		delete e;
+		break;
+	}
+	case SEND_MESSAGE: {
+		EventSendMessage* e = new EventSendMessage();
+		if (e->loadFromPacket(packet)) {
+			chatManager.handleEvent(e, playerSession, this);	
 		}
 		delete e;
 		break;

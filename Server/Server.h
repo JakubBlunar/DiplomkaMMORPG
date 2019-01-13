@@ -12,6 +12,7 @@
 #include "BotManager.h"
 #include "NpcManager.h"
 #include "SpellManager.h"
+#include "ChatManager.h"
 
 namespace s {
 	class ServerTasks;
@@ -36,6 +37,7 @@ namespace s {
 		BotManager botManager;
 		NpcManager npcManager;
 		SpellManager spellManager;
+		ChatManager chatManager;
 
 		std::vector<Manager*> managers;
 

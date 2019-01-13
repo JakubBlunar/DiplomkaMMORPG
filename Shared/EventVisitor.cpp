@@ -45,3 +45,4 @@ void EventVisitor::visit(EventAttributesChanged* e) {}
 void EventVisitor::visit(EventAttributeBonusesChanged* e) {}
 void EventVisitor::visit(EventPlayerStartCastSpell* e) {}
 void EventVisitor::visit(EventSpellCastResult* e) {}
+void EventVisitor::visit(EventSendMessage* e) {}

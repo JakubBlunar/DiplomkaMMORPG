@@ -8,7 +8,7 @@
 #include <iostream>
 #include "Map.h"
 
-Spell::Spell(sf::Uint32 id): Entity(id), target(nullptr) {
+Spell::Spell(sf::Uint32 id): Entity(id), spellType(0), target(nullptr) {
 
 	positionComponent = new PositionComponent();
 	components.push_back(positionComponent);

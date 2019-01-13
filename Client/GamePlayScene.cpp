@@ -56,6 +56,7 @@ void GamePlayScene::afterChange() {
 	actionBarWindow->setPlayer(player);
 	characterInfoWindow->setPlayer(player);
 	castingBarWindow->setPlayer(player);
+	console->setGame(game);
 
 	windowManager->open("PlayerInfo");
 	windowManager->open("ActionBar");

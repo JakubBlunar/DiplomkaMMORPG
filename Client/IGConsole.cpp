@@ -1,6 +1,8 @@
 #include "IGConsole.h"
 #include "ImGuiFonts.h"
 #include "Game.h"
+#include "Utils.h"
+#include "EventDispatcher.h"
 
 IGConsole::IGConsole() {
 	ClearLog();
@@ -8,32 +10,46 @@ IGConsole::IGConsole() {
 	HistoryPos = -1;
 	Commands.push_back("HELP");
 	Commands.push_back("CLEAR");
+
+	EventDispatcher<EventSendMessage>::addSubscriber(this);
 }
 
 
 IGConsole::~IGConsole() {
+	EventDispatcher<EventSendMessage>::removeSubscriber(this);
 	ClearLog();
 	for (int i = 0; i < History.Size; i++)
 		free(History[i]);
+
 }
 
 void IGConsole::ExecCommand(const char* command_line) {
 	
-
-
 	// Process command
 	if (Stricmp(command_line, "CLEAR") == 0) {
-		AddLog("# %s\n", command_line);
 		ClearLog();
 	}
 	else if (Stricmp(command_line, "HELP") == 0) {
-		AddLog("# %s\n", command_line);
-		AddLog("Commands:");
-		for (int i = 0; i < Commands.Size; i++)
-			AddLog("- %s", Commands[i]);
-	}
-	else {
-		AddLog("%s\n", command_line);
+		ConsoleItem* item = new ConsoleItem();
+		item->message = "Commands: ";
+		item->time = Utils::utcTimeToLocalTime(Utils::getActualUtcTime());
+		item->type = MessageType::SERVER_ANNOUNCEMENT;
+
+		for (int i = 0; i < Commands.Size; i++) {
+			item->message += "\n - " + std::string(Commands[i]);
+		}
+		
+		AddLog(item);
+	} else {
+		EventSendMessage e;
+		e.message = std::string(command_line);
+		e.messageType = MessageType::SAY;
+		e.time = Utils::getActualUtcTime();
+		e.playerId = game->getAccount()->getPlayerEntity()->getId();
+
+		sf::Packet* p = e.toPacket();
+		game->packet_manager->sendPacket(p);
+		delete p;
 	}
 
 	ScrollToBottom = true;
@@ -62,8 +78,11 @@ int IGConsole::TextEditCallback(ImGuiTextEditCallbackData* data) {
 					candidates.push_back(Commands[i]);
 
 			if (candidates.Size == 0) {
-				// No match
-				AddLog("No match for \"%.*s\"!\n", (int)(word_end - word_start), word_start);
+				ConsoleItem* item = new ConsoleItem();
+				item->message = "No match";
+				item->time = Utils::utcTimeToLocalTime(Utils::getActualUtcTime());
+				item->type = MessageType::SERVER_ANNOUNCEMENT;
+				AddLog(item);
 			}
 			else if (candidates.Size == 1) {
 				// Single match. Delete the beginning of the word and replace it entirely so we've got nice casing
@@ -92,10 +111,16 @@ int IGConsole::TextEditCallback(ImGuiTextEditCallbackData* data) {
 					data->InsertChars(data->CursorPos, candidates[0], candidates[0] + match_len);
 				}
 
-				// List matches
-				AddLog("Possible matches:\n");
-				for (int i = 0; i < candidates.Size; i++)
-					AddLog("- %s\n", candidates[i]);
+				ConsoleItem* item = new ConsoleItem();
+				item->message = "Possible matches: ";
+				item->time = Utils::utcTimeToLocalTime(Utils::getActualUtcTime());
+				item->type = MessageType::SERVER_ANNOUNCEMENT;
+			
+				for (int i = 0; i < candidates.Size; i++) {
+					item->message += "\n - " + std::string(candidates[i]);
+				}
+
+				AddLog(item);
 			}
 
 			break;
@@ -137,13 +162,26 @@ void IGConsole::render(Game* g, IGManager* manager) {
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1)); // Tighten spacing
 
 	ImVec4 col_default_text = ImGui::GetStyleColorVec4(ImGuiCol_Text);
-	for (int i = 0; i < Items.Size; i++) {
-		const char* item = Items[i];
+	for (int i = 0; i < messages.size(); i++) {
+		ConsoleItem* ci = messages[i];
+
+		char buff[20];
+		strftime(buff, 20, "%H:%M:%S", localtime(&ci->time));
+		std::string strMessage = std::string(buff);
+
+		if (!ci->player.empty()) {
+			strMessage += " " + ci->player;
+		}
+
+		strMessage += ": " + ci->message;
+
+
 		ImVec4 col = col_default_text;
-		if (strstr(item, "[error]")) col = ImColor(1.0f, 0.4f, 0.4f, 1.0f);
-		else if (strncmp(item, "# ", 2) == 0) col = ImColor(1.0f, 0.78f, 0.58f, 1.0f);
+		//if (ci->type == MessageType::SERVER_ANNOUNCEMENT) col = ImColor(1.0f, 0.78f, 0.58f, 1.0f);
+		if (ci->type == MessageType::SERVER_ANNOUNCEMENT) col = ImColor(0,0,205);
+
 		ImGui::PushStyleColor(ImGuiCol_Text, col);
-		ImGui::TextWrapped(item);
+		ImGui::TextWrapped(strMessage.c_str());
 		ImGui::PopStyleColor();
 	}
 	
@@ -186,4 +224,29 @@ void IGConsole::render(Game* g, IGManager* manager) {
 
 	ImGui::End();
 	ImGui::PopFont();
+}
+
+void IGConsole::handleEvent(GameEvent* event) {
+	switch (event->getId()) {
+		case SEND_MESSAGE: {
+			EventSendMessage* e = (EventSendMessage*) event;
+			ConsoleItem* item = new ConsoleItem();
+			item->message = e->message;
+			item->type = e->messageType;
+			item->time = Utils::utcTimeToLocalTime(e->time);
+			item->playerId = e->playerId;
+			item->player = "";
+
+			Map* map = game->getMap();
+			Player* p = map->getPlayerById(e->playerId);
+			if (p) {
+				item->player = p->getName();
+			}
+
+			AddLog(item);
+			break;
+		}
+		return;
+	} 
+
 }

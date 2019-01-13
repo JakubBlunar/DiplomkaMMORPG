@@ -25,14 +25,15 @@ s::ServerSettings* initSettings() {
 	settings->port = reader.GetInteger("connection", "port", 55001);
 	settings->max_threads = reader.GetInteger("server", "max_thread_count", 1);
 	settings->maxNpcThreads = reader.GetInteger("server", "max_npc_thread_count", 1);
+	settings->maxSpellThreads = reader.GetInteger("server", "max_spell_thread_count", 1);
+	settings->welcomeMessage = reader.Get("server", "welcome_message", "");
+	settings->logsEnabled = reader.GetBoolean("server", "logs", false);
 
 	settings->dbHost = reader.Get("database", "host", "");
 	settings->dbName = reader.Get("database", "database", "");
 	settings->dbUser = reader.Get("database", "user", "");
 	settings->dbPassword = reader.Get("database", "password", "");
 	settings->dbPort = reader.GetInteger("database", "port", 3306);
-
-	settings->logsEnabled = reader.GetBoolean("server", "logs", false);
 	return settings;
 }
 

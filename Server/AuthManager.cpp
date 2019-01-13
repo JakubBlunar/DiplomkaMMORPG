@@ -179,6 +179,10 @@ void s::AuthManager::handleEvent(EventCharacterChoose* event, s::Session* player
 	sf::Packet* p = res.toPacket();
 	playerSession->sendPacket(p);
 	delete p;
+
+	if (res.success) {
+		s->chatManager.handleEvent(event, playerSession, s);
+	}
 }
 
 

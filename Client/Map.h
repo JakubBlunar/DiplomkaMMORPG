@@ -63,6 +63,7 @@ public:
 	void unsubscribe();
 
 	Player* getPlayer() const;
+	Player* getPlayerById(int id) const;
 
 	Field* getField(int x, int y);
 	int getWidth() const;

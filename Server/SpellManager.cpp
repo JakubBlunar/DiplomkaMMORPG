@@ -12,15 +12,19 @@
 s::SpellManager::SpellManager(): spellIds(0, 214748364), effectIds(0, 214748364) {
 	dynamic = true;
 	spellHolder = SpellHolder::instance();
-
 	runningThreads = 0;
-	numOfThreads = 6;
-	executingThreads.resize(numOfThreads, nullptr);
-	threadEnded.resize(numOfThreads, true);
+	numOfThreads = 1;
 }
 
 
 s::SpellManager::~SpellManager() { }
+
+void s::SpellManager::init(Server* s) {
+	runningThreads = 0;
+	numOfThreads = s->serverSettings->maxSpellThreads;
+	executingThreads.resize(numOfThreads, nullptr);
+	threadEnded.resize(numOfThreads, true);
+}
 
 void s::SpellManager::update(sf::Time elapsedTime, s::Server* s) {
 	sf::Time serverTime = s->getServerTime();

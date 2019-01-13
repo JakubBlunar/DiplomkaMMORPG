@@ -18,6 +18,7 @@ class EventMovementChange;
 class EventCharacterLogout;
 class EventAttributeBonusesChanged;
 class EventSpellCastResult;
+class EventSendMessage;
 
 class EventVisitor {
 public:
@@ -39,6 +40,7 @@ public:
 	virtual void visit(EventAttributeBonusesChanged* e);
 	virtual void visit(EventPlayerStartCastSpell* e);
 	virtual void visit(EventSpellCastResult* e);
+	virtual void visit(EventSendMessage* e);
 };
 
 #endif // !EVENT_VISITOR_H

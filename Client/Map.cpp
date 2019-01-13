@@ -610,3 +610,9 @@ void Map::unsubscribe() {
 Player* Map::getPlayer() const {
 	return player;
 }
+
+Player* Map::getPlayerById(int id) const {
+	auto found = players.find(id);
+	if(found == players.end()) return nullptr;
+	return found->second;
+}
