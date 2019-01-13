@@ -24,7 +24,7 @@ struct SpellInfo {
 class Spell: public Entity {
 	PositionComponent* positionComponent;
 	RenderComponent* renderComponent;
-
+	int spellType;
 	Entity* target;
 public:
 	Spell(sf::Uint32 id);
@@ -55,6 +55,14 @@ public:
 
 	Entity* getTarget() const {
 		return target;
+	}
+
+	void setSpellType(int type) {
+		this->spellType = type;
+	}
+
+	int getSpellType() const {
+		return spellType;
 	}
 };
 

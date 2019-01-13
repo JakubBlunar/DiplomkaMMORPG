@@ -97,13 +97,13 @@ void Map::update(sf::Time elapsedTime, Game* game) {
 		entity->update(elapsedTime, this, game);
 	}
 
-	/*while (!spellsToRemove.empty()) {
+	while (!spellsToRemove.empty()) {
 		Spell* spell = spellsToRemove.front();
 		world->DestroyBody(spell->getBody());
 		entities.erase(std::remove(entities.begin(), entities.end(), spell), entities.end());
-		delete spell;
 		spellsToRemove.pop();
-	}*/
+		delete spell;
+	}
 }
 
 Field* Map::getField(int x, int y) {

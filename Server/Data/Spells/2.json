@@ -1,9 +1,9 @@
 {
     "id": 2,
     "name": "Fireball",
-    "mana": 1,
+    "mana": 0,
     "cooldown": 0,
-    "castingTime": 1000,
+    "castingTime": 500,
     "spellSpeed": 100,
     "icon": "fireball.png",
     "entityAnimation": "2",

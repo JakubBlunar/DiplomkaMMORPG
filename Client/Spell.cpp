@@ -95,7 +95,7 @@ void Spell::update(sf::Time elapsedTime, Map* map, Game* g) {
 
 void Spell::loadFromJson(json jsonData) {
 
-	std::cout << jsonData.dump(1) << std::endl;
+	spellType = (int)jsonData["id"].get<json::number_integer_t>();
 	float speed = (float)jsonData["spellSpeed"].get<json::number_integer_t>();
 
 	std::string animationFile = jsonData["entityAnimation"].get<json::string_t>();
@@ -144,8 +144,12 @@ void Spell::loadFromJson(json jsonData) {
 }
 
 Spell* Spell::clone() const {
+
 	Spell* clone = new Spell(-1);
-	PositionComponent* pc = clone->getPositionComponent();
+	json jsonData = JsonLoader::instance()->loadJson("Spells/" + std::to_string(spellType));
+	clone->loadFromJson(jsonData);
+
+	/*PositionComponent* pc = clone->getPositionComponent();
 	pc->setMovement(sf::Vector2f(0, 0));
 	pc->setSize(positionComponent->getSize());
 	pc->setSpeed(positionComponent->getSpeed());
@@ -159,7 +163,7 @@ Spell* Spell::clone() const {
 	}
 	rc->setSize(renderComponent->getSize());
 	rc->setOffset(renderComponent->getOffset());
-	rc->changeAnimation(renderComponent->getCurrentAnimationName());
+	rc->changeAnimation(renderComponent->getCurrentAnimationName());*/
 
 	return clone;
 }
