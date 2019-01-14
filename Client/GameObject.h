@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include "PositionComponent.h"
 #include "RenderComponent.h"
+#include "AttributesComponent.h"
 
 class GameObject :
 	public Entity {
@@ -23,4 +24,5 @@ public:
 private:
 	PositionComponent* positionComponent;
 	RenderComponent* renderComponent;
+	AttributesComponent* attributesComponent;
 };

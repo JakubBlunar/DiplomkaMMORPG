@@ -73,7 +73,7 @@ public:
 	}
 
 	void ClearLog() {
-		for (int i = 0; i < messages.size(); i++)
+		for (unsigned int i = 0; i < messages.size(); i++)
 			delete(messages[i]);
 		messages.clear();
 		ScrollToBottom = true;

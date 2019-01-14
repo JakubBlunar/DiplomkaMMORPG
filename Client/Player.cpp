@@ -262,10 +262,7 @@ void Player::loadFromJson(json jsonData) {
 	positionComponent->setMovement(sf::Vector2f(movementX, movementY));
 	lastServerPosition.velocityX = movementX;
 	lastServerPosition.velocityY = movementY;
-
-	float speed = (float)jsonData["speed"].get<json::number_float_t>();
-	positionComponent->setSpeed(speed);
-
+	
 	json attributes = jsonData["attributes"].get<json::array_t>();
 	std::string attributesS = jsonData.dump();
 	int index = 0;
@@ -308,8 +305,7 @@ bool Player::isControlledByPlayer() const {
 }
 
 void Player::setMovementDirection(sf::Vector2f direction, Game* g) {
-
-	positionComponent->setMovementDirection(direction);
+	positionComponent->setMovementDirection(direction, attributesComponent->getAttribute(EntityAttributeType::SPEED));
 	sf::Vector2f movement = positionComponent->getMovement();
 
 	if (lastMovement != movement) {

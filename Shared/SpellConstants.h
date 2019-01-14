@@ -2,10 +2,17 @@
 #define SPELL_CONSTANTS_H
 
 
-enum class SpellTarget: sf::Uint8 {
+enum class SpellTarget : sf::Uint8 {
 	PLAYER = 0,
 	NPC = 1,
 	POSITION = 2
+};
+
+
+enum class SpellTargetRestriction: sf::Uint32 {
+	SELF= (1 << 0),
+	FRIENDLY = (1 << 1),
+	ENEMY = (1 << 2),
 };
 
 enum class SpellCastResultCode: sf::Uint8 {
@@ -36,7 +43,6 @@ inline std::string getStringSpellErrorByResultCode(SpellCastResultCode code) {
 			return "Your spell has not been casted";
 	}
 }
-
 
 
 #endif

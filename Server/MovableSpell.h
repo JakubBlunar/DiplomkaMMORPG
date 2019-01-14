@@ -12,10 +12,20 @@ namespace s {
 
 		EntityPosition position;
 
+		float speed;
+
 		void update(sf::Time elapsedTime, s::Server* s, Map* map);
 		b2Body* getBody() const override;
 		Spell* clone() const override;
 		void loadFromJson(json data) override;
+
+		void setSpeed(float speed) {
+			this->speed = speed;
+		}
+
+		float getSpeed() const {
+			return speed;
+		}
 	};
 }
 #endif

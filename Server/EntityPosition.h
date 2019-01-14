@@ -13,7 +13,6 @@ namespace s {
 		EntityPosition();
 		virtual ~EntityPosition() {};
 
-		float speed;
 		b2Body* body;
 		sf::Vector2f position;
 		sf::Vector2f movement;
@@ -29,9 +28,6 @@ namespace s {
 
 		void setBody(b2Body* body);
 		b2Body* getBody() const;
-
-		void setSpeed(float speed);
-		float getSpeed() const;
 
 		void setSize(sf::Vector2i size);
 		sf::Vector2i getSize() const;

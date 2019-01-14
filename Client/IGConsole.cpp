@@ -162,7 +162,7 @@ void IGConsole::render(Game* g, IGManager* manager) {
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1)); // Tighten spacing
 
 	ImVec4 col_default_text = ImGui::GetStyleColorVec4(ImGuiCol_Text);
-	for (int i = 0; i < messages.size(); i++) {
+	for (unsigned int i = 0; i < messages.size(); i++) {
 		ConsoleItem* ci = messages[i];
 
 		char buff[20];
@@ -207,7 +207,7 @@ void IGConsole::render(Game* g, IGManager* manager) {
 	ImGui::PopItemWidth();
 
 	if(remove_focus) {
-		ImGui::SetWindowFocus(NULL);
+		ImGui::SetWindowFocus(nullptr);
 		remove_focus = false;
 	}
 
@@ -246,7 +246,7 @@ void IGConsole::handleEvent(GameEvent* event) {
 			AddLog(item);
 			break;
 		}
-		return;
+		default: break;
 	} 
 
 }

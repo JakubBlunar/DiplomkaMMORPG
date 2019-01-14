@@ -21,7 +21,6 @@ void s::MovableSpell::update(sf::Time elapsedTime, s::Server* s, Map* map) {
 	if (target && body) {
 		this->position.setPosition(sf::Vector2f(body->GetPosition().x * METTOPIX, body->GetPosition().y * METTOPIX));
 		this->position.setMovement(sf::Vector2f(body->GetLinearVelocity().x * METTOPIX, body->GetLinearVelocity().y * METTOPIX));
-		float speed = position.getSpeed();
 
 		b2Body* targetBody = target->getBody();
 		if (targetBody) {
@@ -62,12 +61,13 @@ s::Spell* s::MovableSpell::clone() const {
 	clonedPosition->setMapId(0);
 	clonedPosition->setPosition(sf::Vector2f(0,0));
 	clonedPosition->setSize(position.getSize());
-	clonedPosition->setSpeed(position.getSpeed());
+	
 
 	for (Effect* const effect : effects) {
 		clone->addEffect(effect->clone());
 	}
 	clone->spellInfo = spellInfo;
+	clone->setSpeed(speed);
 
 	return clone;
 }
@@ -81,6 +81,5 @@ void s::MovableSpell::loadFromJson(json data) {
 	int height = (int)animationData["height"].get<json::number_integer_t>();
 	position.setSize(sf::Vector2i(width, height));
 
-	float speed = (float) data["spellSpeed"].get<float_t>();
-	position.setSpeed(speed);
+	speed = (float) data["spellSpeed"].get<float_t>();
 }

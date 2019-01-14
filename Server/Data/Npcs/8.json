@@ -2,7 +2,6 @@
     "type": 8,
     "name": "Lesser daemon",
     "render": "8",
-    "speed": 35,
     "respawnTime": 30,
     "attributes": [
         35,
@@ -16,6 +15,7 @@
         1,
         1,
         1,
+        35,
         1
     ]
 }

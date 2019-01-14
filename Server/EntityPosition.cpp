@@ -7,7 +7,6 @@
 
 s::EntityPosition::EntityPosition()
 {
-	speed = 0;
 	body = nullptr;
 	position = sf::Vector2f(0,0);
 	lastMovement = sf::Vector2f(0, 0);
@@ -34,13 +33,6 @@ void s::EntityPosition::setBody(b2Body* body) {
 }
 b2Body* s::EntityPosition::getBody() const {
 	return body;
-}
-void s::EntityPosition::setSpeed(float speed) {
-	this->speed = speed;
-}
-
-float s::EntityPosition::getSpeed() const {
-	return speed;
 }
 
 void s::EntityPosition::setSize(sf::Vector2i size) {

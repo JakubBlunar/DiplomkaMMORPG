@@ -37,8 +37,6 @@ void Spell::update(sf::Time elapsedTime, Map* map, Game* g) {
 	Entity::update(elapsedTime, map, g);
 
 	sf::Vector2f movement = positionComponent->getMovement();
-	float speed = positionComponent->getSpeed();
-
 	if (target) {
 		b2Vec2 actualPosition = body->GetPosition();
 		b2Vec2 targetPosition = target->getBody()->GetPosition();
@@ -108,9 +106,8 @@ void Spell::loadFromJson(json jsonData) {
 	int width = (int)animationData["width"].get<json::number_integer_t>();
 	int height = (int)animationData["height"].get<json::number_integer_t>();
 	renderComponent->setSize(sf::Vector2i(width, height));
-
-
-	positionComponent->setSpeed(speed);
+	
+	this->speed = speed;
 	positionComponent->setSize(sf::Vector2f((float)width, (float)height));
 	positionComponent->setBodyType(BodyType::CIRCLE);
 

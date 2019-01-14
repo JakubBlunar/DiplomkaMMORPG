@@ -36,10 +36,11 @@ void s::EffectHolder::init()
 		file = std::regex_replace(file, std::regex("\\.json"), "");
 		json jsonData = JsonLoader::instance()->loadJson("Effects/" + file);
 
-		Effect* effect = new Effect();
+		/*Effect* effect = new Effect();
 		effect->loadFromJson(jsonData);
+		*/
 
-		prototypes.insert(std::make_pair(effect->getId(), effect));
+		//prototypes.insert(std::make_pair(effect->getId(), effect));
 	}
 
 	spdlog::get("log")->info("Loading effects prototypes done");

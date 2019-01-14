@@ -90,7 +90,7 @@ void s::Location::checkNpcRespawn(Npc* npc, sf::Time serverTime, Server* s) cons
 			npc->setMovement(0, 0);
 			EventNpcMovementChange movChanged;
 			movChanged.spawnId = npc->getSpawnId();
-			movChanged.speed = npc->position.getSpeed();
+			movChanged.speed = npc->attributes.getAttribute(EntityAttributeType::SPEED, true);
 			movChanged.velX = 0;
 			movChanged.velY = 0;
 			movChanged.x = spawnPosition.x;

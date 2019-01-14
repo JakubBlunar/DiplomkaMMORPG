@@ -29,7 +29,7 @@ void s::NpcCommandStay::update(sf::Time elapsedTime, NpcUpdateEvents * npcUpdate
 	}
 
 	if (!inited) {
-		npc->setMovementDirection(sf::Vector2f(0, 0), npc->position.getSpeed(), npcUpdateEvents);
+		npc->setMovementDirection(sf::Vector2f(0, 0), npc->attributes.getAttribute(EntityAttributeType::SPEED, true), npcUpdateEvents);
 		inited = true;
 	}
 }

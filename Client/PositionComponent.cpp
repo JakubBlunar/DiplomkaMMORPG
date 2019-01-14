@@ -8,7 +8,6 @@ PositionComponent::PositionComponent():
 	isMovingDown(false),
 	isMovingRight(false),
 	isMovingLeft(false),
-	speed(0),
 	size(sf::Vector2f(0, 0)) {
 }
 
@@ -25,7 +24,7 @@ ComponentType PositionComponent::getType() {
 	return ComponentType::POSITION;
 }
 
-void PositionComponent::setMovementDirection(sf::Vector2f direction) {
+void PositionComponent::setMovementDirection(sf::Vector2f direction, float speed) {
 	this->movement = sf::Vector2f(direction.x * speed, direction.y * speed);
 	if (movement.y > 0) {
 		isMovingDown = true;
@@ -86,14 +85,6 @@ void PositionComponent::setMovement(sf::Vector2f movement)
 		isMovingLeft = false;
 		isMovingRight = false;
 	}
-}
-
-void PositionComponent::setSpeed(float speed) {
-	this->speed = speed;
-}
-
-float PositionComponent::getSpeed() const {
-	return speed;
 }
 
 sf::Vector2f PositionComponent::getSize() const {

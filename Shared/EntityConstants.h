@@ -48,9 +48,10 @@ enum class EntityAttributeType: sf::Uint8 {
 	SPIRIT = 8,
 	STAMINA = 9,
 	ARMOR = 10,
-	EXPERIENCE = 11,
-	MONEY = 12,
-	COUNT = 13
+	SPEED = 11,
+	EXPERIENCE = 12,
+	MONEY = 13,
+	COUNT = 14
 };
 
 #endif

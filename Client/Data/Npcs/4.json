@@ -2,6 +2,20 @@
     "type": 4,
     "name": "Minotaurus",
     "render": "4",
-    "speed": 25,
-    "respawnTime": 30
+    "respawnTime": 30,
+    "attributes": [
+        40,
+        20,
+        40,
+        20,
+        4,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        25,
+        1
+    ]
 }

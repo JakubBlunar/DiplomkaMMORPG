@@ -2,7 +2,6 @@
     "type": 9,
     "name": "Bat",
     "render": "9",
-    "speed": 40,
     "respawnTime": 30,
     "attributes": [
         15,
@@ -16,6 +15,7 @@
         1,
         1,
         1,
+        40,
         1
     ]
 }

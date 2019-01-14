@@ -2,6 +2,20 @@
     "type": 6,
     "name": "Ghost",
     "render": "6",
-    "speed": 40,
-    "respawnTime": 30
+    "respawnTime": 30,
+    "attributes": [
+        15,
+        0,
+        15,
+        0,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        40,
+        1
+    ]
 }

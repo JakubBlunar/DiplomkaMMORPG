@@ -42,7 +42,7 @@ s::Character* s::BotManager::createBotCharacter() {
 	c->position.setPosition(sf::Vector2f(100, 100));
 	c->position.setMapId(1);
 	c->position.setMovement(sf::Vector2f(0,0));
-	c->position.setSpeed(32.f);
+	c->attributes.setAttribute(EntityAttributeType::SPEED, 30.f);
 
 	if (rand() % 100 < 49) {
 		c->type = CharacterType::MALE_KNIGHT;

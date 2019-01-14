@@ -57,7 +57,6 @@ void s::Npc::loadFromJson(std::string file)
 
 	name = jsonData["name"].get<json::string_t>();
 	type = (int) jsonData["type"].get<json::number_integer_t>();
-	position.setSpeed((float) jsonData["speed"].get<json::number_float_t>());
 
 	respawnTime = sf::seconds((float) jsonData["respawnTime"].get<json::number_float_t>());
 	deadTimestamp = sf::Time::Zero;
@@ -101,7 +100,6 @@ s::Npc* s::Npc::clone() const {
 	copy->setMovement(0, 0);
 	copy->setType(type);
 	copy->setName(name);
-	copy->position.setSpeed(position.getSpeed());
 	copy->position.setBody(nullptr);
 	copy->position.setMap(nullptr);
 
@@ -130,7 +128,6 @@ json s::Npc::toJson() const {
 	jsonData["movementY"] = actualMovement.y;
 	jsonData["positionX"] = actualPosition.x;
 	jsonData["positionY"] = actualPosition.y;
-	jsonData["speed"] = position.getSpeed();
 
 	jsonData["state"] = static_cast<int>(state);
 	jsonData["attributes"] = json::array();
@@ -196,7 +193,7 @@ void s::Npc::setMovement(sf::Vector2f movement, NpcUpdateEvents * npcUpdateEvent
 			if (!npcUpdateEvents) {
 				EventNpcMovementChange e;
 				e.spawnId = spawnId;
-				e.speed = position.getSpeed();
+				e.speed = attributes.getAttribute(EntityAttributeType::SPEED, true);
 				e.velX = actualMovement.x;
 				e.velY = actualMovement.y;
 				e.x = actualPosition.x;
@@ -260,7 +257,7 @@ sf::Vector2f s::Npc::getSpawnPosition() const {
 }
 
 void s::Npc::setMovementDirection(sf::Vector2f direction, float speed, NpcUpdateEvents * npcUpdateEvents) {
-	this->position.setSpeed(speed);
+	this->attributes.setAttribute(EntityAttributeType::SPEED, speed);
 	this->setMovement(sf::Vector2f(direction.x * speed, direction.y * speed), npcUpdateEvents);
 }
 

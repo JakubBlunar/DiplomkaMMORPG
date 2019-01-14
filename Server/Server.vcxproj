@@ -164,6 +164,7 @@
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="EffectHolder.cpp" />
+    <ClCompile Include="EffectModifyAttributes.cpp" />
     <ClCompile Include="EntityAttributes.cpp" />
     <ClCompile Include="EntityPosition.cpp" />
     <ClCompile Include="EntitySpells.cpp" />
@@ -242,6 +243,7 @@
     <ClInclude Include="Database.h" />
     <ClInclude Include="Effect.h" />
     <ClInclude Include="EffectHolder.h" />
+    <ClInclude Include="EffectModifyAttributes.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityAttributes.h" />
     <ClInclude Include="EntityPosition.h" />

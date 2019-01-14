@@ -248,9 +248,6 @@ void Npc::loadFromJson(json serverData)
 
 	positionComponent->setMovement(sf::Vector2f(movementX, movementY));
 
-	float speed = (float)serverData["speed"].get<json::number_float_t>();
-	positionComponent->setSpeed(speed);
-
 	json jsonData = JsonLoader::instance()->loadJson("Npcs/" + std::to_string(type));
 
 	name = jsonData["name"].get<json::string_t>();

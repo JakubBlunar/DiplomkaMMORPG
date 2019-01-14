@@ -13,16 +13,13 @@ public:
 
 	void update(sf::Time elapsedTime, Entity* entity, Map* map) override;
 	ComponentType getType() override;
-	void setMovementDirection(sf::Vector2f direction);
+	void setMovementDirection(sf::Vector2f direction, float speed);
 
 	void setPosition(sf::Vector2f position);
 	sf::Vector2f getPosition() const;
 
 	sf::Vector2f getMovement() const;
 	void setMovement(sf::Vector2f movement);
-
-	void setSpeed(float speed);
-	float getSpeed() const;
 
 	sf::Vector2f getSize() const;
 	void setSize(sf::Vector2f size);
@@ -35,8 +32,6 @@ public:
 	bool isMovingRight;
 	bool isMovingLeft;
 private:
-	
-	float speed;
 	sf::Vector2f movement;
 	sf::Vector2f lastMovement;
 	sf::Vector2f position;

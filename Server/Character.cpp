@@ -66,7 +66,6 @@ json s::Character::toJson() const {
 	jsonData["positionY"] = position.getPosition().y;
 	jsonData["movementX"] = position.getMovement().x;
 	jsonData["movementY"] = position.getMovement().y;
-	jsonData["speed"] = position.getSpeed();
 	jsonData["attributes"] = json::array();
 
 	int attributesCount = attributes.getCount();
@@ -124,7 +123,7 @@ s::Character* s::Character::getCharacterById(int characterId) {
 	character->position.setMapId(std::stoi(row[4]));
 	character->position.setPosition(sf::Vector2f(std::stof(row[5]), std::stof(row[6])));
 	character->position.setMovement(sf::Vector2f(0, 0));
-	character->position.setSpeed(48.f);
+	
 	character->isBot = false;
 
 	std::string attributeQuery =
@@ -142,6 +141,7 @@ s::Character* s::Character::getCharacterById(int characterId) {
 	character->attributes.setAttribute(EntityAttributeType::INTELECT, std::stof(attributesRow[4]));
 	character->attributes.setAttribute(EntityAttributeType::SPIRIT, std::stof(attributesRow[5]));
 	character->attributes.setAttribute(EntityAttributeType::ARMOR, std::stof(attributesRow[6]));
+	character->attributes.setAttribute(EntityAttributeType::SPEED, 48.f);
 
 	character->attributes.recalcLevel();
 	character->attributes.recalcMaxHealth();

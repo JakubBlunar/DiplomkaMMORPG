@@ -2,7 +2,6 @@
     "type": 3,
     "name": "Orc",
     "render": "3",
-    "speed": 25,
     "respawnTime": 30,
     "attributes": [
         25,
@@ -16,6 +15,7 @@
         1,
         1,
         1,
+        25,
         1
     ]
 }

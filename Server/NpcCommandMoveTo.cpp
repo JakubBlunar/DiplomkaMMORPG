@@ -69,7 +69,7 @@ void s::NpcCommandMoveTo::update(sf::Time elapsedTime, NpcUpdateEvents * npcUpda
 			direction.y = 0;
 		}
 
-		npc->setMovementDirection(direction, npc->position.getSpeed(), npcUpdateEvents);
+		npc->setMovementDirection(direction, npc->attributes.getAttribute(EntityAttributeType::SPEED, true), npcUpdateEvents);
 	} else {
 		if(!finished) {
 			finished = true;
@@ -78,7 +78,7 @@ void s::NpcCommandMoveTo::update(sf::Time elapsedTime, NpcUpdateEvents * npcUpda
 			dispatchFinishEvent(e);
 		}
 
-		npc->setMovementDirection(sf::Vector2f(0, 0), npc->position.getSpeed(), npcUpdateEvents);
+		npc->setMovementDirection(sf::Vector2f(0, 0), npc->attributes.getAttribute(EntityAttributeType::SPEED, true), npcUpdateEvents);
 	}
 }
 

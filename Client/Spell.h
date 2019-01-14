@@ -24,6 +24,8 @@ struct SpellInfo {
 class Spell: public Entity {
 	PositionComponent* positionComponent;
 	RenderComponent* renderComponent;
+
+	float speed;
 	int spellType;
 	Entity* target;
 public:
@@ -63,6 +65,14 @@ public:
 
 	int getSpellType() const {
 		return spellType;
+	}
+
+	void setSpeed(float speed) {
+		this->speed = speed;
+	}
+
+	float getSpeed() const {
+		return speed;
 	}
 };
 

@@ -8,9 +8,11 @@
 GameObject::GameObject(sf::Uint32 id, std::string file) : Entity(id) {
 	positionComponent = new PositionComponent();
 	components.push_back(positionComponent);
-	positionComponent->setSpeed(0);
-	//positionComponent->setPosition(sf::Vector2f(200.f, 300.f));
+	attributesComponent = new AttributesComponent();
+	components.push_back(attributesComponent);
 
+	attributesComponent->setAttribute(EntityAttributeType::SPEED, 0);
+	
 	renderComponent = new RenderComponent();
 	components.push_back(renderComponent);
 

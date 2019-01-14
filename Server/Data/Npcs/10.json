@@ -2,7 +2,6 @@
     "type": 10,
     "name": "City guard",
     "render": "10",
-    "speed": 25,
     "respawnTime": 60,
     "attributes": [
         80,
@@ -16,6 +15,7 @@
         1,
         1,
         1,
+        25,
         1
     ]
 }
