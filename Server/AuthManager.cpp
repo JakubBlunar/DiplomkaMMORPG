@@ -140,13 +140,9 @@ void s::AuthManager::handleEvent(EventCharacterChoose* event, s::Session* player
 
 					ch->setAccount(playerSession->getAccount());
 					playerSession->getAccount()->setCharacter(ch);
-
-					m->addCharacter(ch);
 					ch->position.setMap(m);
-
-					EventCharacterMapJoin eventMapJoin;
-					eventMapJoin.mapId = m->getId();
-					eventMapJoin.characterData = ch->toJson().dump();
+					m->addCharacter(ch);
+					
 
 					json resData;
 					resData["character"] = ch->toJson();

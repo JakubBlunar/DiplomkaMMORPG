@@ -152,7 +152,7 @@ void Map::handleEvent(GameEvent* event) {
 			p->loadFromJson(characterData);
 
 			auto exists = players.find(p->getId());
-			if (exists == players.end()) {
+			if (exists != players.end()) {
 				return;
 			}
 
