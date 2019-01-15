@@ -307,7 +307,7 @@
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
     <ClCompile Include="EffectModifyAttributes.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Effects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -537,7 +537,7 @@
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
     <ClInclude Include="EffectModifyAttributes.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Effects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -5,9 +5,9 @@
 #include <spdlog/spdlog.h>
 #include "Map.h"
 #include "SpellEventApplyEffects.h"
+#include "EffectHolder.h"
 
-s::MovableSpell::MovableSpell()
-{
+s::MovableSpell::MovableSpell(): speed(0) {
 	entityType = EntityType::MOVABLE_SPELL;
 }
 
@@ -82,4 +82,10 @@ void s::MovableSpell::loadFromJson(json data) {
 	position.setSize(sf::Vector2i(width, height));
 
 	speed = (float) data["spellSpeed"].get<float_t>();
+
+	json jeffects = data["effects"].get<json::array_t>();
+	for (json::iterator it = jeffects.begin(); it != jeffects.end(); ++it) {
+		int effectType = *it;
+		effects.push_back(EffectHolder::instance()->createEffect(effectType));
+	}
 }

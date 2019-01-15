@@ -13,6 +13,7 @@
 #include "Scene.h"
 #include "EventPlayerStartCastSpell.h"
 #include "Utils.h"
+#include "EventAttributesChanged.h"
 
 
 Player::Player(bool playerControlled) : Entity(0) {
@@ -32,10 +33,12 @@ Player::Player(bool playerControlled) : Entity(0) {
 	sendingTime = sf::Time::Zero;
 
 	EventDispatcher<EventMovementChange>::addSubscriber(this);
+	EventDispatcher<EventAttributesChanged>::addSubscriber(this);
 }
 
 Player::~Player() {
 	EventDispatcher<EventMovementChange>::removeSubscriber(this);
+	EventDispatcher<EventAttributesChanged>::removeSubscriber(this);
 	components.clear();
 
 	delete positionComponent;
@@ -72,6 +75,19 @@ void Player::handleEvent(GameEvent* event) {
 			}
 			
 			updateMovementAnimation();*/
+			break;
+		}
+		case ATTRIBUTES_CHANGED: {
+			EventAttributesChanged* temp = (EventAttributesChanged*)event;
+			if (temp->entityType != PLAYER)
+				return;
+
+			if (temp->spawnId != (int)id)
+				return;
+
+			for (auto change : temp->changes) {
+				attributesComponent->setAttribute(change.first, change.second);
+			}
 			break;
 		}
 		default:
@@ -262,7 +278,7 @@ void Player::loadFromJson(json jsonData) {
 	positionComponent->setMovement(sf::Vector2f(movementX, movementY));
 	lastServerPosition.velocityX = movementX;
 	lastServerPosition.velocityY = movementY;
-	
+
 	json attributes = jsonData["attributes"].get<json::array_t>();
 	std::string attributesS = jsonData.dump();
 	int index = 0;

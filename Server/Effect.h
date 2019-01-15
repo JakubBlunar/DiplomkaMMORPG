@@ -8,8 +8,18 @@ namespace s {
 	class Effect {
 	protected:
 		int id = -1;
+		std::string name;
 	public:
 		int getId();
+		void setId(int id) {
+			this->id = id;
+		}
+
+		void setName(std::string name) {
+			this->name = name;
+		}
+
+
 				
 		virtual void loadFromJson(json jsonData);
 		virtual void loadFromFile(std::string filename);

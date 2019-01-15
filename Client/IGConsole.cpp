@@ -91,7 +91,6 @@ int IGConsole::TextEditCallback(ImGuiTextEditCallbackData* data) {
 				data->InsertChars(data->CursorPos, " ");
 			}
 			else {
-				// Multiple matches. Complete as much as we can, so inputing "C" will complete to "CL" and display "CLEAR" and "CLASSIFY"
 				int match_len = (int)(word_end - word_start);
 				for (;;) {
 					int c = 0;
@@ -177,7 +176,6 @@ void IGConsole::render(Game* g, IGManager* manager) {
 
 
 		ImVec4 col = col_default_text;
-		//if (ci->type == MessageType::SERVER_ANNOUNCEMENT) col = ImColor(1.0f, 0.78f, 0.58f, 1.0f);
 		if (ci->type == MessageType::SERVER_ANNOUNCEMENT) col = ImColor(0,0,205);
 
 		ImGui::PushStyleColor(ImGuiCol_Text, col);

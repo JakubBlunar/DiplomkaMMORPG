@@ -9,5 +9,8 @@
     "entityAnimation": "2",
     "desc": "Throws fireball at target",
     "gCooldown": 500,
-    "maxRange": 320
+    "maxRange": 320,
+    "effects": [
+        1
+    ]
 }

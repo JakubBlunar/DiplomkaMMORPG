@@ -19,6 +19,7 @@
 #include "NpcHolder.h"
 #include "SpellHolder.h"
 #include "EventPlayerStartCastSpell.h"
+#include "EffectHolder.h"
 
 s::Server::Server(ServerSettings* settings):
 	running(false) {
@@ -46,6 +47,7 @@ void s::Server::init() {
 		recieveThreads.push_back(t);
 	}
 
+	EffectHolder::instance()->init();
 	SpellHolder::instance()->init();
 	NpcHolder::instance()->init();
 	

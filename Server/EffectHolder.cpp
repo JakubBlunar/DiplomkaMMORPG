@@ -6,20 +6,18 @@
 
 #include <regex>
 #include <spdlog/spdlog.h>
+#include "EffectModifyAttributes.h"
 
 
 s::EffectHolder::EffectHolder():
 	idManager(0, 214748364) {
 	prototypes.clear();
-	
+
 }
 
-s::EffectHolder::~EffectHolder() {
-	
-}
+s::EffectHolder::~EffectHolder() { }
 
-void s::EffectHolder::init()
-{
+void s::EffectHolder::init() {
 	lock.lock();
 
 	prototypes.clear();
@@ -36,11 +34,19 @@ void s::EffectHolder::init()
 		file = std::regex_replace(file, std::regex("\\.json"), "");
 		json jsonData = JsonLoader::instance()->loadJson("Effects/" + file);
 
-		/*Effect* effect = new Effect();
-		effect->loadFromJson(jsonData);
-		*/
+		Effect* effect;
+		int id = (int)jsonData["type"].get<json::number_integer_t>();
+		switch (id) {
+			case 1:
+				effect = new EffectModifyAttributes();
+				break;
+			default:
+				throw "Cannot load effect from file " + file;
 
-		//prototypes.insert(std::make_pair(effect->getId(), effect));
+		}
+
+		effect->loadFromJson(jsonData);
+		prototypes.insert(std::make_pair(effect->getId(), effect));
 	}
 
 	spdlog::get("log")->info("Loading effects prototypes done");
@@ -48,8 +54,7 @@ void s::EffectHolder::init()
 	lock.unlock();
 }
 
-int s::EffectHolder::generateInstanceId()
-{
+int s::EffectHolder::generateInstanceId() {
 	lock.lock();
 	int id = idManager.getId();
 	lock.unlock();
@@ -62,8 +67,7 @@ void s::EffectHolder::freeInstanceId(int id) {
 	lock.unlock();
 }
 
-s::Effect* s::EffectHolder::createEffect(int type)
-{
+s::Effect* s::EffectHolder::createEffect(int type) {
 	lock.lock();
 
 	auto found = prototypes.find(type);
@@ -74,11 +78,10 @@ s::Effect* s::EffectHolder::createEffect(int type)
 	}
 
 	lock.unlock();
-	throw "NpcHolder: Npc not found " + std::to_string(type);
+	throw "EffectHolder: EffectHolder not found " + std::to_string(type);
 }
 
-void s::EffectHolder::read_directory(std::string pattern, std::vector<std::string>& v) const
-{
+void s::EffectHolder::read_directory(std::string pattern, std::vector<std::string>& v) const {
 	WIN32_FIND_DATA data;
 	HANDLE hFind;
 	if ((hFind = FindFirstFile(pattern.c_str(), &data)) != INVALID_HANDLE_VALUE) {
