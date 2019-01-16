@@ -83,7 +83,7 @@ int s::EntityAttributes::recalcLevel()
 
 	do {
 		level++;
-		temp = getXpForLevel(level);
+		temp = getXpForLevel(level + 1);
 	}
 	while(temp < experience);
 
@@ -92,5 +92,5 @@ int s::EntityAttributes::recalcLevel()
 }
 
 float s::EntityAttributes::getXpForLevel(int level) const {
-	return 25.f * level * level - 25.f * level;
+	return 15.f * level * level - 15.f * level;
 }

@@ -97,6 +97,9 @@ void s::SpellEventCharacterExecute::execute(Server* s) {
 		}
 		else {
 			Spell* spell = SpellHolder::instance()->createSpell(spellInfo->id);
+			spell->setOwner(character);
+			spell->setTarget(targetEntity);
+
 			SpellEventApplyEffects * e = new SpellEventApplyEffects(spell, targetEntity);
 			e->executeTime = s->getServerTime();
 			s->spellManager.queueEvent(e);

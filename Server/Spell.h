@@ -2,12 +2,15 @@
 #define S_SPELL_H
 
 #include "Entity.h"
-#include "Effect.h"
-#include "EntityAttributes.h"
+#include <list>
+#include "json.hpp"
+
+using json = nlohmann::json;
 
 namespace s {
 	class Server;
 	class SpellEvent;
+	class Effect;
 
 	struct SpellInfo {
 		std::string name;
@@ -57,12 +60,12 @@ namespace s {
 			return target;
 		}
 
-		void setOwner(Entity* target) {
-			this->target = target;
+		void setOwner(Entity* owner) {
+			this->owner = owner;
 		}
 
 		Entity* getOwner() {
-			return target;
+			return owner;
 		};
 
 		virtual void loadFromJson(json data);

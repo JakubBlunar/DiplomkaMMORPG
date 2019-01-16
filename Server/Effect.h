@@ -3,12 +3,14 @@
 
 #include "Entity.h"
 #include "JsonLoader.h"
+#include "Server.h"
 
 namespace s {
 	class Effect {
 	protected:
 		int id = -1;
 		std::string name;
+		Server* server = nullptr;
 	public:
 		int getId();
 		void setId(int id) {
@@ -19,8 +21,10 @@ namespace s {
 			this->name = name;
 		}
 
+		void setServer(Server* server) {
+			this->server = server;
+		}
 
-				
 		virtual void loadFromJson(json jsonData);
 		virtual void loadFromFile(std::string filename);
 

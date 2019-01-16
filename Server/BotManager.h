@@ -4,13 +4,13 @@
 #include "IDManager.h"
 #include <SFML/Graphics.hpp>
 #include "Manager.h"
-#include "Character.h"
 
 namespace s {
 	class Map;
 	class Server;
 	class Account;
-	
+	class Character;
+
 	class BotManager: public Manager
 	{
 		IDManager<sf::Int32> idCharacterManager;

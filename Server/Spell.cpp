@@ -16,7 +16,7 @@ void s::Spell::addEffect(Effect* effect) {
 
 void s::Spell::cast(Entity* entity) {
 	for (Effect* effect : effects) {
-		effect->apply(entity, target);
+		effect->apply(owner, target);
 	}
 }
 

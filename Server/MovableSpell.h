@@ -3,6 +3,9 @@
 
 #include "Spell.h"
 #include "EntityPosition.h"
+#include "json.hpp"
+
+using json = nlohmann::json;
 
 namespace s {
 	class MovableSpell : public Entity, public Spell {

@@ -8,6 +8,7 @@
 #include <spdlog/spdlog.h>
 #include "Spell.h"
 #include "MovableSpell.h"
+#include "JsonLoader.h"
 
 s::SpellHolder::SpellHolder():
 	idManager(0, 214748364) {

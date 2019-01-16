@@ -1,15 +1,18 @@
 #include "NpcManager.h"
 #include "NpcHolder.h"
 #include "ServerGlobals.h"
-#include "Random.h"
 #include "NpcCommandMoveTo.h"
 #include "Location.h"
 #include "NpcCommandStay.h"
 #include <spdlog/spdlog.h>
 #include "EventDispatcher.h"
 #include "NpcEventNpcIsIdle.h"
+#include "EventNpcStatusChanged.h"
+#include "EventAttributesChanged.h"
+#include "Account.h"
+#include "Session.h"
 
-s::NpcManager::NpcManager(): runningThreads(0), MAX_RUNNING_NPC_THREADS(0) {
+s::NpcManager::NpcManager(): server(nullptr), runningThreads(0), MAX_RUNNING_NPC_THREADS(0) {
 	dynamic = false;
 }
 
@@ -143,6 +146,59 @@ void s::NpcManager::handleEvent(GameEvent* event) {
 			npcEventQueue.push(npcEvent);
 		}
 	}
+}
+
+void s::NpcManager::npcDied(Npc* npc, Entity* caster) {
+	npc->setDeadTimestamp(server->getServerTime());
+	npc->setNpcState(NpcState::DEAD);
+
+	EventNpcStatusChanged* e = new EventNpcStatusChanged();
+	e->spawnId = npc->getSpawnId();
+	e->npcState = NpcState::DEAD;
+
+	npc->position.getMap()->sendEventToAllPlayers(e);
+
+
+	Character* character = dynamic_cast<Character*>(caster);
+	if (character != nullptr) {
+		float characterLevel = character->attributes.getAttribute(EntityAttributeType::LEVEL, true);
+		float npcLevel = npc->attributes.getAttribute(EntityAttributeType::LEVEL, true);
+
+		float experience = npc->getAttribute(EntityAttributeType::EXPERIENCE, true);
+		if (npcLevel < characterLevel) {
+			if (characterLevel - npcLevel < 3) {
+				experience = ceil(experience * 0.5f);
+			} else {
+				experience = 0;
+			}
+		} else if (npcLevel > characterLevel) {
+			experience = ceil(experience * 1.5f);
+		}
+
+		float characterExperience = character->attributes.getAttribute(EntityAttributeType::EXPERIENCE, true);
+		float newExperience = characterExperience + experience;
+		character->attributes.setAttribute(EntityAttributeType::EXPERIENCE, newExperience);
+		character->attributes.recalcLevel();
+
+		EventAttributesChanged *eventAttributesChanged = new EventAttributesChanged();
+		eventAttributesChanged->spawnId = character->id;
+		eventAttributesChanged->entityType = PLAYER;
+		eventAttributesChanged->setChange(EntityAttributeType::EXPERIENCE, newExperience);
+
+		float actualLevel = character->attributes.getAttribute(EntityAttributeType::LEVEL, true);
+		if (actualLevel > characterLevel) {
+			eventAttributesChanged->setChange(EntityAttributeType::LEVEL, actualLevel);
+			character->position.getMap()->sendEventToAllPlayers(eventAttributesChanged);
+
+			// level up
+		} else {
+			sf::Packet* p = eventAttributesChanged->toPacket();
+			character->getAccount()->getSession()->sendPacket(p);
+			delete p;
+		}
+		delete eventAttributesChanged;	
+	}
+	delete e;
 }
 
 void s::NpcManager::executeEvent(NpcEvent* npcEvent, int index) {

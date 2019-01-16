@@ -17,8 +17,9 @@ s::EffectHolder::EffectHolder():
 
 s::EffectHolder::~EffectHolder() { }
 
-void s::EffectHolder::init() {
+void s::EffectHolder::init(Server* s) {
 	lock.lock();
+	server = s;
 
 	prototypes.clear();
 
@@ -46,6 +47,8 @@ void s::EffectHolder::init() {
 		}
 
 		effect->loadFromJson(jsonData);
+		effect->setServer(server);
+
 		prototypes.insert(std::make_pair(effect->getId(), effect));
 	}
 

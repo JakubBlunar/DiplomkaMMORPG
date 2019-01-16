@@ -13,6 +13,9 @@ namespace s {
 		std::map<EntityAttributeType, float> casterModify;
 		std::map<EntityAttributeType, float> targetModify;
 
+		Entity* caster;
+		Entity* target;
+
 		void modifyCharacterAttributes(Character* character, std::map<EntityAttributeType, float>* modifiers);
 		void modifyNpcAttributes(Npc* npc, std::map<EntityAttributeType, float>* modifiers);
 	public:

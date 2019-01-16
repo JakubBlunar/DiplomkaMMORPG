@@ -17,6 +17,9 @@ s::EffectModifyAttributes::~EffectModifyAttributes()
 }
 
 void s::EffectModifyAttributes::apply(Entity* caster, Entity* target) {
+	this->caster = caster;
+	this->target = target;
+
 	spdlog::get("log")->info("applying effects of {}", name);
 	if (!casterModify.empty()) {
 		switch(caster->getEntityType()) {
@@ -31,12 +34,12 @@ void s::EffectModifyAttributes::apply(Entity* caster, Entity* target) {
 	}
 
 	if (!targetModify.empty()) {
-		switch(caster->getEntityType()) {
+		switch(target->getEntityType()) {
 			case EntityType::PLAYER:
-				modifyCharacterAttributes((Character*) caster, &targetModify);
+				modifyCharacterAttributes((Character*) target, &targetModify);
 			break;
 			case EntityType::NPC:
-				modifyNpcAttributes((Npc*) caster, &targetModify);
+				modifyNpcAttributes((Npc*) target, &targetModify);
 			break;
 			default: break;
 		}
@@ -48,7 +51,8 @@ s::Effect* s::EffectModifyAttributes::clone() {
 
 	clone->setId(id);
 	clone->setName(name);
-	
+	clone->setServer(server);
+
 	for (auto && cm : casterModify) {
 		clone->addCasterModify(cm.first, cm.second);
 	}
@@ -113,6 +117,8 @@ void s::EffectModifyAttributes::modifyCharacterAttributes(Character* character,
 }
 
 void s::EffectModifyAttributes::modifyNpcAttributes(Npc* npc, std::map<EntityAttributeType, float>* modifiers) {
+	if (!npc->isAlive())
+		return;
 	
 	EventAttributesChanged* e = new EventAttributesChanged();
 	e->entityType = NPC;
@@ -127,4 +133,8 @@ void s::EffectModifyAttributes::modifyNpcAttributes(Npc* npc, std::map<EntityAtt
 	}
 
 	npc->position.getMap()->sendEventToAllPlayers(e);
+
+	if (npc->attributes.getAttribute(EntityAttributeType::HP, true) <= 0) {
+		server->npcManager.npcDied(npc, caster);
+	}
 }

@@ -304,6 +304,7 @@ NpcState Npc::getState() const {
 	return npcState;
 }
 
+
 void Npc::subscribe() {
 	EventDispatcher<EventNpcsMovementChange>::addSubscriber(this);
 	EventDispatcher<EventNpcMovementChange>::addSubscriber(this);

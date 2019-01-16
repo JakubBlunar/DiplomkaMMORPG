@@ -4,6 +4,7 @@
 #include "EventNpcMovementChange.h"
 #include <spdlog/spdlog.h>
 #include "TextFileLoader.h"
+#include "EventNpcStatusChanged.h"
 
 s::Npc::Npc(): command(nullptr) {
 	name = "";
@@ -11,39 +12,38 @@ s::Npc::Npc(): command(nullptr) {
 	type = 0;
 	deadTimestamp = sf::Time::Zero;
 	state = NpcState::IDLE;
-	spawnPosition = sf::Vector2f(-1,-1);
+	spawnPosition = sf::Vector2f(-1, -1);
 
 	entityType = EntityType::NPC;
 
-	luaState.open_libraries(sol::lib::base, sol::lib::package, sol::lib::io, sol::lib::string, sol::lib::os, sol::lib::math);
+	luaState.open_libraries(sol::lib::base, sol::lib::package, sol::lib::io, sol::lib::string, sol::lib::os,
+	                        sol::lib::math);
 	luaState["npc"] = this;
 	// make usertype metatable
-    luaState.new_usertype<Npc>("Npc",
-        "name", &Npc::name,
-		"spawnId", &Npc::spawnId,
-		"getAttribute", &Npc::getAttribute,
-		"getState", &Npc::getNpcState
-    );
+	luaState.new_usertype<Npc>("Npc",
+	                           "name", &Npc::name,
+	                           "spawnId", &Npc::spawnId,
+	                           "getAttribute", &Npc::getAttribute,
+	                           "getState", &Npc::getNpcState
+	);
 
 	luaState.script("math.randomseed(os.time())");
 }
 
 
-s::Npc::~Npc() {
-	
-}
+s::Npc::~Npc() { }
 
 s::NpcCommand* s::Npc::getNpcCommand() {
 	sf::Lock lock(mutex);
 	return command;
 }
+
 void s::Npc::setNpcCommand(NpcCommand* command) {
 	sf::Lock lock(mutex);
 	this->command = command;
 }
 
-void s::Npc::setSpawnId(int id)
-{
+void s::Npc::setSpawnId(int id) {
 	this->spawnId = id;
 }
 
@@ -51,14 +51,13 @@ int s::Npc::getSpawnId() const {
 	return spawnId;
 }
 
-void s::Npc::loadFromJson(std::string file)
-{
+void s::Npc::loadFromJson(std::string file) {
 	json jsonData = JsonLoader::instance()->loadJson(file);
 
 	name = jsonData["name"].get<json::string_t>();
-	type = (int) jsonData["type"].get<json::number_integer_t>();
+	type = (int)jsonData["type"].get<json::number_integer_t>();
 
-	respawnTime = sf::seconds((float) jsonData["respawnTime"].get<json::number_float_t>());
+	respawnTime = sf::seconds((float)jsonData["respawnTime"].get<json::number_float_t>());
 	deadTimestamp = sf::Time::Zero;
 
 	std::string renderFile = jsonData["render"].get<json::string_t>();
@@ -77,18 +76,20 @@ void s::Npc::loadFromJson(std::string file)
 	}
 
 	auto exists = jsonData.find("script");
-    if (exists == jsonData.end()) {
+	if (exists == jsonData.end()) {
 		npc_script = TextFileLoader::instance()->loadFile("Npcs/Scripts/dummy_npc.lua");
-    } else {
-	    std::string scriptFile = jsonData["script"].get<json::string_t>();
-		npc_script = TextFileLoader::instance()->loadFile("Npcs/Scripts/"+ scriptFile +".lua");
-    }
+	}
+	else {
+		std::string scriptFile = jsonData["script"].get<json::string_t>();
+		npc_script = TextFileLoader::instance()->loadFile("Npcs/Scripts/" + scriptFile + ".lua");
+	}
 
 	sol::load_result loadResult = luaState.load(npc_script);
 	if (!loadResult.valid()) {
 		sol::error err = loadResult;
 		sol::load_status status = loadResult.status();
-		spdlog::get("log")->error("Cannot load lua script from npc: {} , ERROR: {}", sol::to_string(status), err.what());
+		spdlog::get("log")->error("Cannot load lua script from npc: {} , ERROR: {}", sol::to_string(status),
+		                          err.what());
 		throw "cannot parse lua";
 	}
 }
@@ -133,7 +134,7 @@ json s::Npc::toJson() const {
 	jsonData["attributes"] = json::array();
 
 	int attributesCount = attributes.getCount();
-	for(int i = 0; i < attributesCount; i++) {
+	for (int i = 0; i < attributesCount; i++) {
 		jsonData["attributes"].push_back(attributes.getAttributeByIndex(i));
 	}
 
@@ -156,6 +157,7 @@ std::string s::Npc::getName() const {
 void s::Npc::setNpcState(NpcState state) {
 	this->state = state;
 }
+
 NpcState s::Npc::getNpcState() const {
 	return state;
 }
@@ -169,7 +171,7 @@ void s::Npc::setMovement(float movementX, float movementY) {
 	position.setMovement(sf::Vector2f(movementX, movementY));
 }
 
-void s::Npc::setMovement(sf::Vector2f movement, NpcUpdateEvents * npcUpdateEvents) {
+void s::Npc::setMovement(sf::Vector2f movement, NpcUpdateEvents* npcUpdateEvents) {
 	if (position.getLastMovement() == movement) {
 		return;
 	}
@@ -200,11 +202,13 @@ void s::Npc::setMovement(sf::Vector2f movement, NpcUpdateEvents * npcUpdateEvent
 				e.y = actualPosition.y;
 
 				map->sendEventToAllPlayers(&e);
-			} else {
+			}
+			else {
 				if (!npcUpdateEvents->npcsMovementChange) {
 					npcUpdateEvents->npcsMovementChange = new EventNpcsMovementChange();
 				}
-				npcUpdateEvents->npcsMovementChange->addNpcInfo(spawnId, actualPosition.x, actualPosition.y,actualMovement.x, actualMovement.y);
+				npcUpdateEvents->npcsMovementChange->addNpcInfo(spawnId, actualPosition.x, actualPosition.y,
+				                                                actualMovement.x, actualMovement.y);
 			}
 		}
 	}
@@ -218,8 +222,7 @@ void s::Npc::setType(int type) {
 	this->type = type;
 }
 
-int s::Npc::getType() const
-{
+int s::Npc::getType() const {
 	return type;
 }
 
@@ -243,8 +246,7 @@ bool s::Npc::isAlive() const {
 	return state != NpcState::DEAD;
 }
 
-bool s::Npc::hasSpawnPosition() const
-{
+bool s::Npc::hasSpawnPosition() const {
 	return spawnPosition.x < 0;
 }
 
@@ -256,7 +258,7 @@ sf::Vector2f s::Npc::getSpawnPosition() const {
 	return spawnPosition;
 }
 
-void s::Npc::setMovementDirection(sf::Vector2f direction, float speed, NpcUpdateEvents * npcUpdateEvents) {
+void s::Npc::setMovementDirection(sf::Vector2f direction, float speed, NpcUpdateEvents* npcUpdateEvents) {
 	this->attributes.setAttribute(EntityAttributeType::SPEED, speed);
 	this->setMovement(sf::Vector2f(direction.x * speed, direction.y * speed), npcUpdateEvents);
 }

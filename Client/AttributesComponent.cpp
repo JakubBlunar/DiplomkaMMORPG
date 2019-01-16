@@ -59,5 +59,5 @@ int AttributesComponent::attributeTypeToInt(EntityAttributeType type) const {
 }
 
 int AttributesComponent::getXpForLevel(int level) const {
-	return 25 * level * level - 25 * level;
+	return 15 * level * level - 15 * level;
 }

@@ -12,7 +12,7 @@ namespace s {
 
 	class EffectHolder {
 	public:
-		void init();
+		void init(Server* s);
 		int generateInstanceId();
 		void freeInstanceId(int id);
 
@@ -33,6 +33,7 @@ namespace s {
 
 		std::map<int, Effect*> prototypes;
 		IDManager<sf::Int32> idManager;
+		Server* server;
 
 		sf::Mutex lock;
 	};

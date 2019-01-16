@@ -10,6 +10,7 @@
 #include "NpcEvent.h"
 #include "Subscriber.h"
 
+
 namespace sf {
 	class Event;
 }
@@ -18,12 +19,13 @@ namespace s {
 	class Npc;
 	class Server;
 
+	class Entity;
+
 	struct NpcUpdateEvents {
 		EventNpcsMovementChange* npcsMovementChange;
 	};
 
-	class NpcManager: public Manager, public Subscriber
-	{
+	class NpcManager : public Manager, public Subscriber {
 		Server* server;
 		std::map<int, Npc*> npcs;
 		std::queue<NpcEvent*> npcEventQueue;
@@ -45,9 +47,11 @@ namespace s {
 		Npc* createNpc(int npcType);
 		Npc* findNpc(int spawnId);
 
-		void updateNpc(sf::Time elapsedTime, Npc* npc, Server* s, NpcUpdateEvents * npcUpdateEvents);
+		void updateNpc(sf::Time elapsedTime, Npc* npc, Server* s, NpcUpdateEvents* npcUpdateEvents);
 
 		void handleEvent(GameEvent* event) override;
+
+		void npcDied(Npc* npc, Entity* caster);
 
 		void executeEvent(NpcEvent* npcEvent, int index);
 		void threadEnded(NpcEvent* npcEvent, int index);

@@ -9,7 +9,7 @@
 #include "Lua/sol.hpp"
 
 namespace s {
-	class Npc: public Entity {
+	class Npc : public Entity {
 		NpcState state;
 		sf::Vector2f spawnPosition;
 		int spawnId;
@@ -17,11 +17,11 @@ namespace s {
 
 		std::string name;
 
-		sf::Time respawnTime;	
+		sf::Time respawnTime;
 		sf::Time deadTimestamp;
 
 		NpcCommand* command;
-		
+
 		sf::Mutex mutex;
 	public:
 		Npc();
@@ -49,7 +49,7 @@ namespace s {
 		NpcState getNpcState() const;
 
 		void setMovement(float movementX, float movementY);
-		void setMovement(sf::Vector2f movement, NpcUpdateEvents * npcUpdateEvents);
+		void setMovement(sf::Vector2f movement, NpcUpdateEvents* npcUpdateEvents);
 		sf::Vector2f getMovement() const;
 
 		void setType(int type);
@@ -59,13 +59,13 @@ namespace s {
 		void setRespawnTime(sf::Time respawnTime);
 		void setDeadTimestamp(sf::Time deadTimestamp);
 		sf::Time getDeadTimestamp() const;
-				
+
 		bool isAlive() const;
 		bool hasSpawnPosition() const;
 		void setSpawnPosition(sf::Vector2f position);
 		sf::Vector2f getSpawnPosition() const;
 
-		void setMovementDirection(sf::Vector2f direction, float speed, NpcUpdateEvents * npcUpdateEvents);
+		void setMovementDirection(sf::Vector2f direction, float speed, NpcUpdateEvents* npcUpdateEvents);
 
 		sol::state luaState;
 		std::string npc_script;

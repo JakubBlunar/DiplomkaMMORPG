@@ -47,7 +47,7 @@ void s::Server::init() {
 		recieveThreads.push_back(t);
 	}
 
-	EffectHolder::instance()->init();
+	EffectHolder::instance()->init(this);
 	SpellHolder::instance()->init();
 	NpcHolder::instance()->init();
 	
