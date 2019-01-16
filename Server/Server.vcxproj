@@ -159,6 +159,7 @@
     <ClCompile Include="AuthManager.cpp" />
     <ClCompile Include="BotManager.cpp" />
     <ClCompile Include="Character.cpp" />
+    <ClCompile Include="CharacterManager.cpp" />
     <ClCompile Include="ChatManager.cpp" />
     <ClCompile Include="Crypto.cpp" />
     <ClCompile Include="Database.cpp" />
@@ -238,6 +239,7 @@
     <ClInclude Include="AuthManager.h" />
     <ClInclude Include="BotManager.h" />
     <ClInclude Include="Character.h" />
+    <ClInclude Include="CharacterManager.h" />
     <ClInclude Include="ChatManager.h" />
     <ClInclude Include="Crypto.h" />
     <ClInclude Include="Database.h" />

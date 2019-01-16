@@ -19,5 +19,6 @@ protected:
 	Player* player;
 	AttributesComponent* attributes;
 
+	void increaseAttribute(EntityAttributeType attribute, Game* g) const;
 };
 

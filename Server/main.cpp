@@ -34,6 +34,9 @@ s::ServerSettings* initSettings() {
 	settings->dbUser = reader.Get("database", "user", "");
 	settings->dbPassword = reader.Get("database", "password", "");
 	settings->dbPort = reader.GetInteger("database", "port", 3306);
+
+	settings->freeAttributesAfterLevelUp = reader.GetInteger("rates", "free_attributes_after_level_up", 5);
+	settings->xpRate = reader.GetInteger("rates", "xp", 1);
 	return settings;
 }
 

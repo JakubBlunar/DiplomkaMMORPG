@@ -21,6 +21,9 @@ namespace s {
 		bool logsEnabled;
 		sf::Mutex eventMutex;
 		std::string welcomeMessage;
+
+		int freeAttributesAfterLevelUp;
+		float xpRate;
 	};
 }
 

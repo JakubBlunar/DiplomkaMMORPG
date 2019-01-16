@@ -1,3 +1,4 @@
+#pragma once
 #ifndef EVENT_NPC_ATTRIBUTES_CHANGED
 #define EVENT_NPC_ATTRIBUTES_CHANGED
 

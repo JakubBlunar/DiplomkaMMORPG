@@ -189,6 +189,7 @@
     <ClInclude Include="EventCharacterLogout.h" />
     <ClInclude Include="EventCharacterMapJoin.h" />
     <ClInclude Include="EventCharacterMapLeave.h" />
+    <ClInclude Include="EventIncreaseCharacterAttribute.h" />
     <ClInclude Include="EventLoginRequest.h" />
     <ClInclude Include="EventLoginResponse.h" />
     <ClInclude Include="EventMovementChange.h" />
@@ -226,6 +227,7 @@
     <ClCompile Include="EventCharacterLogout.cpp" />
     <ClCompile Include="EventCharacterMapJoin.cpp" />
     <ClCompile Include="EventCharacterMapLeave.cpp" />
+    <ClCompile Include="EventIncreaseCharacterAttribute.cpp" />
     <ClCompile Include="EventLoginRequest.cpp" />
     <ClCompile Include="EventLoginResponse.cpp" />
     <ClCompile Include="EventMovementChange.cpp" />

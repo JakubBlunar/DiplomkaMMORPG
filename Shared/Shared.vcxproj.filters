@@ -147,6 +147,9 @@
     <ClInclude Include="ChatConstants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EventIncreaseCharacterAttribute.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -225,6 +228,9 @@
       <Filter>Source Files\Events</Filter>
     </ClCompile>
     <ClCompile Include="EventSendMessage.cpp">
+      <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="EventIncreaseCharacterAttribute.cpp">
       <Filter>Source Files\Events</Filter>
     </ClCompile>
   </ItemGroup>

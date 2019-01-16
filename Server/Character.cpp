@@ -9,7 +9,7 @@
 
 using json = nlohmann::json;
 
-s::Character::Character(): account(nullptr), attributes(), spells(), id(0), type(), faction(), isBot(false) {
+s::Character::Character(): account(nullptr), id(0), type(), faction(), isBot(false) {
 	entityType = EntityType::PLAYER;
 }
 
@@ -35,15 +35,20 @@ bool s::Character::save() const {
 	query.append(" WHERE id=" + std::to_string(id) + ";");
 
 	std::string queryAttr = "UPDATE character_attributes SET";
-	queryAttr.append(" experience=" + std::to_string(attributes.getAttribute(EntityAttributeType::EXPERIENCE, false)) + ",");
+	queryAttr.append(
+		" experience=" + std::to_string(attributes.getAttribute(EntityAttributeType::EXPERIENCE, false)) + ",");
 	queryAttr.append(" money=" + std::to_string(attributes.getAttribute(EntityAttributeType::MONEY, false)) + ",");
 	queryAttr.append(" stamina=" + std::to_string(attributes.getAttribute(EntityAttributeType::STAMINA, false)) + ",");
 	queryAttr.append(" agility=" + std::to_string(attributes.getAttribute(EntityAttributeType::AGILITY, false)) + ",");
-	queryAttr.append(" intelect=" + std::to_string(attributes.getAttribute(EntityAttributeType::INTELECT, false)) + ",");
+	queryAttr.append(
+		" intelect=" + std::to_string(attributes.getAttribute(EntityAttributeType::INTELECT, false)) + ",");
 	queryAttr.append(" spirit=" + std::to_string(attributes.getAttribute(EntityAttributeType::SPIRIT, false)) + ",");
-	queryAttr.append(" strength=" + std::to_string(attributes.getAttribute(EntityAttributeType::STRENGTH, false)) + ",");
-	queryAttr.append(" armor=" + std::to_string(attributes.getAttribute(EntityAttributeType::ARMOR, false)));
-	queryAttr.append("WHERE characterId=" + std::to_string(id));
+	queryAttr.append(
+		" strength=" + std::to_string(attributes.getAttribute(EntityAttributeType::STRENGTH, false)) + ",");
+	queryAttr.append(" armor=" + std::to_string(attributes.getAttribute(EntityAttributeType::ARMOR, false)) + ",");
+	queryAttr.append(
+		" freeAttributes=" + std::to_string(attributes.getAttribute(EntityAttributeType::FREE_ATTRIBUTES, false)));
+	queryAttr.append(" WHERE characterId=" + std::to_string(id));
 
 	bool success = Database::i()->executeModify(query) > 0;
 	if (success) {
@@ -69,7 +74,7 @@ json s::Character::toJson() const {
 	jsonData["attributes"] = json::array();
 
 	int attributesCount = attributes.getCount();
-	for(int i = 0; i < attributesCount; i++) {
+	for (int i = 0; i < attributesCount; i++) {
 		jsonData["attributes"].push_back(attributes.getAttributeByIndex(i));
 	}
 
@@ -88,7 +93,7 @@ void s::Character::update(sf::Time deltaTime, Server* s, Map* map) {
 
 	this->position.setPosition(sf::Vector2f(position.x * METTOPIX, position.y * METTOPIX));
 	this->position.setMovement(sf::Vector2f(velocity.x * METTOPIX, velocity.y * METTOPIX));
-	
+
 	if (this->position.getMovement() != sf::Vector2f(0, 0)) {
 		SpellEvent* castingSpell = this->spells.getEventWithCastingSpell();
 		if (castingSpell && castingSpell->spellInfo->castingTime != sf::Time::Zero) {
@@ -123,11 +128,11 @@ s::Character* s::Character::getCharacterById(int characterId) {
 	character->position.setMapId(std::stoi(row[4]));
 	character->position.setPosition(sf::Vector2f(std::stof(row[5]), std::stof(row[6])));
 	character->position.setMovement(sf::Vector2f(0, 0));
-	
+
 	character->isBot = false;
 
 	std::string attributeQuery =
-		"SELECT experience, money, stamina, agility, intelect, spirit, armor FROM character_attributes WHERE characterId="
+		"SELECT experience, money, stamina, agility, intelect, spirit, armor, freeAttributes FROM character_attributes WHERE characterId="
 		+
 		std::to_string(character->id) + ";";
 	MYSQL_RES* resAttr = Database::i()->executeQuery(attributeQuery);
@@ -141,13 +146,17 @@ s::Character* s::Character::getCharacterById(int characterId) {
 	character->attributes.setAttribute(EntityAttributeType::INTELECT, std::stof(attributesRow[4]));
 	character->attributes.setAttribute(EntityAttributeType::SPIRIT, std::stof(attributesRow[5]));
 	character->attributes.setAttribute(EntityAttributeType::ARMOR, std::stof(attributesRow[6]));
+	character->attributes.setAttribute(EntityAttributeType::FREE_ATTRIBUTES, std::stof(attributesRow[7]));
 	character->attributes.setAttribute(EntityAttributeType::SPEED, 48.f);
+
 
 	character->attributes.recalcLevel();
 	character->attributes.recalcMaxHealth();
 	character->attributes.recalcMaxMana();
-	character->attributes.setAttribute(EntityAttributeType::HP, character->attributes.getAttribute(EntityAttributeType::BASE_HP, false));
-	character->attributes.setAttribute(EntityAttributeType::MP, character->attributes.getAttribute(EntityAttributeType::BASE_MP, false));
+	character->attributes.setAttribute(EntityAttributeType::HP,
+	                                   character->attributes.getAttribute(EntityAttributeType::BASE_HP, false));
+	character->attributes.setAttribute(EntityAttributeType::MP,
+	                                   character->attributes.getAttribute(EntityAttributeType::BASE_MP, false));
 
 
 	std::string spellsQuery = "SELECT spellType FROM character_spells WHERE characterId=" +

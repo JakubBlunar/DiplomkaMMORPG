@@ -158,45 +158,9 @@ void s::NpcManager::npcDied(Npc* npc, Entity* caster) {
 
 	npc->position.getMap()->sendEventToAllPlayers(e);
 
-
 	Character* character = dynamic_cast<Character*>(caster);
 	if (character != nullptr) {
-		float characterLevel = character->attributes.getAttribute(EntityAttributeType::LEVEL, true);
-		float npcLevel = npc->attributes.getAttribute(EntityAttributeType::LEVEL, true);
-
-		float experience = npc->getAttribute(EntityAttributeType::EXPERIENCE, true);
-		if (npcLevel < characterLevel) {
-			if (characterLevel - npcLevel < 3) {
-				experience = ceil(experience * 0.5f);
-			} else {
-				experience = 0;
-			}
-		} else if (npcLevel > characterLevel) {
-			experience = ceil(experience * 1.5f);
-		}
-
-		float characterExperience = character->attributes.getAttribute(EntityAttributeType::EXPERIENCE, true);
-		float newExperience = characterExperience + experience;
-		character->attributes.setAttribute(EntityAttributeType::EXPERIENCE, newExperience);
-		character->attributes.recalcLevel();
-
-		EventAttributesChanged *eventAttributesChanged = new EventAttributesChanged();
-		eventAttributesChanged->spawnId = character->id;
-		eventAttributesChanged->entityType = PLAYER;
-		eventAttributesChanged->setChange(EntityAttributeType::EXPERIENCE, newExperience);
-
-		float actualLevel = character->attributes.getAttribute(EntityAttributeType::LEVEL, true);
-		if (actualLevel > characterLevel) {
-			eventAttributesChanged->setChange(EntityAttributeType::LEVEL, actualLevel);
-			character->position.getMap()->sendEventToAllPlayers(eventAttributesChanged);
-
-			// level up
-		} else {
-			sf::Packet* p = eventAttributesChanged->toPacket();
-			character->getAccount()->getSession()->sendPacket(p);
-			delete p;
-		}
-		delete eventAttributesChanged;	
+		server->characterManager.handleNpcKill(character, npc);
 	}
 	delete e;
 }

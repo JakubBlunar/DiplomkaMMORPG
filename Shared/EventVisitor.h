@@ -19,6 +19,7 @@ class EventCharacterLogout;
 class EventAttributeBonusesChanged;
 class EventSpellCastResult;
 class EventSendMessage;
+class EventIncreaseCharacterAttribute;
 
 class EventVisitor {
 public:
@@ -41,6 +42,7 @@ public:
 	virtual void visit(EventPlayerStartCastSpell* e);
 	virtual void visit(EventSpellCastResult* e);
 	virtual void visit(EventSendMessage* e);
+	virtual void visit(EventIncreaseCharacterAttribute *e);
 };
 
 #endif // !EVENT_VISITOR_H

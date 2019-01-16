@@ -46,3 +46,4 @@ void EventVisitor::visit(EventAttributeBonusesChanged* e) {}
 void EventVisitor::visit(EventPlayerStartCastSpell* e) {}
 void EventVisitor::visit(EventSpellCastResult* e) {}
 void EventVisitor::visit(EventSendMessage* e) {}
+void EventVisitor::visit(EventIncreaseCharacterAttribute* e) {}

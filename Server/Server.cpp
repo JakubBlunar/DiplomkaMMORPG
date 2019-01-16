@@ -20,6 +20,7 @@
 #include "SpellHolder.h"
 #include "EventPlayerStartCastSpell.h"
 #include "EffectHolder.h"
+#include "EventIncreaseCharacterAttribute.h"
 
 s::Server::Server(ServerSettings* settings):
 	running(false) {
@@ -54,6 +55,7 @@ void s::Server::init() {
 	npcManager.init(this);
 	mapsManager.init(this);
 	spellManager.init(this);
+	characterManager.init(this);
 
 	managers.push_back(&mapsManager);
 	managers.push_back(&spellManager);
@@ -178,6 +180,14 @@ void s::Server::identifyPacket(EventId type, sf::Packet* packet, Session* player
 		EventSendMessage* e = new EventSendMessage();
 		if (e->loadFromPacket(packet)) {
 			chatManager.handleEvent(e, playerSession, this);	
+		}
+		delete e;
+		break;
+	}
+	case INCREASE_CHARACTER_ATTRIBUTE: {
+		EventIncreaseCharacterAttribute* e = new EventIncreaseCharacterAttribute();
+		if (e->loadFromPacket(packet)) {
+			characterManager.handleEvent(e, playerSession, this);
 		}
 		delete e;
 		break;
