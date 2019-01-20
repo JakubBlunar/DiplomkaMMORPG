@@ -7,6 +7,7 @@
 #include "NpcEventNpcIsIdle.h"
 #include "EventDispatcher.h"
 #include "EventNpcMovementChange.h"
+#include <spdlog/spdlog.h>
 
 
 s::Location::Location(int id, b2Vec2* vertices, int verticesCount, sf::Vector2f position, Map* m)
@@ -96,6 +97,18 @@ void s::Location::checkNpcRespawn(Npc* npc, sf::Time serverTime, Server* s) cons
 			movChanged.x = spawnPosition.x;
 			movChanged.y = spawnPosition.y;
 			map->sendEventToAllPlayers(&movChanged);
+		} else {
+			sf::Vector2f spawnPosition = generateRandomPoint();
+			npc->position.setPosition(spawnPosition);
+			npc->setMovement(0, 0);
+			EventNpcMovementChange movChanged;
+			movChanged.spawnId = npc->getSpawnId();
+			movChanged.speed = npc->attributes.getAttribute(EntityAttributeType::SPEED, true);
+			movChanged.velX = 0;
+			movChanged.velY = 0;
+			movChanged.x = spawnPosition.x;
+			movChanged.y = spawnPosition.y;
+			map->sendEventToAllPlayers(&movChanged);
 		}
 
 		float hp = npc->getAttribute(EntityAttributeType::BASE_HP, true);
@@ -122,6 +135,6 @@ void s::Location::checkNpcRespawn(Npc* npc, sf::Time serverTime, Server* s) cons
 		NpcEventNpcIsIdle* e = new NpcEventNpcIsIdle();
 		e->npc = npc;
 		EventDispatcher<NpcEventNpcIsIdle>::dispatchEvent(e, s) ;
-		//spdlog::get("log")->trace("Npc resurect :{}", npc->getSpawnId());
+		spdlog::get("log")->trace("Npc resurect :{}", npc->getSpawnId());
 	}
 }

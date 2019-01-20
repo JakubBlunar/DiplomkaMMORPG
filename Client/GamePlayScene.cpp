@@ -364,8 +364,16 @@ void GamePlayScene::onClick(sf::Mouse::Button event, sf::Vector2f position) {
 		for (unsigned int i = 0; i < bodySize; i++) {
 			Entity* entity = (Entity*)queryCallback.foundBodies[i]->GetUserData();
 			EntityType type = entity->getType();
-			if (type == EntityType::PLAYER || type == EntityType::NPC) {
+			if (type == EntityType::PLAYER) {
 				if (entity->containsPoint(position)) {
+					targetInfoWindow->setEntity(entity);
+					player->setTarget(entity);
+					windowManager->open("TargetInfo");
+					found = true;
+				}
+			} else if(type == EntityType::NPC) {
+				Npc* npc = (Npc*) entity;
+				if (npc->getState() != NpcState::DEAD && entity->containsPoint(position)) {
 					targetInfoWindow->setEntity(entity);
 					player->setTarget(entity);
 					windowManager->open("TargetInfo");

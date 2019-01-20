@@ -35,7 +35,7 @@ void s::Spawn::init(Server *s)
 			location->getMap()->addNpc(npc);
 
 			int prob = Random::instance()->randomUniformInt(0, 100);
-			if (prob < 20) {
+			if (true) {
 				npc->setDeadTimestamp(sf::seconds(s->getServerTime().asSeconds() - npc->getRespawnTime().asSeconds() * Random::instance()->randomUniformFloat(0.1f, 0.9f)));
 				npc->setNpcState(NpcState::DEAD);
 			} else {

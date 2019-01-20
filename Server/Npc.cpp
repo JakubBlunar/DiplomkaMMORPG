@@ -247,7 +247,7 @@ bool s::Npc::isAlive() const {
 }
 
 bool s::Npc::hasSpawnPosition() const {
-	return spawnPosition.x < 0;
+	return spawnPosition.x > 0;
 }
 
 void s::Npc::setSpawnPosition(sf::Vector2f position) {
