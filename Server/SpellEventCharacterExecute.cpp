@@ -26,8 +26,18 @@ void s::SpellEventCharacterExecute::execute(Server* s) {
 	Map* map = character->position.getMap();
 	float actualMana = character->attributes.getAttribute(EntityAttributeType::MP, true);
 
+	sf::Time serverTime = s->getServerTime();
 	EventSpellCastResult* error = nullptr;
-	if (actualMana - spellInfo->manaCost < 0) {
+
+	if (character->spells.hasCooldown(spellInfo->id, serverTime)) {
+		error = new EventSpellCastResult();
+		error->entityId = character->id;
+		error->entityCategory = PLAYER;
+		error->spellId = spellInfo->id;
+		error->result = SpellCastResultCode::HAS_COOLDOWN;
+	}
+
+	if (!error && actualMana - spellInfo->manaCost < 0) {
 		error = new EventSpellCastResult();
 		error->entityId = character->id;
 		error->entityCategory = PLAYER;
@@ -106,6 +116,7 @@ void s::SpellEventCharacterExecute::execute(Server* s) {
 		}
 	}
 
+	character->spells.setCooldown(spellInfo->id, serverTime + spellInfo->cooldownTime);
 	character->attributes.setAttribute(EntityAttributeType::MP, actualMana - spellInfo->manaCost);
 
 	EventSpellCastResult* e = new EventSpellCastResult();

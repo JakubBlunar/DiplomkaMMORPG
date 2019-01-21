@@ -351,7 +351,7 @@ void Player::castSpell(SpellInfo* spellInfo, Map* map, Game* g) {
 	if (actualMana - spellInfo->manaCost < 0) {
 		GameMessage* m = new GameMessage();
 		m->message = "You do not have enough mana";
-		m->displayTime = sf::seconds(2);
+		m->displayTime = sf::seconds(1);
 		g->addGameMessage(m);
 		return;
 	}
@@ -361,10 +361,18 @@ void Player::castSpell(SpellInfo* spellInfo, Map* map, Game* g) {
 		if (movement != sf::Vector2f(0.0, 0.0)) {
 			GameMessage* m = new GameMessage();
 			m->message = "Can not cast while moving";
-			m->displayTime = sf::seconds(2);
+			m->displayTime = sf::seconds(1);
 			g->addGameMessage(m);
 			return;
 		}
+	}
+
+	if (getGlobalCooldown(g) != nullptr || getCooldown(spellInfo->id, g) != nullptr) {
+		GameMessage* m = new GameMessage();
+		m->message = "Spell is not ready yet";
+		m->displayTime = sf::seconds(1);
+		g->addGameMessage(m);
+		return;
 	}
 
 	bool canCast = spellTarget == this;
@@ -424,6 +432,21 @@ void Player::castSpell(SpellInfo* spellInfo, Map* map, Game* g) {
 		sf::Packet* p = e.toPacket();
 		g->packet_manager->sendPacket(p);
 		delete p;
+
+		sf::Time gameTime = g->getGameTime();
+		if (spellInfo->globalCooldownTime != sf::Time::Zero) {
+			SpellCooldown* gCooldown = new SpellCooldown();
+			gCooldown->cooldownFrom = gameTime;
+			gCooldown->cooldownTo = gameTime + spellInfo->globalCooldownTime;
+			setGlobalCooldown(gCooldown);
+		}
+
+		if (spellInfo->cooldownTime != sf::Time::Zero) {
+			SpellCooldown* cooldown = new SpellCooldown();
+			cooldown->cooldownFrom = gameTime;
+			cooldown->cooldownTo = gameTime + spellInfo->cooldownTime;
+			setCooldown(spellInfo->id, cooldown);
+		}
 	}
 	else {
 		GameMessage* m = new GameMessage();
@@ -431,6 +454,41 @@ void Player::castSpell(SpellInfo* spellInfo, Map* map, Game* g) {
 		m->displayTime = sf::seconds(2);
 		g->addGameMessage(m);
 	}
+}
+
+SpellCooldown* Player::getGlobalCooldown(Game* g) const {
+	if (globalCooldown && globalCooldown->cooldownTo > g->getGameTime()) {
+		return globalCooldown;
+	}
+	return nullptr;
+}
+
+void Player::setGlobalCooldown(SpellCooldown* cooldown) {
+	delete globalCooldown;
+	globalCooldown = cooldown;
+}
+
+void Player::setCooldown(int spellType, SpellCooldown* cooldown) {
+	auto found = spellCooldowns.find(spellType);
+	if (found != spellCooldowns.end()) {
+		SpellCooldown* old = found->second;
+		delete old;
+		spellCooldowns[spellType]  = cooldown;
+	} else {
+		spellCooldowns.insert(std::make_pair(spellType, cooldown));
+	}
+}
+
+SpellCooldown* Player::getCooldown(int spellType, Game* g) const {
+	auto found = spellCooldowns.find(spellType);
+	if (found == spellCooldowns.end()) {
+		return nullptr;
+	}
+
+	if (found->second->cooldownTo > g->getGameTime()) {
+		return found->second;
+	}
+	return nullptr;
 }
 
 

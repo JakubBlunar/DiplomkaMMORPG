@@ -14,7 +14,7 @@ ImGuiFonts::~ImGuiFonts()
 }
 
 void ImGuiFonts::init() {
-	for (int i = 10; i < 50; i++) {
+	for (int i = 9; i < 50; i++) {
 		loadFont(PRODIGY_TINY, i);
 	}
 }

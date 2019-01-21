@@ -1,16 +1,21 @@
 #ifndef ENTITY_SPELLS_H
 #define ENTITY_SPELLS_H
 #include "SpellEventCharacterExecute.h"
+#include <map>
 
 namespace s {
 	class EntitySpells {
 	protected:
 		sf::Mutex spellMutex;
 
+		std::map<int, sf::Time> spellCooldowns;
 		SpellEvent* castingSpell;
 	public:
 		EntitySpells();
 		virtual ~EntitySpells();
+
+		void setCooldown(int spellId, sf::Time time);
+		bool hasCooldown(int spellId, sf::Time serverTime) const;
 
 		void setCastingSpell(SpellEvent* castingSpell) {
 			sf::Lock lock(spellMutex);
@@ -25,6 +30,7 @@ namespace s {
 			return castingSpell != nullptr;
 		}
 
+		
 
 	};
 }

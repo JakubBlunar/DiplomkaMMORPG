@@ -22,7 +22,8 @@ enum class SpellCastResultCode: sf::Uint8 {
 	INTERRUPTED = 3,
 	TARGET_NOT_EXISTS = 4,
 	ALREADY_CASTING = 5,
-	NOT_ENOUGH_MANA = 6
+	NOT_ENOUGH_MANA = 6,
+	HAS_COOLDOWN = 7
 };
 
 inline std::string getStringSpellErrorByResultCode(SpellCastResultCode code) {
@@ -39,6 +40,8 @@ inline std::string getStringSpellErrorByResultCode(SpellCastResultCode code) {
 			return "You do not have enough mana";
 		case SpellCastResultCode::TARGET_NOT_EXISTS:
 			return "Your target do not exists";
+		case SpellCastResultCode::HAS_COOLDOWN:
+			return "Spell is not ready yet";
 		default:
 			return "Your spell has not been casted";
 	}

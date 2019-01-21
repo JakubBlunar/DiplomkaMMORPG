@@ -8,6 +8,7 @@
 #include <list>
 #include "AttributesComponent.h"
 #include "Spell.h"
+#include <map>
 
 class GameEvent;
 using json = nlohmann::json;
@@ -81,6 +82,15 @@ public:
 	Entity* getTarget() const {
 		return target;
 	}
+
+
+
+	SpellCooldown* getGlobalCooldown(Game* g) const;
+	void setGlobalCooldown(SpellCooldown* cooldown);
+
+	void setCooldown(int spellType, SpellCooldown* cooldown);
+	SpellCooldown* getCooldown(int spellType, Game* g) const;
+
 private:
 	AttributesComponent* attributesComponent;
 
@@ -94,6 +104,10 @@ private:
 	sf::Time sendingTime;
 
 	sf::Time lastSendedMovementTime;
+
+	SpellCooldown* globalCooldown;
+	std::map<int, SpellCooldown*> spellCooldowns;
+
 
 	void sendPosition(Game* g) const;
 

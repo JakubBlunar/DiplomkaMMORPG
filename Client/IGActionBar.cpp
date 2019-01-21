@@ -3,7 +3,9 @@
 #include "imgui-SFML.h"
 #include <iostream>
 #include "ImGuiFonts.h"
+#include "Spell.h"
 
+#define MAX_OPACITY_ON_COOLDOWN 100.f
 
 IGActionBar::IGActionBar(): player(nullptr), spells(nullptr) { }
 
@@ -29,7 +31,39 @@ void IGActionBar::render(Game* g, IGManager* manager) {
 	for (int i = 0; i < spellCount; i++) {
 		SpellInfo* si = spells->at(i);
 		ImGui::SameLine();
-		if (ImGui::ImageButton(si->icon)) {
+
+		int cooldownOpacity = 200;
+		SpellCooldown* globalCooldown = player->getGlobalCooldown(g);
+		if (globalCooldown) {
+			float length = globalCooldown->cooldownTo.asSeconds() - globalCooldown->cooldownFrom.asSeconds();
+			float part = g->getGameTime().asSeconds() - globalCooldown->cooldownFrom.asSeconds();
+
+			float perc = part / length;
+			cooldownOpacity = (int)ceil(perc * MAX_OPACITY_ON_COOLDOWN);
+			if (cooldownOpacity < 0) {
+				cooldownOpacity = 0;
+			}
+			if (cooldownOpacity > MAX_OPACITY_ON_COOLDOWN) {
+				cooldownOpacity = (int)MAX_OPACITY_ON_COOLDOWN;
+			}
+		}
+
+		SpellCooldown* spellCooldown = player->getCooldown(si->id, g);
+		if (spellCooldown) {
+			float length = spellCooldown->cooldownTo.asSeconds() - spellCooldown->cooldownFrom.asSeconds();
+			float part = g->getGameTime().asSeconds() - spellCooldown->cooldownFrom.asSeconds();
+
+			float perc = part / length;
+			cooldownOpacity = (int)ceil(perc * MAX_OPACITY_ON_COOLDOWN);
+			if (cooldownOpacity < 0) {
+				cooldownOpacity = 0;
+			}
+			if (cooldownOpacity > MAX_OPACITY_ON_COOLDOWN) {
+				cooldownOpacity = (int)MAX_OPACITY_ON_COOLDOWN;
+			}
+		}
+
+		if (ImGui::ImageButton(si->icon, -1, sf::Color::Black, sf::Color(255,255,255,55 + cooldownOpacity))) {
 			player->castSpell(si, g->getMap(), g);
 		}
 		if (ImGui::IsItemHovered()) {
@@ -54,6 +88,11 @@ void IGActionBar::render(Game* g, IGManager* manager) {
 					" ms";
 				ImGui::Text(castingTime.c_str());
 			}
+			ImGui::PushFont(g->fonts.getFont(ImGuiFonts::PRODIGY_TINY, 9));
+			ImGui::Text(si->description.c_str());
+
+
+			ImGui::PopFont();
 			ImGui::PopFont();
 			ImGui::PopTextWrapPos();
 

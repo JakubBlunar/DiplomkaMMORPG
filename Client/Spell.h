@@ -21,6 +21,11 @@ struct SpellInfo {
 	bool hasEntity;
 };
 
+struct SpellCooldown {
+	sf::Time cooldownFrom;
+	sf::Time cooldownTo;
+};
+
 class Spell: public Entity {
 	PositionComponent* positionComponent;
 	RenderComponent* renderComponent;
