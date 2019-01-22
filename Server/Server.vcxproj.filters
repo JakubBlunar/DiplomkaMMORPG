@@ -76,6 +76,12 @@
     <Filter Include="Source Files\SpellEvents">
       <UniqueIdentifier>{f5ebfa44-b678-4859-91b7-5373e91e5dc6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\LuaConnectors">
+      <UniqueIdentifier>{ca07ebb7-4025-46cb-aa68-4edf4388d626}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\LuaConnectors">
+      <UniqueIdentifier>{47d0fdc0-1172-4304-954c-288b3fab1c56}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -312,6 +318,9 @@
     <ClCompile Include="CharacterManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NpcLuaConnector.cpp">
+      <Filter>Source Files\LuaConnectors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INIReader.h">
@@ -544,6 +553,9 @@
     </ClInclude>
     <ClInclude Include="CharacterManager.h">
       <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="NpcLuaConnector.h">
+      <Filter>Header Files\LuaConnectors</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

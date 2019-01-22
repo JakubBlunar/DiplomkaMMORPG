@@ -6,7 +6,7 @@
 #include "TextFileLoader.h"
 #include "EventNpcStatusChanged.h"
 
-s::Npc::Npc(): command(nullptr) {
+s::Npc::Npc(): command(nullptr), luaConnector(this) {
 	name = "";
 	spawnId = -1;
 	type = 0;
@@ -18,15 +18,6 @@ s::Npc::Npc(): command(nullptr) {
 
 	luaState.open_libraries(sol::lib::base, sol::lib::package, sol::lib::io, sol::lib::string, sol::lib::os,
 	                        sol::lib::math);
-	luaState["npc"] = this;
-	// make usertype metatable
-	luaState.new_usertype<Npc>("Npc",
-	                           "name", &Npc::name,
-	                           "spawnId", &Npc::spawnId,
-	                           "getAttribute", &Npc::getAttribute,
-	                           "getState", &Npc::getNpcState
-	);
-
 	luaState.script("math.randomseed(os.time())");
 }
 
@@ -84,14 +75,7 @@ void s::Npc::loadFromJson(std::string file) {
 		npc_script = TextFileLoader::instance()->loadFile("Npcs/Scripts/" + scriptFile + ".lua");
 	}
 
-	sol::load_result loadResult = luaState.load(npc_script);
-	if (!loadResult.valid()) {
-		sol::error err = loadResult;
-		sol::load_status status = loadResult.status();
-		spdlog::get("log")->error("Cannot load lua script from npc: {} , ERROR: {}", sol::to_string(status),
-		                          err.what());
-		throw "cannot parse lua";
-	}
+	luaConnector.connect();
 }
 
 s::Npc* s::Npc::clone() const {
@@ -113,6 +97,8 @@ s::Npc* s::Npc::clone() const {
 	}
 
 	copy->setSpawnPosition(spawnPosition);
+
+	copy->luaConnector.connect();
 	return copy;
 }
 

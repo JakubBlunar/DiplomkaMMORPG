@@ -7,6 +7,7 @@
 #include "EntityPosition.h"
 #include "NpcConstants.h"
 #include "Lua/sol.hpp"
+#include "NpcLuaConnector.h"
 
 namespace s {
 	class Npc : public Entity {
@@ -23,6 +24,9 @@ namespace s {
 		NpcCommand* command;
 
 		sf::Mutex mutex;
+		NpcLuaConnector luaConnector;
+
+		Server* server;
 	public:
 		Npc();
 		~Npc();
@@ -30,6 +34,12 @@ namespace s {
 		EntityAttributes attributes;
 		EntityPosition position;
 		EntitySpells spells;
+
+		void setServer(Server* s) {
+			server = s;
+		}
+
+		Server* getServer() const { return server; }
 
 		NpcCommand* getNpcCommand();
 		void setNpcCommand(NpcCommand* command);

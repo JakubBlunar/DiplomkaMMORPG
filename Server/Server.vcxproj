@@ -218,6 +218,7 @@
     <ClCompile Include="NpcEvent.cpp" />
     <ClCompile Include="NpcEventNpcIsIdle.cpp" />
     <ClCompile Include="NpcHolder.cpp" />
+    <ClCompile Include="NpcLuaConnector.cpp" />
     <ClCompile Include="NpcManager.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="ServerSettings.cpp" />
@@ -296,6 +297,7 @@
     <ClInclude Include="NpcEvent.h" />
     <ClInclude Include="NpcEventNpcIsIdle.h" />
     <ClInclude Include="NpcHolder.h" />
+    <ClInclude Include="NpcLuaConnector.h" />
     <ClInclude Include="NpcManager.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="ServerGlobals.h" />

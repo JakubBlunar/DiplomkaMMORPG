@@ -56,14 +56,35 @@ void initLogger() {
 	register_logger(logger);
 }
 
+#include <iostream>
+
+#include <assert.h>
+
+inline int my_add(int x, int y) {
+	return x + y;
+}
+
+struct multiplier {
+    int operator()(int x) {
+        return x * 10;
+    }
+
+    static int by_five(int x) {
+        return x * 5;
+    }
+};
+
+
 int main() {
 	srand((unsigned int)time(nullptr));
+
 	initLogger();
 	s::ServerSettings* settings = initSettings();
 	
 	if (settings == nullptr) {
 		return EXIT_FAILURE;
 	}
+	
 	/*
 	s::Server* ss = new s::Server(settings);
 
@@ -78,6 +99,7 @@ int main() {
 	system("pause");
 	return 0;
 	*/
+
 	
 	s::Server* s = new s::Server(settings);
 

@@ -17,8 +17,7 @@ s::NpcManager::NpcManager(): server(nullptr), runningThreads(0), MAX_RUNNING_NPC
 }
 
 
-s::NpcManager::~NpcManager()
-{
+s::NpcManager::~NpcManager() {
 	unsubscribe();
 	for (int i = 0; i < MAX_RUNNING_NPC_THREADS; i++) {
 		if (npcEventExecutuionThreads[i]) {
@@ -46,8 +45,7 @@ void s::NpcManager::init(Server* s) {
 	subscribe();
 }
 
-void s::NpcManager::subscribe()
-{
+void s::NpcManager::subscribe() {
 	EventDispatcher<NpcEventNpcIsIdle>::addSubscriber(this, server);
 }
 
@@ -61,13 +59,16 @@ s::Npc* s::NpcManager::createNpc(int npcType) {
 	Npc* npc;
 	try {
 		npc = nh->createNpc(npcType);
+		npc->setServer(server);
 		int spawnId = npc->getSpawnId();
 		if (npcs.find(spawnId) == npcs.end()) {
 			npcs.insert(std::make_pair(spawnId, npc));
-		} else {
+		}
+		else {
 			throw "Duplicate spawn id" + std::to_string(spawnId);
 		}
-	} catch(...) {
+	}
+	catch (...) {
 		lock.unlock();
 		throw "Cannot create npc" + std::to_string(npcType);
 	}
@@ -76,8 +77,7 @@ s::Npc* s::NpcManager::createNpc(int npcType) {
 	return npc;
 }
 
-s::Npc* s::NpcManager::findNpc(int spawnId)
-{
+s::Npc* s::NpcManager::findNpc(int spawnId) {
 	lock.lock();
 	auto find = npcs.find(spawnId);
 	if (find != npcs.end()) {
@@ -88,18 +88,18 @@ s::Npc* s::NpcManager::findNpc(int spawnId)
 	return nullptr;
 }
 
-void s::NpcManager::updateNpc(sf::Time elapsedTime, Npc* npc, Server * s, NpcUpdateEvents* npcUpdateEvents) {
+void s::NpcManager::updateNpc(sf::Time elapsedTime, Npc* npc, Server* s, NpcUpdateEvents* npcUpdateEvents) {
 	if (!npc->isAlive()) {
 		return;
 	}
 	b2Body* body = npc->position.getBody();
 	b2Vec2 position = body->GetPosition();
-	
-	sf::Vector2f transformedPosition = sf::Vector2f(position.x * METTOPIX, position.y * METTOPIX); 
+
+	sf::Vector2f transformedPosition = sf::Vector2f(position.x * METTOPIX, position.y * METTOPIX);
 
 	npc->position.setPosition(transformedPosition);
 	NpcCommand* command = npc->getNpcCommand();
-	if(command && !command->isFinished()) {
+	if (command && !command->isFinished()) {
 		command->update(elapsedTime, npcUpdateEvents);
 	}
 
@@ -142,7 +142,8 @@ void s::NpcManager::handleEvent(GameEvent* event) {
 			}
 
 			executeEvent(npcEvent, index);
-		} else {
+		}
+		else {
 			npcEventQueue.push(npcEvent);
 		}
 	}
@@ -194,19 +195,21 @@ void s::NpcManager::threadEnded(NpcEvent* npcEvent, int index) {
 void s::NpcManager::eventExecutionThread(NpcEvent* npcEvent, int index) {
 	EventId eventId = npcEvent->getId();
 	Npc* npc = npcEvent->npc;
-	
+
 	npc->lock();
 	NpcCommand* c = npc->getNpcCommand();
 	delete c;
-
-	npc->luaState["event"] = sol::nullopt;
-	npc->luaState["event"] = npc->luaState.create_table_with(
-		"id", eventId
-	);
-
-	
 	npc->unlock();
 
+	sol::protected_function eventHandler = npc->luaState["handleEvent"];
+	sol::protected_function_result result = eventHandler(static_cast<int>(eventId));
+	if (!result.valid()) {
+		sol::error err = result;
+		std::string what = err.what();
+		spdlog::get("log")->error("Lua script failed, npc {}, Exception: {}", npc->getType(), what);
+	}
+
+	/*
 	sol::protected_function_result scriptResult = npc->luaState.script(npc->npc_script);
     if (!scriptResult.valid()) {
         sol::error err = scriptResult;
@@ -242,8 +245,8 @@ void s::NpcManager::eventExecutionThread(NpcEvent* npcEvent, int index) {
 			}
 	    });
     }
+	*/
 
-	
 
 	//creates handler for new thread that will wait into end of current thread and then replace it with new thread
 	delete afterExecution[index];
@@ -251,6 +254,3 @@ void s::NpcManager::eventExecutionThread(NpcEvent* npcEvent, int index) {
 	afterExecution[index] = t;
 	afterExecution[index]->launch();
 }
-
-
-

@@ -1,3 +1,9 @@
+events = {}
+
+function errorHandler (message)
+	return "ERROR: " .. message
+end
+
 printf = function(s,...)
    return io.write(s:format(...))
 end
@@ -6,24 +12,24 @@ function tableHasKey(table,key)
 	return table[key] ~= nil
 end
 
-events = {}
-resultEvents = {}
+function registerEvent(id, handler)
+	events[id] = handler
+end
 
---[Npc is idle]--
-events[18] = function()
+function handleEvent(eventId)
+	if (tableHasKey(events, eventId))
+	then
+		events[eventId]()
+	end
+end
+
+
+registerEvent(18, function()
 	rand = math.random()
-	if rand < 0.5 then
-		resultEvents[1] = {
-			maxDuration = 30
-		}
-	else 
-		resultEvents[0] = {
-			duration = math.random(10, 20)
-		}
+	if rand < 0.7 then
+		sendNpcToRandomPositionInLocation(30)
+	else
+		makeNpcStay(math.random(10, 20))
 	end	
 end
-
-if (tableHasKey(events, event.id))
-then
-	events[event.id]()
-end
+)
