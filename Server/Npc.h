@@ -48,9 +48,8 @@ namespace s {
 		int getSpawnId() const;
 
 		void loadFromJson(std::string file);
-		Npc* clone() const;
-
-		json toJson() const;
+		Npc* clone();
+		json toJson();
 
 		void setName(std::string name);
 		std::string getName() const;

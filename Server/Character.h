@@ -34,12 +34,11 @@ namespace s {
 		std::string name;
 		CharacterType type;
 		CharacterFaction faction;
-		std::vector<SpellInfo*> availableSpells;
 
 		bool isBot;
 
 		bool save() const;
-		json toJson() const;
+		json toJson();
 
 		void update(sf::Time deltaTime, Server* s, Map* map);
 

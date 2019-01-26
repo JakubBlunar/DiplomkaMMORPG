@@ -1,9 +1,9 @@
 {
     "id": 1,
-    "name": "Attack",
+    "name": "Auto Attack",
     "mana": 0,
-    "cooldown": 3000,
-    "castingTime": 0,
+    "cooldown": 0,
+    "castingTime": 3000,
     "spellSpeed": 0,
     "icon": "attack.png",
     "desc": "Melle attack with weapon",

@@ -6,6 +6,7 @@
 #include "SpellHolder.h"
 #include <spdlog/spdlog.h>
 #include "ServerGlobals.h"
+#include "EntitySpells.h"
 
 using json = nlohmann::json;
 
@@ -59,7 +60,7 @@ bool s::Character::save() const {
 	return success;
 }
 
-json s::Character::toJson() const {
+json s::Character::toJson() {
 	json jsonData({});
 
 	jsonData["id"] = this->id;
@@ -79,8 +80,10 @@ json s::Character::toJson() const {
 	}
 
 	jsonData["spells"] = json::array();
-	for (SpellInfo* const spell : availableSpells) {
-		jsonData["spells"].push_back(spell->id);
+	std::map<int, SpellInfo*>* availableSpells = spells.getAvailableSpells();
+
+	for (std::map<int, SpellInfo*>::iterator it = availableSpells->begin(); it != availableSpells->end(); ++it) {
+		jsonData["spells"].push_back(it->second->id);
 	}
 
 	return jsonData;
@@ -171,7 +174,7 @@ s::Character* s::Character::getCharacterById(int characterId) {
 			int spellType = std::stoi(spellsRow[0]);
 			try {
 				SpellInfo* si = sh->getSpellInfo(spellType);
-				character->availableSpells.push_back(si);
+				character->spells.addAvailableSpell(si);
 			}
 			catch (std::string& e) {
 				spdlog::get("log")->error(e);

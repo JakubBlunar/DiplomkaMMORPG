@@ -1,0 +1,16 @@
+{
+    "id": 3,
+    "name": "Fireball",
+    "mana": 0,
+    "cooldown": 0,
+    "castingTime": 500,
+    "spellSpeed": 100,
+    "icon": "fireball.png",
+    "entityAnimation": "3",
+    "desc": "Throws fireball at target",
+    "gCooldown": 500,
+    "maxRange": 320,
+    "effects": [
+        1
+    ]
+}

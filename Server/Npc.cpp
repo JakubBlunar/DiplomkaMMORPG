@@ -66,19 +66,23 @@ void s::Npc::loadFromJson(std::string file) {
 		index++;
 	}
 
+	npc_script = TextFileLoader::instance()->loadFile("Npcs/Scripts/common.lua");
 	auto exists = jsonData.find("script");
 	if (exists == jsonData.end()) {
-		npc_script = TextFileLoader::instance()->loadFile("Npcs/Scripts/dummy_npc.lua");
+		npc_script += " \n" + TextFileLoader::instance()->loadFile("Npcs/Scripts/dummy_npc.lua");
 	}
 	else {
 		std::string scriptFile = jsonData["script"].get<json::string_t>();
-		npc_script = TextFileLoader::instance()->loadFile("Npcs/Scripts/" + scriptFile + ".lua");
+		npc_script += " \n" + TextFileLoader::instance()->loadFile("Npcs/Scripts/" + scriptFile + ".lua");
 	}
+
+	SpellInfo* melleAttack = SpellHolder::instance()->getSpellInfo(1);
+	spells.addAvailableSpell(melleAttack);
 
 	luaConnector.connect();
 }
 
-s::Npc* s::Npc::clone() const {
+s::Npc* s::Npc::clone() {
 	Npc* copy = new Npc();
 
 	copy->position.setSize(position.getSize());
@@ -98,11 +102,16 @@ s::Npc* s::Npc::clone() const {
 
 	copy->setSpawnPosition(spawnPosition);
 
+	std::map<int, SpellInfo*>* availableSpells = spells.getAvailableSpells();
+	for (std::map<int, SpellInfo*>::iterator it = availableSpells->begin(); it != availableSpells->end(); ++it) {
+		copy->spells.addAvailableSpell(it->second);
+	}
+
 	copy->luaConnector.connect();
 	return copy;
 }
 
-json s::Npc::toJson() const {
+json s::Npc::toJson() {
 	json jsonData;
 
 	sf::Vector2f actualPosition = position.getPosition();
@@ -124,9 +133,13 @@ json s::Npc::toJson() const {
 		jsonData["attributes"].push_back(attributes.getAttributeByIndex(i));
 	}
 
-
 	if (position.getMap()) {
 		jsonData["mapId"] = position.getMap()->getId();
+	}
+
+	std::map<int, SpellInfo*>* availableSpells = spells.getAvailableSpells();
+	for (std::map<int, SpellInfo*>::iterator it = availableSpells->begin(); it != availableSpells->end(); ++it) {
+		jsonData["spells"].push_back(it->second->id);
 	}
 
 	return jsonData;

@@ -1,15 +1,14 @@
 {
     "id": 2,
-    "name": "Fireball",
+    "name": "Attack",
     "mana": 0,
-    "cooldown": 0,
-    "castingTime": 500,
-    "spellSpeed": 100,
-    "icon": "fireball.png",
-    "entityAnimation": "2",
-    "desc": "Throws fireball at target",
+    "cooldown": 3000,
+    "castingTime": 0,
+    "spellSpeed": 0,
+    "icon": "attack.png",
+    "desc": "Melle attack with weapon",
     "gCooldown": 500,
-    "maxRange": 320,
+    "maxRange": 50,
     "effects": [
         1
     ]

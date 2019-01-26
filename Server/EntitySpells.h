@@ -9,6 +9,7 @@ namespace s {
 		sf::Mutex spellMutex;
 
 		std::map<int, sf::Time> spellCooldowns;
+		std::map<int, SpellInfo*> availableSpells;
 		SpellEvent* castingSpell;
 	public:
 		EntitySpells();
@@ -16,6 +17,10 @@ namespace s {
 
 		void setCooldown(int spellId, sf::Time time);
 		bool hasCooldown(int spellId, sf::Time serverTime) const;
+
+		void addAvailableSpell(SpellInfo* spellInfo);
+		SpellInfo* getSpell(int type);
+		std::map<int, SpellInfo*>* getAvailableSpells();
 
 		void setCastingSpell(SpellEvent* castingSpell) {
 			sf::Lock lock(spellMutex);
