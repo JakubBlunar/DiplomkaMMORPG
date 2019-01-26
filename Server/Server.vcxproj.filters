@@ -321,6 +321,12 @@
     <ClCompile Include="NpcLuaConnector.cpp">
       <Filter>Source Files\LuaConnectors</Filter>
     </ClCompile>
+    <ClCompile Include="EntityCombat.cpp">
+      <Filter>Source Files\Entities\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="NpcCommandCombat.cpp">
+      <Filter>Source Files\NpcCommands</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INIReader.h">
@@ -556,6 +562,12 @@
     </ClInclude>
     <ClInclude Include="NpcLuaConnector.h">
       <Filter>Header Files\LuaConnectors</Filter>
+    </ClInclude>
+    <ClInclude Include="NpcCommandCombat.h">
+      <Filter>Header Files\NpcCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityCombat.h">
+      <Filter>Header Files\Entities\Parts</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

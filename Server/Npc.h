@@ -8,6 +8,7 @@
 #include "NpcConstants.h"
 #include "Lua/sol.hpp"
 #include "NpcLuaConnector.h"
+#include "EntityCombat.h"
 
 namespace s {
 	class Npc : public Entity {
@@ -34,6 +35,7 @@ namespace s {
 		EntityAttributes attributes;
 		EntityPosition position;
 		EntitySpells spells;
+		EntityCombat combat;
 
 		void setServer(Server* s) {
 			server = s;
@@ -82,6 +84,8 @@ namespace s {
 		float getAttribute(EntityAttributeType attribute, bool withBonus);
 
 		b2Body* getBody() const override;
+
+		void startCombat(Character* character);
 
 		void lock();
 		void unlock();

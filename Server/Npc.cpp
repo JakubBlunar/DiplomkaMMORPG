@@ -5,6 +5,7 @@
 #include <spdlog/spdlog.h>
 #include "TextFileLoader.h"
 #include "EventNpcStatusChanged.h"
+#include "NpcCommandCombat.h"
 
 s::Npc::Npc(): command(nullptr), luaConnector(this) {
 	name = "";
@@ -268,6 +269,26 @@ float s::Npc::getAttribute(EntityAttributeType attribute, bool withBonus) {
 
 b2Body* s::Npc::getBody() const {
 	return position.getBody();
+}
+
+void s::Npc::startCombat(Character* character) {
+	
+
+	EventNpcStatusChanged* statusChangedEvent = new EventNpcStatusChanged();
+	statusChangedEvent->npcState = NpcState::COMBAT;
+	statusChangedEvent->spawnId = spawnId;
+
+	combat.startCombatPosition = position.getPosition();
+	combat.target = character;
+	combat.setAttackingCharacter(character);
+
+	NpcCommand* c = command;
+	setNpcCommand(new NpcCommandCombat(this, server));
+
+	state = NpcState::COMBAT;
+	position.getMap()->sendEventToAllPlayers(statusChangedEvent);
+	delete statusChangedEvent;
+	delete c;
 }
 
 

@@ -167,6 +167,7 @@
     <ClCompile Include="EffectHolder.cpp" />
     <ClCompile Include="EffectModifyAttributes.cpp" />
     <ClCompile Include="EntityAttributes.cpp" />
+    <ClCompile Include="EntityCombat.cpp" />
     <ClCompile Include="EntityPosition.cpp" />
     <ClCompile Include="EntitySpells.cpp" />
     <ClCompile Include="EntityToEntityRayCast.cpp" />
@@ -213,6 +214,7 @@
     <ClCompile Include="MovableSpell.cpp" />
     <ClCompile Include="Npc.cpp" />
     <ClCompile Include="NpcCommand.cpp" />
+    <ClCompile Include="NpcCommandCombat.cpp" />
     <ClCompile Include="NpcCommandMoveTo.cpp" />
     <ClCompile Include="NpcCommandStay.cpp" />
     <ClCompile Include="NpcEvent.cpp" />
@@ -249,6 +251,7 @@
     <ClInclude Include="EffectModifyAttributes.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityAttributes.h" />
+    <ClInclude Include="EntityCombat.h" />
     <ClInclude Include="EntityPosition.h" />
     <ClInclude Include="EntitySpells.h" />
     <ClInclude Include="EntityToEntityRayCast.h" />
@@ -292,6 +295,7 @@
     <ClInclude Include="MovableSpell.h" />
     <ClInclude Include="Npc.h" />
     <ClInclude Include="NpcCommand.h" />
+    <ClInclude Include="NpcCommandCombat.h" />
     <ClInclude Include="NpcCommandMoveTo.h" />
     <ClInclude Include="NpcCommandStay.h" />
     <ClInclude Include="NpcEvent.h" />

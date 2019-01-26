@@ -4,7 +4,8 @@
 enum class NpcState {
 	IDLE = 0, 
 	DEAD = 1,
-	MOVING = 2
+	MOVING = 2,
+	COMBAT = 3
 };
 
 enum NpcChangeType {

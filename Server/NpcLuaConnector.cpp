@@ -17,7 +17,7 @@ s::NpcLuaConnector::~NpcLuaConnector()
 }
 
 void s::NpcLuaConnector::connect() {
-	
+	npc->lock();
 	npc->luaState["npc"] = npc;
 	npc->luaState.new_usertype<Npc>("Npc",
 	                           "getName", &Npc::getName,
@@ -41,10 +41,13 @@ void s::NpcLuaConnector::connect() {
 	if (f == sol::nil) {
 	    spdlog::get("log")->error("Function not found");
 	}
+	npc->unlock();
 }
 
 void s::NpcLuaConnector::sendNpcToRandomPositionInLocation(float maxCommandDuration) const {
+	npc->lock();
 	Location * l = npc->position.getLocation();
+	NpcCommand* previousCommand = npc->getNpcCommand();
 	if (l) {
 		NpcCommandMoveTo* commandMoveToRandom = new NpcCommandMoveTo(l->generateRandomPoint(), npc, npc->position.getMap(), npc->getServer(),  sf::seconds(maxCommandDuration));
 		commandMoveToRandom->init();
@@ -52,10 +55,14 @@ void s::NpcLuaConnector::sendNpcToRandomPositionInLocation(float maxCommandDurat
 	} else {
 		npc->setNpcCommand(new NpcCommandStay(npc, npc->position.getMap(), npc->getServer(), sf::seconds(maxCommandDuration)));
 	}
+	delete previousCommand;
+	npc->unlock();
 }
 
 void s::NpcLuaConnector::sendNpcToPosition(float x, float y, float maxCommandDuration) const {
+	npc->lock();
 	Location * l = npc->position.getLocation();
+	NpcCommand* previousCommand = npc->getNpcCommand();
 	if (l) {
 		NpcCommandMoveTo* commandMoveToRandom = new NpcCommandMoveTo(sf::Vector2f(x,y), npc, npc->position.getMap(), npc->getServer(),  sf::seconds(maxCommandDuration));
 		commandMoveToRandom->init();
@@ -63,9 +70,15 @@ void s::NpcLuaConnector::sendNpcToPosition(float x, float y, float maxCommandDur
 	} else {
 		npc->setNpcCommand(new NpcCommandStay(npc, npc->position.getMap(), npc->getServer(), sf::seconds(maxCommandDuration)));
 	}
+	delete previousCommand;
+	npc->unlock();
 }
 
 void s::NpcLuaConnector::makeNpcStay(float duration) const {
+	npc->lock();
+	NpcCommand* previousCommand = npc->getNpcCommand();
 	NpcCommandStay* commandStay = new NpcCommandStay(npc, npc->position.getMap(), npc->getServer(),  sf::seconds(duration));
 	npc->setNpcCommand(commandStay);
+	delete previousCommand;
+	npc->unlock();
 }

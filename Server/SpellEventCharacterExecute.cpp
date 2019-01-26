@@ -138,6 +138,14 @@ void s::SpellEventCharacterExecute::execute(Server* s) {
 		}
 		case SpellTarget::NPC: {
 			e->targetId = targetNpc->getSpawnId();
+			targetNpc->lock();
+			if (!targetNpc->combat.hasCombat()) {
+				targetNpc->startCombat(character);
+			} else {
+				targetNpc->combat.setAttackingCharacter(character);
+			}
+			targetNpc->unlock();
+
 			break;
 		default:
 			return;

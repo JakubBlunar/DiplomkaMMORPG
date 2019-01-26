@@ -92,6 +92,8 @@ void s::NpcManager::updateNpc(sf::Time elapsedTime, Npc* npc, Server* s, NpcUpda
 	if (!npc->isAlive()) {
 		return;
 	}
+	npc->lock();
+
 	b2Body* body = npc->position.getBody();
 	b2Vec2 position = body->GetPosition();
 
@@ -102,7 +104,7 @@ void s::NpcManager::updateNpc(sf::Time elapsedTime, Npc* npc, Server* s, NpcUpda
 	if (command && !command->isFinished()) {
 		command->update(elapsedTime, npcUpdateEvents);
 	}
-
+	npc->unlock();
 
 	/*if (!command || command->isFinished()) {
 		delete command;
@@ -150,19 +152,23 @@ void s::NpcManager::handleEvent(GameEvent* event) {
 }
 
 void s::NpcManager::npcDied(Npc* npc, Entity* caster) {
+	npc->lock();
 	npc->setDeadTimestamp(server->getServerTime());
 	npc->setNpcState(NpcState::DEAD);
+	npc->setNpcCommand(nullptr);
+
 
 	EventNpcStatusChanged* e = new EventNpcStatusChanged();
 	e->spawnId = npc->getSpawnId();
 	e->npcState = NpcState::DEAD;
 
 	npc->position.getMap()->sendEventToAllPlayers(e);
-
-	Character* character = dynamic_cast<Character*>(caster);
-	if (character != nullptr) {
-		server->characterManager.handleNpcKill(character, npc);
+	for (Character* const ch : npc->combat.attackingCharacters) {
+		server->characterManager.handleNpcKill(ch, npc);
 	}
+
+	npc->combat.reset();
+	npc->unlock();
 	delete e;
 }
 
@@ -195,11 +201,6 @@ void s::NpcManager::threadEnded(NpcEvent* npcEvent, int index) {
 void s::NpcManager::eventExecutionThread(NpcEvent* npcEvent, int index) {
 	EventId eventId = npcEvent->getId();
 	Npc* npc = npcEvent->npc;
-
-	npc->lock();
-	NpcCommand* c = npc->getNpcCommand();
-	delete c;
-	npc->unlock();
 
 	sol::protected_function eventHandler = npc->luaState["handleEvent"];
 	sol::protected_function_result result = eventHandler(static_cast<int>(eventId));

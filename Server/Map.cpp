@@ -171,9 +171,8 @@ void s::Map::update(sf::Time deltaTime, Server* s) {
 				element.second->update(deltaTime, s, this);
 			});
 
-
 		std::for_each(
-			std::execution::par_unseq,
+			std::execution::seq,
 			npcs.begin(),
 			npcs.end(),
 			[=](Npc* npc) {
