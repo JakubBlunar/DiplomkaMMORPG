@@ -16,6 +16,7 @@ namespace s {
 		void sendNpcToRandomPositionInLocation(float maxCommandDuration) const;
 		void sendNpcToPosition(float x, float y, float maxCommandDuration) const;
 		void makeNpcStay(float duration) const;
+		void castRandomSpell() const;
 	};
 }
 #endif

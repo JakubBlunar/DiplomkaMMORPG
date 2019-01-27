@@ -3,7 +3,7 @@
     "name": "Fireball",
     "mana": 0,
     "cooldown": 0,
-    "castingTime": 500,
+    "castingTime": 3000,
     "spellSpeed": 100,
     "icon": "fireball.png",
     "entityAnimation": "3",

@@ -1,10 +1,12 @@
 #include "NpcEventNpcIsIdle.h"
+#include "Npc.h"
 
 
-
-s::NpcEventNpcIsIdle::NpcEventNpcIsIdle()
+s::NpcEventNpcIsIdle::NpcEventNpcIsIdle(Npc* npc)
 {
 	id = NPC_IS_IDLE;
+	this->npc = npc;
+	npc->setRunningNpcEvent(this);
 }
 
 

@@ -28,6 +28,8 @@ namespace s {
 		NpcLuaConnector luaConnector;
 
 		Server* server;
+
+		NpcEvent* runningNpcEvent;
 	public:
 		Npc();
 		~Npc();
@@ -86,6 +88,15 @@ namespace s {
 		b2Body* getBody() const override;
 
 		void startCombat(Character* character);
+
+		bool isThinking() const {
+			return runningNpcEvent != nullptr;
+		}
+
+		void setRunningNpcEvent(NpcEvent* event) {
+			sf::Lock lock(mutex);
+			runningNpcEvent = event;
+		}
 
 		void lock();
 		void unlock();

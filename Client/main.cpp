@@ -177,7 +177,7 @@ int main(int argc, char* argv[]) {
 	system("pause");
 	return EXIT_SUCCESS;*/
 
-	std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+	std::this_thread::sleep_for(std::chrono::milliseconds(7000));
 	if (!initSettings()) {
 		system("pause");
 		return EXIT_FAILURE;

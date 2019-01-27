@@ -415,8 +415,7 @@ void s::Map::loadFromJson(std::string path, Server* s) {
 							npc->setNpcState(NpcState::DEAD);
 						}
 						else {
-							NpcEventNpcIsIdle* e = new NpcEventNpcIsIdle();
-							e->npc = npc;
+							NpcEventNpcIsIdle* e = new NpcEventNpcIsIdle(npc);
 							EventDispatcher<NpcEventNpcIsIdle>::dispatchEvent(e, s);
 						}
 					}

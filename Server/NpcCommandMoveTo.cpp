@@ -23,8 +23,7 @@ void s::NpcCommandMoveTo::update(sf::Time elapsedTime, NpcUpdateEvents * npcUpda
 
 	if (finished) {
 		if (!finishedEventDispatched) {
-			NpcEventNpcIsIdle* e = new NpcEventNpcIsIdle();
-			e->npc = npc;
+			NpcEventNpcIsIdle* e = new NpcEventNpcIsIdle(npc);
 			dispatchFinishEvent(e);
 		}
 		
@@ -73,8 +72,7 @@ void s::NpcCommandMoveTo::update(sf::Time elapsedTime, NpcUpdateEvents * npcUpda
 	} else {
 		if(!finished) {
 			finished = true;
-			NpcEventNpcIsIdle* e = new NpcEventNpcIsIdle();
-			e->npc = npc;
+			NpcEventNpcIsIdle* e = new NpcEventNpcIsIdle(npc);
 			dispatchFinishEvent(e);
 		}
 

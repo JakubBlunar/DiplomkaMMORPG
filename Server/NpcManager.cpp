@@ -11,6 +11,7 @@
 #include "EventAttributesChanged.h"
 #include "Account.h"
 #include "Session.h"
+#include "NpcEventCombatDecision.h"
 
 s::NpcManager::NpcManager(): server(nullptr), runningThreads(0), MAX_RUNNING_NPC_THREADS(0) {
 	dynamic = false;
@@ -47,10 +48,12 @@ void s::NpcManager::init(Server* s) {
 
 void s::NpcManager::subscribe() {
 	EventDispatcher<NpcEventNpcIsIdle>::addSubscriber(this, server);
+	EventDispatcher<NpcEventCombatDecision>::addSubscriber(this, server);
 }
 
 void s::NpcManager::unsubscribe() {
 	EventDispatcher<NpcEventNpcIsIdle>::removeSubscriber(this, server);
+	EventDispatcher<NpcEventCombatDecision>::removeSubscriber(this, server);
 }
 
 s::Npc* s::NpcManager::createNpc(int npcType) {
@@ -184,6 +187,10 @@ void s::NpcManager::executeEvent(NpcEvent* npcEvent, int index) {
 void s::NpcManager::threadEnded(NpcEvent* npcEvent, int index) {
 	npcEventExecutuionThreads[index]->wait();
 	sf::Lock mutexLock(lock);
+
+	if (npcEvent->npc) {
+		npcEvent->npc->setRunningNpcEvent(nullptr);
+	}
 
 	delete npcEvent;
 	runningThreads--;

@@ -218,6 +218,7 @@
     <ClCompile Include="NpcCommandMoveTo.cpp" />
     <ClCompile Include="NpcCommandStay.cpp" />
     <ClCompile Include="NpcEvent.cpp" />
+    <ClCompile Include="NpcEventCombatDecision.cpp" />
     <ClCompile Include="NpcEventNpcIsIdle.cpp" />
     <ClCompile Include="NpcHolder.cpp" />
     <ClCompile Include="NpcLuaConnector.cpp" />
@@ -299,6 +300,7 @@
     <ClInclude Include="NpcCommandMoveTo.h" />
     <ClInclude Include="NpcCommandStay.h" />
     <ClInclude Include="NpcEvent.h" />
+    <ClInclude Include="NpcEventCombatDecision.h" />
     <ClInclude Include="NpcEventNpcIsIdle.h" />
     <ClInclude Include="NpcHolder.h" />
     <ClInclude Include="NpcLuaConnector.h" />

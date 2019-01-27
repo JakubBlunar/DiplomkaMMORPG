@@ -23,6 +23,15 @@ bool s::EntitySpells::hasCooldown(int spellId, sf::Time serverTime) const {
 	return found->second > serverTime;
 }
 
+bool s::EntitySpells::hasAllSpellCooldown(sf::Time time) const {
+	if (spellCooldowns.empty()) return false;
+
+	for ( auto it = spellCooldowns.begin(); it != spellCooldowns.end(); ++it) {
+		if (it->second < time) return false;
+	}
+	return true;
+}
+
 void s::EntitySpells::addAvailableSpell(SpellInfo* spellInfo) {
 	availableSpells.insert(std::make_pair(spellInfo->id, spellInfo));
 }

@@ -26,12 +26,10 @@ s::Npc::Npc(): command(nullptr), luaConnector(this) {
 s::Npc::~Npc() { }
 
 s::NpcCommand* s::Npc::getNpcCommand() {
-	sf::Lock lock(mutex);
 	return command;
 }
 
 void s::Npc::setNpcCommand(NpcCommand* command) {
-	sf::Lock lock(mutex);
 	this->command = command;
 }
 
@@ -77,8 +75,17 @@ void s::Npc::loadFromJson(std::string file) {
 		npc_script += " \n" + TextFileLoader::instance()->loadFile("Npcs/Scripts/" + scriptFile + ".lua");
 	}
 
-	SpellInfo* melleAttack = SpellHolder::instance()->getSpellInfo(1);
+	SpellInfo* melleAttack = SpellHolder::instance()->getSpellInfo(2);
 	spells.addAvailableSpell(melleAttack);
+
+	if (jsonData.find("spells") != jsonData.end()) {
+		json jSpells = jsonData["spells"].get<json::array_t>();
+
+		for (json::iterator it = jSpells.begin(); it != jSpells.end(); ++it) {
+			SpellInfo* spellInfo = SpellHolder::instance()->getSpellInfo(*it);
+			spells.addAvailableSpell(spellInfo);
+		}
+	}
 
 	luaConnector.connect();
 }
@@ -272,7 +279,7 @@ b2Body* s::Npc::getBody() const {
 }
 
 void s::Npc::startCombat(Character* character) {
-	
+
 
 	EventNpcStatusChanged* statusChangedEvent = new EventNpcStatusChanged();
 	statusChangedEvent->npcState = NpcState::COMBAT;

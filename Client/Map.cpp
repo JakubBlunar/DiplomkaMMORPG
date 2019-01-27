@@ -199,45 +199,46 @@ void Map::handleEvent(GameEvent* event) {
 					}
 				}
 
-				if (si->hasEntity && e->result == SpellCastResultCode::SUCCESS) {
-					Spell* spell = EntityPrototypes::instance()->createSpell(si->id);
-
-					bool create = true;
-					switch (e->target) {
-						case SpellTarget::PLAYER: {
-							auto found = players.find(e->targetId);
-							if (found == players.end()) {
-								create = false;
-								break;
-							}
-
-							spell->setTarget(found->second);
-							break;
-						}
-						case SpellTarget::NPC: {
-							auto found = npcs.find(e->targetId);
-							if (found == npcs.end()) {
-								create = false;
-								break;
-							}
-
-							spell->setTarget(found->second);
-							break;
-						}
-						default:
-							create = false;
-							break;
-					}
-
-					if (create) {
-						spell->getPositionComponent()->setPosition(e->startPosition);
-						addSpell(spell);
-					} else {
-						delete spell;
-					}
-				}
 			}
 
+			if (si->hasEntity && e->result == SpellCastResultCode::SUCCESS) {
+				Spell* spell = EntityPrototypes::instance()->createSpell(si->id);
+
+				bool create = true;
+				switch (e->target) {
+					case SpellTarget::PLAYER: {
+						auto found = players.find(e->targetId);
+						if (found == players.end()) {
+							create = false;
+							break;
+						}
+
+						spell->setTarget(found->second);
+						break;
+					}
+					case SpellTarget::NPC: {
+						auto found = npcs.find(e->targetId);
+						if (found == npcs.end()) {
+							create = false;
+							break;
+						}
+
+						spell->setTarget(found->second);
+						break;
+					}
+					default:
+						create = false;
+						break;
+				}
+
+				if (create) {
+					spell->getPositionComponent()->setPosition(e->startPosition);
+					addSpell(spell);
+				}
+				else {
+					delete spell;
+				}
+			}
 
 		}
 		default:
@@ -613,6 +614,6 @@ Player* Map::getPlayer() const {
 
 Player* Map::getPlayerById(int id) const {
 	auto found = players.find(id);
-	if(found == players.end()) return nullptr;
+	if (found == players.end()) return nullptr;
 	return found->second;
 }

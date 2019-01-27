@@ -327,6 +327,9 @@
     <ClCompile Include="NpcCommandCombat.cpp">
       <Filter>Source Files\NpcCommands</Filter>
     </ClCompile>
+    <ClCompile Include="NpcEventCombatDecision.cpp">
+      <Filter>Source Files\NpcEvents</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INIReader.h">
@@ -568,6 +571,9 @@
     </ClInclude>
     <ClInclude Include="EntityCombat.h">
       <Filter>Header Files\Entities\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="NpcEventCombatDecision.h">
+      <Filter>Header Files\NpcEvents</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

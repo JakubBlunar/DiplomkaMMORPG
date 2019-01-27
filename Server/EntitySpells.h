@@ -17,6 +17,7 @@ namespace s {
 
 		void setCooldown(int spellId, sf::Time time);
 		bool hasCooldown(int spellId, sf::Time serverTime) const;
+		bool hasAllSpellCooldown(sf::Time time) const;
 
 		void addAvailableSpell(SpellInfo* spellInfo);
 		SpellInfo* getSpell(int type);

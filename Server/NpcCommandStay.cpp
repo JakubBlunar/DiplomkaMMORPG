@@ -21,8 +21,7 @@ void s::NpcCommandStay::update(sf::Time elapsedTime, NpcUpdateEvents * npcUpdate
 
 	if (finished) {
 		if (!finishedEventDispatched) {
-			NpcEventNpcIsIdle* e = new NpcEventNpcIsIdle();
-			e->npc = npc;
+			NpcEventNpcIsIdle* e = new NpcEventNpcIsIdle(npc);
 			dispatchFinishEvent(e);
 		}
 		return;

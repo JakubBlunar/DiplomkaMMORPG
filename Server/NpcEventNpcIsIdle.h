@@ -6,7 +6,7 @@ namespace s {
 		public NpcEvent
 	{
 	public:
-		NpcEventNpcIsIdle();
+		NpcEventNpcIsIdle(Npc* npc);
 		~NpcEventNpcIsIdle();
 	};
 

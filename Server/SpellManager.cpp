@@ -8,6 +8,7 @@
 #include "Map.h"
 #include "Npc.h"
 #include "EventSpellCastResult.h"
+#include "SpellEventNpcExecute.h"
 
 s::SpellManager::SpellManager(): spellIds(0, 214748364), effectIds(0, 214748364) {
 	dynamic = true;
@@ -150,6 +151,39 @@ void s::SpellManager::handleEvent(EventPlayerStartCastSpell* event, s::Session* 
 		eventQueueMutex.unlock();
 	}
 	catch (...) {}
+}
+
+void s::SpellManager::handleNpcCast(Npc* npc, SpellInfo* spellInfo) {
+	
+	try {
+		sf::Time eventCastEndTime = npc->getServer()->getServerTime() + spellInfo->castingTime;
+
+		SpellEventNpcExecute* e = new SpellEventNpcExecute();
+		e->setNpc(npc);
+		e->spellInfo = spellInfo;
+		e->executeTime = eventCastEndTime;
+
+		EntityType targetType = npc->combat.target->getEntityType();
+		switch (targetType) {
+			case EntityType::PLAYER: {
+				Character* character = (Character*) npc->combat.target;
+				e->targetCharacter = character;
+				e->spellTarget = SpellTarget::PLAYER;
+				break;
+			}
+			default: {
+				delete e;
+				return;
+			}
+		}
+		
+		npc->spells.setCastingSpell(e);
+		eventQueueMutex.lock();
+		eventQueue.push(e);
+		eventQueueMutex.unlock();
+	}
+	catch (...) {}
+
 }
 
 void s::SpellManager::queueEvent(SpellEvent* spellEvent) {

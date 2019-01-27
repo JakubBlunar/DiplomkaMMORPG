@@ -2,8 +2,10 @@
 #define S_SPELL_EVENT_NPC_EXECUTE_H
 
 #include "SpellEvent.h"
+#include "SpellConstants.h"
 
 namespace s {
+	class Character;
 	class Npc;
 
 	class SpellEventNpcExecute :
@@ -15,7 +17,11 @@ namespace s {
 
 		void setNpc(Npc* npc);
 
-		Npc* getCharacter() const {
+		SpellTarget spellTarget;
+		Character* targetCharacter;
+		Npc* targetNpc;
+
+		Npc* getNpc() const {
 			return npc;
 		}
 

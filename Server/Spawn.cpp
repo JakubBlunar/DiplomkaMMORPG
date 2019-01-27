@@ -39,8 +39,7 @@ void s::Spawn::init(Server *s)
 				npc->setDeadTimestamp(sf::seconds(s->getServerTime().asSeconds() - npc->getRespawnTime().asSeconds() * Random::instance()->randomUniformFloat(0.1f, 0.9f)));
 				npc->setNpcState(NpcState::DEAD);
 			} else {
-				NpcEventNpcIsIdle* e = new NpcEventNpcIsIdle();
-				e->npc = npc;
+				NpcEventNpcIsIdle* e = new NpcEventNpcIsIdle(npc);
 				EventDispatcher<NpcEventNpcIsIdle>::dispatchEvent(e, s);
 			}	
 		}

@@ -132,8 +132,7 @@ void s::Location::checkNpcRespawn(Npc* npc, sf::Time serverTime, Server* s) cons
 		statusChange.npcState = NpcState::IDLE;
 		map->sendEventToAllPlayers(&statusChange);
 
-		NpcEventNpcIsIdle* e = new NpcEventNpcIsIdle();
-		e->npc = npc;
+		NpcEventNpcIsIdle* e = new NpcEventNpcIsIdle(npc);
 		EventDispatcher<NpcEventNpcIsIdle>::dispatchEvent(e, s) ;
 		spdlog::get("log")->trace("Npc resurect :{}", npc->getSpawnId());
 	}

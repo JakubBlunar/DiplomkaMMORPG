@@ -29,6 +29,7 @@ void s::NpcLuaConnector::connect() {
 	npc->luaState.set_function("sendNpcToRandomPositionInLocation", &NpcLuaConnector::sendNpcToRandomPositionInLocation, this);
 	npc->luaState.set_function("sendNpcToPosition", &NpcLuaConnector::sendNpcToPosition, this);
 	npc->luaState.set_function("makeNpcStay", &NpcLuaConnector::makeNpcStay, this);
+	npc->luaState.set_function("castRandomSpell", &NpcLuaConnector::castRandomSpell, this);
 
 	sol::protected_function_result scriptResult = npc->luaState.script(npc->npc_script);
     if (!scriptResult.valid()) {
@@ -81,4 +82,26 @@ void s::NpcLuaConnector::makeNpcStay(float duration) const {
 	npc->setNpcCommand(commandStay);
 	delete previousCommand;
 	npc->unlock();
+}
+
+void s::NpcLuaConnector::castRandomSpell() const {
+	
+
+	sf::Time serverTime = npc->getServer()->getServerTime();
+	if (npc->spells.hasAllSpellCooldown(serverTime)) {
+		return;
+	}
+
+	std::map<int, SpellInfo*>* availableSpells = npc->spells.getAvailableSpells();
+	SpellInfo* found = nullptr;
+	for ( auto it = availableSpells->begin(); it != availableSpells->end(); ++it) {
+		if (!npc->spells.hasCooldown(it->first, serverTime)) {
+			found = it->second;
+		} 
+	}
+
+	if (found) {
+		npc->getServer()->spellManager.handleNpcCast(npc, found);	
+	}
+	
 }

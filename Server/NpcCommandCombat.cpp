@@ -5,6 +5,8 @@
 #include "EventAttributesChanged.h"
 #include "EventNpcStatusChanged.h"
 #include "NpcEventNpcIsIdle.h"
+#include "NpcEventCombatDecision.h"
+#include "EventDispatcher.h"
 
 s::NpcCommandCombat::NpcCommandCombat(Npc* npc, Server* s) {
 	this->npc = npc;
@@ -19,12 +21,14 @@ s::NpcCommandCombat::NpcCommandCombat(Npc* npc, Server* s) {
 s::NpcCommandCombat::~NpcCommandCombat() {}
 
 void s::NpcCommandCombat::update(sf::Time elapsedTime, NpcUpdateEvents* npcUpdateEvents) {
-	s::NpcCommand::update(elapsedTime, npcUpdateEvents);
 
-	if (npc->spells.isCasting()) {
-		return;
+	if (!npc->isThinking() && !npc->spells.isCasting()) {
+		if (!npc->spells.hasAllSpellCooldown(server->getServerTime())) {
+			NpcEventCombatDecision* decision = new NpcEventCombatDecision(npc);
+			EventDispatcher<NpcEventCombatDecision>::dispatchEvent(decision, server);
+			return;
+		}
 	}
-
 
 	b2Body* body = npc->position.getBody();
 	b2Body* targetBody = target->getBody();
@@ -38,12 +42,13 @@ void s::NpcCommandCombat::update(sf::Time elapsedTime, NpcUpdateEvents* npcUpdat
 		b2Vec2 actualPosition = body->GetPosition();
 		b2Vec2 targetPosition = targetBody->GetPosition();
 		b2Vec2 velocity = targetPosition - actualPosition;
+		
 
 		double distance = b2DistanceSquared(actualPosition, targetPosition);
 		if (distance * METTOPIX < 50) {
 			velocity = b2Vec2(0, 0);
 		}
-
+		
 		if (distance > 500) {
 			endCombat = true;
 			velocity = b2Vec2(0, 0);
@@ -53,6 +58,10 @@ void s::NpcCommandCombat::update(sf::Time elapsedTime, NpcUpdateEvents* npcUpdat
 		if (distanceFromStartCombat > 800) {
 			endCombat = true;
 			velocity = b2Vec2(0, 0);
+		}
+
+		if (npc->isThinking() || npc->spells.isCasting()) {
+			velocity = b2Vec2(0,0);
 		}
 
 		velocity.Normalize();
@@ -89,8 +98,7 @@ void s::NpcCommandCombat::update(sf::Time elapsedTime, NpcUpdateEvents* npcUpdat
 
 		npc->setNpcCommand(nullptr);
 
-		NpcEventNpcIsIdle * iddleEvent = new NpcEventNpcIsIdle();
-		iddleEvent->npc = npc;
+		NpcEventNpcIsIdle * iddleEvent = new NpcEventNpcIsIdle(npc);
 		dispatchFinishEvent(iddleEvent);
 
 		delete c;
