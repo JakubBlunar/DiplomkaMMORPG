@@ -24,7 +24,7 @@ IGConsole::~IGConsole() {
 }
 
 void IGConsole::ExecCommand(const char* command_line) {
-	
+
 	// Process command
 	if (Stricmp(command_line, "CLEAR") == 0) {
 		ClearLog();
@@ -38,9 +38,10 @@ void IGConsole::ExecCommand(const char* command_line) {
 		for (int i = 0; i < Commands.Size; i++) {
 			item->message += "\n - " + std::string(Commands[i]);
 		}
-		
+
 		AddLog(item);
-	} else {
+	}
+	else {
 		EventSendMessage e;
 		e.message = std::string(command_line);
 		e.messageType = MessageType::SAY;
@@ -56,7 +57,7 @@ void IGConsole::ExecCommand(const char* command_line) {
 }
 
 int IGConsole::TextEditCallback(ImGuiTextEditCallbackData* data) {
-	
+
 	switch (data->EventFlag) {
 		case ImGuiInputTextFlags_CallbackCompletion: {
 			// Example of TEXT COMPLETION
@@ -114,7 +115,7 @@ int IGConsole::TextEditCallback(ImGuiTextEditCallbackData* data) {
 				item->message = "Possible matches: ";
 				item->time = Utils::utcTimeToLocalTime(Utils::getActualUtcTime());
 				item->type = MessageType::SERVER_ANNOUNCEMENT;
-			
+
 				for (int i = 0; i < candidates.Size; i++) {
 					item->message += "\n - " + std::string(candidates[i]);
 				}
@@ -174,17 +175,24 @@ void IGConsole::render(Game* g, IGManager* manager) {
 
 		strMessage += ": " + ci->message;
 
-
-		ImVec4 col = col_default_text;
-		if (ci->type == MessageType::SERVER_ANNOUNCEMENT) col = ImColor(0,0,205);
+		ImVec4 col;
+		switch (ci->type) {
+			case MessageType::SERVER_ANNOUNCEMENT: col = ImColor(0, 0, 205);
+				break;
+			case MessageType::COMBAT_LOG: col = ImColor(139, 69, 19);
+				break;
+			default:
+				col = col_default_text;
+		}
 
 		ImGui::PushStyleColor(ImGuiCol_Text, col);
 		ImGui::TextWrapped(strMessage.c_str());
 		ImGui::PopStyleColor();
 	}
-	
+
 	if (ScrollToBottom)
 		ImGui::SetScrollPosHere();
+
 	ScrollToBottom = false;
 	ImGui::PopStyleVar();
 	ImGui::EndChild();
@@ -192,7 +200,8 @@ void IGConsole::render(Game* g, IGManager* manager) {
 
 	ImGui::PushItemWidth(-1);
 	if (ImGui::InputText("", InputBuf, IM_ARRAYSIZE(InputBuf),
-	                     ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion , &TextEditCallbackStub, (void*)this)) {
+	                     ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion,
+	                     &TextEditCallbackStub, (void*)this)) {
 		char* s = InputBuf;
 		Strtrim(s);
 		if (s[0])
@@ -204,7 +213,7 @@ void IGConsole::render(Game* g, IGManager* manager) {
 
 	ImGui::PopItemWidth();
 
-	if(remove_focus) {
+	if (remove_focus) {
 		ImGui::SetWindowFocus(nullptr);
 		remove_focus = false;
 	}
@@ -227,7 +236,7 @@ void IGConsole::render(Game* g, IGManager* manager) {
 void IGConsole::handleEvent(GameEvent* event) {
 	switch (event->getId()) {
 		case SEND_MESSAGE: {
-			EventSendMessage* e = (EventSendMessage*) event;
+			EventSendMessage* e = (EventSendMessage*)event;
 			ConsoleItem* item = new ConsoleItem();
 			item->message = e->message;
 			item->type = e->messageType;
@@ -245,6 +254,5 @@ void IGConsole::handleEvent(GameEvent* event) {
 			break;
 		}
 		default: break;
-	} 
-
+	}
 }

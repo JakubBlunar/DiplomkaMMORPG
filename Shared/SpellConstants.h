@@ -23,7 +23,8 @@ enum class SpellCastResultCode: sf::Uint8 {
 	TARGET_NOT_EXISTS = 4,
 	ALREADY_CASTING = 5,
 	NOT_ENOUGH_MANA = 6,
-	HAS_COOLDOWN = 7
+	HAS_COOLDOWN = 7,
+	TARGET_IS_DEAD = 8
 };
 
 inline std::string getStringSpellErrorByResultCode(SpellCastResultCode code) {
@@ -42,6 +43,8 @@ inline std::string getStringSpellErrorByResultCode(SpellCastResultCode code) {
 			return "Your target do not exists";
 		case SpellCastResultCode::HAS_COOLDOWN:
 			return "Spell is not ready yet";
+		case SpellCastResultCode::TARGET_IS_DEAD:
+			return "Your target is dead";
 		default:
 			return "Your spell has not been casted";
 	}

@@ -107,6 +107,14 @@ void s::SpellManager::handleEvent(EventPlayerStartCastSpell* event, s::Session* 
 				if (character->id != event->entityId) {
 					Character* targetCharacter = characterMap->getCharacterById(event->entityId);
 					if (targetCharacter) {
+						if (targetCharacter->attributes.getAttribute(EntityAttributeType::HP, true) <= 0) {
+							error = new EventSpellCastResult();
+							error->entityId = character->id;
+							error->entityCategory = PLAYER;
+							error->spellId = si->id;
+							error->result = SpellCastResultCode::TARGET_IS_DEAD;
+							break;
+						}
 						e->targetCharacter = targetCharacter;
 						break;
 					}
@@ -121,6 +129,14 @@ void s::SpellManager::handleEvent(EventPlayerStartCastSpell* event, s::Session* 
 			case SpellTarget::NPC: {
 				Npc* targetNpc = characterMap->getNpcBySpawnId(event->entityId);
 				if (targetNpc) {
+					if (targetNpc->attributes.getAttribute(EntityAttributeType::HP, true) <= 0) {
+						error = new EventSpellCastResult();
+						error->entityId = character->id;
+						error->entityCategory = PLAYER;
+						error->spellId = si->id;
+						error->result = SpellCastResultCode::TARGET_IS_DEAD;
+						break;
+					}
 					e->targetNpc = targetNpc;
 					break;
 				}
@@ -169,6 +185,10 @@ void s::SpellManager::handleNpcCast(Npc* npc, SpellInfo* spellInfo) {
 				Character* character = (Character*) npc->combat.target;
 				e->targetCharacter = character;
 				e->spellTarget = SpellTarget::PLAYER;
+				if (character->attributes.getAttribute(EntityAttributeType::HP, true) <= 0) {
+					delete e;
+					return;
+				}
 				break;
 			}
 			default: {

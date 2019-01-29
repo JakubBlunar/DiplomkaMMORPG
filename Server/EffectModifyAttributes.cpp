@@ -5,7 +5,8 @@
 #include "EventAttributesChanged.h"
 #include "Character.h"
 #include "Npc.h"
-
+#include "Utils.h"
+#include "Account.h"
 
 s::EffectModifyAttributes::EffectModifyAttributes()
 {
@@ -113,6 +114,32 @@ void s::EffectModifyAttributes::modifyCharacterAttributes(Character* character,
 		e->setChange(modifier.first, newValue);
 	}
 
+	std::string casterName;
+	if (caster->getEntityType() == EntityType::PLAYER) {
+		Character* character = (Character*) caster;
+		casterName = character->name;
+	} else if (caster->getEntityType() == EntityType::NPC) {
+		Npc* npc = (Npc*) caster;
+		casterName = npc->getName();
+	} else
+		casterName = "Someone";
+
+	std::string log;
+
+	for (auto && modifier : *modifiers) {
+		log += ChatUtils::formatLogForAttributeChange(modifier.first, casterName, character->name , modifier.second) + "\n";
+	}
+
+	EventSendMessage logEvent;
+	logEvent.message = log;
+	logEvent.messageType = MessageType::COMBAT_LOG;
+	logEvent.playerId = -1;
+	logEvent.time = Utils::getActualUtcTime();
+
+	sf::Packet* p = logEvent.toPacket();
+	character->getAccount()->getSession()->sendPacket(p);
+	delete p;
+
 	character->position.getMap()->sendEventToAllPlayers(e);
 }
 
@@ -134,7 +161,26 @@ void s::EffectModifyAttributes::modifyNpcAttributes(Npc* npc, std::map<EntityAtt
 
 	npc->position.getMap()->sendEventToAllPlayers(e);
 
-	if (npc->attributes.getAttribute(EntityAttributeType::HP, true) <= 0) {
+	if (caster->getEntityType() == EntityType::PLAYER) {
+		Character* character = (Character*) caster;
+		std::string log;
+
+		for (auto && modifier : *modifiers) {
+			log += ChatUtils::formatLogForAttributeChange(modifier.first, character->name, npc->getName(), modifier.second) + "\n";
+		}
+
+		EventSendMessage e;
+		e.message = log;
+		e.messageType = MessageType::COMBAT_LOG;
+		e.playerId = -1;
+		e.time = Utils::getActualUtcTime();
+
+		sf::Packet* p = e.toPacket();
+		character->getAccount()->getSession()->sendPacket(p);
+		delete p;
+	}
+
+	if (npc->isAlive() && npc->attributes.getAttribute(EntityAttributeType::HP, true) <= 0) {
 		server->npcManager.npcDied(npc, caster);
 	}
 }

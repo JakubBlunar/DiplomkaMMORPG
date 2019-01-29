@@ -5,6 +5,7 @@
 #include "EventAttributesChanged.h"
 #include "Map.h"
 #include "Npc.h"
+#include "Utils.h"
 
 
 s::CharacterManager::CharacterManager(): server(nullptr) {}
@@ -74,7 +75,10 @@ void s::CharacterManager::handleNpcKill(Character* character, Npc* npc) const {
 		experience = ceil(experience * 1.5f);
 	}
 
+	std::string log = npc->getName() + " died. ";
+
 	experience *= server->serverSettings->xpRate;
+	log += "You gained " + ChatUtils::floatToString(experience, 0) + "xp.";
 
 	float characterExperience = character->attributes.getAttribute(EntityAttributeType::EXPERIENCE, true);
 	float newExperience = characterExperience + experience;
@@ -96,11 +100,23 @@ void s::CharacterManager::handleNpcKill(Character* character, Npc* npc) const {
 		eventAttributesChanged->setChange(EntityAttributeType::FREE_ATTRIBUTES, freeAttributes);
 
 		character->position.getMap()->sendEventToAllPlayers(eventAttributesChanged);
+
+		log += "\n Congratulation! You have got new level!";
 	}
 	else {
 		sf::Packet* p = eventAttributesChanged->toPacket();
 		character->getAccount()->getSession()->sendPacket(p);
 		delete p;
 	}
+
+	EventSendMessage logEvent;
+	logEvent.message = log;
+	logEvent.messageType = MessageType::COMBAT_LOG;
+	logEvent.playerId = -1;
+	logEvent.time = Utils::getActualUtcTime();
+	
+	sf::Packet* p = logEvent.toPacket();
+	character->getAccount()->getSession()->sendPacket(p);
+
 	delete eventAttributesChanged;
 }

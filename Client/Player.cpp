@@ -375,6 +375,15 @@ void Player::castSpell(SpellInfo* spellInfo, Map* map, Game* g) {
 		return;
 	}
 
+	AttributesComponent* targetAttributes = (AttributesComponent*)spellTarget->getComponent(ComponentType::ATTRIBUTES);
+	if (targetAttributes && targetAttributes->getAttribute(EntityAttributeType::HP) <= 0) {
+		GameMessage* m = new GameMessage();
+		m->message = "Your target is dead.";
+		m->displayTime = sf::seconds(1);
+		g->addGameMessage(m);
+		return;
+	}
+
 	bool canCast = spellTarget == this;
 	std::string message;
 	if (!canCast) {

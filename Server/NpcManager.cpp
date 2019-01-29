@@ -156,6 +156,12 @@ void s::NpcManager::handleEvent(GameEvent* event) {
 
 void s::NpcManager::npcDied(Npc* npc, Entity* caster) {
 	npc->lock();
+	if (!npc->isAlive()) {
+		npc->unlock();
+		return;
+	};
+	
+
 	npc->setDeadTimestamp(server->getServerTime());
 	npc->setNpcState(NpcState::DEAD);
 	npc->setNpcCommand(nullptr);
