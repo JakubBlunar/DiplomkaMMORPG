@@ -16,10 +16,10 @@ namespace s {
 		Entity* caster;
 		Entity* target;
 
-		void modifyCharacterAttributes(Character* character, std::map<EntityAttributeType, float>* modifiers);
+		void modifyCharacterAttributes(Character* character, std::map<EntityAttributeType, float>* modifiers) const;
 		void modifyNpcAttributes(Npc* npc, std::map<EntityAttributeType, float>* modifiers);
 	public:
-		EffectModifyAttributes();
+		EffectModifyAttributes(SpellInfo* spellInfo);
 		virtual ~EffectModifyAttributes();
 
 		void apply(Entity* caster, Entity* target) override;

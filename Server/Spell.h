@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include <list>
 #include "json.hpp"
+#include "SpellConstants.h"
 
 using json = nlohmann::json;
 
@@ -21,6 +22,7 @@ namespace s {
 		sf::Time globalCooldownTime;
 		float maxRange;
 		EntityType spellCategory;
+		SpellType type;
 	};
 
 	class Spell {

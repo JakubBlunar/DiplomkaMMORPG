@@ -47,8 +47,8 @@ void s::SpellHolder::init()
 		si->cooldownTime = sf::milliseconds((int)jsonData["cooldown"].get<json::number_integer_t>());
 		si->globalCooldownTime = sf::milliseconds((int)jsonData["gCooldown"].get<json::number_integer_t>());
 		si->maxRange =  (float)jsonData["maxRange"].get<json::number_float_t>();
+		si->type = (SpellType) jsonData["type"].get<json::number_integer_t>();
 		spellInfos.insert(std::make_pair(si->id, si));
-
 		
 		Spell* spell;
 		if (jsonData.find("entityAnimation") != jsonData.end()) {

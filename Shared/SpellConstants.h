@@ -9,6 +9,11 @@ enum class SpellTarget : sf::Uint8 {
 };
 
 
+enum class SpellType {
+	MELLE = 0,
+	MAGIC = 1
+};
+
 enum class SpellTargetRestriction: sf::Uint32 {
 	SELF= (1 << 0),
 	FRIENDLY = (1 << 1),

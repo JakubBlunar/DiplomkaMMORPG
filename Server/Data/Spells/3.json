@@ -10,6 +10,7 @@
     "desc": "Throws fireball at target",
     "gCooldown": 500,
     "maxRange": 320,
+    "type": 1,
     "effects": [
         1
     ]

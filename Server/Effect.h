@@ -11,6 +11,9 @@ namespace s {
 		int id = -1;
 		std::string name;
 		Server* server = nullptr;
+		SpellInfo* spellInfo;
+
+		Effect(SpellInfo* spellInfo);
 	public:
 		int getId();
 		void setId(int id) {

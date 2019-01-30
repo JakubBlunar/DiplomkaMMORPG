@@ -8,7 +8,7 @@
 #include "Utils.h"
 #include "Account.h"
 
-s::EffectModifyAttributes::EffectModifyAttributes()
+s::EffectModifyAttributes::EffectModifyAttributes(SpellInfo* spellInfo): s::Effect(spellInfo)
 {
 }
 
@@ -48,7 +48,7 @@ void s::EffectModifyAttributes::apply(Entity* caster, Entity* target) {
 }
 
 s::Effect* s::EffectModifyAttributes::clone() {
-	EffectModifyAttributes* clone = new EffectModifyAttributes();
+	EffectModifyAttributes* clone = new EffectModifyAttributes(spellInfo);
 
 	clone->setId(id);
 	clone->setName(name);
@@ -100,7 +100,7 @@ void s::EffectModifyAttributes::loadFromFile(std::string filename) {
 }
 
 void s::EffectModifyAttributes::modifyCharacterAttributes(Character* character,
-	std::map<EntityAttributeType, float>* modifiers) {
+	std::map<EntityAttributeType, float>* modifiers) const {
 	
 	EventAttributesChanged* e = new EventAttributesChanged();
 	e->entityType = PLAYER;

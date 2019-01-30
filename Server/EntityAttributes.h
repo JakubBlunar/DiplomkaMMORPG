@@ -30,6 +30,13 @@ namespace s {
 		void recalcMaxHealth();
 		void recalcMaxMana();
 		int recalcLevel();
+		float recalcArmor();
+		float recalcDodgeChance();
+		float recalcResistance();
+		
+		float getBonusDamage(EntityAttributes attribute) const;
+		float getBonusHealing(EntityAttributes attribute) const;
+
 		float getXpForLevel(int level) const;
 
 		int getCount() const { return attributes.size(); }

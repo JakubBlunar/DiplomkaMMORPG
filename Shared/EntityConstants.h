@@ -52,7 +52,9 @@ enum class EntityAttributeType: sf::Uint8 {
 	EXPERIENCE = 12,
 	MONEY = 13,
 	FREE_ATTRIBUTES = 14,
-	COUNT = 15
+	DODGE_CHANCE = 15,
+	RESISTANCE = 16,
+	COUNT = 17
 };
 
 #endif

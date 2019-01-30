@@ -9,6 +9,7 @@
     "desc": "Melle attack with weapon",
     "gCooldown": 500,
     "maxRange": 50,
+    "type": 0,
     "effects": [
         1
     ]

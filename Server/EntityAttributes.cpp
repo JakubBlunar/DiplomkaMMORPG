@@ -91,6 +91,48 @@ int s::EntityAttributes::recalcLevel()
 	return level;
 }
 
+float s::EntityAttributes::recalcArmor()
+{
+	float level = getAttribute(EntityAttributeType::LEVEL);
+	float strength = getAttribute(EntityAttributeType::STRENGTH, true);
+
+	float x = strength / (level * 0.8f);
+	float cap = level / 2;
+	float armor = (cap * x) / (x + 50);
+	setAttribute(EntityAttributeType::ARMOR, armor);
+	recalcResistance();
+	return armor;
+}
+
+float s::EntityAttributes::recalcDodgeChance() {
+	float level = getAttribute(EntityAttributeType::LEVEL);
+	float agility = getAttribute(EntityAttributeType::AGILITY, true);
+
+	float x = agility / (level * 0.8f);
+	float armor = (0.75f * x) / (x + 8);
+	setAttribute(EntityAttributeType::ARMOR, armor);
+	recalcResistance();
+	return armor;
+}
+
+float s::EntityAttributes::recalcResistance() {
+	float level = getAttribute(EntityAttributeType::LEVEL);
+	float armor = getAttribute(EntityAttributeType::ARMOR, true);
+
+	float x = armor / (level * 0.7f);
+	float resistance = (0.8f * x) / (x + 6);
+	setAttribute(EntityAttributeType::RESISTANCE, resistance);
+	return resistance;
+}
+
+float s::EntityAttributes::getBonusDamage(EntityAttributes attribute) const {
+	
+}
+
+float s::EntityAttributes::getBonusHealing(EntityAttributes attribute) const {
+	
+}
+
 float s::EntityAttributes::getXpForLevel(int level) const {
 	return 15.f * level * level - 15.f * level;
 }
