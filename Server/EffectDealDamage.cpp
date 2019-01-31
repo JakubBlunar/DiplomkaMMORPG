@@ -1,4 +1,5 @@
 #include "EffectDealDamage.h"
+#include <utility>
 #include "Random.h"
 #include "Character.h"
 #include "Utils.h"
@@ -7,7 +8,7 @@
 #include "Map.h"
 #include "Npc.h"
 
-s::EffectDealDamage::EffectDealDamage(SpellInfo spellInfo, float modifier): Effect(spellInfo) {
+s::EffectDealDamage::EffectDealDamage(SpellInfo spellInfo, float modifier): Effect(std::move(spellInfo)) {
 	this->modifier = modifier;
 	name = "Damage";
 }
@@ -112,6 +113,10 @@ void s::EffectDealDamage::dealDamage(Character* caster, Npc* target) const {
 	caster->getAccount()->getSession()->sendPacket(p);
 	delete p;
 	target->position.getMap()->sendEventToAllPlayers(e);
+
+	if (newHp <= 0) {
+		server->npcManager.npcDied(target, caster);
+	}
 }
 
 void s::EffectDealDamage::dealDamage(Npc* caster, Character* target) const {
@@ -199,6 +204,10 @@ void s::EffectDealDamage::dealDamage(Npc* caster, Npc* target) const {
 	e->spawnId = target->getSpawnId();
 	e->setChange(EntityAttributeType::HP, newHp);
 	target->position.getMap()->sendEventToAllPlayers(e);
+
+	if (newHp <= 0) {
+		server->npcManager.npcDied(target, caster);
+	}
 }
 
 

@@ -9,7 +9,7 @@
 #include "Account.h"
 
 
-s::EffectModifyAttributes::EffectModifyAttributes(SpellInfo spellInfo): s::Effect(spellInfo), caster(nullptr),
+s::EffectModifyAttributes::EffectModifyAttributes(SpellInfo spellInfo): s::Effect(std::move(spellInfo)), caster(nullptr),
                                                                         target(nullptr) {}
 
 
@@ -179,7 +179,7 @@ void s::EffectModifyAttributes::modifyNpcAttributes(Npc* npc, std::map<EntityAtt
 		delete p;
 	}
 
-	if (npc->isAlive() && npc->attributes.getAttribute(EntityAttributeType::HP, true) <= 0) {
+	if (npc->attributes.getAttribute(EntityAttributeType::HP, true) <= 0) {
 		server->npcManager.npcDied(npc, caster);
 	}
 }

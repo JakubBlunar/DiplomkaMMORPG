@@ -165,6 +165,7 @@
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="EffectDealDamage.cpp" />
+    <ClCompile Include="EffectHealTarget.cpp" />
     <ClCompile Include="EffectModifyAttributes.cpp" />
     <ClCompile Include="EntityAttributes.cpp" />
     <ClCompile Include="EntityCombat.cpp" />
@@ -249,6 +250,7 @@
     <ClInclude Include="Database.h" />
     <ClInclude Include="Effect.h" />
     <ClInclude Include="EffectDealDamage.h" />
+    <ClInclude Include="EffectHealTarget.h" />
     <ClInclude Include="EffectModifyAttributes.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityAttributes.h" />

@@ -330,6 +330,9 @@
     <ClCompile Include="EffectDealDamage.cpp">
       <Filter>Source Files\Effects</Filter>
     </ClCompile>
+    <ClCompile Include="EffectHealTarget.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INIReader.h">
@@ -573,6 +576,9 @@
       <Filter>Header Files\NpcEvents</Filter>
     </ClInclude>
     <ClInclude Include="EffectDealDamage.h">
+      <Filter>Header Files\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectHealTarget.h">
       <Filter>Header Files\Effects</Filter>
     </ClInclude>
   </ItemGroup>

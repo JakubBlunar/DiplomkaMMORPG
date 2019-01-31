@@ -1,0 +1,18 @@
+{
+    "id": 4,
+    "name": "Healing touch",
+    "mana": 2,
+    "cooldown": 0,
+    "castingTime": 3000,
+    "spellSpeed": 0,
+    "icon": "healingTouch.png",
+    "desc": "Slow but good heal",
+    "gCooldown": 500,
+    "maxRange": 192,
+    "type": 1,
+    "effects": {
+        "3": {
+            "modifier" : 1.2
+        }
+    }
+}

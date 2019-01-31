@@ -3,6 +3,7 @@
 #include "Npc.h"
 #include "EffectModifyAttributes.h"
 #include "EffectDealDamage.h"
+#include "EffectHealTarget.h"
 
 s::Spell::Spell(): instanceId(-1), target(nullptr) {
 	owner = nullptr;
@@ -50,6 +51,10 @@ void s::Spell::loadFromJson(json jsonData) {
 			}
 			case 2: {
 				e = new EffectDealDamage(spellInfo, 1);
+				break;
+			}
+			case 3: {
+				e = new EffectHealTarget(spellInfo, 1);
 				break;
 			}
 			default: continue;
