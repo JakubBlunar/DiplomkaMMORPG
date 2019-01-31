@@ -44,7 +44,7 @@ void s::Server::init() {
 		recieveThreads.push_back(t);
 	}
 
-	SpellHolder::instance()->init();
+	SpellHolder::instance()->init(this);
 	NpcHolder::instance()->init();
 	
 	npcManager.init(this);
@@ -272,19 +272,19 @@ void s::Server::recievePackets() {
 						Account* a = playerSession->getAccount();
 						if (a) {
 							Character* ch = a->getCharacter();
+							ch->lock();
 							if (ch) {
 								if(!a->isBot) {
 									ch->save();
 								}
 								ch->position.getMap()->removeCharacter(ch);
-								delete ch;
 							}
 							if (a->isBot) {
 								botManager.destroyBotAccount(a);
 							} else {
 								delete a;
 							}
-							
+							ch->unlock();
 						}
 
 						selector.remove(*playerSession->getSocket());

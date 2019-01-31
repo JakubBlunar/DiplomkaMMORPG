@@ -13,7 +13,7 @@
     "type": 1,
     "effects": {
         "2": {
-            "modifier" : 1.1
+            "modifier" : 20
         }
     }
 }

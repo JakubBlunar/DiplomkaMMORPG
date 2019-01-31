@@ -30,7 +30,6 @@ public:
 	std::string getName() const;
 
 	bool isRemoved() const { return removed; }
-
 protected:
 	Entity(sf::Uint32 id);
 	std::vector<Component *> components;
@@ -38,6 +37,8 @@ protected:
 	std::string name;
 	sf::Uint32 id;
 	bool removed;
+
+	sf::Mutex mutex;
 };
 
 

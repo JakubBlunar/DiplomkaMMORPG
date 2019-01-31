@@ -9,6 +9,7 @@
 #include "EntityPosition.h"
 #include "Spell.h"
 #include "EntitySpells.h"
+#include "EntityCombat.h"
 
 using json = nlohmann::json;
 
@@ -29,6 +30,7 @@ namespace s {
 		EntityAttributes attributes;
 		EntityPosition position;
 		EntitySpells spells;
+		EntityCombat combat;
 
 		int id;
 		std::string name;

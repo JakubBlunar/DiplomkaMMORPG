@@ -20,7 +20,7 @@ s::SpellHolder::~SpellHolder() {
 	
 }
 
-void s::SpellHolder::init()
+void s::SpellHolder::init(Server* server)
 {
 	sf::Lock mutexLock(lock);
 
@@ -59,6 +59,7 @@ void s::SpellHolder::init()
 			si->spellCategory = EntityType::SPELL;
 		}
 
+		spell->setServer(server);
 		spell->spellInfo = *si;
 		spell->loadFromJson(jsonData);
 

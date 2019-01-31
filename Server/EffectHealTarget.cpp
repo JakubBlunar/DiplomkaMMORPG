@@ -7,6 +7,7 @@
 #include "Account.h"
 #include "Map.h"
 #include "Npc.h"
+#include "EffectDealDamage.h"
 
 s::EffectHealTarget::EffectHealTarget(SpellInfo spellInfo, float modifier): Effect(std::move(spellInfo)) {
 	this->modifier = modifier;
@@ -197,7 +198,9 @@ void s::EffectHealTarget::apply(Entity* caster, Entity* target) {
 }
 
 s::Effect* s::EffectHealTarget::clone() {
-	return new EffectHealTarget(spellInfo, modifier);
+	EffectHealTarget* clone = new EffectHealTarget(spellInfo, modifier);
+	clone->setServer(server);
+	return clone;
 }
 
 void s::EffectHealTarget::loadFromJson(json jsonData) {

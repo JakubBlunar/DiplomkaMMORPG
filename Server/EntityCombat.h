@@ -2,9 +2,13 @@
 #define S_ENTITY_COMBAT
 
 #include <set>
-#include "Character.h"
+#include <SFML/System.hpp>
 
 namespace s {
+	class Entity;
+	class Character;
+	class Npc;
+
 	class EntityCombat {
 	public:
 		EntityCombat();
@@ -19,9 +23,11 @@ namespace s {
 
 		bool isCharacterAttacking(Character* character);
 		void setAttackingCharacter(Character* character);
+		void removeAttackingCharacter(Character* character);
 
 		void setAttackingNpc(Npc* npc);
 		bool isNpcAttacking(Npc* npc);
+		void removeAttackingNpc(Npc* npc);
 
 		sf::Vector2f startCombatPosition;
 

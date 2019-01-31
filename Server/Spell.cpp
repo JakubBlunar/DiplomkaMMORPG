@@ -60,6 +60,7 @@ void s::Spell::loadFromJson(json jsonData) {
 			default: continue;
 		}
 
+		e->setServer(server);
 		if (!data.empty()) {
 			e->loadFromJson(data);
 		}

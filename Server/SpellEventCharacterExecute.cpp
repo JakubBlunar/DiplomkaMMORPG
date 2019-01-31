@@ -8,6 +8,7 @@
 #include "ServerGlobals.h"
 #include "MovableSpell.h"
 #include "SpellEventApplyEffects.h"
+#include "Account.h"
 
 s::SpellEventCharacterExecute::SpellEventCharacterExecute(): character(nullptr), spellTarget(),
                                                              targetCharacter(nullptr),
@@ -82,6 +83,7 @@ void s::SpellEventCharacterExecute::execute(Server* s) {
 	}
 
 	Entity* targetEntity;
+	bool isAlive = true;
 	switch (spellTarget) {
 		case SpellTarget::PLAYER: {
 			targetEntity = targetCharacter;
@@ -89,12 +91,30 @@ void s::SpellEventCharacterExecute::execute(Server* s) {
 		}
 		case SpellTarget::NPC: {
 			targetEntity = targetNpc;
+			isAlive = targetNpc->isAlive();
 			break;
 		default:
 			return;
 		}
 	}
 
+	EventSpellCastResult* e = new EventSpellCastResult();
+	e->entityId = character->id;
+	e->entityCategory = PLAYER;
+	e->spellId = spellInfo->id;
+	e->result = SpellCastResultCode::SUCCESS;
+	e->startPosition = character->position.getPosition();
+	e->target = spellTarget;
+
+	if (!isAlive) {
+		e->result = SpellCastResultCode::TARGET_IS_DEAD;
+		sf::Packet* p = e->toPacket();
+		character->getAccount()->getSession()->sendPacket(p);
+		delete p;
+		delete e;
+		return;
+	}
+	
 
 	spdlog::get("log")->info("Casting spell {}: {}", character->name, spellInfo->name);
 	if (targetEntity) {
@@ -119,13 +139,6 @@ void s::SpellEventCharacterExecute::execute(Server* s) {
 	character->spells.setCooldown(spellInfo->id, serverTime + spellInfo->cooldownTime);
 	character->attributes.setAttribute(EntityAttributeType::MP, actualMana - spellInfo->manaCost);
 	
-	EventSpellCastResult* e = new EventSpellCastResult();
-	e->entityId = character->id;
-	e->entityCategory = PLAYER;
-	e->spellId = spellInfo->id;
-	e->result = SpellCastResultCode::SUCCESS;
-	e->startPosition = character->position.getPosition();
-	e->target = spellTarget;
 
 	switch (spellTarget) {
 		case SpellTarget::POSITION: {

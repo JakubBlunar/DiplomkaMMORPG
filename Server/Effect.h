@@ -14,7 +14,6 @@ namespace s {
 
 		Effect(SpellInfo spellInfo);
 	public:
-		virtual ~Effect() = default;
 
 		void setName(std::string name) {
 			this->name = name;

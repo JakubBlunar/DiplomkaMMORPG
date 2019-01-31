@@ -15,6 +15,7 @@
 #include "NpcEventNpcIsIdle.h"
 #include "EventDispatcher.h"
 #include "EntityPosition.h"
+#include "Entity.h"
 
 #include <execution>
 
@@ -586,11 +587,16 @@ s::Npc* s::Map::getNpcBySpawnId(int id) {
 }
 
 s::EntityToEntityRayCast* s::Map::makeRayCast(Entity* startEntity, Entity* endEntity) {
-
 	EntityToEntityRayCast* callback = new EntityToEntityRayCast(startEntity, endEntity);
 
-	b2Vec2 start = startEntity->getBody()->GetPosition();
-	b2Vec2 end = endEntity->getBody()->GetPosition();
+	b2Body* startBody = startEntity->getBody();
+	b2Body* endBody = endEntity->getBody();
+	if (!startBody || !endBody) {
+		return callback;
+	}
+
+	b2Vec2 start = startBody->GetPosition();
+	b2Vec2 end = endBody->GetPosition();
 
 	sf::Lock mapLock(lock);
 	world->RayCast(callback, start, end);

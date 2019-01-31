@@ -35,7 +35,12 @@ namespace s {
 		Spell();
 		virtual ~Spell();
 
+		void setServer(Server* server) {
+			this->server = server;
+		}
+
 		SpellInfo spellInfo;
+		Server* server;
 
 		void addEffect(Effect* effect);
 

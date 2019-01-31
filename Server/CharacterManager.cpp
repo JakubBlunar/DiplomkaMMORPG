@@ -59,6 +59,8 @@ void s::CharacterManager::handleEvent(EventIncreaseCharacterAttribute* event, Se
 }
 
 void s::CharacterManager::handleNpcKill(Character* character, Npc* npc) const {
+	character->combat.removeAttackingNpc(npc);
+
 	float characterLevel = character->attributes.getAttribute(EntityAttributeType::LEVEL, true);
 	float npcLevel = npc->attributes.getAttribute(EntityAttributeType::LEVEL, true);
 

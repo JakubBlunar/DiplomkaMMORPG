@@ -15,7 +15,6 @@ s::EffectModifyAttributes::EffectModifyAttributes(SpellInfo spellInfo): s::Effec
 
 s::EffectModifyAttributes::~EffectModifyAttributes()
 {
-
 }
 
 void s::EffectModifyAttributes::apply(Entity* caster, Entity* target) {

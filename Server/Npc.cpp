@@ -293,6 +293,8 @@ void s::Npc::startCombat(Character* character) {
 	combat.target = character;
 	combat.setAttackingCharacter(character);
 
+	character->combat.setAttackingNpc(this);
+
 	NpcCommand* c = command;
 	setNpcCommand(new NpcCommandCombat(this, server));
 

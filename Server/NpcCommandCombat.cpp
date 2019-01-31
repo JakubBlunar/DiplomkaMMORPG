@@ -21,7 +21,6 @@ s::NpcCommandCombat::NpcCommandCombat(Npc* npc, Server* s) {
 s::NpcCommandCombat::~NpcCommandCombat() {}
 
 void s::NpcCommandCombat::update(sf::Time elapsedTime, NpcUpdateEvents* npcUpdateEvents) {
-
 	if (!npc->isThinking() && !npc->spells.isCasting()) {
 		if (!npc->spells.hasAllSpellCooldown(server->getServerTime())) {
 			NpcEventCombatDecision* decision = new NpcEventCombatDecision(npc);
@@ -72,6 +71,10 @@ void s::NpcCommandCombat::update(sf::Time elapsedTime, NpcUpdateEvents* npcUpdat
 	npc->position.setPosition(sf::Vector2f(body->GetPosition().x * METTOPIX, body->GetPosition().y * METTOPIX));
 	npc->setMovement(sf::Vector2f(body->GetLinearVelocity().x * METTOPIX, body->GetLinearVelocity().y * METTOPIX),
 	                 nullptr);
+
+	if (!target->getBody()) {
+		endCombat = true;
+	}
 
 	if (endCombat) {
 		finished = true;

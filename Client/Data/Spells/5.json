@@ -1,0 +1,19 @@
+{
+    "id": 5,
+    "name": "Healing globe",
+    "mana": 4,
+    "cooldown": 6000,
+    "castingTime": 500,
+    "spellSpeed": 130,
+    "icon": "healingGlobe.png",
+    "entityAnimation": "5",
+    "desc": "Powerfull healing spell with long cooldown",
+    "gCooldown": 500,
+    "maxRange": 190,
+    "type": 1,
+    "effects": {
+        "3": {
+            "modifier" : 3
+        }
+    }
+}

@@ -14,7 +14,7 @@ namespace s {
 
 	class SpellHolder {
 	public:
-		void init();
+		void init(Server* server);
 		int generateInstanceId();
 		void freeInstanceId(int id);
 

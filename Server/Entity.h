@@ -9,16 +9,18 @@ namespace s {
 	class Entity {
 	protected:
 		Entity(): entityType() {} ;
-		virtual ~Entity() = default;
-
 		EntityType entityType;
 
+		sf::Mutex mutex;
 	public:
 		EntityType getEntityType() const {
 			return entityType;
 		}
 
-		virtual b2Body*  getBody() const = 0;
+		void lock() { mutex.lock(); }
+		void unlock() { mutex.lock(); }
+
+		virtual b2Body* getBody() const = 0;
 	};
 }
 

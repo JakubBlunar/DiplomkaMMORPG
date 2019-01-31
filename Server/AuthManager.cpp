@@ -25,8 +25,8 @@ void s::AuthManager::handleEvent(EventCharacterLogout* event, s::Session* player
 	if(account && account->isBot)
 		return;
 
-	Character* ch = account->getCharacter();
 
+	Character* ch = account->getCharacter();
 	ch->save();
 
 	Map* map = ch->position.getMap();

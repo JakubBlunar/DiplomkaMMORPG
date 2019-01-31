@@ -231,7 +231,9 @@ void s::EffectDealDamage::apply(Entity* caster, Entity* target) {
 }
 
 s::Effect* s::EffectDealDamage::clone() {
-	return new EffectDealDamage(spellInfo, modifier);
+	EffectDealDamage* clone = new EffectDealDamage(spellInfo, modifier);
+	clone->setServer(server);
+	return clone;
 }
 
 void s::EffectDealDamage::loadFromJson(json jsonData) {
