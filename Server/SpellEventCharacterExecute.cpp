@@ -118,7 +118,7 @@ void s::SpellEventCharacterExecute::execute(Server* s) {
 
 	character->spells.setCooldown(spellInfo->id, serverTime + spellInfo->cooldownTime);
 	character->attributes.setAttribute(EntityAttributeType::MP, actualMana - spellInfo->manaCost);
-
+	
 	EventSpellCastResult* e = new EventSpellCastResult();
 	e->entityId = character->id;
 	e->entityCategory = PLAYER;

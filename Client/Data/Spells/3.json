@@ -1,7 +1,7 @@
 {
     "id": 3,
     "name": "Fireball",
-    "mana": 0,
+    "mana": 1,
     "cooldown": 0,
     "castingTime": 3000,
     "spellSpeed": 100,
@@ -10,7 +10,10 @@
     "desc": "Throws fireball at target",
     "gCooldown": 500,
     "maxRange": 320,
-    "effects": [
-        1
-    ]
+    "type": 1,
+    "effects": {
+        "2": {
+            "modifier" : 1.1
+        }
+    }
 }

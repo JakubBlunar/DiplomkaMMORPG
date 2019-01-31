@@ -13,13 +13,9 @@
 #include "Character.h"
 #include "Map.h"
 #include "EventCharacterLogout.h"
-#include <SFML/Window/Keyboard.hpp>
-#include <SFML/Graphics/BlendMode.hpp>
-#include <cstdint>
 #include "NpcHolder.h"
 #include "SpellHolder.h"
 #include "EventPlayerStartCastSpell.h"
-#include "EffectHolder.h"
 #include "EventIncreaseCharacterAttribute.h"
 
 s::Server::Server(ServerSettings* settings):
@@ -48,7 +44,6 @@ void s::Server::init() {
 		recieveThreads.push_back(t);
 	}
 
-	EffectHolder::instance()->init(this);
 	SpellHolder::instance()->init();
 	NpcHolder::instance()->init();
 	

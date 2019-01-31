@@ -164,7 +164,7 @@
     <ClCompile Include="Crypto.cpp" />
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="Effect.cpp" />
-    <ClCompile Include="EffectHolder.cpp" />
+    <ClCompile Include="EffectDealDamage.cpp" />
     <ClCompile Include="EffectModifyAttributes.cpp" />
     <ClCompile Include="EntityAttributes.cpp" />
     <ClCompile Include="EntityCombat.cpp" />
@@ -248,7 +248,7 @@
     <ClInclude Include="Crypto.h" />
     <ClInclude Include="Database.h" />
     <ClInclude Include="Effect.h" />
-    <ClInclude Include="EffectHolder.h" />
+    <ClInclude Include="EffectDealDamage.h" />
     <ClInclude Include="EffectModifyAttributes.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityAttributes.h" />

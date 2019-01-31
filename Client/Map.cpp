@@ -201,6 +201,16 @@ void Map::handleEvent(GameEvent* event) {
 
 			}
 
+			if (e->entityCategory == NPC) {
+				if (e->result == SpellCastResultCode::SUCCESS) {
+					auto npcEntity = npcs.find(e->entityId);
+					if (npcEntity != npcs.end()) {
+						AttributesComponent* attributes = npcEntity->second->getAttributesComponent();
+						attributes->modifyAttribute(EntityAttributeType::MP, -si->manaCost);
+					}
+				}
+			}
+
 			if (si->hasEntity && e->result == SpellCastResultCode::SUCCESS) {
 				Spell* spell = EntityPrototypes::instance()->createSpell(si->id);
 
@@ -240,10 +250,10 @@ void Map::handleEvent(GameEvent* event) {
 				}
 			}
 
-		}
-		default:
-			break;
 	}
+default:
+	break;
+}
 
 }
 

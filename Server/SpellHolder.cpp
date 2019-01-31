@@ -59,8 +59,9 @@ void s::SpellHolder::init()
 			si->spellCategory = EntityType::SPELL;
 		}
 
-		spell->loadFromJson(jsonData);
 		spell->spellInfo = *si;
+		spell->loadFromJson(jsonData);
+
 
 		prototypes.insert(std::make_pair(si->id, spell));
 	}

@@ -10,7 +10,12 @@
     "gCooldown": 500,
     "maxRange": 50,
     "type": 0,
-    "effects": [
-        1
-    ]
+    "effects": {
+        "1": {
+            "name": "DMG",
+            "target": {
+                "0": -1
+            }
+        }
+    }
 }

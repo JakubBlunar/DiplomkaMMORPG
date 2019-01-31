@@ -8,17 +8,13 @@
 namespace s {
 	class Effect {
 	protected:
-		int id = -1;
 		std::string name;
 		Server* server = nullptr;
-		SpellInfo* spellInfo;
+		SpellInfo spellInfo;
 
-		Effect(SpellInfo* spellInfo);
+		Effect(SpellInfo spellInfo);
 	public:
-		int getId();
-		void setId(int id) {
-			this->id = id;
-		}
+		virtual ~Effect() = default;
 
 		void setName(std::string name) {
 			this->name = name;

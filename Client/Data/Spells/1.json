@@ -9,7 +9,13 @@
     "desc": "Melle attack with weapon",
     "gCooldown": 500,
     "maxRange": 50,
-    "effects": [
-        1
-    ]
+    "type": 0,
+    "effects": {
+        "1": {
+            "name": "DMG",
+            "target": {
+                "0": -1
+            }
+        }
+    }
 }

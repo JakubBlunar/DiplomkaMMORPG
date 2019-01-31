@@ -1,14 +1,17 @@
 #include "Spell.h"
 #include "ServerGlobals.h"
 #include "Npc.h"
-#include "EffectHolder.h"
+#include "EffectModifyAttributes.h"
+#include "EffectDealDamage.h"
 
 s::Spell::Spell(): instanceId(-1), target(nullptr) {
 	owner = nullptr;
 }
 
 
-s::Spell::~Spell() {}
+s::Spell::~Spell() {
+	effects.clear(); 
+}
 
 void s::Spell::addEffect(Effect* effect) {
 	effects.push_back(effect);
@@ -33,11 +36,30 @@ s::Spell* s::Spell::clone() const {
 	return cloned;
 }
 
-void s::Spell::loadFromJson(json data) {
-	json jeffects = data["effects"].get<json::array_t>();
-	for (json::iterator it = jeffects.begin(); it != jeffects.end(); ++it) {
-		int effectType = *it;
-		effects.push_back(EffectHolder::instance()->createEffect(effectType));
+void s::Spell::loadFromJson(json jsonData) {
+	json jeffects = jsonData["effects"].get<json::object_t>();
+	for (auto& el : jeffects.items()) {
+		int key = stoi(el.key());
+		json data = el.value();
+
+		Effect *e = nullptr;
+		switch (key) {
+			case 1: {
+				e = new EffectModifyAttributes(spellInfo);
+				break;
+			}
+			case 2: {
+				e = new EffectDealDamage(spellInfo, 1);
+				break;
+			}
+			default: continue;
+		}
+
+		if (!data.empty()) {
+			e->loadFromJson(data);
+		}
+		
+		effects.push_back(e);
 	}
 }
 

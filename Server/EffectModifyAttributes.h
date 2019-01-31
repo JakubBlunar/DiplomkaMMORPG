@@ -19,7 +19,7 @@ namespace s {
 		void modifyCharacterAttributes(Character* character, std::map<EntityAttributeType, float>* modifiers) const;
 		void modifyNpcAttributes(Npc* npc, std::map<EntityAttributeType, float>* modifiers);
 	public:
-		EffectModifyAttributes(SpellInfo* spellInfo);
+		EffectModifyAttributes(SpellInfo spellInfo);
 		virtual ~EffectModifyAttributes();
 
 		void apply(Entity* caster, Entity* target) override;

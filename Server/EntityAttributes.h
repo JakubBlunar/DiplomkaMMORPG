@@ -34,8 +34,10 @@ namespace s {
 		float recalcDodgeChance();
 		float recalcResistance();
 		
-		float getBonusDamage(EntityAttributes attribute) const;
-		float getBonusHealing(EntityAttributes attribute) const;
+		float getBonusDamage(EntityAttributeType attribute) const;
+		float getBonusHealing(EntityAttributeType attribute) const;
+		sf::Vector2f getMinMaxDmg(EntityAttributeType attribute) const;
+		sf::Vector2f getMinMaxHealing(EntityAttributeType attribute) const;
 
 		float getXpForLevel(int level) const;
 

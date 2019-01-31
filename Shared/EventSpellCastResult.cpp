@@ -15,7 +15,7 @@ void EventSpellCastResult::accept(EventVisitor* v) {
 }
 
 bool EventSpellCastResult::loadFromPacket(sf::Packet* p) {
-	sf::Uint8 entityCategoryNum;
+	sf::Uint32 entityCategoryNum;
 	sf::Uint8 castResultNum;
 
 	if (*p >> entityId >> entityCategoryNum >> spellId >> castResultNum) {
@@ -47,7 +47,7 @@ bool EventSpellCastResult::loadFromPacket(sf::Packet* p) {
 sf::Packet* EventSpellCastResult::toPacket() {
 	sf::Packet* p = new sf::Packet();
 
-	if (*p << id << entityId << static_cast<sf::Uint8>(entityCategory) << spellId << static_cast<sf::Uint8>(result)) {
+	if (*p << id << entityId << static_cast<sf::Uint32>(entityCategory) << spellId << static_cast<sf::Uint8>(result)) {
 		if (result == SpellCastResultCode::SUCCESS) {
 			if (*p << static_cast<sf::Uint8>(target) << startPosition.x << startPosition.y) {
 				if (target == SpellTarget::POSITION) {

@@ -288,9 +288,6 @@
     <ClCompile Include="TextFileLoader.cpp">
       <Filter>Source Files\Tools</Filter>
     </ClCompile>
-    <ClCompile Include="EffectHolder.cpp">
-      <Filter>Source Files\Tools</Filter>
-    </ClCompile>
     <ClCompile Include="SpellEvent.cpp">
       <Filter>Source Files\SpellEvents</Filter>
     </ClCompile>
@@ -329,6 +326,9 @@
     </ClCompile>
     <ClCompile Include="NpcEventCombatDecision.cpp">
       <Filter>Source Files\NpcEvents</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectDealDamage.cpp">
+      <Filter>Source Files\Effects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -530,9 +530,6 @@
     <ClInclude Include="TextFileLoader.h">
       <Filter>Header Files\Tools</Filter>
     </ClInclude>
-    <ClInclude Include="EffectHolder.h">
-      <Filter>Header Files\Tools</Filter>
-    </ClInclude>
     <ClInclude Include="SpellEvent.h">
       <Filter>Header Files\SpellEvents</Filter>
     </ClInclude>
@@ -574,6 +571,9 @@
     </ClInclude>
     <ClInclude Include="NpcEventCombatDecision.h">
       <Filter>Header Files\NpcEvents</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectDealDamage.h">
+      <Filter>Header Files\Effects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

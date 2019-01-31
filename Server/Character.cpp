@@ -135,7 +135,7 @@ s::Character* s::Character::getCharacterById(int characterId) {
 	character->isBot = false;
 
 	std::string attributeQuery =
-		"SELECT experience, money, stamina, agility, intelect, spirit, armor, freeAttributes FROM character_attributes WHERE characterId="
+		"SELECT experience, money, stamina, agility, intelect, spirit, armor, freeAttributes, strength FROM character_attributes WHERE characterId="
 		+
 		std::to_string(character->id) + ";";
 	MYSQL_RES* resAttr = Database::i()->executeQuery(attributeQuery);
@@ -150,12 +150,17 @@ s::Character* s::Character::getCharacterById(int characterId) {
 	character->attributes.setAttribute(EntityAttributeType::SPIRIT, std::stof(attributesRow[5]));
 	character->attributes.setAttribute(EntityAttributeType::ARMOR, std::stof(attributesRow[6]));
 	character->attributes.setAttribute(EntityAttributeType::FREE_ATTRIBUTES, std::stof(attributesRow[7]));
+	character->attributes.setAttribute(EntityAttributeType::STRENGTH, std::stof(attributesRow[8]));
 	character->attributes.setAttribute(EntityAttributeType::SPEED, 48.f);
 
 
+	character->attributes.recalcResistance();
 	character->attributes.recalcLevel();
+	character->attributes.recalcArmor();
+	character->attributes.recalcDodgeChance();
 	character->attributes.recalcMaxHealth();
 	character->attributes.recalcMaxMana();
+
 	character->attributes.setAttribute(EntityAttributeType::HP,
 	                                   character->attributes.getAttribute(EntityAttributeType::BASE_HP, false));
 	character->attributes.setAttribute(EntityAttributeType::MP,

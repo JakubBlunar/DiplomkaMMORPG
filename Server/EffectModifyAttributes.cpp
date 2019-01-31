@@ -8,13 +8,14 @@
 #include "Utils.h"
 #include "Account.h"
 
-s::EffectModifyAttributes::EffectModifyAttributes(SpellInfo* spellInfo): s::Effect(spellInfo)
-{
-}
+
+s::EffectModifyAttributes::EffectModifyAttributes(SpellInfo spellInfo): s::Effect(spellInfo), caster(nullptr),
+                                                                        target(nullptr) {}
 
 
 s::EffectModifyAttributes::~EffectModifyAttributes()
 {
+
 }
 
 void s::EffectModifyAttributes::apply(Entity* caster, Entity* target) {
@@ -50,7 +51,6 @@ void s::EffectModifyAttributes::apply(Entity* caster, Entity* target) {
 s::Effect* s::EffectModifyAttributes::clone() {
 	EffectModifyAttributes* clone = new EffectModifyAttributes(spellInfo);
 
-	clone->setId(id);
 	clone->setName(name);
 	clone->setServer(server);
 
@@ -72,7 +72,6 @@ void s::EffectModifyAttributes::addTargetModify(EntityAttributeType attribute, f
 }
 
 void s::EffectModifyAttributes::loadFromJson(json jsonData) {
-	id = (int)jsonData["id"].get<json::number_integer_t>();
 	name = jsonData["name"].get<json::string_t>();
 
 	if (jsonData.find("target") != jsonData.end()) {
@@ -184,3 +183,4 @@ void s::EffectModifyAttributes::modifyNpcAttributes(Npc* npc, std::map<EntityAtt
 		server->npcManager.npcDied(npc, caster);
 	}
 }
+

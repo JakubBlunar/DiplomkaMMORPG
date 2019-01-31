@@ -65,6 +65,10 @@ void s::Npc::loadFromJson(std::string file) {
 		index++;
 	}
 
+	this->attributes.recalcResistance();
+	this->attributes.recalcArmor();
+	this->attributes.recalcDodgeChance();
+
 	npc_script = TextFileLoader::instance()->loadFile("Npcs/Scripts/common.lua");
 	auto exists = jsonData.find("script");
 	if (exists == jsonData.end()) {
