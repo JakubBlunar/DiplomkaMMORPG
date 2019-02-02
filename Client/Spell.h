@@ -19,6 +19,7 @@ struct SpellInfo {
 	float maxRange;
 	std::string description;
 	bool hasEntity;
+	int levelNeeded;
 };
 
 struct SpellCooldown {

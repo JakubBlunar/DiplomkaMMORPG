@@ -19,6 +19,7 @@
 
 #include "EventCharacterLogout.h"
 #include "EventDispatcher.h"
+#include "EventLoginRequest.h"
 
 
 BotGame::BotGame() {
@@ -93,8 +94,9 @@ void BotGame::afterStart() {
 	print("BOT INITED");
 
 	EventLoginRequest* req = new EventLoginRequest("bot", "");
-	EventDispatcher<EventLoginRequest>::dispatchEvent(req);
-
+	sf::Packet* packet = req->toPacket();
+	packet_manager->sendPacket(packet);
+	delete packet;
 }
 
 void BotGame::botUpdatePlayer()

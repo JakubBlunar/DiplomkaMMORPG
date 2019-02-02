@@ -19,7 +19,6 @@ namespace s {
 	class ServerTasks;
 }
 
-
 namespace s {
 	class Server {
 		friend class Session;

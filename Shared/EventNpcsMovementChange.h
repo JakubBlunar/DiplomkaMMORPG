@@ -17,7 +17,6 @@ public:
 
 	std::map<sf::Int32, MovementData> npcsMovements;
 
-	void accept(EventVisitor*) override;
 	bool loadFromPacket(sf::Packet* p) override;
 	sf::Packet* toPacket() override;
 };

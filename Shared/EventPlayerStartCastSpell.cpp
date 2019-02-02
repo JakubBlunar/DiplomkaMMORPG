@@ -9,10 +9,6 @@ EventPlayerStartCastSpell::EventPlayerStartCastSpell(): spellId(0), startCastTim
 
 EventPlayerStartCastSpell::~EventPlayerStartCastSpell() {}
 
-void EventPlayerStartCastSpell::accept(EventVisitor* v) {
-	v->visit(this);
-}
-
 bool EventPlayerStartCastSpell::loadFromPacket(sf::Packet* p) {
 	sf::Uint8 numTarget;
 	if (*p >> spellId >> numTarget >> startCastTimestamp) {

@@ -18,10 +18,6 @@ void EventNpcChanges::addChange(NpcChange* change) {
 	changes.push_back(change);
 }
 
-void EventNpcChanges::accept(EventVisitor* v) {
-	v->visit(this);
-}
-
 bool EventNpcChanges::loadFromPacket(sf::Packet* p) {
 	int count;
 	if (*p >> spawnId >>count) {

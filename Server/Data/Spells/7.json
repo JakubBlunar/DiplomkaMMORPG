@@ -1,0 +1,20 @@
+{
+    "id": 7,
+    "name": "Bubble wand",
+    "mana": 0,
+    "cooldown": 2000,
+    "castingTime": 1000,
+    "spellSpeed": 150,
+    "icon": "bubble.png",
+    "entityAnimation": "bubble",
+    "desc": "Send bubble on target in medium distance.",
+    "gCooldown": 500,
+    "maxRange": 190,
+    "type": 1,
+    "levelNeeded": 1,
+    "effects": {
+        "2": {
+            "modifier": 1
+        }
+    }
+}

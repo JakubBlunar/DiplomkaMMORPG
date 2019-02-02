@@ -29,6 +29,7 @@ namespace s {
 		Spell* createSpell(int type);
 		s::MovableSpell* createMovableSpell(int type);
 		SpellInfo* getSpellInfo(int type);
+		std::vector<SpellInfo*>* getSpellsWithLevel(int level);
 
 		void read_directory(std::string pattern, std::vector<std::string>& v) const;
 	private:
@@ -37,6 +38,7 @@ namespace s {
 
 		std::map<int, Spell*> prototypes;
 		std::map<int, SpellInfo*> spellInfos;
+		std::map<int, std::vector<SpellInfo*>*> spellInfoByLevel;
 		IDManager<sf::Int32> idManager;
 
 		sf::Mutex lock;

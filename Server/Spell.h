@@ -23,6 +23,7 @@ namespace s {
 		float maxRange;
 		EntityType spellCategory;
 		SpellType type;
+		int levelNeeded;
 	};
 
 	class Spell {

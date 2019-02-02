@@ -11,7 +11,6 @@ public:
 	float x, y, velX, velY, speed;
 	int spawnId;
 
-	void accept(class EventVisitor* v) override;
 	bool loadFromPacket(sf::Packet* p) override;
 	sf::Packet* toPacket() override;
 	std::string toString() const override;

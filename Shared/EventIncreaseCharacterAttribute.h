@@ -2,7 +2,7 @@
 #define EVENT_INCREASE_CHARACTER_ATTRIBUTE_H
 
 #include "GameEvent.h"
-#include "../Shared//EntityConstants.h"
+#include "../Shared/EntityConstants.h"
 
 class EventIncreaseCharacterAttribute :
 	public GameEvent
@@ -15,7 +15,6 @@ public:
 	int playerId;
 	EntityAttributeType attribute;
 
-	void accept(EventVisitor*) override;
 	bool loadFromPacket(sf::Packet* p) override;
 	sf::Packet* toPacket() override;
 };

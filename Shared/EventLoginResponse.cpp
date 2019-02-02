@@ -13,10 +13,6 @@ EventLoginResponse::EventLoginResponse() {
 EventLoginResponse::~EventLoginResponse() {
 }
 
-void EventLoginResponse::accept(EventVisitor* v) {
-	v->visit(this);
-}
-
 bool EventLoginResponse::loadFromPacket(sf::Packet* p) {
 	if (*p >> status >> message >> account) {
 		return true;

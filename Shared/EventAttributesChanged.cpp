@@ -21,10 +21,6 @@ void EventAttributesChanged::setChange(EntityAttributeType type, float newValue)
 	}
 }
 
-void EventAttributesChanged::accept(EventVisitor* v) {
-	v->visit(this);
-}
-
 bool EventAttributesChanged::loadFromPacket(sf::Packet* p) {
 	sf::Uint8 count;
 	sf::Uint32 entityTypeNum;

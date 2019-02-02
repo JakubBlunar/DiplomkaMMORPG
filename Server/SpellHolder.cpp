@@ -48,7 +48,17 @@ void s::SpellHolder::init(Server* server)
 		si->globalCooldownTime = sf::milliseconds((int)jsonData["gCooldown"].get<json::number_integer_t>());
 		si->maxRange =  (float)jsonData["maxRange"].get<json::number_float_t>();
 		si->type = (SpellType) jsonData["type"].get<json::number_integer_t>();
+		si->levelNeeded = (int) jsonData["levelNeeded"].get<json::number_integer_t>();
 		spellInfos.insert(std::make_pair(si->id, si));
+
+		auto foundVector = spellInfoByLevel.find(si->levelNeeded);
+		if (foundVector == spellInfoByLevel.end()) {
+			std::vector<SpellInfo*>* container = new std::vector<SpellInfo*>();
+			container->push_back(si);
+			spellInfoByLevel.insert(std::make_pair(si->levelNeeded, container));
+		} else {
+			foundVector->second->push_back(si);
+		}
 		
 		Spell* spell;
 		if (jsonData.find("entityAnimation") != jsonData.end()) {
@@ -127,6 +137,14 @@ s::SpellInfo * s::SpellHolder::getSpellInfo(int type)
 
 	throw "SpellHolder: SpellInfo not found " + std::to_string(type);
 
+}
+
+std::vector<s::SpellInfo*>* s::SpellHolder::getSpellsWithLevel(int level) {
+	auto found = spellInfoByLevel.find(level);
+	if (found != spellInfoByLevel.end()) {
+		return found->second;
+	}
+	return nullptr;
 }
 
 void s::SpellHolder::read_directory(std::string pattern, std::vector<std::string>& v) const

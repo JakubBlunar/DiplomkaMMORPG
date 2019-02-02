@@ -6,7 +6,10 @@
 #include "Map.h"
 #include "Npc.h"
 #include "Utils.h"
-
+#include "EventIncreaseCharacterAttribute.h"
+#include "EventLearnSpell.h"
+#include "EventFreeSpellToLearn.h"
+#include "Database.h"
 
 s::CharacterManager::CharacterManager(): server(nullptr) {}
 
@@ -58,6 +61,61 @@ void s::CharacterManager::handleEvent(EventIncreaseCharacterAttribute* event, Se
 	map->sendEventToAllPlayers(changeEvent);
 }
 
+void s::CharacterManager::handleEvent(EventLearnSpell* event, Session* playerSession, Server* s) const {
+	SpellHolder* spellHolder = SpellHolder::instance();
+
+	try {
+		SpellInfo* si = spellHolder->getSpellInfo(event->spellId);
+		Character* character = playerSession->getAccount()->getCharacter();
+
+		if (character->spells.getSpell(si->id) != nullptr) {
+			return;
+		}
+
+		character->spells.addAvailableSpell(si);
+
+		EventLearnSpell e;
+		e.spellId = si->id;
+		e.success = true;
+
+		sf::Packet* p = e.toPacket();
+		playerSession->sendPacket(p);
+		delete p;
+
+		std::string query = "INSERT INTO character_spells(`spellType`,`characterId` ,`createdAt` ,`updatedAt`) VALUES(";
+		query.append(std::to_string(si->id) + ", ");
+		query.append(std::to_string(character->id) + ", ");
+		query.append(" NOW(), NOW());");
+
+		bool success = Database::i()->executeModify(query) > 0;
+		if (!success) {
+			throw "Cannot save into database";
+		} 
+
+		std::vector<SpellInfo*>* spellsToChoice = getFreeSpellsForLearn(character);
+		if (spellsToChoice && !spellsToChoice->empty()) {
+			EventFreeSpellToLearn e;
+			for (std::vector<SpellInfo*>::iterator it = spellsToChoice->begin(); it != spellsToChoice->end(); ++it) {
+				SpellInfo* si = *it;
+				e.spellIds.push_back(si->id);
+			}
+
+			sf::Packet* p = e.toPacket();
+			playerSession->sendPacket(p);
+			delete p;
+		}
+	}
+	catch (...) {
+		EventLearnSpell e;
+		e.spellId = event->spellId;
+		e.success = false;
+
+		sf::Packet* p = e.toPacket();
+		playerSession->sendPacket(p);
+	}
+
+}
+
 void s::CharacterManager::handleNpcKill(Character* character, Npc* npc) const {
 	character->combat.removeAttackingNpc(npc);
 
@@ -92,6 +150,8 @@ void s::CharacterManager::handleNpcKill(Character* character, Npc* npc) const {
 	eventAttributesChanged->entityType = PLAYER;
 	eventAttributesChanged->setChange(EntityAttributeType::EXPERIENCE, newExperience);
 
+	Session* playerSession =  character->getAccount()->getSession();
+
 	float actualLevel = character->attributes.getAttribute(EntityAttributeType::LEVEL, true);
 	if (actualLevel > characterLevel) {
 		eventAttributesChanged->setChange(EntityAttributeType::LEVEL, actualLevel);
@@ -104,10 +164,23 @@ void s::CharacterManager::handleNpcKill(Character* character, Npc* npc) const {
 		character->position.getMap()->sendEventToAllPlayers(eventAttributesChanged);
 
 		log += "\n Congratulation! You have got new level!";
+
+		std::vector<SpellInfo*>* spellsToChoice = getFreeSpellsForLearn(character);
+		if (spellsToChoice && !spellsToChoice->empty()) {
+			EventFreeSpellToLearn e;
+			for (std::vector<SpellInfo*>::iterator it = spellsToChoice->begin(); it != spellsToChoice->end(); ++it) {
+				SpellInfo* si = *it;
+				e.spellIds.push_back(si->id);
+			}
+
+			sf::Packet* p = e.toPacket();
+			playerSession->sendPacket(p);
+			delete p;
+		}
 	}
 	else {
 		sf::Packet* p = eventAttributesChanged->toPacket();
-		character->getAccount()->getSession()->sendPacket(p);
+		playerSession->sendPacket(p);
 		delete p;
 	}
 
@@ -116,9 +189,31 @@ void s::CharacterManager::handleNpcKill(Character* character, Npc* npc) const {
 	logEvent.messageType = MessageType::COMBAT_LOG;
 	logEvent.playerId = -1;
 	logEvent.time = Utils::getActualUtcTime();
-	
+
 	sf::Packet* p = logEvent.toPacket();
-	character->getAccount()->getSession()->sendPacket(p);
+	playerSession->sendPacket(p);
 
 	delete eventAttributesChanged;
+}
+
+std::vector<s::SpellInfo*>* s::CharacterManager::getFreeSpellsForLearn(Character* character) const {
+	SpellHolder* spellHolder = SpellHolder::instance();
+
+	int level = (int)character->attributes.getAttribute(EntityAttributeType::LEVEL, false);
+	for (int i = 1; i <= level; i++) {
+		std::vector<SpellInfo*>* spells = spellHolder->getSpellsWithLevel(level);
+		if (!spells || spells->empty()) continue;
+
+		bool found = false;
+		for (auto spellInfo : character->spells.availableSpells) {
+			if (spellInfo.second->levelNeeded == level) {
+				found = true;
+				break;
+			}
+		}
+		if (found) continue;
+		return spells;
+	}
+
+	return nullptr;
 }

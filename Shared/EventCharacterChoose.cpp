@@ -10,10 +10,6 @@ EventCharacterChoose::EventCharacterChoose(): characterId(0) {
 EventCharacterChoose::~EventCharacterChoose() {
 }
 
-void EventCharacterChoose::accept(EventVisitor* v) {
-	v->visit(this);
-}
-
 bool EventCharacterChoose::loadFromPacket(sf::Packet* p) {
 	if (*p >> characterId) {
 		return true;

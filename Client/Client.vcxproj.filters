@@ -40,12 +40,6 @@
     <Filter Include="Source Files\Scenes\IMGui">
       <UniqueIdentifier>{403e2922-f9c9-461c-9de8-d9c15af3277a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Events">
-      <UniqueIdentifier>{407df786-9485-4f46-8e12-5c179629fe2c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Events">
-      <UniqueIdentifier>{8a57783b-1263-42b2-ae2f-65207f43b695}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Core\Map">
       <UniqueIdentifier>{a29497ed-efbb-43b5-b3bf-781cc8d1269e}</UniqueIdentifier>
     </Filter>
@@ -119,9 +113,6 @@
     </ClCompile>
     <ClCompile Include="IGLoginCredentials.cpp">
       <Filter>Source Files\Scenes\IMGui</Filter>
-    </ClCompile>
-    <ClCompile Include="ClientEventActions.cpp">
-      <Filter>Source Files\Events</Filter>
     </ClCompile>
     <ClCompile Include="GamePlayScene.cpp">
       <Filter>Source Files\Scenes</Filter>
@@ -252,6 +243,9 @@
     <ClCompile Include="ImGuiFonts.cpp">
       <Filter>Source Files\Tools</Filter>
     </ClCompile>
+    <ClCompile Include="IGLearnNewSpell.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="json.hpp">
@@ -286,9 +280,6 @@
     </ClInclude>
     <ClInclude Include="IGLoginCredentials.h">
       <Filter>Header Files\Scenes\IMGui</Filter>
-    </ClInclude>
-    <ClInclude Include="ClientEventActions.h">
-      <Filter>Header Files\Events</Filter>
     </ClInclude>
     <ClInclude Include="EventDispatcher.h">
       <Filter>Header Files</Filter>
@@ -430,6 +421,9 @@
     </ClInclude>
     <ClInclude Include="ImGuiFonts.h">
       <Filter>Header Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="IGLearnNewSpell.h">
+      <Filter>Header Files\Scenes\IMGui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

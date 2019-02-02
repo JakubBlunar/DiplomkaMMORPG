@@ -5,7 +5,6 @@
 #include <iostream>
 #include "SceneManager.h"
 #include "EventMovementChange.h"
-#include "ClientEventActions.h"
 #include "EventDispatcher.h"
 #include "ResourceHolder.h"
 #include "EntityPrototypes.h"
@@ -18,14 +17,12 @@ Game::Game():
 	
 	this->packet_manager = new PacketManager(this);
 	this->sceneManager = new SceneManager(this);
-	this->eventActions = new ClientEventActions(this);
 
 	mStatisticsText.setFont(ResourceHolder<sf::Font>::instance()->get("Sansation.ttf"));
 	mStatisticsText.setPosition(5.f, 5.f);
 	mStatisticsText.setCharacterSize(16);
 	mStatisticsText.setOutlineColor(sf::Color::Magenta);
 	mStatisticsText.setFillColor(sf::Color::Magenta);
-	subscribe();
 }
 
 void Game::run() {
@@ -94,10 +91,6 @@ Account* Game::getAccount() const {
 
 void Game::setAccount(Account* account) {
 	this->account = account;
-}
-
-void Game::handleEvent(GameEvent* event) {
-	event->accept(eventActions);
 }
 
 void Game::addGameMessage(GameMessage* message) const {
@@ -223,36 +216,4 @@ void Game::print(const std::string& message) {
 	std::cout << message << std::endl;
 
 	consoleMutex.unlock();
-}
-
-/*
-sf::Vector2f Game::playerPosition() const
-{
-	return mPlayer.getPosition();
-}
-
-
-void Game::sendPlayerPosition()
-{
-	const sf::Vector2f position = playerPosition();
-
-	if (lastMovement != movement)
-	{
-		EventMovementChange* e = new EventMovementChange();
-		e->playerId = 2;
-		e->velX = movement.x;
-		e->velY = movement.y;
-		e->x = position.x;
-		e->y = position.y;
-		lastMovement = movement;
-		EventDispatcher<EventMovementChange>::dispatchEvent(e);
-	}
-
-}
-*/
-
-void Game::subscribe() {
-	EventDispatcher<EventLoginRequest>::addSubscriber(this);
-	EventDispatcher<EventLoginResponse>::addSubscriber(this);
-	EventDispatcher<EventCharacterChooseResponse>::addSubscriber(this);
 }

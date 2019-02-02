@@ -5,7 +5,7 @@
 #include "Scene.h"
 
 class CharacterChooseScene :
-	public Scene {
+	public Scene, public Subscriber {
 public:
 	virtual ~CharacterChooseScene() = default;
 	CharacterChooseScene(SceneType sceneType, Game* g);
@@ -14,6 +14,8 @@ public:
 	void afterChange() override;
 	void update(sf::Time elapsedTime) override;
 	void render() override;
+
+	void handleEvent(GameEvent* event) override;
 };
 
 #endif

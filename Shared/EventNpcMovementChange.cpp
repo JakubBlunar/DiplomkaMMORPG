@@ -8,10 +8,6 @@ EventNpcMovementChange::EventNpcMovementChange()
 }
 
 
-void EventNpcMovementChange::accept(EventVisitor* v) {
-	if(v)
-		v->visit(this);
-}
 bool EventNpcMovementChange::loadFromPacket(sf::Packet* p) {
 	if (*p >> spawnId >> x >> y >> velX >> velY >> speed) {
 		return true;

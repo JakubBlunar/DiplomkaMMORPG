@@ -81,12 +81,33 @@ void Spell::update(sf::Time elapsedTime, Map* map, Game* g) {
 
 	}
 	else if (movement.x > 0) {
-		renderComponent->changeAnimation("right");
-		renderComponent->getCurrentAnimation()->setLooped(true);
+		if (abs(movement.y) > movement.x) {
+			if (movement.y > 0) {
+				renderComponent->changeAnimation("down");
+			} else {
+				renderComponent->changeAnimation("up");
+			}
+			renderComponent->getCurrentAnimation()->setLooped(true);
+		} else {
+			renderComponent->changeAnimation("right");
+			renderComponent->getCurrentAnimation()->setLooped(true);
+		}
+		
 	}
 	else if (movement.x < 0) {
-		renderComponent->changeAnimation("left");
-		renderComponent->getCurrentAnimation()->setLooped(true);
+		if (abs(movement.y) > abs(movement.x)) {
+			if (movement.y > 0) {
+				renderComponent->changeAnimation("down");
+				renderComponent->getCurrentAnimation()->setLooped(true);
+			} else {
+				renderComponent->changeAnimation("up");
+				renderComponent->getCurrentAnimation()->setLooped(true);
+			}
+			
+		} else {
+			renderComponent->changeAnimation("left");
+			renderComponent->getCurrentAnimation()->setLooped(true);
+		}
 	}
 }
 

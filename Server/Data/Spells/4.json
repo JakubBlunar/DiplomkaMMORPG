@@ -10,6 +10,7 @@
     "gCooldown": 500,
     "maxRange": 192,
     "type": 1,
+    "levelNeeded": 4,
     "effects": {
         "3": {
             "modifier" : 1.2

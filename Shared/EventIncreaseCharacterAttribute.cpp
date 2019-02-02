@@ -14,10 +14,6 @@ EventIncreaseCharacterAttribute::~EventIncreaseCharacterAttribute()
 {
 }
 
-void EventIncreaseCharacterAttribute::accept(EventVisitor* v) {
-	v->visit(this);
-}
-
 bool EventIncreaseCharacterAttribute::loadFromPacket(sf::Packet* p) {
 	sf::Uint8 attributeNum;
 	if (*p >> playerId >> attributeNum ) {

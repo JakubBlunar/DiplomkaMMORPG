@@ -9,11 +9,12 @@ namespace s {
 		sf::Mutex spellMutex;
 
 		std::map<int, sf::Time> spellCooldowns;
-		std::map<int, SpellInfo*> availableSpells;
 		SpellEvent* castingSpell;
 	public:
 		EntitySpells();
 		virtual ~EntitySpells();
+
+		std::map<int, SpellInfo*> availableSpells;
 
 		void setCooldown(int spellId, sf::Time time);
 		bool hasCooldown(int spellId, sf::Time serverTime) const;

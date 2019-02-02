@@ -11,10 +11,6 @@ EventCharacterLogout::~EventCharacterLogout()
 {
 }
 
-void EventCharacterLogout::accept(EventVisitor*) {
-	
-}
-
 bool EventCharacterLogout::loadFromPacket(sf::Packet * p)
 {
 	if(*p >> characterId) {

@@ -17,7 +17,6 @@ public:
 	sf::Vector2f position;
 	int entityId;
 
-	void accept(EventVisitor*) override;
 	bool loadFromPacket(sf::Packet* p) override;
 	sf::Packet* toPacket() override;
 };

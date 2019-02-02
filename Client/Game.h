@@ -5,9 +5,6 @@
 #include "PacketManager.h"
 #include "ClientSettings.h"
 #include <queue>
-#include "GameEvent.h"
-#include "ClientEventActions.h"
-#include "Subscriber.h"
 #include "Map.h"
 #include "Camera.h"
 #include "Account.h"
@@ -17,8 +14,7 @@
 struct GameMessage;
 class SceneManager;
 
-class Game :
-	public Subscriber {
+class Game {
 public:
 	Game();
 	virtual void run();
@@ -40,8 +36,6 @@ public:
 
 	void setAccount(Account* account);
 
-	void handleEvent(GameEvent* event) override;
-
 	ImGuiFonts fonts;
 
 	std::unordered_set<sf::Keyboard::Key> pressedKeys;
@@ -59,7 +53,6 @@ protected:
 	virtual void update(sf::Time elapsedTime);
 	virtual void render();
 	virtual void afterStart();
-	void subscribe();
 
 	void updateStatistics(sf::Time elapsedTime);
 
@@ -74,12 +67,8 @@ protected:
 	sf::Time mStatisticsUpdateTime;
 	std::size_t mStatisticsNumFrames;
 
-	//void				sendPlayerPosition();
-
 	sf::Mutex eventQueueMutex;
 	std::queue<GameEvent*> eventQueue;
-
-	ClientEventActions* eventActions;
 
 	Map* gameMap;
 	Camera camera;

@@ -1,0 +1,20 @@
+{
+    "id": 6,
+    "name": "Shoot",
+    "mana": 0,
+    "cooldown": 2000,
+    "castingTime": 1000,
+    "spellSpeed": 150,
+    "icon": "shoot.png",
+    "entityAnimation": "6",
+    "desc": "Basic shoot from bow on medium distance.",
+    "gCooldown": 500,
+    "maxRange": 190,
+    "type": 0,
+    "levelNeeded": 1,
+    "effects": {
+        "2": {
+            "modifier": 1
+        }
+    }
+}

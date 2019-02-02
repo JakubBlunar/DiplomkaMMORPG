@@ -10,10 +10,6 @@ EventCharacterChooseResponse::EventCharacterChooseResponse(): success(false) {
 EventCharacterChooseResponse::~EventCharacterChooseResponse() {
 }
 
-void EventCharacterChooseResponse::accept(EventVisitor* v) {
-	v->visit(this);
-}
-
 bool EventCharacterChooseResponse::loadFromPacket(sf::Packet* p) {
 	if (*p >> success >> message >> characterData) {
 		return true;

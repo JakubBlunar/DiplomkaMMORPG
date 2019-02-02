@@ -17,6 +17,7 @@
 #include "SpellHolder.h"
 #include "EventPlayerStartCastSpell.h"
 #include "EventIncreaseCharacterAttribute.h"
+#include "EventLearnSpell.h"
 
 s::Server::Server(ServerSettings* settings):
 	running(false) {
@@ -187,6 +188,14 @@ void s::Server::identifyPacket(EventId type, sf::Packet* packet, Session* player
 		delete e;
 		break;
 	}
+	case LEARN_SPELL: {
+		EventLearnSpell* e = new EventLearnSpell();
+		if (e->loadFromPacket(packet)) {
+			characterManager.handleEvent(e, playerSession, this);
+		}
+		delete e;
+		break;
+	}
 	default:
 		spdlog::get("log")->info("Cannot handle packet type {}", type);
 	}
@@ -218,7 +227,7 @@ void s::Server::recievePackets() {
 						if (sessions.size() == 1) {
 							name = "kubik2405";
 							pass = "123456";
-							characterId = 2;
+							characterId = 1;
 						}else {
 							name = "admin";
 							pass = "123456";

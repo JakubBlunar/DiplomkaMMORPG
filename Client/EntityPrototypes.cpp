@@ -39,6 +39,7 @@ void EntityPrototypes::init() {
 		si->description = jsonData["desc"].get<json::string_t>();
 		si->globalCooldownTime = sf::milliseconds((int)jsonData["gCooldown"].get<json::number_integer_t>());
 		si->maxRange =  (float)jsonData["maxRange"].get<json::number_float_t>();
+		si->levelNeeded = (int)jsonData["levelNeeded"].get<json::number_integer_t>();
 
 		std::string icon = jsonData["icon"].get<json::string_t>();
 		si->icon.load("Graphics/Icons/"+ icon, sf::Vector2i(32,32), sf::Vector2i(0,0));

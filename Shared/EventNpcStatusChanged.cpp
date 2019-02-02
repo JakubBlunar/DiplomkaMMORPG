@@ -11,9 +11,6 @@ EventNpcStatusChanged::~EventNpcStatusChanged()
 {
 }
 
-void EventNpcStatusChanged::accept(EventVisitor* v) {
-	v->visit(this);
-}
 bool EventNpcStatusChanged::loadFromPacket(sf::Packet* p) {
 	sf::Uint8 intState;
 	if (*p >> spawnId >> intState) {

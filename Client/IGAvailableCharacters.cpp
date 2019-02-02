@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "imgui-SFML.h"
 #include <iostream>
+#include "EventCharacterChoose.h"
 
 IGAvailableCharacters::IGAvailableCharacters() {
 }

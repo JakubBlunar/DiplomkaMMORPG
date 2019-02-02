@@ -16,6 +16,7 @@
 #include "EventSpellCastResult.h"
 #include "EntityPrototypes.h"
 #include "GamePlayScene.h"
+#include "EventCharacterMapJoin.h"
 
 Map::Map(Game* g) {
 	this->game = g;

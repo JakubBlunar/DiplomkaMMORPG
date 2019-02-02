@@ -83,6 +83,10 @@ public:
 		return target;
 	}
 
+	void addSpell(SpellInfo* si) {
+		spells.push_back(si);
+	}
+
 
 
 	SpellCooldown* getGlobalCooldown(Game* g) const;

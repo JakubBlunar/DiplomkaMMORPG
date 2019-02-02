@@ -189,7 +189,9 @@
     <ClInclude Include="EventCharacterLogout.h" />
     <ClInclude Include="EventCharacterMapJoin.h" />
     <ClInclude Include="EventCharacterMapLeave.h" />
+    <ClInclude Include="EventFreeSpellToLearn.h" />
     <ClInclude Include="EventIncreaseCharacterAttribute.h" />
+    <ClInclude Include="EventLearnSpell.h" />
     <ClInclude Include="EventLoginRequest.h" />
     <ClInclude Include="EventLoginResponse.h" />
     <ClInclude Include="EventMovementChange.h" />
@@ -200,7 +202,6 @@
     <ClInclude Include="EventPlayerStartCastSpell.h" />
     <ClInclude Include="EventSendMessage.h" />
     <ClInclude Include="EventSpellCastResult.h" />
-    <ClInclude Include="EventVisitor.h" />
     <ClInclude Include="GameEvent.h" />
     <ClInclude Include="EventId.h" />
     <ClInclude Include="EventNpcsMovementChange.h" />
@@ -227,7 +228,9 @@
     <ClCompile Include="EventCharacterLogout.cpp" />
     <ClCompile Include="EventCharacterMapJoin.cpp" />
     <ClCompile Include="EventCharacterMapLeave.cpp" />
+    <ClCompile Include="EventFreeSpellToLearn.cpp" />
     <ClCompile Include="EventIncreaseCharacterAttribute.cpp" />
+    <ClCompile Include="EventLearnSpell.cpp" />
     <ClCompile Include="EventLoginRequest.cpp" />
     <ClCompile Include="EventLoginResponse.cpp" />
     <ClCompile Include="EventMovementChange.cpp" />
@@ -238,7 +241,6 @@
     <ClCompile Include="EventPlayerStartCastSpell.cpp" />
     <ClCompile Include="EventSendMessage.cpp" />
     <ClCompile Include="EventSpellCastResult.cpp" />
-    <ClCompile Include="EventVisitor.cpp" />
     <ClCompile Include="GameEvent.cpp" />
     <ClCompile Include="MapGrid.cpp" />
     <ClCompile Include="MapGridSpot.cpp" />

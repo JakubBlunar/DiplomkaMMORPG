@@ -20,11 +20,6 @@ void EventNpcsMovementChange::addNpcInfo(sf::Int32 npcId, float posX, float posY
 	npcsMovements.insert(std::make_pair(npcId, MovementData{ posX, posY, velX, velY }));
 }
 
-void EventNpcsMovementChange::accept(EventVisitor * v)
-{
-	v->visit(this);
-}
-
 bool EventNpcsMovementChange::loadFromPacket(sf::Packet* p) {
 	int count;
 	if (*p >> count) {

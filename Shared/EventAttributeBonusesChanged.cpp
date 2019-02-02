@@ -20,10 +20,6 @@ void EventAttributeBonusesChanged::setChange(EntityAttributeType type, float new
 	}
 }
 
-void EventAttributeBonusesChanged::accept(EventVisitor* v) {
-	v->visit(this);
-}
-
 bool EventAttributeBonusesChanged::loadFromPacket(sf::Packet* p) {
 	sf::Uint8 count;
 	sf::Uint32 entityTypeNum;

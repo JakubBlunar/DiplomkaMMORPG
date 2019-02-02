@@ -13,7 +13,6 @@ namespace  s {
 		NpcEvent();
 		~NpcEvent();
 
-		void accept(EventVisitor*) override;
 		bool loadFromPacket(sf::Packet* p) override;
 		sf::Packet* toPacket() override;
 		Npc* npc;

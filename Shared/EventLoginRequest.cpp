@@ -17,10 +17,6 @@ EventLoginRequest::~EventLoginRequest() {
 
 }
 
-void EventLoginRequest::accept(EventVisitor* v) {
-	v->visit(this);
-}
-
 bool EventLoginRequest::loadFromPacket(sf::Packet* p) {
 	if (*p >> name >> password) {
 		return true;

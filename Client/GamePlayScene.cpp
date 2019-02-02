@@ -8,6 +8,10 @@
 #include <iostream>
 #include "Astar.h"
 #include "sfLine.h"
+#include "EventFreeSpellToLearn.h"
+#include "EntityPrototypes.h"
+#include "EventDispatcher.h"
+#include "EventLearnSpell.h"
 
 GamePlayScene::GamePlayScene(SceneType sceneType, Game* g) : Scene(sceneType, g), player(nullptr) {
 	drawDebugData = false;
@@ -34,12 +38,18 @@ GamePlayScene::GamePlayScene(SceneType sceneType, Game* g) : Scene(sceneType, g)
 	castingBarWindow = new IGCastingBar();
 	windowManager->addWindow("CastingBar", castingBarWindow);
 
+	learnNewSpellWindow = new IGLearnNewSpell();
+	windowManager->addWindow("LearnNewSpell", learnNewSpellWindow);
+
 	mFont = ResourceHolder<sf::Font>::instance()->get("Sansation.ttf");
 
 	targetArrow.setRadius(8);
 	targetArrow.setRotation(180);
 	targetArrow.setPointCount(3);
 	targetArrow.setFillColor(sf::Color::Yellow);
+
+	EventDispatcher<EventFreeSpellToLearn>::addSubscriber(this);
+	EventDispatcher<EventLearnSpell>::addSubscriber(this);
 }
 
 
@@ -342,6 +352,12 @@ void GamePlayScene::onClick(sf::Mouse::Button event, sf::Vector2f position) {
 		}
 	}
 
+	if (playerInfoWindow->containsPosition(relativePosition)) {
+		targetInfoWindow->setEntity(player);
+		windowManager->open("TargetInfo");
+		return;
+	}
+
 	if (windowManager->anyWindowContainsPoint(relativePosition)) {
 		return;
 	}
@@ -389,5 +405,41 @@ void GamePlayScene::onClick(sf::Mouse::Button event, sf::Vector2f position) {
 		}
 
 		ClientSettings::instance()->eventsMutex.unlock();
+	}
+}
+
+void GamePlayScene::handleEvent(GameEvent* event) {
+	switch (event->getId()) {
+		case FREE_SPELL_TO_LEARN: {
+			EventFreeSpellToLearn* e = (EventFreeSpellToLearn*) event;
+			if (e->spellIds.empty()) return;
+
+			std::vector<SpellInfo*>* spells = new std::vector<SpellInfo*>();
+			EntityPrototypes* prototypes = EntityPrototypes::instance();
+
+			for (int spellId : e->spellIds) {
+				SpellInfo* si = prototypes->getSpellInfo(spellId);
+				spells->push_back(si);
+			}
+
+			if (spells->empty()) {
+				delete spells;
+			} else {
+				learnNewSpellWindow->setSpells(spells);
+				windowManager->open("LearnNewSpell");
+			}
+			break;
+		}
+		case LEARN_SPELL: {
+			EventLearnSpell* e = (EventLearnSpell*)event;
+			if (e->success) {
+				SpellInfo * si = EntityPrototypes::instance()->getSpellInfo(e->spellId);
+				player->addSpell(si);
+				learnNewSpellWindow->setSpells(nullptr);
+			} else {
+				windowManager->open("LearnNewSpell");
+			}
+			break;
+		}
 	}
 }

@@ -45,9 +45,6 @@
     <ClInclude Include="EventMovementChange.h">
       <Filter>Header Files\Events</Filter>
     </ClInclude>
-    <ClInclude Include="EventVisitor.h">
-      <Filter>Header Files\Events</Filter>
-    </ClInclude>
     <ClInclude Include="EventLoginRequest.h">
       <Filter>Header Files\Events</Filter>
     </ClInclude>
@@ -150,6 +147,12 @@
     <ClInclude Include="EventIncreaseCharacterAttribute.h">
       <Filter>Header Files\Events</Filter>
     </ClInclude>
+    <ClInclude Include="EventFreeSpellToLearn.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="EventLearnSpell.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -159,9 +162,6 @@
       <Filter>Source Files\Events</Filter>
     </ClCompile>
     <ClCompile Include="EventMovementChange.cpp">
-      <Filter>Source Files\Events</Filter>
-    </ClCompile>
-    <ClCompile Include="EventVisitor.cpp">
       <Filter>Source Files\Events</Filter>
     </ClCompile>
     <ClCompile Include="EventLoginRequest.cpp">
@@ -231,6 +231,12 @@
       <Filter>Source Files\Events</Filter>
     </ClCompile>
     <ClCompile Include="EventIncreaseCharacterAttribute.cpp">
+      <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="EventFreeSpellToLearn.cpp">
+      <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="EventLearnSpell.cpp">
       <Filter>Source Files\Events</Filter>
     </ClCompile>
   </ItemGroup>

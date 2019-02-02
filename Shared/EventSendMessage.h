@@ -16,7 +16,6 @@ public:
 	MessageType messageType;
 	time_t time;
 
-	void accept(EventVisitor*) override;
 	bool loadFromPacket(sf::Packet* p) override;
 	sf::Packet* toPacket() override;
 };

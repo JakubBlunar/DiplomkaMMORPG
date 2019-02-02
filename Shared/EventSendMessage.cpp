@@ -13,10 +13,6 @@ EventSendMessage::~EventSendMessage()
 {
 }
 
-void EventSendMessage::accept(EventVisitor* v) {
-	v->visit(this);
-}
-
 bool EventSendMessage::loadFromPacket(sf::Packet* p) {
 	sf::Uint8 typeNum;
 

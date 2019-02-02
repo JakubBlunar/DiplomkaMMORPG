@@ -10,10 +10,6 @@ EventSpellCastResult::EventSpellCastResult(): entityId(0), entityCategory(), spe
 
 EventSpellCastResult::~EventSpellCastResult() {}
 
-void EventSpellCastResult::accept(EventVisitor* v) {
-	v->visit(this);
-}
-
 bool EventSpellCastResult::loadFromPacket(sf::Packet* p) {
 	sf::Uint32 entityCategoryNum;
 	sf::Uint8 castResultNum;

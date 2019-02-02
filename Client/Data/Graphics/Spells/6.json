@@ -1,0 +1,48 @@
+{
+    "offsetX": 0,
+    "offsetY": -8,
+    "width": 23,
+    "height": 23,
+	"animations": [
+    {
+        "name": "down",
+	    "frameTime": 10000,
+        "steps": [
+            {
+                "x": 23,
+                "y": 0
+            }
+        ]
+    },
+    {
+        "name": "left",
+	    "frameTime": 10000,
+        "steps": [
+            {
+                "x": 46,
+                "y": 0
+            }
+        ]
+    },
+    {
+        "name": "right",
+	    "frameTime": 10000,
+        "steps": [
+            {
+                "x": 0,
+                "y": 0
+            }
+        ]
+    },
+    {
+        "name": "up",
+	    "frameTime": 10000,
+        "steps": [
+            {
+                "x": 69,
+                "y": 0
+            }
+        ]
+    }
+    ]
+}

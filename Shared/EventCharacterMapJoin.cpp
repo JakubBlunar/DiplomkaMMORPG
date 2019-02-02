@@ -12,10 +12,6 @@ EventCharacterMapJoin::~EventCharacterMapJoin()
 {
 }
 
-void EventCharacterMapJoin::accept(EventVisitor* v) {
-	v->visit(this);
-}
-
 bool EventCharacterMapJoin::loadFromPacket(sf::Packet * p)
 {
 	if (*p >> mapId >> characterData) {

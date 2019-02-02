@@ -12,11 +12,6 @@ EventCharacterMapLeave::~EventCharacterMapLeave()
 {
 }
 
-void EventCharacterMapLeave::accept(EventVisitor* v)
-{
-	v->visit(this);
-}
-
 bool EventCharacterMapLeave::loadFromPacket(sf::Packet* p) {
 	if(*p >> characterId >> mapId) {
 		return true;

@@ -15,6 +15,8 @@
 #include "EventNpcStatusChanged.h"
 #include "EventSpellCastResult.h"
 #include "EventSendMessage.h"
+#include "EventFreeSpellToLearn.h"
+#include "EventLearnSpell.h"
 
 PacketManager::PacketManager(Game* g) : game(nullptr), latencyCheckThread(nullptr) {
 	game = g;
@@ -177,6 +179,24 @@ void PacketManager::startRecieve() {
 					e = new EventSendMessage();
 					if (e->loadFromPacket(&packet)) {
 						EventDispatcher<EventSendMessage>::dispatchEvent(e);
+					} else {
+						game->print("Error while parsing packet " + std::to_string(pt));
+					}
+					break;
+				}
+				case FREE_SPELL_TO_LEARN: {
+					e = new EventFreeSpellToLearn();
+					if (e->loadFromPacket(&packet)) {
+						EventDispatcher<EventFreeSpellToLearn>::dispatchEvent(e);
+					} else {
+						game->print("Error while parsing packet " + std::to_string(pt));
+					}
+					break;
+				}
+				case LEARN_SPELL: {
+					e = new EventLearnSpell();
+					if (e->loadFromPacket(&packet)) {
+						EventDispatcher<EventLearnSpell>::dispatchEvent(e);
 					} else {
 						game->print("Error while parsing packet " + std::to_string(pt));
 					}

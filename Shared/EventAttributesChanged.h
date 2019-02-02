@@ -18,7 +18,6 @@ public:
 	std::map<EntityAttributeType, float> changes;
 	void setChange(EntityAttributeType type, float newValue);
 
-	void accept(EventVisitor*) override;
 	bool loadFromPacket(sf::Packet* p) override;
 	sf::Packet* toPacket() override;
 };

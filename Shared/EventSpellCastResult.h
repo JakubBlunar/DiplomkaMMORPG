@@ -12,7 +12,6 @@ public:
 	EventSpellCastResult();
 	virtual ~EventSpellCastResult();
 
-	void accept(EventVisitor*) override;
 	bool loadFromPacket(sf::Packet* p) override;
 	sf::Packet* toPacket() override;
 

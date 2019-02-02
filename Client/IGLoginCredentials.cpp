@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "EventDispatcher.h"
 #include "IGManager.h"
+#include "EventLoginRequest.h"
 
 IGLoginCredentials::IGLoginCredentials() {
 	memset(buffLogin, 0, sizeof(buffLogin));
@@ -50,7 +51,9 @@ void IGLoginCredentials::render(Game* game, IGManager* manager) {
 				IGPopup* popup = new IGPopup("", "Logging in...", sf::Vector2f(250, 50), "");
 				manager->pushPopup(popup);
 				EventLoginRequest* req = new EventLoginRequest(name, password);
-				EventDispatcher<EventLoginRequest>::dispatchEvent(req);
+				sf::Packet* packet = req->toPacket();
+				game->packet_manager->sendPacket(packet);
+				delete packet;
 			}
 		}
 	}

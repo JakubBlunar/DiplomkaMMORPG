@@ -7,8 +7,8 @@
 #include "EventCharacterChooseResponse.h"
 #include "Character.h"
 #include "Map.h"
-#include "EventCharacterMapJoin.h"
-#include "EventCharacterMapLeave.h"
+#include "EventFreeSpellToLearn.h"
+#include "Spell.h"
 
 s::AuthManager::AuthManager() {
 	dynamic = false;
@@ -176,9 +176,29 @@ void s::AuthManager::handleEvent(EventCharacterChoose* event, s::Session* player
 	playerSession->sendPacket(p);
 	delete p;
 
-	if (res.success) {
-		s->chatManager.handleEvent(event, playerSession, s);
+	if (!res.success) return;
+
+	s->chatManager.handleEvent(event, playerSession, s);
+	
+	Character* character = playerSession->getAccount()->getCharacter();
+
+
+	std::vector<SpellInfo*>* spellsToChoice = s->characterManager.getFreeSpellsForLearn(character);
+	if (spellsToChoice && !spellsToChoice->empty()) {
+		EventFreeSpellToLearn e;
+		for (std::vector<SpellInfo*>::iterator it = spellsToChoice->begin(); it != spellsToChoice->end(); ++it) {
+			SpellInfo* si = *it;
+			e.spellIds.push_back(si->id);
+		}
+
+		sf::Packet* p = e.toPacket();
+		playerSession->sendPacket(p);
+		delete p;
 	}
+
+
+	
+
 }
 
 

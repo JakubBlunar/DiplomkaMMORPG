@@ -11,7 +11,6 @@ public:
 	float x, y, velX, velY;
 	int playerId;
 
-	void accept(class EventVisitor* v) override;
 	bool loadFromPacket(sf::Packet* p) override;
 	sf::Packet* toPacket() override;
 };

@@ -8,9 +8,10 @@
 #include "IGConsole.h"
 #include "IGHelp.h"
 #include "IGCastingBar.h"
+#include "IGLearnNewSpell.h"
 
 class GamePlayScene :
-	public Scene {
+	public Scene, public Subscriber {
 public:
 	GamePlayScene(SceneType sceneType, Game* g);
 	~GamePlayScene();
@@ -22,6 +23,7 @@ public:
 	void onKeyPress(sf::Keyboard::Key key) override;
 
 	void onClick(sf::Mouse::Button event, sf::Vector2f position) override;
+	void handleEvent(GameEvent* event) override;
 private:
 	IGEntityInfo* playerInfoWindow;
 	IGEntityInfo* targetInfoWindow;
@@ -30,6 +32,7 @@ private:
 	IGConsole* console;
 	IGHelp* helpWindow;
 	IGCastingBar* castingBarWindow;
+	IGLearnNewSpell* learnNewSpellWindow;
 
 	sf::CircleShape targetArrow;
 	Player* player;
