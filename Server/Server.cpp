@@ -18,6 +18,8 @@
 #include "EventPlayerStartCastSpell.h"
 #include "EventIncreaseCharacterAttribute.h"
 #include "EventLearnSpell.h"
+#include "EventSendMessage.h"
+#include "Box2D/Box2D.h"
 
 s::Server::Server(ServerSettings* settings):
 	running(false) {
@@ -283,9 +285,14 @@ void s::Server::recievePackets() {
 							Character* ch = a->getCharacter();
 							if (ch) {
 								ch->lock();
+								ch->position.setMovement(sf::Vector2f(0,0));
+								b2Body* body = ch->getBody();
+								body->SetLinearVelocity(b2Vec2(0,0));
+
 								if(!a->isBot) {
 									ch->save();
 								}
+								
 								ch->position.getMap()->removeCharacter(ch);
 								ch->unlock();
 							}

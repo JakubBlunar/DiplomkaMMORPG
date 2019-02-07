@@ -98,7 +98,7 @@ float s::EntityAttributes::recalcArmor()
 
 	float x = strength / (level * 0.8f);
 	float cap = level / 2.f;
-	float armor = (cap * x) / (x + 50.f);
+	float armor = ceil(((cap * x) / (x + 50.f)) * 100.f);
 	setAttribute(EntityAttributeType::ARMOR, armor);
 	recalcResistance();
 	return armor;
@@ -110,7 +110,7 @@ float s::EntityAttributes::recalcDodgeChance() {
 
 	float x = agility / (level * 0.8f);
 	float armor = (0.75f * x) / (x + 8.f);
-	setAttribute(EntityAttributeType::ARMOR, armor);
+	setAttribute(EntityAttributeType::DODGE_CHANCE, armor);
 	recalcResistance();
 	return armor;
 }

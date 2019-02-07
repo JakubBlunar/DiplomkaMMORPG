@@ -65,8 +65,9 @@ void s::Npc::loadFromJson(std::string file) {
 		index++;
 	}
 
-	this->attributes.recalcResistance();
+
 	this->attributes.recalcArmor();
+	this->attributes.recalcResistance();
 	this->attributes.recalcDodgeChance();
 
 	npc_script = TextFileLoader::instance()->loadFile("Npcs/Scripts/common.lua");

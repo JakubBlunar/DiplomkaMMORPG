@@ -80,7 +80,8 @@ void IGAvailableCharacters::render(Game* g, IGManager* manager) {
 					ImGui::TextWrapped(characterName.c_str());
 
 					ImGui::SetWindowFontScale(0.20f);
-					ImGui::TextWrapped("Level: 3");
+					std::string level = "Level: " + std::to_string(data["level"].get<json::number_integer_t>());
+					ImGui::TextWrapped(level.c_str());
 					if (ImGui::Button("Play")) {
 						sendCharacterChoice(id, g);
 					}

@@ -10,6 +10,7 @@
 #include "Spell.h"
 #include "EntitySpells.h"
 #include "EntityCombat.h"
+#include <Box2D/Dynamics/b2Body.h>
 
 using json = nlohmann::json;
 

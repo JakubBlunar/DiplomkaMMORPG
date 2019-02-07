@@ -73,6 +73,7 @@ json s::Character::toJson() {
 	jsonData["movementX"] = position.getMovement().x;
 	jsonData["movementY"] = position.getMovement().y;
 	jsonData["attributes"] = json::array();
+	jsonData["level"] = (int) attributes.getAttribute(EntityAttributeType::LEVEL, false);
 
 	int attributesCount = attributes.getCount();
 	for (int i = 0; i < attributesCount; i++) {

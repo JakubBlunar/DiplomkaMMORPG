@@ -4,6 +4,11 @@
 #include "Spell.h"
 #include "EntityPosition.h"
 #include "json.hpp"
+#include <Box2D/Dynamics/b2Body.h>
+
+namespace sf {
+	class Time;
+}
 
 using json = nlohmann::json;
 
