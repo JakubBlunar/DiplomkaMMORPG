@@ -1,0 +1,18 @@
+{
+  "name": "log4",
+  "position": {
+    "width": 96,
+    "height": 36,
+    "bodyType": 0
+  },
+  "render": {
+    "type": 1,
+    "width": 96,
+    "height": 48,
+    "renderOffsetX": -28,
+    "renderOffsetY": -12,
+    "spriteOffsetX": 0,
+    "spriteOffsetY": 0,
+    "texture": "Graphics/GameObjects/log4.png"
+  }
+}

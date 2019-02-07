@@ -33,7 +33,7 @@ int MapGrid::getNumCols() const {
 }
 
 int MapGrid::transformXToGrid(float worldCoord) const {
-	int coord = (int)(worldCoord - positionMargin) / positionMargin;
+	int coord = (int)(worldCoord) / positionMargin;
 	if(coord >= cols) {
 		return cols - 1;
 	}
@@ -42,7 +42,7 @@ int MapGrid::transformXToGrid(float worldCoord) const {
 
 int MapGrid::transformYToGrid(float worldCoord) const
 {
-	int coord = (int)(worldCoord - positionMargin) / positionMargin;
+	int coord = (int)(worldCoord) / positionMargin;
 	if(coord >= rows) {
 		return rows - 1;
 	}
@@ -54,8 +54,16 @@ void MapGrid::setWall(sf::Vector2f worldPosition, sf::Vector2f size) const {
 	int fromX = this->transformXToGrid(worldPosition.x);
 	int fromY = this->transformYToGrid(worldPosition.y);
 
-	int toX = (int)ceil(this->transformXToGrid(worldPosition.x + size.x));
-	int toY = (int)ceil(this->transformYToGrid(worldPosition.y + size.y));
+	int toX = (int)ceil(this->transformXToGrid(worldPosition.x + size.x + 6));
+	int toY = (int)ceil(this->transformYToGrid(worldPosition.y + size.y + 6));
+
+	if (fromX < 0) {
+		return;
+	}
+
+	if(fromY < 0) {
+		return;
+	}
 
 	for(int x = fromX; x <= toX; x++) {
 		for (int y = fromY; y <= toY; y++) {

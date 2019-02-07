@@ -12,7 +12,7 @@ GameObject::GameObject(sf::Uint32 id, std::string file) : Entity(id) {
 	components.push_back(attributesComponent);
 
 	attributesComponent->setAttribute(EntityAttributeType::SPEED, 0);
-	
+
 	renderComponent = new RenderComponent();
 	components.push_back(renderComponent);
 
@@ -20,12 +20,9 @@ GameObject::GameObject(sf::Uint32 id, std::string file) : Entity(id) {
 }
 
 
-GameObject::~GameObject() {
-}
+GameObject::~GameObject() {}
 
-void GameObject::handleEvent(GameEvent* event) {
-
-}
+void GameObject::handleEvent(GameEvent* event) {}
 
 void GameObject::update(sf::Time elapsedTime, Map* map, Game* g) {
 	Entity::update(elapsedTime, map, g);
@@ -46,8 +43,6 @@ void GameObject::loadFromJson(const std::string& file) {
 		float width = (float)position["width"].get<json::number_float_t>();
 		float height = (float)position["height"].get<json::number_float_t>();
 		positionComponent->setSize(sf::Vector2f(width, height));
-
-
 	}
 	else
 		throw "cannot load gameObject from file " + file;
@@ -59,21 +54,46 @@ void GameObject::loadFromJson(const std::string& file) {
 		int height = (int)render["height"].get<json::number_integer_t>();
 		int renderOffsetX = (int)render["renderOffsetX"].get<json::number_integer_t>();
 		int renderOffsetY = (int)render["renderOffsetY"].get<json::number_integer_t>();
-		int spriteOffsetX = (int)render["spriteOffsetX"].get<json::number_integer_t>();
-		int spriteOffsetY = (int)render["spriteOffsetY"].get<json::number_integer_t>();
+	
+
 
 		std::string textureFile = render["texture"].get<json::string_t>();
 
-		Animation* idleAnimation = new Animation();
-		idleAnimation->setSpriteSheet(ResourceHolder<sf::Texture>::instance()->get(textureFile));
-		idleAnimation->addFrame(sf::IntRect(spriteOffsetX, spriteOffsetY, width, height));
+		if (render.find("steps") == render.end()) {
+			int spriteOffsetX = (int)render["spriteOffsetX"].get<json::number_integer_t>();
+			int spriteOffsetY = (int)render["spriteOffsetY"].get<json::number_integer_t>();
+			Animation* idleAnimation = new Animation();
+			idleAnimation->setSpriteSheet(ResourceHolder<sf::Texture>::instance()->get(textureFile));
+			idleAnimation->addFrame(sf::IntRect(spriteOffsetX, spriteOffsetY, width, height));
+			renderComponent->addAnimation("iddle", idleAnimation);
+			renderComponent->changeAnimation("iddle");
+		}
+		else {
+			json steps = render["steps"].get<json::array_t>();
+			int frameTime = (int)render["frameTime"].get<json::number_integer_t>();
+
+			Animation* a = new Animation();
+			a->setSpriteSheet(ResourceHolder<sf::Texture>::instance()->get(textureFile));
+			a->setFrameTime(sf::milliseconds(frameTime));
+
+			for (json::iterator stepIt = steps.begin(); stepIt != steps.end(); ++stepIt) {
+				json step = *stepIt;
+
+				int x = (int)step["x"].get<json::number_integer_t>();
+				int y = (int)step["y"].get<json::number_integer_t>();
+				a->addFrame(sf::IntRect(x, y, width, height));
+			}
+
+			renderComponent->addAnimation("iddle", a);
+			renderComponent->changeAnimation("iddle");
+			renderComponent->getCurrentAnimation()->setLooped(true);
+			renderComponent->getCurrentAnimation()->play();
+		}
 
 		renderComponent->setSize(sf::Vector2i(width, height));
 		renderComponent->setOffset(sf::Vector2i(renderOffsetX, renderOffsetY));
 
-		std::string animationName = "iddle";
-		renderComponent->addAnimation(animationName, idleAnimation);
-		renderComponent->changeAnimation("iddle");
+
 	}
 	else
 		throw "cannot load gameObject from file " + file;

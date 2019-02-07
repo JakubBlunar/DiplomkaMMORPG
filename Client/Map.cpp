@@ -560,12 +560,12 @@ void Map::loadFromFile(int id) {
 						po->setPosition(sf::Vector2f(positionX, positionY));
 
 						if (po->getBodyType() == BodyType::CIRCLE) {
-							grid->setWall(sf::Vector2f(positionX, positionY),
+							grid->setWall(sf::Vector2f(positionX - po->getSize().x / 2, positionY - po->getSize().x / 2),
 							              sf::Vector2f(po->getSize().x, po->getSize().x));
 						}
 
 						if (po->getBodyType() == BodyType::RECTANGLE) {
-							grid->setWall(sf::Vector2f(positionX, positionY + po->getSize().y / 2), po->getSize());
+							grid->setWall(sf::Vector2f(positionX - po->getSize().x / 2, positionY - po->getSize().y / 2), po->getSize());
 						}
 
 
@@ -580,7 +580,7 @@ void Map::loadFromFile(int id) {
 					float width = (float)gameObject["width"].get<json::number_float_t>();
 					float height = (float)gameObject["height"].get<json::number_float_t>();
 
-					grid->setWall(sf::Vector2f(positionX, positionY + height / 2), sf::Vector2f(width, height));
+					grid->setWall(sf::Vector2f(positionX, positionY), sf::Vector2f(width, height));
 
 					if (width > 0 && height > 0) {
 						Collider* c = new Collider(-1);

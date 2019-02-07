@@ -1,0 +1,12 @@
+{ "columns":16,
+ "image":"fsm_Forest01_A2.png",
+ "imageheight":576,
+ "imagewidth":768,
+ "margin":0,
+ "name":"fsm_Forest01_A2",
+ "spacing":0,
+ "tilecount":192,
+ "tileheight":48,
+ "tilewidth":48,
+ "type":"tileset"
+}

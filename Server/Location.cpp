@@ -33,7 +33,7 @@ s::Location::~Location()
 
 sf::Vector2f s::Location::generateRandomPoint() const {
 	if(!shape) {
-		return sf::Vector2f(40, 40);
+		throw "Not exist shape";
 	}
 
 	Random* rand = Random::instance();

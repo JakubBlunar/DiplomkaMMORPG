@@ -30,7 +30,8 @@ void s::Spawn::init(Server *s)
 			spawnedNpcs.push_back(npc);
 
 			npc->position.setLocation(location);
-			npc->position.setPosition(location->generateRandomPoint());
+			sf::Vector2f position = location->generateRandomPoint();
+			npc->position.setPosition(position);
 
 			location->getMap()->addNpc(npc);
 

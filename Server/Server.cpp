@@ -281,19 +281,17 @@ void s::Server::recievePackets() {
 						Account* a = playerSession->getAccount();
 						if (a) {
 							Character* ch = a->getCharacter();
-							ch->lock();
 							if (ch) {
+								ch->lock();
 								if(!a->isBot) {
 									ch->save();
 								}
 								ch->position.getMap()->removeCharacter(ch);
+								ch->unlock();
 							}
 							if (a->isBot) {
 								botManager.destroyBotAccount(a);
-							} else {
-								delete a;
 							}
-							ch->unlock();
 						}
 
 						selector.remove(*playerSession->getSocket());

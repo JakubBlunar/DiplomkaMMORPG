@@ -7,8 +7,7 @@
 
 using json = nlohmann::json;
 
-s::Account::Account(): id(-1) {
-}
+s::Account::Account(): character(nullptr), session(nullptr), id(-1), isBot(false), characters(nullptr) {}
 
 s::Account::~Account() {
 	delete characters;

@@ -1,0 +1,18 @@
+{
+    "name": "stump1",
+    "position": {
+        "width": 36,
+        "height": 36,
+        "bodyType": 1
+    },
+    "render": {
+        "type": 1,
+        "width": 48,
+        "height": 48,
+        "renderOffsetX": -7,
+        "renderOffsetY": -15,
+        "spriteOffsetX": 0,
+        "spriteOffsetY": 0,
+        "texture": "Graphics/GameObjects/stump1.png"
+    }
+}

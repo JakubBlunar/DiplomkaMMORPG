@@ -1,0 +1,12 @@
+{ "columns":8,
+ "image":"..\/..\/fsm_Forest01_A5.png",
+ "imageheight":768,
+ "imagewidth":384,
+ "margin":0,
+ "name":"fsm_Forest01_A5",
+ "spacing":0,
+ "tilecount":128,
+ "tileheight":48,
+ "tilewidth":48,
+ "type":"tileset"
+}

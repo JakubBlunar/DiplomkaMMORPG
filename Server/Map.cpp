@@ -138,26 +138,26 @@ void s::Map::update(sf::Time deltaTime, Server* s) {
 		});
 
 	std::for_each(
-			std::execution::par_unseq,
-			spellsById.begin(),
-			spellsById.end(),
-			[=](std::pair<int, MovableSpell*> const &pair) {
-				pair.second->update(lastUpdateNpc, s, this);
-			});
+		std::execution::par_unseq,
+		spellsById.begin(),
+		spellsById.end(),
+		[=](std::pair<int, MovableSpell*> const& pair) {
+			pair.second->update(lastUpdateNpc, s, this);
+		});
 
-		while (!spellsToRemove.empty()) {
-			auto found = spellsById.find(spellsToRemove.front());
-			if (found != spellsById.end()) {
-				if(found->second) {
-					b2Body* body = found->second->getBody();
-					if (body) {
-						world->DestroyBody(body);
-					}
+	while (!spellsToRemove.empty()) {
+		auto found = spellsById.find(spellsToRemove.front());
+		if (found != spellsById.end()) {
+			if (found->second) {
+				b2Body* body = found->second->getBody();
+				if (body) {
+					world->DestroyBody(body);
 				}
-				spellsById.erase(spellsToRemove.front());
 			}
-			spellsToRemove.pop();
+			spellsById.erase(spellsToRemove.front());
 		}
+		spellsToRemove.pop();
+	}
 
 	NpcUpdateEvents* eventsContainer = new NpcUpdateEvents();
 	eventsContainer->npcsMovementChange = nullptr;
@@ -244,6 +244,8 @@ void s::Map::loadFromJson(std::string path, Server* s) {
 			     locationIterator++) {
 				json jsonLoc = *locationIterator;
 
+				std::cout << jsonLoc.dump(1) << std::endl;
+
 				int id = stoi(jsonLoc.value("name", "-100000"));
 				float positionX = (float)jsonLoc["x"].get<json::number_float_t>();
 				float positionY = (float)jsonLoc["y"].get<json::number_float_t>();
@@ -261,7 +263,9 @@ void s::Map::loadFromJson(std::string path, Server* s) {
 						json point = *polygonIterator;
 						float x = (float)point["x"].get<json::number_float_t>();
 						float y = (float)point["y"].get<json::number_float_t>();
-						vertices[i].Set(positionX + x, positionY + y);
+						float coordX = positionX + x;
+						float coordY = positionY + y;
+						vertices[i].Set(coordX, coordY);
 						i++;
 					}
 					loc = new Location(id, vertices, size, sf::Vector2f(positionX, positionY), this);
@@ -275,8 +279,8 @@ void s::Map::loadFromJson(std::string path, Server* s) {
 
 					vertices[0].Set(positionX, positionY);
 					vertices[1].Set(positionX + width, positionY);
-					vertices[2].Set(positionX, positionY + height);
-					vertices[3].Set(positionX + width, positionY + height);
+					vertices[2].Set(positionX + width, positionY + height);
+					vertices[3].Set(positionX, positionY + height);
 
 					loc = new Location(id, vertices, size, sf::Vector2f(positionX, positionY), this);
 				}
@@ -371,19 +375,22 @@ void s::Map::loadFromJson(std::string path, Server* s) {
 			auto foundLoc = locations.find(locationId);
 			if (foundLoc != locations.end()) {
 				Location* loc = foundLoc->second;
-				json locationSpawns = spawnLocation["spawns"].get<json::array_t>();
-				for (json::iterator spawniterator = locationSpawns.begin(); spawniterator != locationSpawns.end();
-				     spawniterator++) {
-					json jsonSpawn = *spawniterator;
 
-					int npcType = (int)jsonSpawn["npcType"].get<json::number_integer_t>();
-					int maxCount = (int)jsonSpawn["maxCount"].get<json::number_integer_t>();
+				if (spawnLocation.find("spawns") != spawnLocation.end()) {
+					json locationSpawns = spawnLocation["spawns"].get<json::array_t>();
+					for (json::iterator spawniterator = locationSpawns.begin(); spawniterator != locationSpawns.end();
+					     spawniterator++) {
+						json jsonSpawn = *spawniterator;
 
-					if (npcType > 0 && maxCount > 0) {
-						Spawn* spawn = new Spawn(npcType, maxCount, loc);
-						loc->addSpawn(spawn);
+						int npcType = (int)jsonSpawn["npcType"].get<json::number_integer_t>();
+						int maxCount = (int)jsonSpawn["maxCount"].get<json::number_integer_t>();
 
-						spawn->init(s);
+						if (npcType > 0 && maxCount > 0) {
+							Spawn* spawn = new Spawn(npcType, maxCount, loc);
+							loc->addSpawn(spawn);
+
+							spawn->init(s);
+						}
 					}
 				}
 
@@ -501,7 +508,7 @@ void s::Map::handleEvent(GameEvent* event, Session* playerSession, Server* serve
 
 			lock.lock();
 			Character* character = playerSession->getAccount()->getCharacter();
-			b2Body* body = character->position.getBody(); 
+			b2Body* body = character->position.getBody();
 			body->SetTransform(b2Vec2(e->x * PIXTOMET, e->y * PIXTOMET), body->GetAngle());
 			body->SetLinearVelocity(b2Vec2(e->velX * PIXTOMET, e->velY * PIXTOMET));
 

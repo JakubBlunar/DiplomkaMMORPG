@@ -1,0 +1,38 @@
+{
+  "name": "campfire",
+  "position": {
+    "width": 32,
+    "height": 32,
+    "bodyType": 1
+  },
+  "render": {
+    "width": 48,
+    "height": 48,
+    "renderOffsetX": -8,
+    "renderOffsetY": -16,
+    "frameTime": 150,
+    "steps": [
+      {
+        "x": 0,
+        "y": 0
+      },
+      {
+        "x": 48,
+        "y": 0
+      },
+      {
+        "x": 96,
+        "y": 0
+      },
+      {
+        "x": 144,
+        "y": 0
+      },
+      {
+        "x": 192,
+        "y": 0
+      }
+    ],
+    "texture": "Graphics/GameObjects/campfire.png"
+  }
+}
