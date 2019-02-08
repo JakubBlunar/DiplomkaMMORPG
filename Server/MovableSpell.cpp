@@ -85,3 +85,7 @@ void s::MovableSpell::loadFromJson(json data) {
 
 	Spell::loadFromJson(data);
 }
+
+sf::Vector2f s::MovableSpell::getPosition() const {
+	return position.getPosition();
+}

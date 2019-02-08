@@ -73,7 +73,7 @@ void s::Npc::loadFromJson(std::string file) {
 	npc_script = TextFileLoader::instance()->loadFile("Npcs/Scripts/common.lua");
 	auto exists = jsonData.find("script");
 	if (exists == jsonData.end()) {
-		npc_script += " \n" + TextFileLoader::instance()->loadFile("Npcs/Scripts/dummy_npc.lua");
+		npc_script += " \n" + TextFileLoader::instance()->loadFile("Npcs/Scripts/default_creature.lua");
 	}
 	else {
 		std::string scriptFile = jsonData["script"].get<json::string_t>();
@@ -305,6 +305,9 @@ void s::Npc::startCombat(Character* character) {
 	delete c;
 }
 
+sf::Vector2f s::Npc::getPosition() const {
+	return position.getPosition();
+}
 
 void s::Npc::lock() {
 	mutex.lock();
@@ -313,3 +316,4 @@ void s::Npc::lock() {
 void s::Npc::unlock() {
 	mutex.unlock();
 }
+

@@ -3,6 +3,8 @@
 
 #include "../Shared/EntityConstants.h"
 #include <Box2D/Dynamics/b2Body.h>
+#include <SFML/System/Mutex.hpp>
+#include <SFML/System/Vector2.hpp>
 
 namespace s {
 
@@ -20,6 +22,7 @@ namespace s {
 		void lock() { mutex.lock(); }
 		void unlock() { mutex.lock(); }
 
+		virtual sf::Vector2f getPosition() const = 0;
 		virtual b2Body* getBody() const = 0;
 	};
 }

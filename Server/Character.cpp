@@ -219,3 +219,7 @@ std::vector<s::Character*>* s::Character::getAccountCharacters(int accountId) {
 
 	return characters;
 }
+
+sf::Vector2f s::Character::getPosition() const {
+	return position.getPosition();
+}

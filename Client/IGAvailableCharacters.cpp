@@ -50,7 +50,9 @@ void IGAvailableCharacters::render(Game* g, IGManager* manager) {
 
 		ImGui::SetWindowFontScale(0.25);
 		ImGui::SameLine(ImGui::GetWindowWidth() - 320);
-		ImGui::Button("Create New Character");
+		if (ImGui::Button("Exit")) {
+			g->running = false;
+		};
 
 		ImGui::NewLine();
 

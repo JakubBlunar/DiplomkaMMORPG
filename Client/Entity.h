@@ -32,6 +32,9 @@ public:
 	bool isRemoved() const { return removed; }
 protected:
 	Entity(sf::Uint32 id);
+public:
+	void handleEvent(GameEvent* event) override = 0;
+protected:
 	std::vector<Component *> components;
 	b2Body* body;
 	std::string name;

@@ -1,10 +1,15 @@
 
-registerEvent(18, function()
-	rand = math.random()
-	if rand < 0.5 then
-		sendNpcToRandomPositionInLocation(30)
-	else
-		makeNpcStay(math.random(10, 20))
-	end	
+registerEvent(events.NPC_IS_IDLE, function()
+	if(isInSpawnPosition()) 
+	then
+		makeNpcStay(999)
+	else 
+		goToSpawnPosition(999)
+	end
+end
+)
+
+registerEvent(events.NPC_COMBAT_DECIDE, function()
+	castRandomSpell()
 end
 )

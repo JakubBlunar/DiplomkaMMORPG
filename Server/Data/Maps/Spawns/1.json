@@ -87,7 +87,7 @@
                 },
                 {
                     "npcType": 9,
-                    "maxCount": 10
+                    "maxCount": 500
                 }
             ]
         },
@@ -96,7 +96,7 @@
             "spawns": [
                 {
                     "npcType": 9,
-                    "maxCount": 10
+                    "maxCount": 500
                 }
             ]
         }

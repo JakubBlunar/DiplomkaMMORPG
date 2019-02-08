@@ -23,13 +23,13 @@ namespace s {
 		sf::Time deadTimestamp;
 
 		NpcCommand* command;
-
 		sf::Mutex mutex;
 		NpcLuaConnector luaConnector;
 
 		Server* server;
 
 		NpcEvent* runningNpcEvent;
+		sf::Time delayedDecision;
 	public:
 		Npc();
 		~Npc();
@@ -97,6 +97,19 @@ namespace s {
 			sf::Lock lock(mutex);
 			runningNpcEvent = event;
 		}
+
+
+		bool hasDelayedDecision(sf::Time serverTime) const {
+			return delayedDecision >= serverTime;
+		}
+
+		void setDelayedDecision(sf::Time time) {
+			delayedDecision = time;
+		}
+
+		
+
+		sf::Vector2f getPosition() const override;
 
 		void lock();
 		void unlock();

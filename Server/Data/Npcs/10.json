@@ -3,6 +3,7 @@
     "name": "City guard",
     "render": "10",
     "respawnTime": 60,
+    "script": "guard1",
     "attributes": [
         80,
         50,

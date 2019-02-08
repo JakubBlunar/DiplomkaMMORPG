@@ -18,9 +18,10 @@
 #include "Entity.h"
 
 #include <execution>
+#include "NpcCommandStay.h"
 
 s::Map::Map(): id(0), world(nullptr), width(0), height(0) {
-	npcUpdateInterval = sf::milliseconds(200);
+	npcUpdateInterval = sf::milliseconds(150);
 }
 
 s::Map::~Map() {}
@@ -159,13 +160,10 @@ void s::Map::update(sf::Time deltaTime, Server* s) {
 		spellsToRemove.pop();
 	}
 
-	NpcUpdateEvents* eventsContainer = new NpcUpdateEvents();
-	eventsContainer->npcsMovementChange = nullptr;
-
 	if (lastUpdateNpc > npcUpdateInterval) {
 
 		std::for_each(
-			std::execution::seq,
+			std::execution::par_unseq,
 			locations.begin(),
 			locations.end(),
 			[=](std::pair<int, Location*> element) {
@@ -178,7 +176,7 @@ void s::Map::update(sf::Time deltaTime, Server* s) {
 			npcs.end(),
 			[=](Npc* npc) {
 				if (npc->isAlive()) {
-					s->npcManager.updateNpc(lastUpdateNpc, npc, s, eventsContainer);
+					s->npcManager.updateNpc(lastUpdateNpc, npc, s, nullptr);
 				}
 			});
 
@@ -186,16 +184,6 @@ void s::Map::update(sf::Time deltaTime, Server* s) {
 	}
 
 	lock.unlock();
-
-	if (eventsContainer->npcsMovementChange != nullptr) {
-		if (!eventsContainer->npcsMovementChange->npcsMovements.empty()) {
-			sendEventToAllPlayers(eventsContainer->npcsMovementChange);
-		}
-		delete eventsContainer->npcsMovementChange;
-	}
-
-	delete eventsContainer;
-
 }
 
 void s::Map::loadFromJson(std::string path, Server* s) {
@@ -243,8 +231,6 @@ void s::Map::loadFromJson(std::string path, Server* s) {
 			for (json::iterator locationIterator = locations.begin(); locationIterator != locations.end();
 			     locationIterator++) {
 				json jsonLoc = *locationIterator;
-
-				std::cout << jsonLoc.dump(1) << std::endl;
 
 				int id = stoi(jsonLoc.value("name", "-100000"));
 				float positionX = (float)jsonLoc["x"].get<json::number_float_t>();
@@ -421,11 +407,10 @@ void s::Map::loadFromJson(std::string path, Server* s) {
 								s->getServerTime().asSeconds() - npc->getRespawnTime().asSeconds() * Random::instance()
 								->randomUniformFloat(0.1f, 0.9f)));
 							npc->setNpcState(NpcState::DEAD);
+						} else {
+							npc->setNpcCommand(new NpcCommandStay(npc, this, npc->getServer(), sf::seconds(6)));
 						}
-						else {
-							NpcEventNpcIsIdle* e = new NpcEventNpcIsIdle(npc);
-							EventDispatcher<NpcEventNpcIsIdle>::dispatchEvent(e, s);
-						}
+						
 					}
 				}
 

@@ -57,10 +57,11 @@ void s::NpcManager::unsubscribe() {
 }
 
 s::Npc* s::NpcManager::createNpc(int npcType) {
-	lock.lock();
+	
 	NpcHolder* nh = NpcHolder::instance();
 	Npc* npc;
 	try {
+		lock.lock();
 		npc = nh->createNpc(npcType);
 		npc->setServer(server);
 		int spawnId = npc->getSpawnId();
@@ -70,13 +71,13 @@ s::Npc* s::NpcManager::createNpc(int npcType) {
 		else {
 			throw "Duplicate spawn id" + std::to_string(spawnId);
 		}
+		lock.unlock();
 	}
 	catch (...) {
-		lock.unlock();
 		throw "Cannot create npc" + std::to_string(npcType);
 	}
 
-	lock.unlock();
+
 	return npc;
 }
 
@@ -95,19 +96,17 @@ void s::NpcManager::updateNpc(sf::Time elapsedTime, Npc* npc, Server* s, NpcUpda
 	if (!npc->isAlive()) {
 		return;
 	}
-	npc->lock();
 
 	b2Body* body = npc->position.getBody();
 	b2Vec2 position = body->GetPosition();
 
 	sf::Vector2f transformedPosition = sf::Vector2f(position.x * METTOPIX, position.y * METTOPIX);
-
 	npc->position.setPosition(transformedPosition);
+	
 	NpcCommand* command = npc->getNpcCommand();
 	if (command && !command->isFinished()) {
 		command->update(elapsedTime, npcUpdateEvents);
 	}
-	npc->unlock();
 
 	/*if (!command || command->isFinished()) {
 		delete command;
@@ -132,7 +131,7 @@ void s::NpcManager::updateNpc(sf::Time elapsedTime, Npc* npc, Server* s, NpcUpda
 void s::NpcManager::handleEvent(GameEvent* event) {
 	NpcEvent* npcEvent = dynamic_cast<NpcEvent*>(event);
 	if (npcEvent) {
-		sf::Lock mutexLock(lock);
+		lock.lock();
 		if (runningThreads < MAX_RUNNING_NPC_THREADS) {
 			int index = -1;
 			for (int i = 0; i < MAX_RUNNING_NPC_THREADS; i++) {
@@ -145,12 +144,14 @@ void s::NpcManager::handleEvent(GameEvent* event) {
 			if (index == -1) {
 				throw "Should find index";
 			}
-
+			lock.unlock();
 			executeEvent(npcEvent, index);
 		}
 		else {
 			npcEventQueue.push(npcEvent);
+			lock.unlock();
 		}
+		
 	}
 }
 
@@ -181,7 +182,6 @@ void s::NpcManager::npcDied(Npc* npc, Entity* caster) {
 }
 
 void s::NpcManager::executeEvent(NpcEvent* npcEvent, int index) {
-	sf::Lock mutexLock(lock);
 	sf::Thread* t = new sf::Thread(std::bind(&NpcManager::eventExecutionThread, this, npcEvent, index));
 
 	npcEventExecutuionThreads[index] = t;

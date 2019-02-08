@@ -23,6 +23,8 @@ class Npc :
 	AttributesComponent* attributesComponent;
 
 	MovementData lastServerPosition;
+
+	sf::Time delayedDecision;
 public:
 	Npc();
 	~Npc();

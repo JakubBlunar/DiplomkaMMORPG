@@ -21,8 +21,11 @@ s::NpcCommandCombat::NpcCommandCombat(Npc* npc, Server* s) {
 s::NpcCommandCombat::~NpcCommandCombat() {}
 
 void s::NpcCommandCombat::update(sf::Time elapsedTime, NpcUpdateEvents* npcUpdateEvents) {
-	if (!npc->isThinking() && !npc->spells.isCasting()) {
-		if (!npc->spells.hasAllSpellCooldown(server->getServerTime())) {
+
+	sf::Time serverTime = npc->getServer()->getServerTime();
+
+	if (!npc->hasDelayedDecision(serverTime) && !npc->isThinking() && !npc->spells.isCasting()) {
+		if (!npc->spells.hasAllSpellCooldown(serverTime)) {
 			NpcEventCombatDecision* decision = new NpcEventCombatDecision(npc);
 			EventDispatcher<NpcEventCombatDecision>::dispatchEvent(decision, server);
 			return;

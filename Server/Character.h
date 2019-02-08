@@ -49,6 +49,7 @@ namespace s {
 
 		static Character* getCharacterById(int characterId);
 		static std::vector<Character*>* getAccountCharacters(int accountId);
+		sf::Vector2f getPosition() const override;
 	};
 }
 

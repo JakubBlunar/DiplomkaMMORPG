@@ -34,6 +34,8 @@ namespace s {
 		float getSpeed() const {
 			return speed;
 		}
+
+		sf::Vector2f getPosition() const override;
 	};
 }
 #endif
