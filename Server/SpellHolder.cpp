@@ -49,6 +49,8 @@ void s::SpellHolder::init(Server* server)
 		si->maxRange =  (float)jsonData["maxRange"].get<json::number_float_t>();
 		si->type = (SpellType) jsonData["type"].get<json::number_integer_t>();
 		si->levelNeeded = (int) jsonData["levelNeeded"].get<json::number_integer_t>();
+		si->targetRestriction = static_cast<SpellTargetRestriction>(jsonData["targetRestriction"].get<json::number_integer_t>());
+
 		spellInfos.insert(std::make_pair(si->id, si));
 
 		auto foundVector = spellInfoByLevel.find(si->levelNeeded);

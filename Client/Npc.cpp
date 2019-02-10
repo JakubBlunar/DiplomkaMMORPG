@@ -304,6 +304,9 @@ NpcState Npc::getState() const {
 	return npcState;
 }
 
+bool Npc::isHostile(Entity* entity) const {
+	return entity->getType() == EntityType::PLAYER ? true: false;
+}
 
 void Npc::subscribe() {
 	EventDispatcher<EventNpcsMovementChange>::addSubscriber(this);

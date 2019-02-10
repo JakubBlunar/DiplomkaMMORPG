@@ -26,11 +26,6 @@ void IGAvailableCharacters::render(Game* g, IGManager* manager) {
 	json accountData = g->getAccount()->getJsonData();
 	json characters = accountData["characters"].get<json::array_t>();
 
-	/*for (json::iterator it = characters.begin(); it != characters.end(); ++it) {
-		std::cout << *it << '\n';
-		break;
-	}*/
-
 	sf::Vector2u renderWindowSize = g->window->getSize();
 
 	sf::Vector2f windowSize = sf::Vector2f(renderWindowSize.x * 0.94f, renderWindowSize.y * 0.8f);

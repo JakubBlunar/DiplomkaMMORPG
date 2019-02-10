@@ -7,6 +7,7 @@
 #include <Box2D/Dynamics/Joints/b2DistanceJoint.h>
 #include "EventNpcsMovementChange.h"
 
+class Player;
 class GameEvent;
 class AttributesComponent;
 class PositionComponent;
@@ -45,6 +46,9 @@ public:
 	void loadFromJson(json serverData);
 
 	NpcState getState() const;
+
+	bool isHostile(Entity* entity) const;
+	
 
 	void subscribe();
 	void unsubscribe();

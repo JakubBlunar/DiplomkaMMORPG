@@ -7,6 +7,7 @@
 #include "RenderSprite.h"
 #include "EventNpcChanges.h"
 #include "json.hpp"
+#include "../Server/Spell.h"
 
 struct SpellInfo {
 	std::string name;
@@ -20,6 +21,7 @@ struct SpellInfo {
 	std::string description;
 	bool hasEntity;
 	int levelNeeded;
+	SpellTargetRestriction targetRestriction;
 };
 
 struct SpellCooldown {

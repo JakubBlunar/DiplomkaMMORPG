@@ -37,6 +37,7 @@ class Map : public Subscriber {
 	MapContactListener* contactListener;
 	MapGrid* grid;
 
+	bool pvp;
 	sf::Mutex mapLock;
 public:
 	Map(Game* g);
@@ -76,6 +77,9 @@ public:
 	std::vector<Entity*>* getEntities();
 
 	void handleEvent(GameEvent* event) override;
+	bool pvpEnabled() const {
+		return pvp;
+	}
 };
 
 #endif

@@ -20,7 +20,7 @@ namespace s {
 		void sendNpcToPosition(float x, float y, float maxCommandDuration) const;
 		void makeNpcStay(float duration) const;
 		void castRandomSpell() const;
-		void castSpell(int spellType) const;
+		void castSpell(int spellType, bool onSelf) const;
 		void doNothing(int ms) const;
 		bool isInSpawnPosition() const;
 		void goToSpawnPosition(float maxCommandDuration) const;

@@ -1232,11 +1232,13 @@
  "orientation":"orthogonal",
  "properties":
     {
-     "id":1
+     "id":1,
+     "disablePvp": true
     },
  "propertytypes":
     {
-     "id":"int"
+     "id":"int",
+     "disablePvp": "bool"
     },
  "renderorder":"left-down",
  "tiledversion":"1.1.6",

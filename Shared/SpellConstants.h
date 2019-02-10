@@ -14,7 +14,7 @@ enum class SpellType {
 	MAGIC = 1
 };
 
-enum class SpellTargetRestriction: sf::Uint32 {
+enum class SpellTargetRestriction: sf::Uint16 {
 	SELF= (1 << 0),
 	FRIENDLY = (1 << 1),
 	ENEMY = (1 << 2),
@@ -31,6 +31,7 @@ enum class SpellCastResultCode: sf::Uint8 {
 	HAS_COOLDOWN = 7,
 	TARGET_IS_DEAD = 8
 };
+
 
 inline std::string getStringSpellErrorByResultCode(SpellCastResultCode code) {
 	switch (code) {

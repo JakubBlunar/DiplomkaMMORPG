@@ -423,6 +423,11 @@ void Map::loadFromFile(int id) {
 
 	json mapData = JsonLoader::instance()->loadJson("Maps/" + std::to_string(id));
 	json mapProperties = mapData["properties"].get<json::object_t>();
+	if (mapProperties.find("disablePvp") != mapProperties.end()) {
+		pvp = false;
+	} else {
+		pvp = true;
+	}
 
 	this->id = (int)mapProperties["id"].get<json::number_integer_t>();
 	width = (int)mapData["width"].get<json::number_integer_t>();

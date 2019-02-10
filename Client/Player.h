@@ -20,6 +20,7 @@ public:
 	~Player();
 
 	Entity* target;
+	Map* map;
 
 	void handleEvent(GameEvent* event) override;
 	void update(sf::Time elapsedTime, Map* map, Game* g) override;
@@ -95,6 +96,11 @@ public:
 	void setCooldown(int spellType, SpellCooldown* cooldown);
 	SpellCooldown* getCooldown(int spellType, Game* g) const;
 
+	bool isHostile(Entity* entity) const;
+
+	void setMap(Map* map) {
+		this->map = map;
+	}
 private:
 	AttributesComponent* attributesComponent;
 

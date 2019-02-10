@@ -5,6 +5,7 @@
 #include <list>
 #include "json.hpp"
 #include "SpellConstants.h"
+#include <SFML/System/Time.hpp>
 
 using json = nlohmann::json;
 
@@ -24,6 +25,7 @@ namespace s {
 		EntityType spellCategory;
 		SpellType type;
 		int levelNeeded;
+		SpellTargetRestriction targetRestriction;
 	};
 
 	class Spell {

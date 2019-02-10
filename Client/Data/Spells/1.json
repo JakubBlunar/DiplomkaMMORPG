@@ -11,6 +11,7 @@
     "maxRange": 50,
     "type": 0,
     "levelNeeded": 10000,
+    "targetRestriction": 4,
     "effects": {
         "1": {
             "name": "DMG",

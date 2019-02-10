@@ -4,6 +4,7 @@
 #include "NpcCommandMoveTo.h"
 #include "Location.h"
 #include <spdlog/spdlog.h>
+#include "../Client/GamePlayScene.h"
 
 
 s::NpcLuaConnector::NpcLuaConnector(Npc* npc) {
@@ -116,8 +117,32 @@ void s::NpcLuaConnector::castRandomSpell() const {
 	}
 }
 
-void s::NpcLuaConnector::castSpell(int spellType) const {
+void s::NpcLuaConnector::castSpell(int spellType, bool onSelf) const {
 	SpellInfo* spell = npc->spells.getSpell(spellType);
+
+	switch (spell->targetRestriction) {
+		case SpellTargetRestriction::SELF: {
+			if (!onSelf) {
+				doNothing(2000);
+				return;
+			}
+			break;
+		}
+		case SpellTargetRestriction::ENEMY: {
+			if (npc->combat.target->getEntityType() != EntityType::PLAYER) {
+				doNothing(2000);
+				return;
+			}
+		}
+		case SpellTargetRestriction::FRIENDLY: {
+			if (!onSelf) {
+				doNothing(2000);
+				return;
+			}
+		}
+	}
+
+	
 	if (spell) {
 		npc->getServer()->spellManager.handleNpcCast(npc, spell);
 		return;

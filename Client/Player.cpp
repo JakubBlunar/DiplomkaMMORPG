@@ -347,6 +347,39 @@ void Player::castSpell(SpellInfo* spellInfo, Map* map, Game* g) {
 		spellTarget = this;
 	}
 
+	switch (spellInfo->targetRestriction) {
+		case SpellTargetRestriction::SELF: {
+			if (spellTarget != this) {
+				GameMessage* m = new GameMessage();
+				m->message = "Target is invalid";
+				m->displayTime = sf::seconds(1);
+				g->addGameMessage(m);
+				return;
+			}
+			break;
+		}
+		case SpellTargetRestriction::ENEMY: {
+			if (!isHostile(spellTarget)) {
+				GameMessage* m = new GameMessage();
+				m->message = "Target is invalid";
+				m->displayTime = sf::seconds(1);
+				g->addGameMessage(m);
+				return;
+			}
+			break;
+		}
+		case SpellTargetRestriction::FRIENDLY: {
+			if (isHostile(spellTarget) ) {
+				GameMessage* m = new GameMessage();
+				m->message = "Target is invalid";
+				m->displayTime = sf::seconds(1);
+				g->addGameMessage(m);
+				return;
+			}
+			break;
+		}
+	}
+
 	float actualMana = attributesComponent->getAttribute(EntityAttributeType::MP);
 	if (actualMana - spellInfo->manaCost < 0) {
 		GameMessage* m = new GameMessage();
@@ -498,6 +531,24 @@ SpellCooldown* Player::getCooldown(int spellType, Game* g) const {
 		return found->second;
 	}
 	return nullptr;
+}
+
+bool Player::isHostile(Entity* entity) const {
+
+	if(entity == this) return false;
+
+	if (entity->getType() == EntityType::PLAYER) {
+		if (map->pvpEnabled()) {
+			return true;
+		}
+		return false;
+	}
+	
+	if (entity->getType() == EntityType::NPC) {
+		return true;	
+	}
+
+	return false;
 }
 
 

@@ -52,6 +52,7 @@ void CharacterChooseScene::handleEvent(GameEvent* event) {
 
 				game->getAccount()->setPlayerEntity(p);
 				map->addPlayer(p);
+				p->setMap(map);
 
 				json otherPlayers = response["otherPlayers"].get<json::array_t>();
 				for (json::iterator it = otherPlayers.begin(); it != otherPlayers.end(); ++it) {

@@ -12,6 +12,7 @@
     "maxRange": 320,
     "type": 1,
     "levelNeeded": 2,
+    "targetRestriction": 4,
     "effects": {
         "2": {
             "modifier" : 1.1
