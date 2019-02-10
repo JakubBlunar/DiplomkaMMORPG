@@ -7,6 +7,7 @@
 #include "Account.h"
 #include "Map.h"
 #include "Npc.h"
+#include "EventSendMessage.h"
 
 s::EffectDealDamage::EffectDealDamage(SpellInfo spellInfo, float modifier): Effect(std::move(spellInfo)) {
 	this->modifier = modifier;
@@ -25,6 +26,10 @@ void s::EffectDealDamage::dealDamage(Character* caster, Character* target) const
 		logEvent.messageType = MessageType::COMBAT_LOG;
 		logEvent.playerId = -1;
 		logEvent.time = Utils::getActualUtcTime();
+
+		sf::Packet* p = logEvent.toPacket();
+		caster->getAccount()->getSession()->sendPacket(p);
+		target->getAccount()->getSession()->sendPacket(p);
 		return;
 	}
 
@@ -77,6 +82,9 @@ void s::EffectDealDamage::dealDamage(Character* caster, Npc* target) const {
 		logEvent.messageType = MessageType::COMBAT_LOG;
 		logEvent.playerId = -1;
 		logEvent.time = Utils::getActualUtcTime();
+
+		sf::Packet* p = logEvent.toPacket();
+		caster->getAccount()->getSession()->sendPacket(p);
 		return;
 	}
 
@@ -130,6 +138,9 @@ void s::EffectDealDamage::dealDamage(Npc* caster, Character* target) const {
 		logEvent.messageType = MessageType::COMBAT_LOG;
 		logEvent.playerId = -1;
 		logEvent.time = Utils::getActualUtcTime();
+
+		sf::Packet* p = logEvent.toPacket();
+		target->getAccount()->getSession()->sendPacket(p);
 		return;
 	}
 

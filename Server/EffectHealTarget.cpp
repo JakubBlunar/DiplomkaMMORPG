@@ -8,6 +8,8 @@
 #include "Map.h"
 #include "Npc.h"
 #include "EffectDealDamage.h"
+#include "ChatConstants.h"
+#include "EventSendMessage.h"
 
 s::EffectHealTarget::EffectHealTarget(SpellInfo spellInfo, float modifier): Effect(std::move(spellInfo)) {
 	this->modifier = modifier;
