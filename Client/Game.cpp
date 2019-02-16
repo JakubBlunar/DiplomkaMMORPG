@@ -27,7 +27,7 @@ Game::Game():
 
 void Game::run() {
 	running = true;
-
+	debugInfo = false;
 
 	EntityPrototypes::instance()->init();
 
@@ -125,12 +125,18 @@ void Game::processEvents() {
 				sceneManager->onKeyPress(key);
 				pressedKeys.insert(key);
 			}
+			if (key == sf::Keyboard::F1) {
+				debugInfo = true;
+			}
 			break;
 		}
 		case sf::Event::KeyReleased: {
 			sf::Keyboard::Key key = event.key.code;
 			sceneManager->onKeyRelease(key);
 			pressedKeys.erase(key);
+			if (key == sf::Keyboard::F1) {
+				debugInfo = false;
+			}
 			break;
 		}
 		case sf::Event::MouseButtonPressed: {
@@ -174,13 +180,13 @@ void Game::update(sf::Time elapsedTime) {
 void Game::render() {
 	window->clear();
 
-	if(true || window->hasFocus()) {
+	if(window->hasFocus()) {
 		sceneManager->render();
 	}
 
 	ImGui::SFML::Render(*window);
 
-	if (window->hasFocus()) {
+	if (debugInfo) {
 		sf::Vector2f cameraOffset = camera.getOffset();
 		mStatisticsText.setPosition(cameraOffset.x + 5, cameraOffset.y + 5);
 		window->draw(mStatisticsText);

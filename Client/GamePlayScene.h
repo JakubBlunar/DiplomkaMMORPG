@@ -43,7 +43,6 @@ private:
 	VisibleObjectsCast queryCallback;
 	b2AABB aabb;
 
-	bool drawDebugData;
 	sf::Sprite Sprite;
 
 	std::list<sf::Vector2f> path;

@@ -21,7 +21,8 @@ public:
 	bool isRunning() const;
 
 	sf::RenderWindow* window;
-
+	
+	bool debugInfo;
 	void print(const std::string& message);
 
 	SceneManager* sceneManager;

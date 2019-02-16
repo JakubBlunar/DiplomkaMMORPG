@@ -9,6 +9,9 @@ CharacterChooseScene::CharacterChooseScene(SceneType sceneType, Game* g) : Scene
 	windowManager->addWindow("selectCharacter", selectCharactersWindow);
 	windowManager->openAll();
 
+	background.load("bg2.png", sf::Vector2i(1360, 768), sf::Vector2i(0,0));
+	background.setPosition(0,0);
+
 	EventDispatcher<EventCharacterChooseResponse>::addSubscriber(this);
 }
 
@@ -26,8 +29,7 @@ void CharacterChooseScene::update(sf::Time elapsedTime) {
 }
 
 void CharacterChooseScene::render() {
-	game->window->clear(sf::Color::Green);
-
+	game->window->draw(background);
 	Scene::render();
 }
 

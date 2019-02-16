@@ -7,7 +7,7 @@
 IGLoginCredentials::IGLoginCredentials() {
 	memset(buffLogin, 0, sizeof(buffLogin));
 	memset(buffPassword, 0, sizeof(buffPassword));
-	setSize(sf::Vector2f(450, 250));
+	setSize(sf::Vector2f(450, 200));
 }
 
 
@@ -16,8 +16,6 @@ IGLoginCredentials::~IGLoginCredentials() {
 }
 
 void IGLoginCredentials::render(Game* game, IGManager* manager) {
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(100, 100, 0, 0));
-
 	ImGui::SetNextWindowSize(size, ImGuiCond_Always);
 	ImGui::SetNextWindowPos(position);
 
@@ -33,15 +31,16 @@ void IGLoginCredentials::render(Game* game, IGManager* manager) {
 	ImGui::SetWindowFontScale(0.3f);
 	ImGui::Text("Log into your account");
 
+	bool enter = false;
 
 	ImGui::SetWindowFontScale(0.2f);
 	ImGui::TextColored(ImVec4(0, 0, 0, 1), "Account Name:");
-	ImGui::InputText("##Account name", buffLogin, sizeof(buffLogin));
+	enter = ImGui::InputText("##Account name", buffLogin, sizeof(buffLogin), ImGuiInputTextFlags_EnterReturnsTrue);
 
 	ImGui::TextColored(ImVec4(0, 0, 0, 1), "Password:");
-	ImGui::InputText("##Password", buffPassword, sizeof(buffPassword), ImGuiInputTextFlags_Password);
+	enter = ImGui::InputText("##Password", buffPassword, sizeof(buffPassword), ImGuiInputTextFlags_Password | ImGuiInputTextFlags_EnterReturnsTrue);
 
-	if (ImGui::Button("Login")) {
+	if (ImGui::Button("Login") || enter) {
 		if (!manager->isShowingPopup()) {
 			std::string name = std::string(buffLogin);
 			std::string password = std::string(buffPassword);
@@ -58,13 +57,19 @@ void IGLoginCredentials::render(Game* game, IGManager* manager) {
 		}
 	}
 
+	ImGui::SameLine();
+
+	if (ImGui::Button("Exit")) {
+		if (!manager->isShowingPopup()) {
+			game->running = false;
+		}
+	}
+
 	ImGui::PopItemWidth();
 
 	focused = ImGui::IsWindowFocused();
 
 	ImGui::End(); // end window
-
-	ImGui::PopStyleColor();
 }
 
 void IGLoginCredentials::beforeRender(Game* game) {

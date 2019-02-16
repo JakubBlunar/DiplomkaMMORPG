@@ -16,6 +16,8 @@ public:
 
 	void onKeyPress(sf::Keyboard::Key key) override;
 	void handleEvent(GameEvent* event) override;
+
+	RenderSprite background;
 };
 
 #endif

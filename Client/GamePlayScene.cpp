@@ -14,8 +14,6 @@
 #include "EventLearnSpell.h"
 
 GamePlayScene::GamePlayScene(SceneType sceneType, Game* g) : Scene(sceneType, g), player(nullptr) {
-	drawDebugData = false;
-
 	windowManager->addWindow("GameMenu", new IGGameMenu());
 	targetInfoWindow = new IGEntityInfo("target", sf::Vector2f(300, 50));
 	windowManager->addWindow("TargetInfo", targetInfoWindow);
@@ -125,7 +123,7 @@ void GamePlayScene::render() {
 		}
 	}
 
-	if (drawDebugData) {
+	if (game->debugInfo) {
 		MapGrid* mapGrid = map->getGrid();
 
 		if (mapGrid) {
@@ -211,7 +209,7 @@ void GamePlayScene::render() {
 	}
 	ClientSettings::instance()->eventsMutex.unlock();
 
-	if (drawDebugData)
+	if (game->debugInfo)
 		w->DrawDebugData();
 
 	Scene::render();
@@ -259,9 +257,6 @@ void GamePlayScene::onKeyPress(sf::Keyboard::Key key) {
 	std::vector<SpellInfo*>* spells = player->getSpells();
 
 	switch (key) {
-		case sf::Keyboard::F1:
-			drawDebugData = !drawDebugData;
-			break;
 		case sf::Keyboard::Num1:
 		case sf::Keyboard::Key::Numpad1:
 			if (!spells->empty()) {
@@ -330,7 +325,7 @@ void GamePlayScene::onClick(sf::Mouse::Button event, sf::Vector2f position) {
 	sf::Vector2f offset = game->getCamera()->getOffset();
 	sf::Vector2f relativePosition(position.x - offset.x, position.y - offset.y);
 
-	if (drawDebugData) {
+	if (game->debugInfo) {
 		if (game->window->hasFocus()) {
 			Map* map = game->getMap();
 			MapGrid* mapGrid = map->getGrid();

@@ -12,6 +12,8 @@
 LoginScene::LoginScene(SceneType sceneType, Game* g): Scene(sceneType, g) {
 	IGLoginCredentials* credWindow = new IGLoginCredentials();
 
+	background.load("background.png", sf::Vector2i(1360, 768), sf::Vector2i(0,0));
+	background.setPosition(0,0);
 	windowManager->addWindow("loginCredentials", credWindow);
 	windowManager->openAll();
 	EventDispatcher<EventLoginResponse>::addSubscriber(this);
@@ -32,7 +34,7 @@ void LoginScene::update(sf::Time elapsedTime) {
 }
 
 void LoginScene::render() {
-	game->window->clear(sf::Color::Green);
+	game->window->draw(background);
 
 	Scene::render();
 }

@@ -16,6 +16,8 @@ public:
 	void render() override;
 
 	void handleEvent(GameEvent* event) override;
+
+	RenderSprite background;
 };
 
 #endif
