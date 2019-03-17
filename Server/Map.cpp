@@ -453,11 +453,11 @@ void s::Map::returnGrid(MapGrid* grid) {
 }
 
 void s::Map::sendEventToAnotherPlayers(GameEvent* event, int characterId) {
-	sf::Lock mutexLock(lock);
-
 	sf::Packet* p = event->toPacket();
 
+	lock.lock();
 	std::for_each(
+		std::execution::par_unseq,
 		characters.begin(),
 		characters.end(),
 		[=](Character* character) {
@@ -467,22 +467,24 @@ void s::Map::sendEventToAnotherPlayers(GameEvent* event, int characterId) {
 			}
 		});
 
+	lock.unlock();
 	delete p;
 }
 
 void s::Map::sendEventToAllPlayers(GameEvent* event) {
-	sf::Lock mutexLock(lock);
-
 	sf::Packet* p = event->toPacket();
-
+	
+	lock.lock();
 	std::for_each(
+		std::execution::par_unseq,
 		characters.begin(),
 		characters.end(),
 		[=](Character* character) {
 			Session* s = character->getAccount()->getSession();
 			s->sendPacket(p);
 		});
-
+	
+	lock.unlock();
 	delete p;
 }
 

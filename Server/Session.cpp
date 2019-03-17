@@ -14,9 +14,10 @@ void s::Session::setSocket(sf::TcpSocket* socket) {
 	this->socket = socket;
 }
 void s::Session::sendPacket(sf::Packet* p) {
-	sf::Lock lock(sessionLock);
 	if (socket) {
+		sessionLock.lock();
 		socket->send(*p);
+		sessionLock.unlock();
 	}
 }
 

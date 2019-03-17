@@ -68,9 +68,6 @@ protected:
 	sf::Time mStatisticsUpdateTime;
 	std::size_t mStatisticsNumFrames;
 
-	sf::Mutex eventQueueMutex;
-	std::queue<GameEvent*> eventQueue;
-
 	Map* gameMap;
 	Camera camera;
 	Account* account;

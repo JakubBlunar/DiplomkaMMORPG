@@ -78,6 +78,15 @@ void GamePlayScene::update(sf::Time elapsedTime) {
 	if (map) {
 		map->update(elapsedTime, game);
 	}
+
+	Entity* target = player->getTarget();
+	if (target && target->getType() == EntityType::NPC) {
+		Npc* npc = (Npc*) target;
+		if (npc->getAttributesComponent()->getAttribute(EntityAttributeType::HP) <= 0) {
+			player->setTarget(nullptr);
+			targetInfoWindow->setEntity(nullptr);
+		}
+	}
 }
 
 void GamePlayScene::render() {
@@ -234,6 +243,14 @@ void GamePlayScene::onKeyPress(sf::Keyboard::Key key) {
 				windowManager->close("CharacterInfo");
 			} else {
 				windowManager->open("CharacterInfo");
+			}
+			break;
+		}
+		case sf::Keyboard::X: {
+			if (console->isOpened()) {
+				windowManager->close("Console");
+			} else {
+				windowManager->open("Console");
 			}
 			break;
 		}

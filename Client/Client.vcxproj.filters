@@ -281,9 +281,6 @@
     <ClInclude Include="IGLoginCredentials.h">
       <Filter>Header Files\Scenes\IMGui</Filter>
     </ClInclude>
-    <ClInclude Include="EventDispatcher.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GamePlayScene.h">
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
@@ -374,9 +371,6 @@
     <ClInclude Include="MapContactListener.h">
       <Filter>Header Files\Core\Map</Filter>
     </ClInclude>
-    <ClInclude Include="sfLine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BotGame.h">
       <Filter>Header Files\Bot</Filter>
     </ClInclude>
@@ -424,6 +418,12 @@
     </ClInclude>
     <ClInclude Include="IGLearnNewSpell.h">
       <Filter>Header Files\Scenes\IMGui</Filter>
+    </ClInclude>
+    <ClInclude Include="sfLine.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="EventDispatcher.h">
+      <Filter>Header Files\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

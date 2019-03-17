@@ -92,14 +92,14 @@ void s::NpcCommandCombat::update(sf::Time elapsedTime, NpcUpdateEvents* npcUpdat
 		resetAttributesEvent->setChange(EntityAttributeType::MP, newMana);
 		npc->attributes.setAttribute(EntityAttributeType::HP, newHp);
 		npc->attributes.setAttribute(EntityAttributeType::MP, newMana);
+		npc->position.getMap()->sendEventToAllPlayers(resetAttributesEvent);
 
 		EventNpcStatusChanged* statusChangedEvent = new EventNpcStatusChanged();
 		statusChangedEvent->npcState = NpcState::COMBAT;
 		statusChangedEvent->spawnId = npc->getSpawnId();
 
 		npc->position.getMap()->sendEventToAllPlayers(statusChangedEvent);
-		npc->position.getMap()->sendEventToAllPlayers(resetAttributesEvent);
-
+	
 		NpcCommand* c = npc->getNpcCommand();
 
 		npc->setNpcCommand(nullptr);
