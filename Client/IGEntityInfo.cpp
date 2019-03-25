@@ -33,6 +33,8 @@ void IGEntityInfo::render(Game * g, IGManager * manager)
 		return;
 	}
 
+	g->getMap()->mapLock.lock();
+
 	Npc* npc = dynamic_cast<Npc*>(entity);
 	Player * player = dynamic_cast<Player*>(entity);
 
@@ -97,5 +99,7 @@ void IGEntityInfo::render(Game * g, IGManager * manager)
 	focused = false;
 
 	ImGui::End(); // end window
+
+	g->getMap()->mapLock.unlock();
 }
 

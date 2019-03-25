@@ -88,7 +88,7 @@ void GamePlayScene::update(sf::Time elapsedTime) {
 			targetInfoWindow->setEntity(nullptr);
 		}
 	}
-	map->mapLock.lock();
+	map->mapLock.unlock();
 }
 
 void GamePlayScene::render() {
