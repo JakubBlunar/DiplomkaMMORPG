@@ -102,6 +102,8 @@ void Box2DTools::addCircle(b2BodyType bodyType, float x, float y, float radius, 
 	bodyDef.angle = 0;
 	bodyDef.fixedRotation = true;
 	b2Body* bdCircle = map->getB2World()->CreateBody(&bodyDef);
+	entity->setBody(bdCircle);
+
 	b2CircleShape dynamicCircle;
 	dynamicCircle.m_radius = (radius / 2.0f) * PIXTOMET;
 	b2FixtureDef fixtureDef;
@@ -111,7 +113,7 @@ void Box2DTools::addCircle(b2BodyType bodyType, float x, float y, float radius, 
 
 	bdCircle->CreateFixture(&fixtureDef);
 
-	entity->setBody(bdCircle);
+	
 }
 
 void Box2DTools::addStaticCircle(float x, float y, Entity* entity, Map* map) {

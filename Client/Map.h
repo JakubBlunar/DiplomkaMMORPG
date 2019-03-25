@@ -38,13 +38,13 @@ class Map : public Subscriber {
 	MapGrid* grid;
 
 	bool pvp;
-	sf::Mutex mapLock;
+	
 public:
 	Map(Game* g);
 	~Map();
 
 	void init();
-
+	sf::Mutex mapLock;
 	void update(sf::Time elapsedTime, Game* game);
 
 	void addPlayer(Player* player);

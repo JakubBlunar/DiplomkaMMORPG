@@ -80,6 +80,7 @@ void GamePlayScene::update(sf::Time elapsedTime) {
 	}
 
 	Entity* target = player->getTarget();
+	map->mapLock.lock();
 	if (target && target->getType() == EntityType::NPC) {
 		Npc* npc = (Npc*) target;
 		if (npc->getAttributesComponent()->getAttribute(EntityAttributeType::HP) <= 0) {
@@ -87,6 +88,7 @@ void GamePlayScene::update(sf::Time elapsedTime) {
 			targetInfoWindow->setEntity(nullptr);
 		}
 	}
+	map->mapLock.lock();
 }
 
 void GamePlayScene::render() {

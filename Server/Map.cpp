@@ -39,6 +39,8 @@ void s::Map::addCharacter(Character* character) {
 	character->position.setBody(characterBody);
 	character->position.setMapId(id);
 	characterBody->SetUserData(character);
+	characters.push_back(character);
+	charactersById.insert(std::make_pair(character->id, character));
 
 	EventCharacterMapJoin eventMapJoin;
 	eventMapJoin.mapId = id;
@@ -46,8 +48,7 @@ void s::Map::addCharacter(Character* character) {
 
 	sendEventToAnotherPlayers(&eventMapJoin, character->id);
 
-	characters.push_back(character);
-	charactersById.insert(std::make_pair(character->id, character));
+	
 	lock.unlock();
 }
 
@@ -163,7 +164,7 @@ void s::Map::update(sf::Time deltaTime, Server* s) {
 	if (lastUpdateNpc > npcUpdateInterval) {
 
 		std::for_each(
-			std::execution::par_unseq,
+			std::execution::seq,
 			locations.begin(),
 			locations.end(),
 			[=](std::pair<int, Location*> element) {
@@ -522,7 +523,6 @@ b2Body* s::Map::createCircle(b2BodyType bodyType, float x, float y, float radius
 	bodyDef.fixedRotation = true;
 
 	b2Body* bdCircle = world->CreateBody(&bodyDef);
-	lock.unlock();
 
 	b2CircleShape dynamicCircle;
 	dynamicCircle.m_radius = (radius / 2.0f) * PIXTOMET;

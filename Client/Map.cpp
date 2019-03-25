@@ -93,6 +93,7 @@ void Map::init() {
 }
 
 void Map::update(sf::Time elapsedTime, Game* game) {
+	mapLock.lock();
 	world->Step(elapsedTime.asSeconds(), 6, 2);
 	for (Entity* entity : entities) {
 		entity->update(elapsedTime, this, game);
@@ -100,11 +101,12 @@ void Map::update(sf::Time elapsedTime, Game* game) {
 
 	while (!spellsToRemove.empty()) {
 		Spell* spell = spellsToRemove.front();
-		world->DestroyBody(spell->getBody());
 		entities.erase(std::remove(entities.begin(), entities.end(), spell), entities.end());
 		spellsToRemove.pop();
+		world->DestroyBody(spell->getBody());
 		delete spell;
 	}
+	mapLock.unlock();
 }
 
 Field* Map::getField(int x, int y) {
@@ -260,9 +262,8 @@ default:
 
 
 void Map::addPlayer(Player* player) {
-	players.insert(std::make_pair(player->getId(), player));
-	entities.push_back(player);
 
+	mapLock.lock();
 	if (player->isControlledByPlayer()) {
 		this->player = player;
 	}
@@ -273,7 +274,8 @@ void Map::addPlayer(Player* player) {
 	                      player->getCollisionMask());
 
 	b2Body* playerBody = player->getBody();
-
+	
+	/*
 	float radius = 32 * PIXTOMET;
 	b2Vec2 vertices[8];
 	vertices[0].Set(0, 0);
@@ -304,14 +306,21 @@ void Map::addPlayer(Player* player) {
 
 	b2Fixture* melleRange = playerBody->CreateFixture(&melleRangeDef);
 	player->setMelleRange(melleRange);
+	*/
 
+	players.insert(std::make_pair(player->getId(), player));
+	entities.push_back(player);
+
+	mapLock.unlock();
 }
 
 void Map::removePlayer(Player* player) {
-	world->DestroyBody(player->getBody());
-	player->setBody(nullptr);
+	mapLock.lock();
 	entities.erase(std::remove(entities.begin(), entities.end(), player), entities.end());
 	players.erase(player->getId());
+	world->DestroyBody(player->getBody());
+	player->setBody(nullptr);
+	mapLock.unlock();
 }
 
 void Map::addGameObject(GameObject* gameObject) {
@@ -320,7 +329,7 @@ void Map::addGameObject(GameObject* gameObject) {
 		return;
 	}
 
-	entities.push_back(gameObject);
+	
 	sf::Vector2f position = po->getPosition();
 	sf::Vector2f size = po->getSize();
 	BodyType bodyType = po->getBodyType();
@@ -332,6 +341,7 @@ void Map::addGameObject(GameObject* gameObject) {
 		Box2DTools::addCircle(b2_kinematicBody, position.x, position.y, size.x, gameObject, this,
 		                      gameObject->getEntityCategory(), gameObject->getCollisionMask());
 	}
+	entities.push_back(gameObject);
 }
 
 void Map::addCollider(Collider* collider) {
@@ -340,7 +350,7 @@ void Map::addCollider(Collider* collider) {
 		return;
 	}
 
-	entities.push_back(collider);
+	
 	sf::Vector2f position = po->getPosition();
 	sf::Vector2f size = po->getSize();
 	BodyType bodyType = po->getBodyType();
@@ -353,16 +363,17 @@ void Map::addCollider(Collider* collider) {
 		                      collider->getEntityCategory(),
 		                      collider->getCollisionMask());
 	}
+	entities.push_back(collider);
 }
 
 
 void Map::removeGameObject(GameObject* gameObject) {
-	world->DestroyBody(gameObject->getBody());
 	entities.erase(std::remove(entities.begin(), entities.end(), gameObject), entities.end());
+	world->DestroyBody(gameObject->getBody());
 }
 
 void Map::addNpc(Npc* npc) {
-
+	mapLock.lock();
 	sf::Vector2f position = npc->getPosition();
 	sf::Vector2f size = npc->getSize();
 	Box2DTools::addCircle(b2_dynamicBody, position.x, position.y, size.x, npc, this, npc->getEntityCategory(),
@@ -370,12 +381,15 @@ void Map::addNpc(Npc* npc) {
 
 	entities.push_back(npc);
 	npcs.insert(std::make_pair(npc->getId(), npc));
+	mapLock.unlock();
 }
 
 void Map::removeNpc(Npc* npc) {
-	world->DestroyBody(npc->getBody());
+	mapLock.lock();
 	entities.erase(std::remove(entities.begin(), entities.end(), npc), entities.end());
 	npcs.erase(npc->getId());
+	world->DestroyBody(npc->getBody());
+	mapLock.unlock();
 }
 
 void Map::addSpell(Spell* spell) {
@@ -384,6 +398,7 @@ void Map::addSpell(Spell* spell) {
 		return;
 	}
 
+	mapLock.lock();
 	sf::Vector2f position = po->getPosition();
 	sf::Vector2f size = po->getSize();
 	BodyType bodyType = po->getBodyType();
@@ -397,6 +412,7 @@ void Map::addSpell(Spell* spell) {
 	}
 
 	entities.push_back(spell);
+	mapLock.unlock();
 }
 
 void Map::removeSpell(Spell* spell) {
