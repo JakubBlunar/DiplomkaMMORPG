@@ -29,6 +29,7 @@ void RenderComponent::addAnimation(std::string animationName, Animation* animati
 
 void RenderComponent::changeAnimation(std::string animationName) {
 	if (currentAnimationName == animationName) {
+		currentAnimation->play();
 		return;
 	}
 

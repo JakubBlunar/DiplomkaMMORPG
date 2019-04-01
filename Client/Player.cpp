@@ -99,7 +99,7 @@ void Player::handleEvent(GameEvent* event) {
 void Player::update(sf::Time elapsedTime, Map* map, Game* g) {
 	Entity::update(elapsedTime, map, g);
 
-	//body->SetLinearVelocity(b2Vec2(positionComponent->getMovement().x * PIXTOMET, positionComponent->getMovement().y * PIXTOMET));
+	body->SetLinearVelocity(b2Vec2(positionComponent->getMovement().x * PIXTOMET, positionComponent->getMovement().y * PIXTOMET));
 
 	//cout << "VIEW: " << melleViewEntities.size() << " RANGE:" << melleRangeEntities.size() << endl;
 
@@ -194,6 +194,7 @@ void Player::updateMovementAnimation() {
 	{
 		renderComponent->changeAnimation("up");
 		renderComponent->getCurrentAnimation()->setLooped(true);
+		
 		body->SetTransform(b2Vec2(position.x * PIXTOMET, position.y * PIXTOMET), 180 * DEGTORAD);
 	}
 	else if (movement.x == 0 && movement.y > 0) //down
