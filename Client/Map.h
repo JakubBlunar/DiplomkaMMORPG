@@ -71,6 +71,9 @@ public:
 	int getHeight() const;
 	b2World* getB2World() const;
 	MapGrid* getGrid() const;
+	Game* getGame() const {
+		return game;
+	}
 
 	EntityToEntityRayCast* makeRayCast(Entity* startEntity, Entity* endEntity);
 

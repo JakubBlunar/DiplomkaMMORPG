@@ -184,6 +184,7 @@
     <ClInclude Include="DeleteElementPointer.h" />
     <ClInclude Include="EntityConstants.h" />
     <ClInclude Include="EventAttributeBonusesChanged.h" />
+    <ClInclude Include="EventAutoattackPlayer.h" />
     <ClInclude Include="EventCharacterChoose.h" />
     <ClInclude Include="EventCharacterChooseResponse.h" />
     <ClInclude Include="EventCharacterLogout.h" />
@@ -223,6 +224,7 @@
   <ItemGroup>
     <ClCompile Include="Astar.cpp" />
     <ClCompile Include="EventAttributeBonusesChanged.cpp" />
+    <ClCompile Include="EventAutoattackPlayer.cpp" />
     <ClCompile Include="EventCharacterChoose.cpp" />
     <ClCompile Include="EventCharacterChooseResponse.cpp" />
     <ClCompile Include="EventCharacterLogout.cpp" />

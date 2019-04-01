@@ -159,6 +159,9 @@ void s::EffectDealDamage::dealDamage(Npc* caster, Character* target) const {
 
 	float actualHp = target->attributes.getAttribute(EntityAttributeType::HP, true);
 	float newHp = actualHp - dmg;
+	if (newHp < 1) {
+		newHp = 1;
+	}
 	target->attributes.setAttribute(EntityAttributeType::HP, newHp);
 
 	EventAttributesChanged* e = new EventAttributesChanged();

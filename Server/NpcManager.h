@@ -15,11 +15,14 @@ namespace sf {
 	class Event;
 }
 
+class EventAutoattackPlayer;
+
 namespace s {
 	class Npc;
 	class Server;
-
+	class Session;
 	class Entity;
+	
 
 	struct NpcUpdateEvents {
 		EventNpcsMovementChange* npcsMovementChange;
@@ -50,6 +53,8 @@ namespace s {
 		void updateNpc(sf::Time elapsedTime, Npc* npc, Server* s, NpcUpdateEvents* npcUpdateEvents);
 
 		void handleEvent(GameEvent* event) override;
+
+		void handleEvent(EventAutoattackPlayer* e, Session* playerSession, Server* server);
 
 		void npcDied(Npc* npc, Entity* caster);
 

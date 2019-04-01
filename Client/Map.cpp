@@ -294,19 +294,21 @@ void Map::addPlayer(Player* player) {
 	melleViewDef.isSensor = true;
 	b2Fixture* melleView = playerBody->CreateFixture(&melleViewDef);
 	player->setMelleView(melleView);
-
-	b2CircleShape circleShape;
-	circleShape.m_radius = radius;
-
-	b2FixtureDef melleRangeDef;
-	melleRangeDef.shape = &circleShape;
-	melleRangeDef.filter.categoryBits = PLAYER_SENSOR;
-	melleRangeDef.filter.maskBits = ENEMY_PLAYER | GAME_OBJECT;
-	melleRangeDef.isSensor = true;
-
-	b2Fixture* melleRange = playerBody->CreateFixture(&melleRangeDef);
-	player->setMelleRange(melleRange);
 	*/
+
+	if (player->isControlledByPlayer()) {
+		b2CircleShape circleShape;
+		circleShape.m_radius = 32 * 3.5 * PIXTOMET;
+
+		b2FixtureDef melleRangeDef;
+		melleRangeDef.shape = &circleShape;
+		melleRangeDef.filter.categoryBits = PLAYER_SENSOR;
+		melleRangeDef.filter.maskBits = NPC;
+		melleRangeDef.isSensor = true;
+
+		b2Fixture* range = playerBody->CreateFixture(&melleRangeDef);
+		player->setRange(range);
+	}
 
 	players.insert(std::make_pair(player->getId(), player));
 	entities.push_back(player);
@@ -621,6 +623,7 @@ void Map::loadFromFile(int id) {
 
 	delete contactListener;
 	contactListener = new MapContactListener();
+	contactListener->setMap(this);
 	world->SetContactListener(contactListener);
 
 	grid->initNeighbours();

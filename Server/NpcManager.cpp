@@ -12,6 +12,7 @@
 #include "Account.h"
 #include "Session.h"
 #include "NpcEventCombatDecision.h"
+#include "EventAutoattackPlayer.h"
 
 s::NpcManager::NpcManager(): server(nullptr), runningThreads(0), MAX_RUNNING_NPC_THREADS(0) {
 	dynamic = false;
@@ -152,6 +153,14 @@ void s::NpcManager::handleEvent(GameEvent* event) {
 			lock.unlock();
 		}
 		
+	}
+}
+
+void s::NpcManager::handleEvent(EventAutoattackPlayer* e, Session * playerSession, Server * server)
+{
+	Npc* npc = findNpc(e->npcId);
+	if (npc) {
+		npc->startCombat(playerSession->getAccount()->getCharacter());
 	}
 }
 

@@ -23,14 +23,9 @@ void MapContactListener::BeginContact(b2Contact * contact)
 		Entity* entity = (Entity*)first->GetBody()->GetUserData();
 		Entity* collideWith = (Entity*) second->GetBody()->GetUserData();
 		EntityType type = entity->getType();
-		if (type == EntityType::PLAYER) {
+		if (type == EntityType::PLAYER && collideWith->getType() == EntityType::NPC) {
 			Player* p = (Player*) entity;
-			if(p->getMelleRange() == first) {
-				p->melleRangeEntities.push_back(collideWith);
-			}
-			if(p->getMelleView() == first) {
-				p->melleViewEntities.push_back(collideWith);
-			}
+			p->addRangeEntity(collideWith, map->getGame());
 		}
 		return;
 	}
@@ -39,14 +34,9 @@ void MapContactListener::BeginContact(b2Contact * contact)
 		Entity* entity = (Entity*)second->GetBody()->GetUserData();
 		Entity* collideWith = (Entity*) first->GetBody()->GetUserData();
 		EntityType type = entity->getType();
-		if (type == EntityType::PLAYER) {
+		if (type == EntityType::PLAYER && collideWith->getType() == EntityType::NPC) {
 			Player* p = (Player*) entity;
-			if(p->getMelleRange() == second) {
-				p->melleRangeEntities.push_back(collideWith);
-			}
-			if(p->getMelleView() == second) {
-				p->melleViewEntities.push_back(collideWith);
-			}
+			p->addRangeEntity(collideWith, map->getGame());
 		}
 		return;
 	}
@@ -87,14 +77,9 @@ void MapContactListener::EndContact(b2Contact * contact)
 		Entity* entity = (Entity*)first->GetBody()->GetUserData();
 		Entity* collideWith = (Entity*) second->GetBody()->GetUserData();
 		EntityType type = entity->getType();
-		if (type == EntityType::PLAYER) {
+		if (type == EntityType::PLAYER && collideWith->getType() == EntityType::NPC) {
 			Player* p = (Player*) entity;
-			if(p->getMelleRange() == first) {
-				p->melleRangeEntities.erase(std::find(p->melleRangeEntities.begin(), p->melleRangeEntities.end(), collideWith));
-			}
-			if(p->getMelleView() == first) {
-				p->melleViewEntities.erase(std::find(p->melleViewEntities.begin(), p->melleViewEntities.end(), collideWith));
-			}
+			p->removeRangeEntity(collideWith);
 		}
 	}
 
@@ -102,14 +87,9 @@ void MapContactListener::EndContact(b2Contact * contact)
 		Entity* entity = (Entity*)second->GetBody()->GetUserData();
 		Entity* collideWith = (Entity*) first->GetBody()->GetUserData();
 		EntityType type = entity->getType();
-		if (type == EntityType::PLAYER) {
+		if (type == EntityType::PLAYER && collideWith->getType() == EntityType::NPC) {
 			Player* p = (Player*) entity;
-			if(p->getMelleRange() == second) {
-				p->melleRangeEntities.erase(std::find(p->melleRangeEntities.begin(), p->melleRangeEntities.end(), collideWith));
-			}
-			if(p->getMelleView() == second) {
-				p->melleViewEntities.erase(std::find(p->melleViewEntities.begin(), p->melleViewEntities.end(), collideWith));
-			}
+			p->removeRangeEntity(collideWith);
 		}
 	}
 }

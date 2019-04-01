@@ -108,6 +108,10 @@ void s::EffectModifyAttributes::modifyCharacterAttributes(Character* character,
 		float actual = character->attributes.getAttribute(modifier.first, true);
 		float newValue = actual + modifier.second;
 
+		if (modifier.first == EntityAttributeType::HP && newValue < 1) {
+			newValue = 1;
+		}
+
 		character->attributes.setAttribute(modifier.first, newValue);
 		e->setChange(modifier.first, newValue);
 	}

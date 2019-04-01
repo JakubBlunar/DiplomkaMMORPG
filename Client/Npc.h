@@ -26,6 +26,7 @@ class Npc :
 	MovementData lastServerPosition;
 
 	sf::Time delayedDecision;
+	bool autoattack;
 public:
 	Npc();
 	~Npc();
@@ -49,6 +50,9 @@ public:
 
 	bool isHostile(Entity* entity) const;
 	
+	bool autoAttackPlayer() const {
+		return autoattack;
+	}
 
 	void subscribe();
 	void unsubscribe();

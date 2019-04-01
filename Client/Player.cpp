@@ -14,6 +14,7 @@
 #include "EventPlayerStartCastSpell.h"
 #include "Utils.h"
 #include "EventAttributesChanged.h"
+#include "EventAutoattackPlayer.h"
 
 
 Player::Player(bool playerControlled) : Entity(0) {
@@ -301,24 +302,40 @@ void Player::loadFromJson(json jsonData) {
 	}
 }
 
-b2Fixture* Player::getMelleView() const {
-	return melleView;
+b2Fixture* Player::getRange() const {
+	return rangeView;
 }
 
-void Player::setMelleView(b2Fixture* fixture) {
-	melleView = fixture;
-}
-
-b2Fixture* Player::getMelleRange() const {
-	return melleRange;
-}
-
-void Player::setMelleRange(b2Fixture* fixture) {
-	melleRange = fixture;
+void Player::setRange(b2Fixture* fixture) {
+	rangeView = fixture;
 }
 
 bool Player::isControlledByPlayer() const {
 	return playerControlled;
+}
+
+void Player::addRangeEntity(Entity * entity, Game* g)
+{
+	rangeEntities.insert(entity);
+
+	if (entity->getType() == EntityType::NPC){
+		Npc* npc = (Npc*) entity;
+		NpcState state = npc->getState();
+		if (npc->autoAttackPlayer() && (npc->getState() == NpcState::IDLE || npc->getState() == NpcState::MOVING)) {
+			EventAutoattackPlayer e;
+			e.playerId = id;
+			e.npcId = npc->getId();
+
+			sf::Packet* packet = e.toPacket();
+			g->packet_manager->sendPacket(packet);
+			delete packet;
+		}
+	}
+}
+
+void Player::removeRangeEntity(Entity * entity)
+{
+	rangeEntities.erase(entity);
 }
 
 void Player::setMovementDirection(sf::Vector2f direction, Game* g) {

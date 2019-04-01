@@ -126,7 +126,7 @@ EntityCategory Npc::getEntityCategory()
 }
 
 uint16 Npc::getCollisionMask() {
-	return BOUNDARY | GAME_OBJECT;
+	return BOUNDARY | GAME_OBJECT | PLAYER_SENSOR;
 }
 
 void Npc::update(sf::Time elapsedTime, Map* map, Game* g) {
@@ -297,6 +297,13 @@ void Npc::loadFromJson(json serverData)
 		attributesComponent->setAttributeByIndex(index, *it);
 		index++;
 	}
+
+	if (jsonData.find("disableAutoattack") != jsonData.end()) {
+		autoattack = false;
+	} else {
+		autoattack = true;
+	}
+	
 	subscribe();
 }
 

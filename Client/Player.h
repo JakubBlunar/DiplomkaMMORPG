@@ -9,6 +9,7 @@
 #include "AttributesComponent.h"
 #include "Spell.h"
 #include <map>
+#include <unordered_set>
 
 class GameEvent;
 using json = nlohmann::json;
@@ -35,15 +36,15 @@ public:
 
 	void loadFromJson(json jsonData);
 
-	b2Fixture* getMelleView() const;
-	void setMelleView(b2Fixture* fixture);
 
-	b2Fixture* getMelleRange() const;
-	void setMelleRange(b2Fixture* fixture);
+	b2Fixture* getRange() const;
+	void setRange(b2Fixture* fixture);
 
-	std::list<Entity*> melleRangeEntities;
-	std::list<Entity*> melleViewEntities;
+	std::unordered_set<Entity*> rangeEntities;
 	bool isControlledByPlayer() const;
+
+	void addRangeEntity(Entity* entity, Game* g);
+	void removeRangeEntity(Entity* entity);
 
 	void setMovementDirection(sf::Vector2f direction, Game* g);
 
@@ -107,8 +108,7 @@ private:
 	bool playerControlled;
 	RenderComponent* renderComponent;
 
-	b2Fixture* melleView;
-	b2Fixture* melleRange;
+	b2Fixture* rangeView;
 
 	sf::Vector2f lastMovement;
 	sf::Time sendingTime;
@@ -117,7 +117,6 @@ private:
 
 	SpellCooldown* globalCooldown;
 	std::map<int, SpellCooldown*> spellCooldowns;
-
 
 	void sendPosition(Game* g) const;
 

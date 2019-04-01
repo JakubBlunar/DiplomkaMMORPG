@@ -20,6 +20,7 @@
 #include "EventLearnSpell.h"
 #include "EventSendMessage.h"
 #include "Box2D/Box2D.h"
+#include "EventAutoattackPlayer.h"
 
 s::Server::Server(ServerSettings* settings):
 	running(false) {
@@ -194,6 +195,16 @@ void s::Server::identifyPacket(EventId type, sf::Packet* packet, Session* player
 		EventLearnSpell* e = new EventLearnSpell();
 		if (e->loadFromPacket(packet)) {
 			characterManager.handleEvent(e, playerSession, this);
+		}
+		delete e;
+		break;
+	}
+	case AUTOATTACK_PLAYER: {
+		EventAutoattackPlayer* e = new EventAutoattackPlayer();
+		if (e->loadFromPacket(packet)) {
+			npcManager.handleEvent(e, playerSession, this);
+		} else {
+			spdlog::get("log")->info("Bad reading in packet {}", type);
 		}
 		delete e;
 		break;

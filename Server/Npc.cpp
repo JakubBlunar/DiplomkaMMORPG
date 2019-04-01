@@ -284,7 +284,8 @@ b2Body* s::Npc::getBody() const {
 }
 
 void s::Npc::startCombat(Character* character) {
-
+	if (state == NpcState::COMBAT) return;
+	if (state == NpcState::DEAD) return;
 
 	EventNpcStatusChanged* statusChangedEvent = new EventNpcStatusChanged();
 	statusChangedEvent->npcState = NpcState::COMBAT;
