@@ -199,6 +199,7 @@
     <ClInclude Include="EventAttributesChanged.h" />
     <ClInclude Include="EventNpcChanges.h" />
     <ClInclude Include="EventNpcMovementChange.h" />
+    <ClInclude Include="EventNpcPositionChange.h" />
     <ClInclude Include="EventNpcStatusChanged.h" />
     <ClInclude Include="EventPlayerStartCastSpell.h" />
     <ClInclude Include="EventSendMessage.h" />
@@ -239,6 +240,7 @@
     <ClCompile Include="EventAttributesChanged.cpp" />
     <ClCompile Include="EventNpcChanges.cpp" />
     <ClCompile Include="EventNpcMovementChange.cpp" />
+    <ClCompile Include="EventNpcPositionChange.cpp" />
     <ClCompile Include="EventNpcStatusChanged.cpp" />
     <ClCompile Include="EventPlayerStartCastSpell.cpp" />
     <ClCompile Include="EventSendMessage.cpp" />

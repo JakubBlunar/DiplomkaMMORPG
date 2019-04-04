@@ -7,6 +7,7 @@
 #include "NpcEventNpcIsIdle.h"
 #include "EventDispatcher.h"
 #include "EventNpcMovementChange.h"
+#include "EventNpcPositionChange.h"
 #include <spdlog/spdlog.h>
 
 
@@ -89,26 +90,24 @@ void s::Location::checkNpcRespawn(Npc* npc, sf::Time serverTime, Server* s) cons
 			sf::Vector2f spawnPosition = npc->getSpawnPosition();
 			npc->position.setPosition(spawnPosition);
 			npc->setMovement(0, 0);
-			EventNpcMovementChange movChanged;
-			movChanged.spawnId = npc->getSpawnId();
-			movChanged.speed = npc->attributes.getAttribute(EntityAttributeType::SPEED, true);
-			movChanged.velX = 0;
-			movChanged.velY = 0;
-			movChanged.x = spawnPosition.x;
-			movChanged.y = spawnPosition.y;
-			map->sendEventToAllPlayers(&movChanged);
+			EventNpcPositionChange posChanged;
+			posChanged.npcId = npc->getSpawnId();
+			posChanged.positionX = spawnPosition.x;
+			posChanged.positionY = spawnPosition.y;
+			posChanged.velX = 0;
+			posChanged.velY = 0;
+			map->sendEventToAllPlayers(&posChanged);
 		} else {
 			sf::Vector2f spawnPosition = generateRandomPoint();
 			npc->position.setPosition(spawnPosition);
 			npc->setMovement(0, 0);
-			EventNpcMovementChange movChanged;
-			movChanged.spawnId = npc->getSpawnId();
-			movChanged.speed = npc->attributes.getAttribute(EntityAttributeType::SPEED, true);
-			movChanged.velX = 0;
-			movChanged.velY = 0;
-			movChanged.x = spawnPosition.x;
-			movChanged.y = spawnPosition.y;
-			map->sendEventToAllPlayers(&movChanged);
+			EventNpcPositionChange posChanged;
+			posChanged.npcId = npc->getSpawnId();
+			posChanged.positionX = spawnPosition.x;
+			posChanged.positionY = spawnPosition.y;
+			posChanged.velX = 0;
+			posChanged.velY = 0;
+			map->sendEventToAllPlayers(&posChanged);
 		}
 
 		float hp = npc->getAttribute(EntityAttributeType::BASE_HP, true);

@@ -54,6 +54,10 @@ public:
 		return autoattack;
 	}
 
+	void setLastServerPostion(MovementData data) {
+		this->lastServerPosition = data;
+	}
+
 	void subscribe();
 	void unsubscribe();
 };

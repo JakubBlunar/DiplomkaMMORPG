@@ -17,6 +17,7 @@
 #include "EntityPrototypes.h"
 #include "GamePlayScene.h"
 #include "EventCharacterMapJoin.h"
+#include "EventNpcPositionChange.h"
 
 Map::Map(Game* g) {
 	this->game = g;
@@ -175,6 +176,35 @@ void Map::handleEvent(GameEvent* event) {
 			Player* p = exists->second;
 			removePlayer(p);
 			delete p;
+			return;
+		}
+		case NPC_POSITION_CHANGE: {
+			EventNpcPositionChange* e = (EventNpcPositionChange*)event;
+		
+			auto npc = npcs.at(e->npcId);
+			if (npc == nullptr) {
+				return;
+			}
+
+			PositionComponent* pos = npc->getPositionComponent();
+			b2Body* body = npc->getBody();
+
+			mapLock.lock();
+
+			pos->setPosition(sf::Vector2f(e->positionX, e->positionY));
+			pos->setMovement(sf::Vector2f(e->velX, e->velY));
+
+			MovementData lsp;
+			lsp.velocityX = e->velX;
+			lsp.velocityY = e->velY;
+			lsp.x = e->positionX;
+			lsp.y = e->positionY;
+
+			npc->setLastServerPostion(lsp);
+
+			body->SetLinearVelocity(b2Vec2(e->velX * PIXTOMET, e->velY * PIXTOMET));
+			body->SetTransform(b2Vec2(e->positionX * PIXTOMET, e->positionY * PIXTOMET), body->GetAngle());
+			mapLock.unlock();
 			return;
 		}
 		case SPELL_CAST_RESULT: {
@@ -635,12 +665,14 @@ void Map::subscribe() {
 	EventDispatcher<EventCharacterMapJoin>::addSubscriber(this);
 	EventDispatcher<EventCharacterMapLeave>::addSubscriber(this);
 	EventDispatcher<EventSpellCastResult>::addSubscriber(this);
+	EventDispatcher<EventNpcPositionChange>::addSubscriber(this);
 }
 
 void Map::unsubscribe() {
 	EventDispatcher<EventCharacterMapJoin>::removeSubscriber(this);
 	EventDispatcher<EventCharacterMapLeave>::removeSubscriber(this);
 	EventDispatcher<EventSpellCastResult>::removeSubscriber(this);
+	EventDispatcher<EventNpcPositionChange>::removeSubscriber(this);
 }
 
 Player* Map::getPlayer() const {

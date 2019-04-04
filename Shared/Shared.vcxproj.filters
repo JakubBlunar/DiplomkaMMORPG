@@ -156,6 +156,9 @@
     <ClInclude Include="EventAutoattackPlayer.h">
       <Filter>Header Files\Events</Filter>
     </ClInclude>
+    <ClInclude Include="EventNpcPositionChange.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -244,6 +247,9 @@
     </ClCompile>
     <ClCompile Include="EventAutoattackPlayer.cpp">
       <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="EventNpcPositionChange.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

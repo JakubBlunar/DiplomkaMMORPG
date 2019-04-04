@@ -17,6 +17,7 @@
 #include "EventSendMessage.h"
 #include "EventFreeSpellToLearn.h"
 #include "EventLearnSpell.h"
+#include "EventNpcPositionChange.h"
 
 PacketManager::PacketManager(Game* g) : game(nullptr), latencyCheckThread(nullptr) {
 	game = g;
@@ -197,6 +198,15 @@ void PacketManager::startRecieve() {
 					e = new EventLearnSpell();
 					if (e->loadFromPacket(&packet)) {
 						EventDispatcher<EventLearnSpell>::dispatchEvent(e);
+					} else {
+						game->print("Error while parsing packet " + std::to_string(pt));
+					}
+					break;
+				}
+				case NPC_POSITION_CHANGE: {
+					e = new EventNpcPositionChange();
+					if (e->loadFromPacket(&packet)) {
+						EventDispatcher<EventNpcPositionChange>::dispatchEvent(e);
 					} else {
 						game->print("Error while parsing packet " + std::to_string(pt));
 					}

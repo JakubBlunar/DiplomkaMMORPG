@@ -160,6 +160,7 @@ void s::NpcManager::handleEvent(EventAutoattackPlayer* e, Session * playerSessio
 {
 	Npc* npc = findNpc(e->npcId);
 	if (npc) {
+		spdlog::get("log")->info("AUTOATTACK NPC {}", npc->getSpawnId());
 		npc->startCombat(playerSession->getAccount()->getCharacter());
 	}
 }
@@ -167,27 +168,29 @@ void s::NpcManager::handleEvent(EventAutoattackPlayer* e, Session * playerSessio
 void s::NpcManager::npcDied(Npc* npc, Entity* caster) {
 	if (!npc->isAlive()) {
 		return;
-	};
+	}
 
 	npc->lock();
+
+	npc->setMovement(sf::Vector2f(0,0), nullptr);
 
 	npc->setDeadTimestamp(server->getServerTime());
 	npc->setNpcState(NpcState::DEAD);
 	npc->setNpcCommand(nullptr);
 
-
 	EventNpcStatusChanged* e = new EventNpcStatusChanged();
 	e->spawnId = npc->getSpawnId();
 	e->npcState = NpcState::DEAD;
+	npc->combat.reset();
+	npc->unlock();
 
 	npc->position.getMap()->sendEventToAllPlayers(e);
 	for (Character* const ch : npc->combat.attackingCharacters) {
 		server->characterManager.handleNpcKill(ch, npc);
 	}
 
-	npc->combat.reset();
-	npc->unlock();
 	delete e;
+
 }
 
 void s::NpcManager::executeEvent(NpcEvent* npcEvent, int index) {

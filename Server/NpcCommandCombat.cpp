@@ -82,6 +82,7 @@ void s::NpcCommandCombat::update(sf::Time elapsedTime, NpcUpdateEvents* npcUpdat
 	if (endCombat) {
 		finished = true;
 		npc->combat.reset();
+
 		EventAttributesChanged* resetAttributesEvent = new EventAttributesChanged();
 		resetAttributesEvent->entityType = NPC;
 		resetAttributesEvent->spawnId = npc->getSpawnId();
@@ -92,18 +93,17 @@ void s::NpcCommandCombat::update(sf::Time elapsedTime, NpcUpdateEvents* npcUpdat
 		resetAttributesEvent->setChange(EntityAttributeType::MP, newMana);
 		npc->attributes.setAttribute(EntityAttributeType::HP, newHp);
 		npc->attributes.setAttribute(EntityAttributeType::MP, newMana);
-		npc->position.getMap()->sendEventToAllPlayers(resetAttributesEvent);
-
+		
+		npc->setNpcState(NpcState::IDLE);
 		EventNpcStatusChanged* statusChangedEvent = new EventNpcStatusChanged();
-		statusChangedEvent->npcState = NpcState::COMBAT;
+		statusChangedEvent->npcState = NpcState::IDLE;
 		statusChangedEvent->spawnId = npc->getSpawnId();
 
 		npc->position.getMap()->sendEventToAllPlayers(statusChangedEvent);
-	
+		npc->position.getMap()->sendEventToAllPlayers(resetAttributesEvent);
+
 		NpcCommand* c = npc->getNpcCommand();
-
 		npc->setNpcCommand(nullptr);
-
 		NpcEventNpcIsIdle * iddleEvent = new NpcEventNpcIsIdle(npc);
 		dispatchFinishEvent(iddleEvent);
 
