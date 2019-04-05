@@ -146,6 +146,32 @@ std::vector<Entity*>* Map::getEntities() {
 
 void Map::handleEvent(GameEvent* event) {
 	switch (event->getId()) {
+		case SEND_MESSAGE: {
+			EventSendMessage* e = (EventSendMessage*) event;
+
+			if (e->entityType == EntityType::PLAYER) {
+				Player* p = getPlayerById(e->targetId);
+				if (p) {
+					EntityPopupMessage* mess = new EntityPopupMessage();
+					mess->appear = game->getGameTime();
+					mess->message = e->combatPopup;
+					p->addPopupMessage(mess);
+				}
+				return;
+			}
+
+			if (e->entityType == EntityType::NPC) {
+				Npc* npc = npcs.at(e->targetId);
+				if (npc) {
+					EntityPopupMessage* mess = new EntityPopupMessage();
+					mess->appear = game->getGameTime();
+					mess->message = e->combatPopup;
+					npc->addPopupMessage(mess);
+				}
+				return;
+			}
+			break;
+		}
 		case CHARACTER_MAP_JOIN: {
 			EventCharacterMapJoin* e = (EventCharacterMapJoin*)event;
 			if (e->mapId != id)
@@ -666,6 +692,7 @@ void Map::subscribe() {
 	EventDispatcher<EventCharacterMapLeave>::addSubscriber(this);
 	EventDispatcher<EventSpellCastResult>::addSubscriber(this);
 	EventDispatcher<EventNpcPositionChange>::addSubscriber(this);
+	EventDispatcher<EventSendMessage>::addSubscriber(this);
 }
 
 void Map::unsubscribe() {
@@ -673,6 +700,7 @@ void Map::unsubscribe() {
 	EventDispatcher<EventCharacterMapLeave>::removeSubscriber(this);
 	EventDispatcher<EventSpellCastResult>::removeSubscriber(this);
 	EventDispatcher<EventNpcPositionChange>::removeSubscriber(this);
+	EventDispatcher<EventSendMessage>::removeSubscriber(this);
 }
 
 Player* Map::getPlayer() const {

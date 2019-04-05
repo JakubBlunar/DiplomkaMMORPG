@@ -6,9 +6,15 @@
 #include "Component.h"
 #include <Box2D/Box2D.h>
 #include "EntityConstants.h"
+#include <list>
 
 class Game;
 class Map;
+
+struct EntityPopupMessage {
+	sf::Time appear;
+	std::string message;
+}; 
 
 class Entity : public Subscriber {
 public:
@@ -30,18 +36,26 @@ public:
 	std::string getName() const;
 
 	bool isRemoved() const { return removed; }
+
+	void handleEvent(GameEvent* event) override = 0;
+	std::list<EntityPopupMessage*> messages;
+
+	void addPopupMessage(EntityPopupMessage* message) {
+		messages.push_back(message);
+	}
 protected:
 	Entity(sf::Uint32 id);
-public:
-	void handleEvent(GameEvent* event) override = 0;
-protected:
 	std::vector<Component *> components;
 	b2Body* body;
 	std::string name;
 	sf::Uint32 id;
 	bool removed;
 
+	
+
 	sf::Mutex mutex;
+
+
 };
 
 

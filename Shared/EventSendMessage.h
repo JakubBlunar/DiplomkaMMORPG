@@ -12,9 +12,13 @@ public:
 	virtual ~EventSendMessage();
 
 	std::string message;
-	int playerId;
+	int playerId = -1;
 	MessageType messageType;
 	time_t time;
+	
+	int targetId = -1;
+	std::string combatPopup;
+	EntityType entityType;
 
 	bool loadFromPacket(sf::Packet* p) override;
 	sf::Packet* toPacket() override;

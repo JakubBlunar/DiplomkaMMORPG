@@ -3,13 +3,13 @@
 
 #include <SFML/System.hpp>
 
-enum class EntityType {
-	PLAYER,
-	GAMEOBJECT,
-	COLLIDER,
-	NPC,
-	SPELL,
-	MOVABLE_SPELL
+enum class EntityType: sf::Uint8 {
+	PLAYER = 1,
+	GAMEOBJECT = 2,
+	COLLIDER = 3,
+	NPC = 4,
+	SPELL = 5,
+	MOVABLE_SPELL = 6
 };
 
 

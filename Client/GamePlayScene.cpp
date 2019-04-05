@@ -46,6 +46,10 @@ GamePlayScene::GamePlayScene(SceneType sceneType, Game* g) : Scene(sceneType, g)
 	targetArrow.setPointCount(3);
 	targetArrow.setFillColor(sf::Color::Yellow);
 
+	entityPopup.setFillColor(sf::Color::Yellow);
+	entityPopup.setFont(mFont);
+	entityPopup.setCharacterSize(15);
+
 	EventDispatcher<EventFreeSpellToLearn>::addSubscriber(this);
 	EventDispatcher<EventLearnSpell>::addSubscriber(this);
 }
@@ -212,6 +216,40 @@ void GamePlayScene::render() {
 			}
 
 			game->window->draw(*sprite);
+
+			if (!entity->messages.empty()) {
+				float top = positionComponent->getSize().y;
+				float length = 1000;
+
+				sf::Time gameTime = game->getGameTime();
+				int pop = 0;
+
+				for (EntityPopupMessage* mess: entity->messages)
+				{
+					sf::Time visible = gameTime - mess->appear;
+					if (visible.asMilliseconds() > length) {
+						pop++;
+						continue;
+					}
+
+					float div = 1.0 - (visible.asMilliseconds() / length);
+					float popupX = ceilNumber(METTOPIX * position.x);
+					float popupY = spritePosition.y + div * top;
+
+					entityPopup.setPosition(popupX, popupY);
+					entityPopup.setString(mess->message);
+
+					game->window->draw(entityPopup);
+				}
+
+				while (pop > 0) {
+					EntityPopupMessage* mess = entity->messages.front();
+					entity->messages.pop_front();
+					delete mess;
+					pop--;
+				}
+			}
+
 			if (player->getTarget() && player->getTarget() == entity) {
 				targetArrow.setPosition(spritePosition.x + renderComponent->getSize().x / 2.f + 8, spritePosition.y);
 				game->window->draw(targetArrow);

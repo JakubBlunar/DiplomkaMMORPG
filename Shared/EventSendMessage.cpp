@@ -24,6 +24,13 @@ bool EventSendMessage::loadFromPacket(sf::Packet* p) {
 				return true;
 			}
 			return false;
+		} else if (messageType == MessageType::COMBAT_LOG) {
+			sf::Uint8 numEntityType;
+			if (*p >> playerId >> targetId >> numEntityType >> combatPopup) {
+				entityType = static_cast<EntityType>(numEntityType);
+				return true;
+			}
+			return false;
 		}
 		return true;
 	}
@@ -36,6 +43,11 @@ sf::Packet* EventSendMessage::toPacket() {
 	if (*p << id << message << time << static_cast<sf::Uint8>(messageType)) {
 		if (messageType == MessageType::SAY) {
 			if (*p << playerId) {
+				return p;
+			}
+			throw e;
+		} else if(messageType == MessageType::COMBAT_LOG) {
+			if (*p << playerId << targetId << static_cast<sf::Uint8>(entityType) << combatPopup) {
 				return p;
 			}
 			throw e;

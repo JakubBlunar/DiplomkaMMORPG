@@ -39,6 +39,8 @@ private:
 
 	sf::Texture BoxTexture;
 	sf::Font mFont;
+	sf::Text entityPopup;
+				
 
 	VisibleObjectsCast queryCallback;
 	b2AABB aabb;

@@ -53,6 +53,10 @@ void s::EffectHealTarget::castHealing(Character* caster, Character* target) cons
 	logEvent.playerId = -1;
 	logEvent.time = Utils::getActualUtcTime();
 
+	logEvent.entityType = EntityType::PLAYER;
+	logEvent.targetId = target->id;
+	logEvent.combatPopup = "+" + ChatUtils::floatToString(healing, 0) + "hp";
+
 	sf::Packet* p = logEvent.toPacket();
 	caster->getAccount()->getSession()->sendPacket(p);
 	if (caster != target) {
@@ -99,6 +103,9 @@ void s::EffectHealTarget::castHealing(Character* caster, Npc* target) const {
 	logEvent.messageType = MessageType::COMBAT_LOG;
 	logEvent.playerId = -1;
 	logEvent.time = Utils::getActualUtcTime();
+	logEvent.entityType = EntityType::NPC;
+	logEvent.targetId = target->getSpawnId();
+	logEvent.combatPopup = "+" + ChatUtils::floatToString(healing, 0) + "hp";
 
 	sf::Packet* p = logEvent.toPacket();
 	caster->getAccount()->getSession()->sendPacket(p);
@@ -140,6 +147,10 @@ void s::EffectHealTarget::castHealing(Npc* caster, Character* target) const {
 	logEvent.messageType = MessageType::COMBAT_LOG;
 	logEvent.playerId = -1;
 	logEvent.time = Utils::getActualUtcTime();
+
+	logEvent.entityType = EntityType::PLAYER;
+	logEvent.targetId = target->id;
+	logEvent.combatPopup = "+" + ChatUtils::floatToString(healing, 0) + "hp";
 
 	sf::Packet* p = logEvent.toPacket();
 	target->getAccount()->getSession()->sendPacket(p);

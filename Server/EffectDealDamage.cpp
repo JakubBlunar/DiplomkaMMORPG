@@ -25,6 +25,10 @@ void s::EffectDealDamage::dealDamage(Character* caster, Character* target) const
 		logEvent.message = caster->name + " missed with " + spellInfo.name;
 		logEvent.messageType = MessageType::COMBAT_LOG;
 		logEvent.playerId = -1;
+		logEvent.entityType = EntityType::PLAYER;
+		logEvent.targetId = target->id;
+		logEvent.combatPopup = "Miss";
+
 		logEvent.time = Utils::getActualUtcTime();
 
 		sf::Packet* p = logEvent.toPacket();
@@ -61,6 +65,10 @@ void s::EffectDealDamage::dealDamage(Character* caster, Character* target) const
 	logEvent.messageType = MessageType::COMBAT_LOG;
 	logEvent.playerId = -1;
 	logEvent.time = Utils::getActualUtcTime();
+	
+	logEvent.entityType = EntityType::PLAYER;
+	logEvent.targetId = target->id;
+	logEvent.combatPopup = "-" + ChatUtils::floatToString(dmg, 0) + "hp";
 
 	sf::Packet* p = logEvent.toPacket();
 	caster->getAccount()->getSession()->sendPacket(p);
@@ -82,6 +90,9 @@ void s::EffectDealDamage::dealDamage(Character* caster, Npc* target) const {
 		logEvent.messageType = MessageType::COMBAT_LOG;
 		logEvent.playerId = -1;
 		logEvent.time = Utils::getActualUtcTime();
+		logEvent.entityType = EntityType::NPC;
+		logEvent.targetId = target->getSpawnId();
+		logEvent.combatPopup = "Miss";
 
 		sf::Packet* p = logEvent.toPacket();
 		caster->getAccount()->getSession()->sendPacket(p);
@@ -117,6 +128,10 @@ void s::EffectDealDamage::dealDamage(Character* caster, Npc* target) const {
 	logEvent.playerId = -1;
 	logEvent.time = Utils::getActualUtcTime();
 
+	logEvent.entityType = EntityType::NPC;
+	logEvent.targetId = target->getSpawnId();
+	logEvent.combatPopup = "-" + ChatUtils::floatToString(dmg, 0) + "hp";
+
 	sf::Packet* p = logEvent.toPacket();
 	caster->getAccount()->getSession()->sendPacket(p);
 	delete p;
@@ -138,6 +153,10 @@ void s::EffectDealDamage::dealDamage(Npc* caster, Character* target) const {
 		logEvent.messageType = MessageType::COMBAT_LOG;
 		logEvent.playerId = -1;
 		logEvent.time = Utils::getActualUtcTime();
+
+		logEvent.entityType = EntityType::PLAYER;
+		logEvent.targetId = target->id;
+		logEvent.combatPopup = "Miss";
 
 		sf::Packet* p = logEvent.toPacket();
 		target->getAccount()->getSession()->sendPacket(p);
@@ -175,6 +194,10 @@ void s::EffectDealDamage::dealDamage(Npc* caster, Character* target) const {
 	logEvent.messageType = MessageType::COMBAT_LOG;
 	logEvent.playerId = -1;
 	logEvent.time = Utils::getActualUtcTime();
+
+	logEvent.entityType = EntityType::PLAYER;
+	logEvent.targetId = target->id;
+	logEvent.combatPopup = "-" + ChatUtils::floatToString(dmg, 0) + "hp";
 
 	sf::Packet* p = logEvent.toPacket();
 	target->getAccount()->getSession()->sendPacket(p);
@@ -217,6 +240,7 @@ void s::EffectDealDamage::dealDamage(Npc* caster, Npc* target) const {
 	e->entityType = NPC;
 	e->spawnId = target->getSpawnId();
 	e->setChange(EntityAttributeType::HP, newHp);
+	
 	target->position.getMap()->sendEventToAllPlayers(e);
 
 	if (newHp <= 0) {
