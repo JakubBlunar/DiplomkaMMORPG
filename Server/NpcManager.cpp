@@ -169,7 +169,6 @@ void s::NpcManager::npcDied(Npc* npc, Entity* caster) {
 	if (!npc->isAlive()) {
 		return;
 	}
-
 	npc->lock();
 
 	npc->setMovement(sf::Vector2f(0, 0), nullptr);
@@ -181,13 +180,15 @@ void s::NpcManager::npcDied(Npc* npc, Entity* caster) {
 	EventNpcStatusChanged* e = new EventNpcStatusChanged();
 	e->spawnId = npc->getSpawnId();
 	e->npcState = NpcState::DEAD;
-	npc->combat.reset();
-	npc->unlock();
 
 	npc->position.getMap()->sendEventToAllPlayers(e);
+
 	for (Character* const ch : npc->combat.attackingCharacters) {
 		server->characterManager.handleNpcKill(ch, npc);
 	}
+
+	npc->combat.reset();
+	npc->unlock();
 
 	delete e;
 
