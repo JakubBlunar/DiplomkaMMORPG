@@ -31,7 +31,7 @@ void Game::run() {
 
 	EntityPrototypes::instance()->init();
 
-	window = new sf::RenderWindow(sf::VideoMode(1360, 768), "SFML Application", sf::Style::Resize | sf::Style::Close),
+	window = new sf::RenderWindow(sf::VideoMode(1360, 768), "Akalitasia game", sf::Style::Resize | sf::Style::Close),
 		window->setFramerateLimit(60);
 	window->setVerticalSyncEnabled(true);
 	ImGui::SFML::Init(*window, false);
