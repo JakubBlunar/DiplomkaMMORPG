@@ -1,4 +1,4 @@
-#ifndef RUNNING_AVERAGE_H
+﻿#ifndef RUNNING_AVERAGE_H
 #define RUNNING_AVERAGE_H
 
 #include "SFML\System.hpp"

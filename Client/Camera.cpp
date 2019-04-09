@@ -1,4 +1,4 @@
-#include "Camera.h"
+﻿#include "Camera.h"
 #include <SFML/Window/Mouse.hpp>
 #include "Game.h"
 #include "SceneManager.h"
@@ -7,7 +7,7 @@
 #define MIN_SCALE 0.8f
 #define MAX_SCALE 1.3f
 
-Camera::Camera():
+Camera::Camera() :
 	resolution(1360, 768),
 	offset(16, 16),
 	scale(1),
@@ -18,7 +18,7 @@ Camera::Camera():
 
 	float temp = 6;
 	playerBorders = sf::FloatRect(resolution.x / temp, resolution.y / temp, resolution.x - 2 * (resolution.x / temp),
-	                              resolution.y - 2 * (resolution.y / temp));
+		resolution.y - 2 * (resolution.y / temp));
 }
 
 

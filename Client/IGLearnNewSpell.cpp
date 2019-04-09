@@ -1,10 +1,10 @@
-#include "IGLearnNewSpell.h"
+﻿#include "IGLearnNewSpell.h"
 #include "Game.h"
 #include "imgui-SFML.h"
 #include "ImGuiFonts.h"
 #include "EventLearnSpell.h"
 
-IGLearnNewSpell::IGLearnNewSpell(): spells(nullptr) {
+IGLearnNewSpell::IGLearnNewSpell() : spells(nullptr) {
 	chosenSpell = -1;
 }
 
@@ -19,8 +19,8 @@ void IGLearnNewSpell::render(Game* g, IGManager* manager) {
 	ImGui::SetNextWindowPos(position, ImGuiCond_Always);
 
 	if (!ImGui::Begin("LearnNewSpells", &visible,
-	                  ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove |
-	                  ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBringToFrontOnFocus)) {
+		ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBringToFrontOnFocus)) {
 		focused = false;
 		ImGui::End();
 		return;
@@ -37,10 +37,10 @@ void IGLearnNewSpell::render(Game* g, IGManager* manager) {
 		ImGui::SameLine();
 
 		sf::Color color = sf::Color::White;
-		if(chosenSpell == i) {
+		if (chosenSpell == i) {
 			color = sf::Color::Red;
 		}
-		if (ImGui::ImageButton(si->icon, -1, color,color)) {
+		if (ImGui::ImageButton(si->icon, -1, color, color)) {
 			if (chosenSpell == i) {
 				chosenSpell = -1;
 			}
@@ -69,7 +69,7 @@ void IGLearnNewSpell::render(Game* g, IGManager* manager) {
 			}
 			if (si->castingTime != sf::Time::Zero) {
 				std::string castingTime = "CastingTime: " + convertFloatToString(
-						(float)si->castingTime.asMilliseconds(), 0) +
+					(float)si->castingTime.asMilliseconds(), 0) +
 					" ms";
 				ImGui::Text(castingTime.c_str());
 			}
@@ -116,7 +116,7 @@ void IGLearnNewSpell::beforeRender(Game* game) {
 		sf::Vector2f size(75.f * spells->size(), 130.f);
 		if (size.x < 250) {
 			size.x = 250;
-		} 
+		}
 		setSize(size);
 	}
 

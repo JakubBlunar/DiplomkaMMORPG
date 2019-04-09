@@ -1,4 +1,4 @@
-#ifndef SERVER_SETTINGS_H
+﻿#ifndef SERVER_SETTINGS_H
 #define SERVER_SETTINGS_H
 
 #include <string>

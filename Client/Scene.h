@@ -1,4 +1,4 @@
-#ifndef SCENE_H
+﻿#ifndef SCENE_H
 #define SCENE_H
 
 #include <string>
@@ -49,7 +49,7 @@ public:
 	virtual void render();
 
 	void addGameMessage(GameMessage* message);
-	
+
 };
 
 #endif

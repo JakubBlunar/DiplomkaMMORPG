@@ -1,4 +1,4 @@
-#include "IGManager.h"
+﻿#include "IGManager.h"
 #include <string>
 #include "IGWindow.h"
 #include <imgui.h>
@@ -108,7 +108,7 @@ IGPopup* IGManager::getActualPopup() const {
 }
 
 bool IGManager::anyWindowContainsPoint(sf::Vector2f point) const {
-	for (auto &pair: windows) {
+	for (auto &pair : windows) {
 		if (pair.second->isOpened() && pair.second->containsPosition(point)) {
 			return true;
 		}

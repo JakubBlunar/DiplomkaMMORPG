@@ -1,6 +1,6 @@
-#include "Collider.h"
+﻿#include "Collider.h"
 
-Collider::Collider(sf::Uint32 id): Entity(id) {
+Collider::Collider(sf::Uint32 id) : Entity(id) {
 	positionComponent = new PositionComponent();
 	components.push_back(positionComponent);
 }

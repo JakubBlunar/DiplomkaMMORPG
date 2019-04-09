@@ -1,4 +1,4 @@
-#ifndef S_ENTITY_TO_ENTITY_RAY_CAST_H
+﻿#ifndef S_ENTITY_TO_ENTITY_RAY_CAST_H
 #define S_ENTITY_TO_ENTITY_RAY_CAST_H
 
 #include <Box2D/Dynamics/b2WorldCallbacks.h>
@@ -17,7 +17,7 @@ namespace s {
 		EntityToEntityRayCast(Entity* startEntity, Entity* endEntity);
 		virtual ~EntityToEntityRayCast();
 		float32 ReportFixture(b2Fixture* fixture, const b2Vec2& point,
-		                      const b2Vec2& normal, float32 fraction) override;
+			const b2Vec2& normal, float32 fraction) override;
 	};
 }
 #endif

@@ -1,4 +1,4 @@
-#ifndef ATTRIBUTES_COMPONENT_H
+﻿#ifndef ATTRIBUTES_COMPONENT_H
 #define ATTRIBUTES_COMPONENT_H
 
 #include "Component.h"
@@ -21,7 +21,7 @@ public:
 	void setAttribute(EntityAttributeType type, float value);
 	void setAttributeByIndex(int index, float value);
 
-	float getBonus(EntityAttributeType type) const; 
+	float getBonus(EntityAttributeType type) const;
 	void setBonus(EntityAttributeType type, float value);
 	void setBonusByIndex(int index, float value);
 

@@ -1,4 +1,4 @@
-#include "Character.h"
+﻿#include "Character.h"
 #include <mysql.h>
 #include "Database.h"
 #include "../Server/json.hpp"
@@ -10,7 +10,7 @@
 
 using json = nlohmann::json;
 
-s::Character::Character(): account(nullptr), id(0), type(), faction(), isBot(false) {
+s::Character::Character() : account(nullptr), id(0), type(), faction(), isBot(false) {
 	entityType = EntityType::PLAYER;
 }
 
@@ -73,7 +73,7 @@ json s::Character::toJson() {
 	jsonData["movementX"] = position.getMovement().x;
 	jsonData["movementY"] = position.getMovement().y;
 	jsonData["attributes"] = json::array();
-	jsonData["level"] = (int) attributes.getAttribute(EntityAttributeType::LEVEL, false);
+	jsonData["level"] = (int)attributes.getAttribute(EntityAttributeType::LEVEL, false);
 
 	int attributesCount = attributes.getCount();
 	for (int i = 0; i < attributesCount; i++) {
@@ -163,9 +163,9 @@ s::Character* s::Character::getCharacterById(int characterId) {
 	character->attributes.recalcMaxMana();
 
 	character->attributes.setAttribute(EntityAttributeType::HP,
-	                                   character->attributes.getAttribute(EntityAttributeType::BASE_HP, false));
+		character->attributes.getAttribute(EntityAttributeType::BASE_HP, false));
 	character->attributes.setAttribute(EntityAttributeType::MP,
-	                                   character->attributes.getAttribute(EntityAttributeType::BASE_MP, false));
+		character->attributes.getAttribute(EntityAttributeType::BASE_MP, false));
 
 
 	std::string spellsQuery = "SELECT spellType FROM character_spells WHERE characterId=" +
@@ -184,7 +184,8 @@ s::Character* s::Character::getCharacterById(int characterId) {
 			}
 			catch (std::string& e) {
 				spdlog::get("log")->error(e);
-			} catch (...) {
+			}
+			catch (...) {
 				spdlog::get("log")->error("Error while loading character spells");
 			}
 		}
@@ -201,7 +202,7 @@ s::Character* s::Character::getCharacterById(int characterId) {
 std::vector<s::Character*>* s::Character::getAccountCharacters(int accountId) {
 	std::vector<Character*>* characters = new std::vector<Character*>();
 	std::string query = "SELECT id FROM characters WHERE accountId='" + Database::escapeString(
-			std::to_string(accountId)) +
+		std::to_string(accountId)) +
 		"';";
 
 	MYSQL_RES* res = Database::i()->executeQuery(query);

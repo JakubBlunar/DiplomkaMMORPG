@@ -1,4 +1,4 @@
-#ifndef EVENT_CHARACTER_MAP_LEAVE
+﻿#ifndef EVENT_CHARACTER_MAP_LEAVE
 #define EVENT_CHARACTER_MAP_LEAVE
 
 #include "GameEvent.h"

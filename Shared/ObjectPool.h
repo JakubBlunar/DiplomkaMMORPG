@@ -1,4 +1,4 @@
-#ifndef OBJECT_POOL_H
+﻿#ifndef OBJECT_POOL_H
 #define OBJECT_POOL_H
 
 #include <stack> 
@@ -11,12 +11,12 @@ public:
 	ObjectPool() {}
 	~ObjectPool() {
 		sf::Lock mutexLock(lock);
-		while (!pool.empty()) 
-	    { 
+		while (!pool.empty())
+		{
 			ObjectPoolItem* temp = pool.top();
 			pool.pop();
 			delete temp;
-	    }
+		}
 	}
 
 	void addObject(T* object) {

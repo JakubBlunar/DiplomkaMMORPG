@@ -1,4 +1,4 @@
-#ifndef GAMEEVENT_H
+﻿#ifndef GAMEEVENT_H
 #define GAMEEVENT_H
 
 #include "EventId.h"

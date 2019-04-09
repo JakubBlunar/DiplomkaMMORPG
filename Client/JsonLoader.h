@@ -1,4 +1,4 @@
-#ifndef JSON_LOADER_H
+﻿#ifndef JSON_LOADER_H
 #define JSON_LOADER_H
 
 #include "json.hpp"

@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 
 #include "INIReader.h"
 #include "SFML/System.hpp"
@@ -65,13 +65,13 @@ inline int my_add(int x, int y) {
 }
 
 struct multiplier {
-    int operator()(int x) {
-        return x * 10;
-    }
+	int operator()(int x) {
+		return x * 10;
+	}
 
-    static int by_five(int x) {
-        return x * 5;
-    }
+	static int by_five(int x) {
+		return x * 5;
+	}
 };
 
 
@@ -80,11 +80,11 @@ int main() {
 
 	initLogger();
 	s::ServerSettings* settings = initSettings();
-	
+
 	if (settings == nullptr) {
 		return EXIT_FAILURE;
 	}
-	
+
 	/*
 	s::Server* ss = new s::Server(settings);
 
@@ -100,7 +100,7 @@ int main() {
 	return 0;
 	*/
 
-	
+
 	s::Server* s = new s::Server(settings);
 
 	s->init();

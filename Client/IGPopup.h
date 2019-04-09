@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "IGWindow.h"
 #include <functional>
 #include <SFML/System/Vector2.hpp>
@@ -13,7 +13,7 @@ class IGPopup :
 public:
 	IGPopup(std::string title, std::string text, sf::Vector2f size, std::string buttonText);
 	IGPopup(std::string title, std::string text, sf::Vector2f size, std::string buttonText,
-	        std::function<void()> onButtonClick);
+		std::function<void()> onButtonClick);
 	~IGPopup();
 protected:
 	void render(Game* g, IGManager* manager) override;

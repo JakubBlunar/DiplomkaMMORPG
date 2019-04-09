@@ -1,4 +1,4 @@
-#ifndef PM_STATISTICS_H
+﻿#ifndef PM_STATISTICS_H
 #define PM_STATISTICS_H
 
 #include <SFML/System/Mutex.hpp>

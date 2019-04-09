@@ -1,4 +1,4 @@
-#ifndef ENTITY_SPELLS_H
+﻿#ifndef ENTITY_SPELLS_H
 #define ENTITY_SPELLS_H
 #include "SpellEventCharacterExecute.h"
 #include <map>
@@ -37,7 +37,7 @@ namespace s {
 			return castingSpell != nullptr;
 		}
 
-		
+
 
 	};
 }

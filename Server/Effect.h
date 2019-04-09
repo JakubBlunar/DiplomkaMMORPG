@@ -1,4 +1,4 @@
-#ifndef S_EFFECT_H
+﻿#ifndef S_EFFECT_H
 #define S_EFFECT_H
 
 #include "Entity.h"

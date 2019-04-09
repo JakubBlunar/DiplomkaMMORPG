@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "IGWindow.h"
 #include "Player.h"
 
@@ -21,4 +21,3 @@ protected:
 
 	void increaseAttribute(EntityAttributeType attribute, Game* g) const;
 };
-

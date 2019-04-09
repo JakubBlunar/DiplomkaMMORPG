@@ -1,4 +1,4 @@
-#ifndef BOT_COMMAND_H
+﻿#ifndef BOT_COMMAND_H
 #define BOT_COMMAND_H
 
 #include <SFML/System/Time.hpp>
@@ -10,7 +10,7 @@ class BotCommand
 public:
 	BotCommand(sf::Time maxDuration);
 	~BotCommand();
-	
+
 	sf::Time maxDuration;
 	sf::Time duration;
 

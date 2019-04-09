@@ -1,9 +1,9 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "EventSpellCastResult.h"
 
 
-EventSpellCastResult::EventSpellCastResult(): entityId(0), entityCategory(), spellId(0), result(), target(),
-                                              targetId(0) {
+EventSpellCastResult::EventSpellCastResult() : entityId(0), entityCategory(), spellId(0), result(), target(),
+targetId(0) {
 	id = SPELL_CAST_RESULT;
 }
 
@@ -28,7 +28,7 @@ bool EventSpellCastResult::loadFromPacket(sf::Packet* p) {
 					return false;
 				}
 
-				if(*p >> targetId) {
+				if (*p >> targetId) {
 					return true;
 				}
 				return false;

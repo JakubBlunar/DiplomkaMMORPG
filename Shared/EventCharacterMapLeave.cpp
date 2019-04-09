@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "EventCharacterMapLeave.h"
 
 
@@ -13,7 +13,7 @@ EventCharacterMapLeave::~EventCharacterMapLeave()
 }
 
 bool EventCharacterMapLeave::loadFromPacket(sf::Packet* p) {
-	if(*p >> characterId >> mapId) {
+	if (*p >> characterId >> mapId) {
 		return true;
 	}
 	return false;

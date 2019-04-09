@@ -1,4 +1,4 @@
-#ifndef EVENT_NPC_CHANGES_H
+﻿#ifndef EVENT_NPC_CHANGES_H
 #define EVENT_NPC_CHANGES_H
 
 #include "GameEvent.h"

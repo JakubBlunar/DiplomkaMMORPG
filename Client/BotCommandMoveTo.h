@@ -1,4 +1,4 @@
-#ifndef BOT_COMMAND_MOVE_TO_H
+﻿#ifndef BOT_COMMAND_MOVE_TO_H
 #define BOT_COMMAND_MOVE_TO_H
 
 #include "BotCommand.h"
@@ -9,7 +9,7 @@ class Player;
 class Map;
 class BotGame;
 
-class BotCommandMoveTo: public BotCommand
+class BotCommandMoveTo : public BotCommand
 {
 	std::list<sf::Vector2f> path;
 	sf::Vector2f endPosition;

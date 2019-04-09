@@ -1,4 +1,4 @@
-#include "Manager.h"
+﻿#include "Manager.h"
 
 
 s::Manager::Manager() {

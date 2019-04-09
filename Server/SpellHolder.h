@@ -1,4 +1,4 @@
-#ifndef S_SPELL_HOLDER_H
+﻿#ifndef S_SPELL_HOLDER_H
 #define S_SPELL_HOLDER_H
 
 #include "json.hpp"

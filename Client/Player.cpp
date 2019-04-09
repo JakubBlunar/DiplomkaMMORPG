@@ -1,4 +1,4 @@
-#include "Player.h"
+﻿#include "Player.h"
 #include <SFML/Window/Keyboard.hpp>
 #include "Globals.h"
 #include "RenderComponent.h"
@@ -74,7 +74,7 @@ void Player::handleEvent(GameEvent* event) {
 				body->SetTransform(b2Vec2(temp->x * PIXTOMET, temp->y * PIXTOMET),body->GetAngle());
 				body->SetLinearVelocity(b2Vec2(temp->velX * PIXTOMET, temp->velY * PIXTOMET));
 			}
-			
+
 			updateMovementAnimation();*/
 			break;
 		}
@@ -195,7 +195,7 @@ void Player::updateMovementAnimation() {
 	{
 		renderComponent->changeAnimation("up");
 		renderComponent->getCurrentAnimation()->setLooped(true);
-		
+
 		body->SetTransform(b2Vec2(position.x * PIXTOMET, position.y * PIXTOMET), 180 * DEGTORAD);
 	}
 	else if (movement.x == 0 && movement.y > 0) //down
@@ -318,8 +318,8 @@ void Player::addRangeEntity(Entity * entity, Game* g)
 {
 	rangeEntities.insert(entity);
 
-	if (entity->getType() == EntityType::NPC){
-		Npc* npc = (Npc*) entity;
+	if (entity->getType() == EntityType::NPC) {
+		Npc* npc = (Npc*)entity;
 		NpcState state = npc->getState();
 		if (npc->autoAttackPlayer() && (npc->getState() == NpcState::IDLE || npc->getState() == NpcState::MOVING)) {
 			EventAutoattackPlayer e;
@@ -387,7 +387,7 @@ void Player::castSpell(SpellInfo* spellInfo, Map* map, Game* g) {
 			break;
 		}
 		case SpellTargetRestriction::FRIENDLY: {
-			if (isHostile(spellTarget) ) {
+			if (isHostile(spellTarget)) {
 				GameMessage* m = new GameMessage();
 				m->message = "Target is invalid";
 				m->displayTime = sf::seconds(1);
@@ -533,8 +533,9 @@ void Player::setCooldown(int spellType, SpellCooldown* cooldown) {
 	if (found != spellCooldowns.end()) {
 		SpellCooldown* old = found->second;
 		delete old;
-		spellCooldowns[spellType]  = cooldown;
-	} else {
+		spellCooldowns[spellType] = cooldown;
+	}
+	else {
 		spellCooldowns.insert(std::make_pair(spellType, cooldown));
 	}
 }
@@ -553,7 +554,7 @@ SpellCooldown* Player::getCooldown(int spellType, Game* g) const {
 
 bool Player::isHostile(Entity* entity) const {
 
-	if(entity == this) return false;
+	if (entity == this) return false;
 
 	if (entity->getType() == EntityType::PLAYER) {
 		if (map->pvpEnabled()) {
@@ -561,9 +562,9 @@ bool Player::isHostile(Entity* entity) const {
 		}
 		return false;
 	}
-	
+
 	if (entity->getType() == EntityType::NPC) {
-		return true;	
+		return true;
 	}
 
 	return false;

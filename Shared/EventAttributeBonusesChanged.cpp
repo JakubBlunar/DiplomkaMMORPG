@@ -1,8 +1,8 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "EventAttributeBonusesChanged.h"
 #include "EntityConstants.h"
 
-EventAttributeBonusesChanged::EventAttributeBonusesChanged(): spawnId(0), entityType() {
+EventAttributeBonusesChanged::EventAttributeBonusesChanged() : spawnId(0), entityType() {
 	id = ATTRIBUTES_BONUSES_CHANGES;
 }
 
@@ -15,7 +15,8 @@ void EventAttributeBonusesChanged::setChange(EntityAttributeType type, float new
 	auto found = changes.find(type);
 	if (found == changes.end()) {
 		changes.insert(std::make_pair(type, newValue));
-	} else {
+	}
+	else {
 		changes[type] = newValue;
 	}
 }
@@ -30,7 +31,8 @@ bool EventAttributeBonusesChanged::loadFromPacket(sf::Packet* p) {
 			float newValue;
 			if (*p >> at >> newValue) {
 				setChange(static_cast<EntityAttributeType>(at), newValue);
-			} else {
+			}
+			else {
 				return false;
 			}
 		}
@@ -47,13 +49,15 @@ sf::Packet* EventAttributeBonusesChanged::toPacket() {
 	if (*p << static_cast<sf::Uint32>(entityType) << id << spawnId << size) {
 		for (std::map<EntityAttributeType, float>::iterator it = changes.begin(); it != changes.end(); ++it)
 		{
-		    if (*p << static_cast<sf::Uint8>(it->first) << it->second) {
-			    
-		    } else {
-			    throw "error while creating packet from event";
-		    }
+			if (*p << static_cast<sf::Uint8>(it->first) << it->second) {
+
+			}
+			else {
+				throw "error while creating packet from event";
+			}
 		}
-	} else {
+	}
+	else {
 		throw "error while creating packet from event";
 	}
 

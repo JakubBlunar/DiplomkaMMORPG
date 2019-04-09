@@ -1,4 +1,4 @@
-#include "IGActionBar.h"
+﻿#include "IGActionBar.h"
 #include "Game.h"
 #include "imgui-SFML.h"
 #include <iostream>
@@ -7,7 +7,7 @@
 
 #define MAX_OPACITY_ON_COOLDOWN 100.f
 
-IGActionBar::IGActionBar(): player(nullptr), spells(nullptr) { }
+IGActionBar::IGActionBar() : player(nullptr), spells(nullptr) { }
 
 IGActionBar::~IGActionBar() {}
 
@@ -18,7 +18,7 @@ void IGActionBar::render(Game* g, IGManager* manager) {
 	ImGui::SetNextWindowPos(position);
 
 	if (!ImGui::Begin("ActionBar", &visible,
-	                  ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBringToFrontOnFocus)) {
+		ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBringToFrontOnFocus)) {
 		focused = false;
 		ImGui::End();
 		return;
@@ -63,13 +63,13 @@ void IGActionBar::render(Game* g, IGManager* manager) {
 			}
 		}
 
-		if (ImGui::ImageButton(si->icon, -1, sf::Color::Black, sf::Color(255,255,255,55 + cooldownOpacity))) {
+		if (ImGui::ImageButton(si->icon, -1, sf::Color::Black, sf::Color(255, 255, 255, 55 + cooldownOpacity))) {
 			player->castSpell(si, g->getMap(), g);
 		}
 		if (ImGui::IsItemHovered()) {
 			ImGui::BeginTooltip();
 			ImGui::PushTextWrapPos(200);
-			
+
 			ImGui::PushFont(g->fonts.getFont(ImGuiFonts::PRODIGY_TINY, 11));
 			ImGui::Text(si->name.c_str());
 
@@ -124,7 +124,7 @@ void IGActionBar::beforeRender(Game* game) {
 		}
 		setSize(size);
 	}
-	
+
 	sf::Vector2u windowSize = game->window->getSize();
 
 	float left = windowSize.x / 2 - size.x / 2;

@@ -1,4 +1,4 @@
-#ifndef S_NPC_EVENT_COMBAT_DECISION
+﻿#ifndef S_NPC_EVENT_COMBAT_DECISION
 #define S_NPC_EVENT_COMBAT_DECISION
 
 #include "NpcEvent.h"

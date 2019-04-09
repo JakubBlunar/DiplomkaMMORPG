@@ -1,6 +1,6 @@
-#include "Account.h"
+﻿#include "Account.h"
 
-Account::Account():
+Account::Account() :
 	playerEntity(nullptr) {
 
 }

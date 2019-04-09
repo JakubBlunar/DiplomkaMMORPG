@@ -1,4 +1,4 @@
-#include "TileSetsHolder.h"
+﻿#include "TileSetsHolder.h"
 #include "JsonLoader.h"
 #include "../Shared/Utils.h"
 
@@ -29,8 +29,8 @@ TileSet TileSetsHolder::getTileSet(std::string filename) {
 
 	tileSet.valid = true;
 
-	std::vector<std::string> splitedPath = Utils::splitPath(path, {'/'});
-	tileSet.path = 	"Graphics/Tilesets/" + splitedPath.back();
+	std::vector<std::string> splitedPath = Utils::splitPath(path, { '/' });
+	tileSet.path = "Graphics/Tilesets/" + splitedPath.back();
 	loadedTileSets.insert(std::make_pair(filename, tileSet));
 	return tileSet;
 }

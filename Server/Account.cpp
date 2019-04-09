@@ -1,4 +1,4 @@
-#include "Account.h"
+﻿#include "Account.h"
 #include <mysql.h>
 #include "Database.h"
 #include "Crypto.h"
@@ -7,7 +7,7 @@
 
 using json = nlohmann::json;
 
-s::Account::Account(): character(nullptr), session(nullptr), id(-1), isBot(false), characters(nullptr) {}
+s::Account::Account() : character(nullptr), session(nullptr), id(-1), isBot(false), characters(nullptr) {}
 
 s::Account::~Account() {
 	delete characters;

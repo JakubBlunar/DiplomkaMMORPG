@@ -1,4 +1,4 @@
-#ifndef ASTAR
+﻿#ifndef ASTAR
 #define ASTAR
 #include "MapGrid.h"
 #include <map>

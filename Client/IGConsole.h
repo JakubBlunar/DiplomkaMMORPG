@@ -1,4 +1,4 @@
-#ifndef IG_CONSOLE_H
+﻿#ifndef IG_CONSOLE_H
 #define IG_CONSOLE_H
 
 #include <imgui.h>
@@ -15,7 +15,7 @@ struct ConsoleItem {
 	int playerId;
 };
 
-class IGConsole: public IGWindow, Subscriber {
+class IGConsole : public IGWindow, Subscriber {
 public:
 	Game* game;
 
@@ -96,7 +96,7 @@ public:
 			return;
 		}
 
-		
+
 		while (item->time < messages[i]->time && i > 0) {
 			i--;
 		}
@@ -109,14 +109,14 @@ public:
 	void ExecCommand(const char* command_line);
 
 	static int TextEditCallbackStub(ImGuiTextEditCallbackData* data)
-	
+
 	{
 		IGConsole* console = (IGConsole*)data->UserData;
 		return console->TextEditCallback(data);
 	}
 
 	int TextEditCallback(ImGuiTextEditCallbackData* data);
-	
+
 
 protected:
 	void render(Game* g, IGManager* manager) override;

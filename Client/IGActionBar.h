@@ -1,4 +1,4 @@
-#ifndef IG_ACTION_BAR_H
+﻿#ifndef IG_ACTION_BAR_H
 #define IG_ACTION_BAR_H
 
 #include "IGWindow.h"

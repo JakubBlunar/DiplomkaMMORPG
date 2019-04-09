@@ -1,10 +1,10 @@
-#ifndef BOT_GAME_H
+﻿#ifndef BOT_GAME_H
 #define BOT_GAME_H
 
 #include "Game.h"
 #include "BotCommand.h"
 
-class BotGame: public Game
+class BotGame : public Game
 {
 public:
 	BotGame();

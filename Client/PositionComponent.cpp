@@ -1,9 +1,9 @@
-#include "PositionComponent.h"
+﻿#include "PositionComponent.h"
 #include "Globals.h"
 #include <Box2D/Box2D.h>
 #include "Entity.h"
 
-PositionComponent::PositionComponent():
+PositionComponent::PositionComponent() :
 	isMovingUp(false),
 	isMovingDown(false),
 	isMovingRight(false),

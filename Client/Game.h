@@ -1,4 +1,4 @@
-#ifndef GAME_H
+﻿#ifndef GAME_H
 #define GAME_H
 
 #include <SFML/Graphics.hpp>
@@ -21,7 +21,7 @@ public:
 	bool isRunning() const;
 
 	sf::RenderWindow* window;
-	
+
 	bool debugInfo;
 	void print(const std::string& message);
 

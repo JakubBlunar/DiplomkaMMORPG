@@ -1,4 +1,4 @@
-#ifndef S_CHARACTER_MANAGER_H
+﻿#ifndef S_CHARACTER_MANAGER_H
 #define S_CHARACTER_MANAGER_H
 
 #include "Manager.h"
@@ -11,7 +11,7 @@ namespace s {
 	class Character;
 	class Session;
 	struct SpellInfo;
-	
+
 
 	class CharacterManager :
 		public Manager {

@@ -1,4 +1,4 @@
-#ifndef EVENT_SEND_MESSAGE_H
+﻿#ifndef EVENT_SEND_MESSAGE_H
 #define EVENT_SEND_MESSAGE_H
 
 #include "GameEvent.h"
@@ -15,7 +15,7 @@ public:
 	int playerId = -1;
 	MessageType messageType;
 	time_t time;
-	
+
 	int targetId = -1;
 	std::string combatPopup;
 	EntityType entityType;

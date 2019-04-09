@@ -1,4 +1,4 @@
-#ifndef S_EVENT_DISPATCHER_H
+﻿#ifndef S_EVENT_DISPATCHER_H
 #define S_EVENT_DISPATCHER_H
 
 #include <list>
@@ -34,7 +34,7 @@ namespace s {
 			for (auto subscriber = subscribers.begin(); subscriber != subscribers.end(); ++subscriber) {
 				(*subscriber)->handleEvent(g);
 			}
- 			if (dynamic_cast<NpcEvent*> (g) == nullptr) {
+			if (dynamic_cast<NpcEvent*> (g) == nullptr) {
 				delete g;
 			}
 			s->serverSettings->eventMutex.unlock();

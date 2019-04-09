@@ -1,4 +1,4 @@
-#include "SpellEventNpcExecute.h"
+﻿#include "SpellEventNpcExecute.h"
 #include "Npc.h"
 #include "EventSpellCastResult.h"
 #include "ServerGlobals.h"

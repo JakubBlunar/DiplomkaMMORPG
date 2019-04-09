@@ -1,4 +1,4 @@
-#include "Server.h"
+﻿#include "Server.h"
 #include "EventId.h"
 #include <iostream>
 #include "ServerSettings.h"
@@ -22,7 +22,7 @@
 #include "Box2D/Box2D.h"
 #include "EventAutoattackPlayer.h"
 
-s::Server::Server(ServerSettings* settings):
+s::Server::Server(ServerSettings* settings) :
 	running(false) {
 	serverSettings = settings;
 	sessions.reserve(2000);
@@ -50,7 +50,7 @@ void s::Server::init() {
 
 	SpellHolder::instance()->init(this);
 	NpcHolder::instance()->init();
-	
+
 	npcManager.init(this);
 	mapsManager.init(this);
 	spellManager.init(this);
@@ -127,90 +127,91 @@ void s::Server::identifyPacket(EventId type, sf::Packet* packet, Session* player
 	sf::Packet resPacket;
 	int id;
 	switch (type) {
-	case MOVEMENT: {
-		EventMovementChange* e = new EventMovementChange();
-		if (e->loadFromPacket(packet)) {
-			Map* map = playerSession->getAccount()->getCharacter()->position.getMap();
-			map->handleEvent(e, playerSession, this);
+		case MOVEMENT: {
+			EventMovementChange* e = new EventMovementChange();
+			if (e->loadFromPacket(packet)) {
+				Map* map = playerSession->getAccount()->getCharacter()->position.getMap();
+				map->handleEvent(e, playerSession, this);
+			}
+			delete e;
+			break;
 		}
-		delete e;
-		break;
-	}
-	case LOGINREQUEST: {
-		EventLoginRequest* e = new EventLoginRequest();
-		if (e->loadFromPacket(packet)) {
-			authManager.handleEvent(e, playerSession, this);
+		case LOGINREQUEST: {
+			EventLoginRequest* e = new EventLoginRequest();
+			if (e->loadFromPacket(packet)) {
+				authManager.handleEvent(e, playerSession, this);
+			}
+			delete e;
+			break;
 		}
-		delete e;
-		break;
-	}
-	case LATENCY: {
-		if (*packet >> id) {
-			resPacket << EventId::LATENCY << id;
-			playerSession->sendPacket(&resPacket);
+		case LATENCY: {
+			if (*packet >> id) {
+				resPacket << EventId::LATENCY << id;
+				playerSession->sendPacket(&resPacket);
+			}
+			break;
 		}
-		break;
-	}
-	case CHARACTER_CHOOSE: {
-		EventCharacterChoose* e = new EventCharacterChoose();
-		if (e->loadFromPacket(packet)) {
-			authManager.handleEvent(e, playerSession, this);
+		case CHARACTER_CHOOSE: {
+			EventCharacterChoose* e = new EventCharacterChoose();
+			if (e->loadFromPacket(packet)) {
+				authManager.handleEvent(e, playerSession, this);
+			}
+			delete e;
 		}
-		delete e;
-	}
-	break;
-	case CHARACTER_LOGOUT: {
-		EventCharacterLogout* e = new EventCharacterLogout();
-		if(e->loadFromPacket(packet)) {
-			authManager.handleEvent(e, playerSession, this);
+							   break;
+		case CHARACTER_LOGOUT: {
+			EventCharacterLogout* e = new EventCharacterLogout();
+			if (e->loadFromPacket(packet)) {
+				authManager.handleEvent(e, playerSession, this);
+			}
+			delete e;
+			break;
 		}
-		delete e;
-		break;
-	}
-	case PLAYER_START_CAST_SPELL: {
-		EventPlayerStartCastSpell* e = new EventPlayerStartCastSpell();
-		if (e->loadFromPacket(packet)) {
-			spellManager.handleEvent(e, playerSession, this);	
+		case PLAYER_START_CAST_SPELL: {
+			EventPlayerStartCastSpell* e = new EventPlayerStartCastSpell();
+			if (e->loadFromPacket(packet)) {
+				spellManager.handleEvent(e, playerSession, this);
+			}
+			delete e;
+			break;
 		}
-		delete e;
-		break;
-	}
-	case SEND_MESSAGE: {
-		EventSendMessage* e = new EventSendMessage();
-		if (e->loadFromPacket(packet)) {
-			chatManager.handleEvent(e, playerSession, this);	
+		case SEND_MESSAGE: {
+			EventSendMessage* e = new EventSendMessage();
+			if (e->loadFromPacket(packet)) {
+				chatManager.handleEvent(e, playerSession, this);
+			}
+			delete e;
+			break;
 		}
-		delete e;
-		break;
-	}
-	case INCREASE_CHARACTER_ATTRIBUTE: {
-		EventIncreaseCharacterAttribute* e = new EventIncreaseCharacterAttribute();
-		if (e->loadFromPacket(packet)) {
-			characterManager.handleEvent(e, playerSession, this);
+		case INCREASE_CHARACTER_ATTRIBUTE: {
+			EventIncreaseCharacterAttribute* e = new EventIncreaseCharacterAttribute();
+			if (e->loadFromPacket(packet)) {
+				characterManager.handleEvent(e, playerSession, this);
+			}
+			delete e;
+			break;
 		}
-		delete e;
-		break;
-	}
-	case LEARN_SPELL: {
-		EventLearnSpell* e = new EventLearnSpell();
-		if (e->loadFromPacket(packet)) {
-			characterManager.handleEvent(e, playerSession, this);
+		case LEARN_SPELL: {
+			EventLearnSpell* e = new EventLearnSpell();
+			if (e->loadFromPacket(packet)) {
+				characterManager.handleEvent(e, playerSession, this);
+			}
+			delete e;
+			break;
 		}
-		delete e;
-		break;
-	}
-	case AUTOATTACK_PLAYER: {
-		EventAutoattackPlayer* e = new EventAutoattackPlayer();
-		if (e->loadFromPacket(packet)) {
-			npcManager.handleEvent(e, playerSession, this);
-		} else {
-			spdlog::get("log")->info("Bad reading in packet {}", type);
+		case AUTOATTACK_PLAYER: {
+			EventAutoattackPlayer* e = new EventAutoattackPlayer();
+			if (e->loadFromPacket(packet)) {
+				npcManager.handleEvent(e, playerSession, this);
+			}
+			else {
+				spdlog::get("log")->info("Bad reading in packet {}", type);
+			}
+			delete e;
+			break;
 		}
-		delete e;
-		break;
-	}
-	default:
-		spdlog::get("log")->info("Cannot handle packet type {}", type);
+		default:
+			spdlog::get("log")->info("Cannot handle packet type {}", type);
 	}
 }
 
@@ -231,38 +232,6 @@ void s::Server::recievePackets() {
 					selector.add(*client);
 
 					spdlog::get("log")->info("new connection received from {}", client->getRemoteAddress().toString());
-
-
-					std::string name;
-					std::string pass;
-					int characterId;
-					if(sessions.size() <= 2) {
-						if (sessions.size() == 1) {
-							name = "kubik2405";
-							pass = "123456";
-							characterId = 1;
-						}else {
-							name = "admin";
-							pass = "123456";
-							characterId = 3;
-						}
-
-						sf::sleep(sf::seconds(0.5f));
-						EventLoginRequest e(name, pass);
-						sf::Packet* tempPacket = e.toPacket();
-						int id;
-						*tempPacket >> id;
-						identifyPacket(LOGINREQUEST, tempPacket, playerSession);
-						delete tempPacket;
-
-						EventCharacterChoose ec;
-						ec.characterId = characterId;
-						tempPacket = ec.toPacket();
-						*tempPacket >> id;
-						identifyPacket(CHARACTER_CHOOSE, tempPacket, playerSession);
-						delete tempPacket;
-					}
-					
 				}
 				else {
 					print("error : server has no connection");
@@ -279,48 +248,48 @@ void s::Server::recievePackets() {
 
 					sf::Packet packet;
 					switch (playerSession->getSocket()->receive(packet)) {
-					case sf::Socket::Done: {
-						int type;
+						case sf::Socket::Done: {
+							int type;
 
-						if (packet >> type) {
-							EventId pt = static_cast<EventId>(type);
-							identifyPacket(pt, &packet, playerSession);
+							if (packet >> type) {
+								EventId pt = static_cast<EventId>(type);
+								identifyPacket(pt, &packet, playerSession);
+							}
+							break;
 						}
-						break;
-					}
-					case sf::Socket::Disconnected: {
-						spdlog::get("log")->info("disconnect from ", playerSession->getSocket()->getRemoteAddress().toString());
+						case sf::Socket::Disconnected: {
+							spdlog::get("log")->info("disconnect from ", playerSession->getSocket()->getRemoteAddress().toString());
 
-						Account* a = playerSession->getAccount();
-						if (a) {
-							Character* ch = a->getCharacter();
-							if (ch) {
-								ch->lock();
-								ch->position.setMovement(sf::Vector2f(0,0));
-								b2Body* body = ch->getBody();
-								body->SetLinearVelocity(b2Vec2(0,0));
+							Account* a = playerSession->getAccount();
+							if (a) {
+								Character* ch = a->getCharacter();
+								if (ch) {
+									ch->lock();
+									ch->position.setMovement(sf::Vector2f(0, 0));
+									b2Body* body = ch->getBody();
+									body->SetLinearVelocity(b2Vec2(0, 0));
 
-								if(!a->isBot) {
-									ch->save();
+									if (!a->isBot) {
+										ch->save();
+									}
+
+									ch->position.getMap()->removeCharacter(ch);
+									ch->unlock();
 								}
-								
-								ch->position.getMap()->removeCharacter(ch);
-								ch->unlock();
+								if (a->isBot) {
+									botManager.destroyBotAccount(a);
+								}
 							}
-							if (a->isBot) {
-								botManager.destroyBotAccount(a);
-							}
+
+							selector.remove(*playerSession->getSocket());
+							playerSession->getSocket()->disconnect();
+
+							sessions.erase(sessions.begin() + i);
+							i--;
+							break;
 						}
-
-						selector.remove(*playerSession->getSocket());
-						playerSession->getSocket()->disconnect();
-
-						sessions.erase(sessions.begin() + i);
-						i--;
-						break;
-					}
-					default:
-						break;
+						default:
+							break;
 
 					}
 				}

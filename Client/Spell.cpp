@@ -1,4 +1,4 @@
-#include "Spell.h"
+﻿#include "Spell.h"
 #include "PositionComponent.h"
 #include "RenderComponent.h"
 #include "JsonLoader.h"
@@ -8,7 +8,7 @@
 #include <iostream>
 #include "Map.h"
 
-Spell::Spell(sf::Uint32 id): Entity(id), spellType(0), target(nullptr) {
+Spell::Spell(sf::Uint32 id) : Entity(id), spellType(0), target(nullptr) {
 
 	positionComponent = new PositionComponent();
 	components.push_back(positionComponent);
@@ -84,27 +84,31 @@ void Spell::update(sf::Time elapsedTime, Map* map, Game* g) {
 		if (abs(movement.y) > movement.x) {
 			if (movement.y > 0) {
 				renderComponent->changeAnimation("down");
-			} else {
+			}
+			else {
 				renderComponent->changeAnimation("up");
 			}
 			renderComponent->getCurrentAnimation()->setLooped(true);
-		} else {
+		}
+		else {
 			renderComponent->changeAnimation("right");
 			renderComponent->getCurrentAnimation()->setLooped(true);
 		}
-		
+
 	}
 	else if (movement.x < 0) {
 		if (abs(movement.y) > abs(movement.x)) {
 			if (movement.y > 0) {
 				renderComponent->changeAnimation("down");
 				renderComponent->getCurrentAnimation()->setLooped(true);
-			} else {
+			}
+			else {
 				renderComponent->changeAnimation("up");
 				renderComponent->getCurrentAnimation()->setLooped(true);
 			}
-			
-		} else {
+
+		}
+		else {
 			renderComponent->changeAnimation("left");
 			renderComponent->getCurrentAnimation()->setLooped(true);
 		}
@@ -127,7 +131,7 @@ void Spell::loadFromJson(json jsonData) {
 	int width = (int)animationData["width"].get<json::number_integer_t>();
 	int height = (int)animationData["height"].get<json::number_integer_t>();
 	renderComponent->setSize(sf::Vector2i(width, height));
-	
+
 	this->speed = speed;
 	positionComponent->setSize(sf::Vector2f((float)width, (float)height));
 	positionComponent->setBodyType(BodyType::CIRCLE);

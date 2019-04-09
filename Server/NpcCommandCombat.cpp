@@ -1,4 +1,4 @@
-#include "NpcCommandCombat.h"
+﻿#include "NpcCommandCombat.h"
 #include <Box2D/Dynamics/b2Body.h>
 #include "Npc.h"
 #include "ServerGlobals.h"
@@ -44,13 +44,13 @@ void s::NpcCommandCombat::update(sf::Time elapsedTime, NpcUpdateEvents* npcUpdat
 		b2Vec2 actualPosition = body->GetPosition();
 		b2Vec2 targetPosition = targetBody->GetPosition();
 		b2Vec2 velocity = targetPosition - actualPosition;
-		
+
 
 		double distance = b2DistanceSquared(actualPosition, targetPosition);
 		if (distance * METTOPIX < 50) {
 			velocity = b2Vec2(0, 0);
 		}
-		
+
 		if (distance > 500) {
 			endCombat = true;
 			velocity = b2Vec2(0, 0);
@@ -63,7 +63,7 @@ void s::NpcCommandCombat::update(sf::Time elapsedTime, NpcUpdateEvents* npcUpdat
 		}
 
 		if (npc->isThinking() || npc->spells.isCasting()) {
-			velocity = b2Vec2(0,0);
+			velocity = b2Vec2(0, 0);
 		}
 
 		velocity.Normalize();
@@ -73,7 +73,7 @@ void s::NpcCommandCombat::update(sf::Time elapsedTime, NpcUpdateEvents* npcUpdat
 
 	npc->position.setPosition(sf::Vector2f(body->GetPosition().x * METTOPIX, body->GetPosition().y * METTOPIX));
 	npc->setMovement(sf::Vector2f(body->GetLinearVelocity().x * METTOPIX, body->GetLinearVelocity().y * METTOPIX),
-	                 nullptr);
+		nullptr);
 
 	if (!target->getBody()) {
 		endCombat = true;
@@ -93,7 +93,7 @@ void s::NpcCommandCombat::update(sf::Time elapsedTime, NpcUpdateEvents* npcUpdat
 		resetAttributesEvent->setChange(EntityAttributeType::MP, newMana);
 		npc->attributes.setAttribute(EntityAttributeType::HP, newHp);
 		npc->attributes.setAttribute(EntityAttributeType::MP, newMana);
-		
+
 		npc->setNpcState(NpcState::IDLE);
 		EventNpcStatusChanged* statusChangedEvent = new EventNpcStatusChanged();
 		statusChangedEvent->npcState = NpcState::IDLE;

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <string>
 #include <imgui.h>
 #include <map>
@@ -14,7 +14,6 @@ public:
 	static constexpr const char* PRODIGY_TINY = "Data/ProggyTiny.ttf";
 
 	void init();
-	
+
 	ImFont* getFont(std::string font, int size);
 };
-

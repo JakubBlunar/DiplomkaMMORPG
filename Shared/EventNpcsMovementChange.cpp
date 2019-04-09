@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "EventNpcsMovementChange.h"
 #include <iostream>
 
@@ -28,7 +28,8 @@ bool EventNpcsMovementChange::loadFromPacket(sf::Packet* p) {
 			float x, y, velocityX, velocityY;
 			if (*p >> npcId >> x >> y >> velocityX >> velocityY) {
 				addNpcInfo(npcId, x, y, velocityX, velocityY);
-			} else {
+			}
+			else {
 				npcsMovements.clear();
 				return false;
 			}
@@ -47,7 +48,7 @@ sf::Packet * EventNpcsMovementChange::toPacket()
 
 	for (std::map<int, MovementData>::iterator it = npcsMovements.begin(); it != npcsMovements.end(); ++it)
 	{
-	    *p << it->first;
+		*p << it->first;
 		*p << it->second.x;
 		*p << it->second.y;
 		*p << it->second.velocityX;
@@ -56,4 +57,3 @@ sf::Packet * EventNpcsMovementChange::toPacket()
 
 	return p;
 }
-

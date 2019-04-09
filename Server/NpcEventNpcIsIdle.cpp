@@ -1,4 +1,4 @@
-#include "NpcEventNpcIsIdle.h"
+﻿#include "NpcEventNpcIsIdle.h"
 #include "Npc.h"
 
 

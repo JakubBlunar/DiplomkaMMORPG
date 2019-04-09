@@ -1,9 +1,9 @@
-#ifndef IG_HELP_H
+﻿#ifndef IG_HELP_H
 #define IG_HELP_H
 #include "IGWindow.h"
 
 
-class IGHelp:
+class IGHelp :
 	public IGWindow
 {
 public:
@@ -16,15 +16,15 @@ protected:
 
 	static void ShowHelpMarker(const char* desc)
 	{
-	    ImGui::TextDisabled("(?)");
-	    if (ImGui::IsItemHovered())
-	    {
-	        ImGui::BeginTooltip();
-	        ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
-	        ImGui::TextUnformatted(desc);
-	        ImGui::PopTextWrapPos();
-	        ImGui::EndTooltip();
-	    }
+		ImGui::TextDisabled("(?)");
+		if (ImGui::IsItemHovered())
+		{
+			ImGui::BeginTooltip();
+			ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+			ImGui::TextUnformatted(desc);
+			ImGui::PopTextWrapPos();
+			ImGui::EndTooltip();
+		}
 	}
 };
 

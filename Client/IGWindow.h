@@ -1,4 +1,4 @@
-#ifndef IGWINDOW_H
+﻿#ifndef IGWINDOW_H
 #define IGWINDOW_H
 
 #include <string>
@@ -20,7 +20,7 @@ public:
 	void close();
 	bool isOpened() const;
 	bool isFocused() const;
-	
+
 	bool containsPosition(sf::Vector2f point) const;
 
 	float getAlpha() const;
@@ -62,7 +62,7 @@ inline bool ListBox(const char* label, int* currIndex, std::vector<std::string>&
 
 	if (values.empty()) { return false; }
 	return ImGui::ListBox(label, currIndex, vector_getter,
-	                      static_cast<void*>(&values), values.size(), maxLength);
+		static_cast<void*>(&values), values.size(), maxLength);
 }
 
 #endif

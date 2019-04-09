@@ -1,10 +1,10 @@
-#ifndef NPC_COMMAND_STAY_H
+﻿#ifndef NPC_COMMAND_STAY_H
 #define NPC_COMMAND_STAY_H
 #include "Server.h"
 #include "NpcCommand.h"
 
 namespace s {
-	class NpcCommandStay: public NpcCommand
+	class NpcCommandStay : public NpcCommand
 	{
 		Npc* npc;
 		Map* map;

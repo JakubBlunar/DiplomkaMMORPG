@@ -1,4 +1,4 @@
-#ifndef SFMLDEBUGDRAW_H
+﻿#ifndef SFMLDEBUGDRAW_H
 #define SFMLDEBUGDRAW_H
 
 #include <Box2D/Box2D.h>
@@ -50,4 +50,3 @@ public:
 	void DrawPoint(const b2Vec2& p, float32 size, const b2Color& color) override;
 };
 #endif //SFMLDEBUGDRAW_H
-

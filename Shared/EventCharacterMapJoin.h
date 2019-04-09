@@ -1,4 +1,4 @@
-#ifndef EVENT_CHARACTER_MAP_JOIN
+﻿#ifndef EVENT_CHARACTER_MAP_JOIN
 #define EVENT_CHARACTER_MAP_JOIN
 
 #include "GameEvent.h"

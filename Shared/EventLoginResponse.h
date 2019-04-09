@@ -1,4 +1,4 @@
-#ifndef EVENT_LOGIN_RESPONSE_H
+﻿#ifndef EVENT_LOGIN_RESPONSE_H
 #define EVENT_LOGIN_RESPONSE_H
 
 #include "GameEvent.h"

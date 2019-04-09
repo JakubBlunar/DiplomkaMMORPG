@@ -1,4 +1,4 @@
-#ifndef Box2DTools_H
+﻿#ifndef Box2DTools_H
 #define Box2DTools_H
 #include <Box2D/Dynamics/b2Body.h>
 

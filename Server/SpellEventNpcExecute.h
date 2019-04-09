@@ -1,4 +1,4 @@
-#ifndef S_SPELL_EVENT_NPC_EXECUTE_H
+﻿#ifndef S_SPELL_EVENT_NPC_EXECUTE_H
 #define S_SPELL_EVENT_NPC_EXECUTE_H
 
 #include "SpellEvent.h"

@@ -1,8 +1,8 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "EventCharacterLogout.h"
 
 
-EventCharacterLogout::EventCharacterLogout(): characterId(0) {
+EventCharacterLogout::EventCharacterLogout() : characterId(0) {
 	id = CHARACTER_LOGOUT;
 }
 
@@ -13,7 +13,7 @@ EventCharacterLogout::~EventCharacterLogout()
 
 bool EventCharacterLogout::loadFromPacket(sf::Packet * p)
 {
-	if(*p >> characterId) {
+	if (*p >> characterId) {
 		return true;
 	}
 	return false;

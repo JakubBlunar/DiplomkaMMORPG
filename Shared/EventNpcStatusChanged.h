@@ -1,4 +1,4 @@
-#ifndef NPC_STATUS_CHANGED_H
+﻿#ifndef NPC_STATUS_CHANGED_H
 #define NPC_STATUS_CHANGED_H
 
 #include "GameEvent.h"

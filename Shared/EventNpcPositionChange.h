@@ -1,4 +1,4 @@
-#ifndef EVENT_NPC_POSITION_CHANGE
+﻿#ifndef EVENT_NPC_POSITION_CHANGE
 #define EVENT_NPC_POSITION_CHANGE
 
 #include "GameEvent.h"

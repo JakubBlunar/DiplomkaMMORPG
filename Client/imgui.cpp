@@ -1,4 +1,4 @@
-// dear imgui, v1.53 WIP
+﻿// dear imgui, v1.53 WIP
 // (main code and documentation)
 
 // See ImGui::ShowTestWindow() in imgui_demo.cpp for demo code.
@@ -1328,12 +1328,12 @@ void ImGui::ColorConvertHSVtoRGB(float h, float s, float v, float& out_r, float&
 
 	switch (i)
 	{
-	case 0: out_r = v; out_g = t; out_b = p; break;
-	case 1: out_r = q; out_g = v; out_b = p; break;
-	case 2: out_r = p; out_g = v; out_b = t; break;
-	case 3: out_r = p; out_g = q; out_b = v; break;
-	case 4: out_r = t; out_g = p; out_b = v; break;
-	case 5: default: out_r = v; out_g = p; out_b = q; break;
+		case 0: out_r = v; out_g = t; out_b = p; break;
+		case 1: out_r = q; out_g = v; out_b = p; break;
+		case 2: out_r = p; out_g = v; out_b = t; break;
+		case 3: out_r = p; out_g = q; out_b = v; break;
+		case 4: out_r = t; out_g = p; out_b = v; break;
+		case 5: default: out_r = v; out_g = p; out_b = q; break;
 	}
 }
 
@@ -3220,25 +3220,25 @@ void ImGui::RenderTriangle(ImVec2 p_min, ImGuiDir dir, float scale)
 	ImVec2 a, b, c;
 	switch (dir)
 	{
-	case ImGuiDir_Up:
-		r = -r; // ...fall through, no break!
-	case ImGuiDir_Down:
-		center.y -= r * 0.25f;
-		a = ImVec2(0, 1) * r;
-		b = ImVec2(-0.866f, -0.5f) * r;
-		c = ImVec2(+0.866f, -0.5f) * r;
-		break;
-	case ImGuiDir_Left:
-		r = -r; // ...fall through, no break!
-	case ImGuiDir_Right:
-		center.x -= r * 0.25f;
-		a = ImVec2(1, 0) * r;
-		b = ImVec2(-0.500f, +0.866f) * r;
-		c = ImVec2(-0.500f, -0.866f) * r;
-		break;
-	default:
-		IM_ASSERT(0);
-		break;
+		case ImGuiDir_Up:
+			r = -r; // ...fall through, no break!
+		case ImGuiDir_Down:
+			center.y -= r * 0.25f;
+			a = ImVec2(0, 1) * r;
+			b = ImVec2(-0.866f, -0.5f) * r;
+			c = ImVec2(+0.866f, -0.5f) * r;
+			break;
+		case ImGuiDir_Left:
+			r = -r; // ...fall through, no break!
+		case ImGuiDir_Right:
+			center.x -= r * 0.25f;
+			a = ImVec2(1, 0) * r;
+			b = ImVec2(-0.500f, +0.866f) * r;
+			c = ImVec2(-0.500f, -0.866f) * r;
+			break;
+		default:
+			IM_ASSERT(0);
+			break;
 	}
 
 	window->DrawList->AddTriangleFilled(center + a, center + b, center + c, GetColorU32(ImGuiCol_Text));
@@ -5229,48 +5229,48 @@ const char* ImGui::GetStyleColorName(ImGuiCol idx)
 	// Create switch-case from enum with regexp: ImGuiCol_{.*}, --> case ImGuiCol_\1: return "\1";
 	switch (idx)
 	{
-	case ImGuiCol_Text: return "Text";
-	case ImGuiCol_TextDisabled: return "TextDisabled";
-	case ImGuiCol_WindowBg: return "WindowBg";
-	case ImGuiCol_ChildBg: return "ChildBg";
-	case ImGuiCol_PopupBg: return "PopupBg";
-	case ImGuiCol_Border: return "Border";
-	case ImGuiCol_BorderShadow: return "BorderShadow";
-	case ImGuiCol_FrameBg: return "FrameBg";
-	case ImGuiCol_FrameBgHovered: return "FrameBgHovered";
-	case ImGuiCol_FrameBgActive: return "FrameBgActive";
-	case ImGuiCol_TitleBg: return "TitleBg";
-	case ImGuiCol_TitleBgActive: return "TitleBgActive";
-	case ImGuiCol_TitleBgCollapsed: return "TitleBgCollapsed";
-	case ImGuiCol_MenuBarBg: return "MenuBarBg";
-	case ImGuiCol_ScrollbarBg: return "ScrollbarBg";
-	case ImGuiCol_ScrollbarGrab: return "ScrollbarGrab";
-	case ImGuiCol_ScrollbarGrabHovered: return "ScrollbarGrabHovered";
-	case ImGuiCol_ScrollbarGrabActive: return "ScrollbarGrabActive";
-	case ImGuiCol_CheckMark: return "CheckMark";
-	case ImGuiCol_SliderGrab: return "SliderGrab";
-	case ImGuiCol_SliderGrabActive: return "SliderGrabActive";
-	case ImGuiCol_Button: return "Button";
-	case ImGuiCol_ButtonHovered: return "ButtonHovered";
-	case ImGuiCol_ButtonActive: return "ButtonActive";
-	case ImGuiCol_Header: return "Header";
-	case ImGuiCol_HeaderHovered: return "HeaderHovered";
-	case ImGuiCol_HeaderActive: return "HeaderActive";
-	case ImGuiCol_Separator: return "Separator";
-	case ImGuiCol_SeparatorHovered: return "SeparatorHovered";
-	case ImGuiCol_SeparatorActive: return "SeparatorActive";
-	case ImGuiCol_ResizeGrip: return "ResizeGrip";
-	case ImGuiCol_ResizeGripHovered: return "ResizeGripHovered";
-	case ImGuiCol_ResizeGripActive: return "ResizeGripActive";
-	case ImGuiCol_CloseButton: return "CloseButton";
-	case ImGuiCol_CloseButtonHovered: return "CloseButtonHovered";
-	case ImGuiCol_CloseButtonActive: return "CloseButtonActive";
-	case ImGuiCol_PlotLines: return "PlotLines";
-	case ImGuiCol_PlotLinesHovered: return "PlotLinesHovered";
-	case ImGuiCol_PlotHistogram: return "PlotHistogram";
-	case ImGuiCol_PlotHistogramHovered: return "PlotHistogramHovered";
-	case ImGuiCol_TextSelectedBg: return "TextSelectedBg";
-	case ImGuiCol_ModalWindowDarkening: return "ModalWindowDarkening";
+		case ImGuiCol_Text: return "Text";
+		case ImGuiCol_TextDisabled: return "TextDisabled";
+		case ImGuiCol_WindowBg: return "WindowBg";
+		case ImGuiCol_ChildBg: return "ChildBg";
+		case ImGuiCol_PopupBg: return "PopupBg";
+		case ImGuiCol_Border: return "Border";
+		case ImGuiCol_BorderShadow: return "BorderShadow";
+		case ImGuiCol_FrameBg: return "FrameBg";
+		case ImGuiCol_FrameBgHovered: return "FrameBgHovered";
+		case ImGuiCol_FrameBgActive: return "FrameBgActive";
+		case ImGuiCol_TitleBg: return "TitleBg";
+		case ImGuiCol_TitleBgActive: return "TitleBgActive";
+		case ImGuiCol_TitleBgCollapsed: return "TitleBgCollapsed";
+		case ImGuiCol_MenuBarBg: return "MenuBarBg";
+		case ImGuiCol_ScrollbarBg: return "ScrollbarBg";
+		case ImGuiCol_ScrollbarGrab: return "ScrollbarGrab";
+		case ImGuiCol_ScrollbarGrabHovered: return "ScrollbarGrabHovered";
+		case ImGuiCol_ScrollbarGrabActive: return "ScrollbarGrabActive";
+		case ImGuiCol_CheckMark: return "CheckMark";
+		case ImGuiCol_SliderGrab: return "SliderGrab";
+		case ImGuiCol_SliderGrabActive: return "SliderGrabActive";
+		case ImGuiCol_Button: return "Button";
+		case ImGuiCol_ButtonHovered: return "ButtonHovered";
+		case ImGuiCol_ButtonActive: return "ButtonActive";
+		case ImGuiCol_Header: return "Header";
+		case ImGuiCol_HeaderHovered: return "HeaderHovered";
+		case ImGuiCol_HeaderActive: return "HeaderActive";
+		case ImGuiCol_Separator: return "Separator";
+		case ImGuiCol_SeparatorHovered: return "SeparatorHovered";
+		case ImGuiCol_SeparatorActive: return "SeparatorActive";
+		case ImGuiCol_ResizeGrip: return "ResizeGrip";
+		case ImGuiCol_ResizeGripHovered: return "ResizeGripHovered";
+		case ImGuiCol_ResizeGripActive: return "ResizeGripActive";
+		case ImGuiCol_CloseButton: return "CloseButton";
+		case ImGuiCol_CloseButtonHovered: return "CloseButtonHovered";
+		case ImGuiCol_CloseButtonActive: return "CloseButtonActive";
+		case ImGuiCol_PlotLines: return "PlotLines";
+		case ImGuiCol_PlotLinesHovered: return "PlotLinesHovered";
+		case ImGuiCol_PlotHistogram: return "PlotHistogram";
+		case ImGuiCol_PlotHistogramHovered: return "PlotHistogramHovered";
+		case ImGuiCol_TextSelectedBg: return "TextSelectedBg";
+		case ImGuiCol_ModalWindowDarkening: return "ModalWindowDarkening";
 	}
 	IM_ASSERT(0);
 	return "Unknown";
@@ -8809,14 +8809,14 @@ bool ImGui::InputFloat(const char* label, float* v, float step, float step_fast,
 		strcpy(display_format, "%f");      // Ideally we'd have a minimum decimal precision of 1 to visually denote that this is a float, while hiding non-significant digits? %f doesn't have a minimum of 1
 	else
 		ImFormatString(display_format, IM_ARRAYSIZE(display_format), "%%.%df", decimal_precision);
-	return InputScalarEx(label, ImGuiDataType_Float, (void*)v, (void*)(step>0.0f ? &step : NULL), (void*)(step_fast>0.0f ? &step_fast : NULL), display_format, extra_flags);
+	return InputScalarEx(label, ImGuiDataType_Float, (void*)v, (void*)(step > 0.0f ? &step : NULL), (void*)(step_fast > 0.0f ? &step_fast : NULL), display_format, extra_flags);
 }
 
 bool ImGui::InputInt(const char* label, int* v, int step, int step_fast, ImGuiInputTextFlags extra_flags)
 {
 	// Hexadecimal input provided as a convenience but the flag name is awkward. Typically you'd use InputText() to parse your own data, if you want to handle prefixes.
 	const char* scalar_format = (extra_flags & ImGuiInputTextFlags_CharsHexadecimal) ? "%08X" : "%d";
-	return InputScalarEx(label, ImGuiDataType_Int, (void*)v, (void*)(step>0.0f ? &step : NULL), (void*)(step_fast>0.0f ? &step_fast : NULL), scalar_format, extra_flags);
+	return InputScalarEx(label, ImGuiDataType_Int, (void*)v, (void*)(step > 0.0f ? &step : NULL), (void*)(step_fast > 0.0f ? &step_fast : NULL), scalar_format, extra_flags);
 }
 
 bool ImGui::InputFloatN(const char* label, float* v, int components, int decimal_precision, ImGuiInputTextFlags extra_flags)
@@ -9930,11 +9930,11 @@ static void RenderArrow(ImDrawList* draw_list, ImVec2 pos, ImVec2 half_sz, ImGui
 {
 	switch (direction)
 	{
-	case ImGuiDir_Left:  draw_list->AddTriangleFilled(ImVec2(pos.x + half_sz.x, pos.y - half_sz.y), ImVec2(pos.x + half_sz.x, pos.y + half_sz.y), pos, col); return;
-	case ImGuiDir_Right: draw_list->AddTriangleFilled(ImVec2(pos.x - half_sz.x, pos.y + half_sz.y), ImVec2(pos.x - half_sz.x, pos.y - half_sz.y), pos, col); return;
-	case ImGuiDir_Up:    draw_list->AddTriangleFilled(ImVec2(pos.x + half_sz.x, pos.y + half_sz.y), ImVec2(pos.x - half_sz.x, pos.y + half_sz.y), pos, col); return;
-	case ImGuiDir_Down:  draw_list->AddTriangleFilled(ImVec2(pos.x - half_sz.x, pos.y - half_sz.y), ImVec2(pos.x + half_sz.x, pos.y - half_sz.y), pos, col); return;
-	default: return; // Fix warning for ImGuiDir_None
+		case ImGuiDir_Left:  draw_list->AddTriangleFilled(ImVec2(pos.x + half_sz.x, pos.y - half_sz.y), ImVec2(pos.x + half_sz.x, pos.y + half_sz.y), pos, col); return;
+		case ImGuiDir_Right: draw_list->AddTriangleFilled(ImVec2(pos.x - half_sz.x, pos.y + half_sz.y), ImVec2(pos.x - half_sz.x, pos.y - half_sz.y), pos, col); return;
+		case ImGuiDir_Up:    draw_list->AddTriangleFilled(ImVec2(pos.x + half_sz.x, pos.y + half_sz.y), ImVec2(pos.x - half_sz.x, pos.y + half_sz.y), pos, col); return;
+		case ImGuiDir_Down:  draw_list->AddTriangleFilled(ImVec2(pos.x - half_sz.x, pos.y - half_sz.y), ImVec2(pos.x + half_sz.x, pos.y - half_sz.y), pos, col); return;
+		default: return; // Fix warning for ImGuiDir_None
 	}
 }
 

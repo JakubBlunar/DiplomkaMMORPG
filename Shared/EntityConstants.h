@@ -1,9 +1,9 @@
-#ifndef ENTITY_CONSTANTS_H
+﻿#ifndef ENTITY_CONSTANTS_H
 #define ENTITY_CONSTANTS_H
 
 #include <SFML/System.hpp>
 
-enum class EntityType: sf::Uint8 {
+enum class EntityType : sf::Uint8 {
 	PLAYER = 1,
 	GAMEOBJECT = 2,
 	COLLIDER = 3,
@@ -18,7 +18,7 @@ enum class BodyType {
 	CIRCLE = 1,
 };
 
-enum EntityCategory: sf::Uint32 {
+enum EntityCategory : sf::Uint32 {
 	BOUNDARY = 0x0001,
 	PLAYER = 0x0002,
 	ENEMY_PLAYER = 0x0004,
@@ -36,7 +36,7 @@ struct MovementData {
 	float velocityY;
 };
 
-enum class EntityAttributeType: sf::Uint8 {
+enum class EntityAttributeType : sf::Uint8 {
 	HP = 0,
 	MP = 1,
 	BASE_HP = 2,

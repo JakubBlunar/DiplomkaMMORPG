@@ -1,4 +1,4 @@
-#ifndef S_SPAWN_H
+﻿#ifndef S_SPAWN_H
 #define S_SPAWN_H
 
 #include <vector>

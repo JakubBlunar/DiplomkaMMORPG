@@ -1,11 +1,11 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "Random.h"
 
 
-Random::Random():
+Random::Random() :
 	seed(rd())
 {
-	
+
 }
 
 Random::~Random()

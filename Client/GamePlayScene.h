@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Scene.h"
 #include "VisibleObjectsCast.h"
 #include "Astar.h"
@@ -40,7 +40,7 @@ private:
 	sf::Texture BoxTexture;
 	sf::Font mFont;
 	sf::Text entityPopup;
-				
+
 
 	VisibleObjectsCast queryCallback;
 	b2AABB aabb;

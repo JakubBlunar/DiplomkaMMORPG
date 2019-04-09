@@ -1,16 +1,16 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "EventNpcChanges.h"
 #include "DeleteElementPointer.h"
 
 
-EventNpcChanges::EventNpcChanges(): spawnId(0) {
+EventNpcChanges::EventNpcChanges() : spawnId(0) {
 	id = NPC_CHANGES;
 }
 
 
 EventNpcChanges::~EventNpcChanges()
 {
-	std::for_each( changes.begin(), changes.end(), DeletePointerElement<NpcChange*>());
+	std::for_each(changes.begin(), changes.end(), DeletePointerElement<NpcChange*>());
 	changes.clear();
 }
 
@@ -20,7 +20,7 @@ void EventNpcChanges::addChange(NpcChange* change) {
 
 bool EventNpcChanges::loadFromPacket(sf::Packet* p) {
 	int count;
-	if (*p >> spawnId >>count) {
+	if (*p >> spawnId >> count) {
 		for (int i = 0; i < count; i++) {
 			int type;
 			std::string data;
@@ -29,7 +29,8 @@ bool EventNpcChanges::loadFromPacket(sf::Packet* p) {
 				change->type = static_cast<NpcChangeType>(type);
 				change->data = data;
 				addChange(change);
-			} else {
+			}
+			else {
 				return false;
 			}
 		}
@@ -40,17 +41,19 @@ bool EventNpcChanges::loadFromPacket(sf::Packet* p) {
 
 sf::Packet* EventNpcChanges::toPacket() {
 	sf::Packet* p = new sf::Packet();
-	
+
 	int count = changes.size();
 	if (*p << id << spawnId << count) {
 		for (auto change : changes) {
 			if (*p << change->type << change->data) {
-				
-			} else {
+
+			}
+			else {
 				throw "Error while inserting into packet";
 			}
 		}
-	} else {
+	}
+	else {
 		throw "Error while inserting into packet";
 	}
 

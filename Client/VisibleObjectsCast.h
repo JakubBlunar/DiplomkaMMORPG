@@ -1,4 +1,4 @@
-#ifndef VISIBLE_OBJECT_CAST_H
+﻿#ifndef VISIBLE_OBJECT_CAST_H
 #define VISIBLE_OBJECT_CAST_H
 
 #include <vector>

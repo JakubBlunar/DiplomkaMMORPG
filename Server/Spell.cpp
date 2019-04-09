@@ -1,17 +1,17 @@
-#include "Spell.h"
+﻿#include "Spell.h"
 #include "ServerGlobals.h"
 #include "Npc.h"
 #include "EffectModifyAttributes.h"
 #include "EffectDealDamage.h"
 #include "EffectHealTarget.h"
 
-s::Spell::Spell(): instanceId(-1), target(nullptr) {
+s::Spell::Spell() : instanceId(-1), target(nullptr) {
 	owner = nullptr;
 }
 
 
 s::Spell::~Spell() {
-	effects.clear(); 
+	effects.clear();
 }
 
 void s::Spell::addEffect(Effect* effect) {
@@ -26,7 +26,7 @@ void s::Spell::cast(Entity* entity) {
 
 s::Spell* s::Spell::clone() const {
 	Spell* cloned = new Spell();
-	
+
 	cloned->setInstanceId(instanceId);
 	cloned->spellInfo = spellInfo;
 
@@ -64,8 +64,7 @@ void s::Spell::loadFromJson(json jsonData) {
 		if (!data.empty()) {
 			e->loadFromJson(data);
 		}
-		
+
 		effects.push_back(e);
 	}
 }
-

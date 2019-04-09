@@ -1,4 +1,4 @@
-#ifndef S_ACCOUNT_H
+﻿#ifndef S_ACCOUNT_H
 #define S_ACCOUNT_H
 #include <string>
 #include <vector>

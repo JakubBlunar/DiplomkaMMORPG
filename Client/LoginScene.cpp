@@ -1,4 +1,4 @@
-#include "LoginScene.h"
+﻿#include "LoginScene.h"
 #include "IGLoginCredentials.h"
 
 #include "SFML/Graphics.hpp"
@@ -9,11 +9,11 @@
 #include "EventDispatcher.h"
 
 
-LoginScene::LoginScene(SceneType sceneType, Game* g): Scene(sceneType, g) {
+LoginScene::LoginScene(SceneType sceneType, Game* g) : Scene(sceneType, g) {
 	IGLoginCredentials* credWindow = new IGLoginCredentials();
 
-	background.load("background.png", sf::Vector2i(1360, 768), sf::Vector2i(0,0));
-	background.setPosition(0,0);
+	background.load("background.png", sf::Vector2i(1360, 768), sf::Vector2i(0, 0));
+	background.setPosition(0, 0);
 	windowManager->addWindow("loginCredentials", credWindow);
 	windowManager->openAll();
 	EventDispatcher<EventLoginResponse>::addSubscriber(this);

@@ -1,4 +1,4 @@
-#include "SpellEventApplyEffects.h"
+﻿#include "SpellEventApplyEffects.h"
 #include "Spell.h"
 #include <spdlog/spdlog.h>
 

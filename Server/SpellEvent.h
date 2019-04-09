@@ -1,4 +1,4 @@
-#ifndef S_SPELL_EVENT_H
+﻿#ifndef S_SPELL_EVENT_H
 #define S_SPELL_EVENT_H
 
 #include <SFML/System.hpp>
@@ -12,7 +12,7 @@ namespace s {
 	public:
 		SpellEvent();
 		virtual ~SpellEvent();
-		
+
 		sf::Time executeTime;
 		SpellInfo* spellInfo;
 

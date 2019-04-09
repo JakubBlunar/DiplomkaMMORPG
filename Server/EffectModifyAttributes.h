@@ -1,4 +1,4 @@
-#ifndef S_EFFECT_MODIFY_ATTRIBUTES
+﻿#ifndef S_EFFECT_MODIFY_ATTRIBUTES
 #define S_EFFECT_MODIFY_ATTRIBUTES
 
 #include "Effect.h"

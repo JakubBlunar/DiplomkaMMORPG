@@ -1,4 +1,4 @@
-#include "IGConsole.h"
+﻿#include "IGConsole.h"
 #include "ImGuiFonts.h"
 #include "Game.h"
 #include "Utils.h"
@@ -153,7 +153,7 @@ void IGConsole::render(Game* g, IGManager* manager) {
 	const float footer_height_to_reserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetItemsLineHeightWithSpacing();
 	// 1 separator, 1 input text
 	ImGui::BeginChild("ScrollingRegion", ImVec2(0, -footer_height_to_reserve), false,
-	                  ImGuiWindowFlags_HorizontalScrollbar); // Leave room for 1 separator + 1 InputText
+		ImGuiWindowFlags_HorizontalScrollbar); // Leave room for 1 separator + 1 InputText
 	if (ImGui::BeginPopupContextWindow()) {
 		if (ImGui::Selectable("Clear")) ClearLog();
 		ImGui::EndPopup();
@@ -200,8 +200,8 @@ void IGConsole::render(Game* g, IGManager* manager) {
 
 	ImGui::PushItemWidth(-1);
 	if (ImGui::InputText("", InputBuf, IM_ARRAYSIZE(InputBuf),
-	                     ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion,
-	                     &TextEditCallbackStub, (void*)this)) {
+		ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion,
+		&TextEditCallbackStub, (void*)this)) {
 		char* s = InputBuf;
 		Strtrim(s);
 		if (s[0])

@@ -1,11 +1,11 @@
-#include "ServerTasks.h"
+﻿#include "ServerTasks.h"
 #include "Database.h"
 #include "Character.h"
 #include "Session.h"
 #include "Account.h"
 #include <spdlog/spdlog.h>
 
-s::ServerTasks::ServerTasks(Server* server):
+s::ServerTasks::ServerTasks(Server* server) :
 	fetchOnlineThread(&ServerTasks::fetchOnline, this),
 	saveCharactersThread(&ServerTasks::saveCharacters, this)
 {
@@ -30,7 +30,7 @@ void s::ServerTasks::finish() {
 }
 
 void s::ServerTasks::fetchOnline() {
-	
+
 	Database* database = Database::i();
 
 	spdlog::get("log")->info("Updating online players for web and server status");
@@ -58,11 +58,11 @@ void s::ServerTasks::fetchOnline() {
 			Account* account = session->getAccount();
 			if (account && !account->isBot) {
 				Character* ch = account->getCharacter();
-				if(ch) {
-					if(ch->faction == CharacterFaction::DARK) {
+				if (ch) {
+					if (ch->faction == CharacterFaction::DARK) {
 						darkFactionCount++;
 					}
-					if(ch->faction == CharacterFaction::LIGHT) {
+					if (ch->faction == CharacterFaction::LIGHT) {
 						lightFactionCount++;
 					}
 					totalCount++;
@@ -76,11 +76,11 @@ void s::ServerTasks::fetchOnline() {
 
 					database->executeQuery(query);
 				}
-			
+
 			}
 		});
 
-		query = "UPDATE realmStatuses SET onlineCount="+ std::to_string(totalCount)+", lightFactionOnline="+ std::to_string(lightFactionCount)+", darkFactionOnline=" + std::to_string(darkFactionCount)+", updatedAt=NOW();";
+		query = "UPDATE realmStatuses SET onlineCount=" + std::to_string(totalCount) + ", lightFactionOnline=" + std::to_string(lightFactionCount) + ", darkFactionOnline=" + std::to_string(darkFactionCount) + ", updatedAt=NOW();";
 		database->executeQuery(query);
 
 		spdlog::get("log")->info("Updating online players and status done");

@@ -1,4 +1,4 @@
-#include "EntityPrototypes.h"
+﻿#include "EntityPrototypes.h"
 
 #define NOMINMAX
 #include <windows.h>
@@ -38,12 +38,12 @@ void EntityPrototypes::init() {
 		si->cooldownTime = sf::milliseconds((int)jsonData["cooldown"].get<json::number_integer_t>());
 		si->description = jsonData["desc"].get<json::string_t>();
 		si->globalCooldownTime = sf::milliseconds((int)jsonData["gCooldown"].get<json::number_integer_t>());
-		si->maxRange =  (float)jsonData["maxRange"].get<json::number_float_t>();
+		si->maxRange = (float)jsonData["maxRange"].get<json::number_float_t>();
 		si->levelNeeded = (int)jsonData["levelNeeded"].get<json::number_integer_t>();
 		si->targetRestriction = static_cast<SpellTargetRestriction>(jsonData["targetRestriction"].get<json::number_integer_t>());
 
 		std::string icon = jsonData["icon"].get<json::string_t>();
-		si->icon.load("Graphics/Icons/"+ icon, sf::Vector2i(32,32), sf::Vector2i(0,0));
+		si->icon.load("Graphics/Icons/" + icon, sf::Vector2i(32, 32), sf::Vector2i(0, 0));
 		spellInfoPrototypes.insert(std::make_pair(si->id, si));
 
 		auto animation = jsonData.find("entityAnimation");
@@ -83,8 +83,7 @@ void EntityPrototypes::read_directory(std::string pattern, std::vector<std::stri
 	if ((hFind = FindFirstFile(pattern.c_str(), &data)) != INVALID_HANDLE_VALUE) {
 		do {
 			v.push_back(data.cFileName);
-		}
-		while (FindNextFile(hFind, &data) != 0);
+		} while (FindNextFile(hFind, &data) != 0);
 		FindClose(hFind);
 	}
 }

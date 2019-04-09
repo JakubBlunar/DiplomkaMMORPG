@@ -1,4 +1,4 @@
-#define SPDLOG_FMT_EXTERNAL
+﻿#define SPDLOG_FMT_EXTERNAL
 #include "ClientSettings.h"
 #include "INIReader.h"
 #include <iostream>
@@ -150,12 +150,12 @@ bool initSettings() {
 int main(int argc, char* argv[]) {
 	bool bot = false;
 
-	for(int i = 0; i < argc; ++i) {
-        string arg = argv[i];
-		if(arg == "bot") {
+	for (int i = 0; i < argc; ++i) {
+		string arg = argv[i];
+		if (arg == "bot") {
 			bot = true;
 		}
-    }
+	}
 
 	/*
 	MapGrid mapGrid(150, 150);
@@ -183,11 +183,12 @@ int main(int argc, char* argv[]) {
 		return EXIT_FAILURE;
 	}
 
-	
+
 	Game* g;
 	if (bot) {
 		g = new BotGame();
-	} else {
+	}
+	else {
 		g = new Game();
 	}
 

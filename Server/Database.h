@@ -1,4 +1,4 @@
-#ifndef  DATABASE_H
+﻿#ifndef  DATABASE_H
 #define DATABASE_H
 #include "SFML\System.hpp"
 #include <mysql.h>
@@ -28,7 +28,7 @@ namespace s {
 			char* tStr = new char[strlen(pStr) * 2 + 1];
 			mysql_real_escape_string(s_instance->conn, tStr, value.c_str(), strlen(pStr));
 			std::string retStr(tStr);
-			delete [] tStr;
+			delete[] tStr;
 			return retStr;
 		}
 

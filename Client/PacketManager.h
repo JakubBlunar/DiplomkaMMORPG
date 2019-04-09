@@ -1,4 +1,4 @@
-#ifndef PACKET_MANAGER_H
+﻿#ifndef PACKET_MANAGER_H
 #define PACKET_MANAGER_H
 
 #include <SFML/Network.hpp>

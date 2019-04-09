@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "IGWindow.h"
 
 class IGGameMenu :

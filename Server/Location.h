@@ -1,4 +1,4 @@
-#ifndef S_LOCATION_H
+﻿#ifndef S_LOCATION_H
 #define S_LOCATION_H
 
 #include <Box2D/Box2D.h>

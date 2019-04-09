@@ -1,4 +1,4 @@
-#include "NpcManager.h"
+﻿#include "NpcManager.h"
 #include "NpcHolder.h"
 #include "ServerGlobals.h"
 #include "NpcCommandMoveTo.h"
@@ -14,7 +14,7 @@
 #include "NpcEventCombatDecision.h"
 #include "EventAutoattackPlayer.h"
 
-s::NpcManager::NpcManager(): server(nullptr), runningThreads(0), MAX_RUNNING_NPC_THREADS(0) {
+s::NpcManager::NpcManager() : server(nullptr), runningThreads(0), MAX_RUNNING_NPC_THREADS(0) {
 	dynamic = false;
 }
 
@@ -58,7 +58,7 @@ void s::NpcManager::unsubscribe() {
 }
 
 s::Npc* s::NpcManager::createNpc(int npcType) {
-	
+
 	NpcHolder* nh = NpcHolder::instance();
 	Npc* npc;
 	try {
@@ -103,7 +103,7 @@ void s::NpcManager::updateNpc(sf::Time elapsedTime, Npc* npc, Server* s, NpcUpda
 
 	sf::Vector2f transformedPosition = sf::Vector2f(position.x * METTOPIX, position.y * METTOPIX);
 	npc->position.setPosition(transformedPosition);
-	
+
 	NpcCommand* command = npc->getNpcCommand();
 	if (command && !command->isFinished()) {
 		command->update(elapsedTime, npcUpdateEvents);
@@ -152,7 +152,7 @@ void s::NpcManager::handleEvent(GameEvent* event) {
 			npcEventQueue.push(npcEvent);
 			lock.unlock();
 		}
-		
+
 	}
 }
 
@@ -172,7 +172,7 @@ void s::NpcManager::npcDied(Npc* npc, Entity* caster) {
 
 	npc->lock();
 
-	npc->setMovement(sf::Vector2f(0,0), nullptr);
+	npc->setMovement(sf::Vector2f(0, 0), nullptr);
 
 	npc->setDeadTimestamp(server->getServerTime());
 	npc->setNpcState(NpcState::DEAD);
@@ -236,14 +236,14 @@ void s::NpcManager::eventExecutionThread(NpcEvent* npcEvent, int index) {
 
 	/*
 	sol::protected_function_result scriptResult = npc->luaState.script(npc->npc_script);
-    if (!scriptResult.valid()) {
-        sol::error err = scriptResult;
-        std::string what = err.what();
-        spdlog::get("log")->error("Lua script failed, npc {}, Exception: {}", npc->getType(), what);
+	if (!scriptResult.valid()) {
+		sol::error err = scriptResult;
+		std::string what = err.what();
+		spdlog::get("log")->error("Lua script failed, npc {}, Exception: {}", npc->getType(), what);
 		npc->setNpcCommand(new NpcCommandStay(npc, npc->position.getMap(), server,  sf::seconds(20)));
-    } else {
-	    sol::table result = npc->luaState["resultEvents"];
-	
+	} else {
+		sol::table result = npc->luaState["resultEvents"];
+
 		result.for_each([&](sol::object const& key, sol::object const& value) {
 			int newEventId = key.as<int>();
 			sol::table eventData = value.as<sol::table>();
@@ -268,8 +268,8 @@ void s::NpcManager::eventExecutionThread(NpcEvent* npcEvent, int index) {
 				default:
 				break;
 			}
-	    });
-    }
+		});
+	}
 	*/
 
 

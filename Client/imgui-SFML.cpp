@@ -1,4 +1,4 @@
-#include "imgui-SFML.h"
+﻿#include "imgui-SFML.h"
 #include <imgui.h>
 
 #include <SFML/OpenGL.hpp>
@@ -190,60 +190,60 @@ namespace ImGui
 			if (s_windowHasFocus) {
 				switch (event.type)
 				{
-				case sf::Event::MouseMoved:
-					s_mouseMoved = true;
-					break;
-				case sf::Event::MouseButtonPressed: // fall-through
-				case sf::Event::MouseButtonReleased:
-				{
-					int button = event.mouseButton.button;
-					if (event.type == sf::Event::MouseButtonPressed &&
-						button >= 0 && button < 3) {
-						s_mousePressed[event.mouseButton.button] = true;
-					}
-				}
-				break;
-				case sf::Event::TouchBegan: // fall-through
-				case sf::Event::TouchEnded:
-				{
-					s_mouseMoved = false;
-					int button = event.touch.finger;
-					if (event.type == sf::Event::TouchBegan &&
-						button >= 0 && button < 3) {
-						s_touchDown[event.touch.finger] = true;
-					}
-				}
-				break;
-				case sf::Event::MouseWheelMoved:
-					io.MouseWheel += static_cast<float>(event.mouseWheel.delta);
-					break;
-				case sf::Event::KeyPressed: // fall-through
-				case sf::Event::KeyReleased:
-					io.KeysDown[event.key.code] = (event.type == sf::Event::KeyPressed);
-					io.KeyCtrl = event.key.control;
-					io.KeyShift = event.key.shift;
-					io.KeyAlt = event.key.alt;
-					break;
-				case sf::Event::TextEntered:
-					if (event.text.unicode > 0 && event.text.unicode < 0x10000) {
-						io.AddInputCharacter(static_cast<ImWchar>(event.text.unicode));
+					case sf::Event::MouseMoved:
+						s_mouseMoved = true;
+						break;
+					case sf::Event::MouseButtonPressed: // fall-through
+					case sf::Event::MouseButtonReleased:
+					{
+						int button = event.mouseButton.button;
+						if (event.type == sf::Event::MouseButtonPressed &&
+							button >= 0 && button < 3) {
+							s_mousePressed[event.mouseButton.button] = true;
+						}
 					}
 					break;
-				default:
+					case sf::Event::TouchBegan: // fall-through
+					case sf::Event::TouchEnded:
+					{
+						s_mouseMoved = false;
+						int button = event.touch.finger;
+						if (event.type == sf::Event::TouchBegan &&
+							button >= 0 && button < 3) {
+							s_touchDown[event.touch.finger] = true;
+						}
+					}
 					break;
+					case sf::Event::MouseWheelMoved:
+						io.MouseWheel += static_cast<float>(event.mouseWheel.delta);
+						break;
+					case sf::Event::KeyPressed: // fall-through
+					case sf::Event::KeyReleased:
+						io.KeysDown[event.key.code] = (event.type == sf::Event::KeyPressed);
+						io.KeyCtrl = event.key.control;
+						io.KeyShift = event.key.shift;
+						io.KeyAlt = event.key.alt;
+						break;
+					case sf::Event::TextEntered:
+						if (event.text.unicode > 0 && event.text.unicode < 0x10000) {
+							io.AddInputCharacter(static_cast<ImWchar>(event.text.unicode));
+						}
+						break;
+					default:
+						break;
 				}
 			}
 
 			switch (event.type)
 			{
-			case sf::Event::LostFocus:
-				s_windowHasFocus = false;
-				break;
-			case sf::Event::GainedFocus:
-				s_windowHasFocus = true;
-				break;
-			default:
-				break;
+				case sf::Event::LostFocus:
+					s_windowHasFocus = false;
+					break;
+				case sf::Event::GainedFocus:
+					s_windowHasFocus = true;
+					break;
+				default:
+					break;
 			}
 		}
 
@@ -387,7 +387,7 @@ namespace ImGui
 	void Image(const sf::Sprite& sprite, const sf::Vector2f& size,
 		const sf::Color& tintColor, const sf::Color& borderColor)
 	{
-		
+
 		const sf::Texture* texturePtr = sprite.getTexture();
 		// sprite without texture cannot be drawn
 		if (!texturePtr) { return; }

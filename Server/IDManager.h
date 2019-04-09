@@ -1,4 +1,4 @@
-#ifndef IDMANAGER_H
+﻿#ifndef IDMANAGER_H
 #define IDMANAGER_H
 
 #include <list>
@@ -47,7 +47,7 @@ T IDManager<T>::getId()
 		T id = used.front();
 		used.pop_front();
 		return id;
-	} 
+	}
 
 	return ++nextId;
 

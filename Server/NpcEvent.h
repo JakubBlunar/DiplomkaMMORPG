@@ -1,4 +1,4 @@
-#ifndef NPC_EVENT_H
+﻿#ifndef NPC_EVENT_H
 #define NPC_EVENT_H
 
 #include "../Shared/GameEvent.h"

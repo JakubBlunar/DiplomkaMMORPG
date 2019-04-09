@@ -1,4 +1,4 @@
-#include "MapsManager.h"
+﻿#include "MapsManager.h"
 #include "Map.h"
 #include <spdlog/spdlog.h>
 #define NOMINMAX
@@ -55,8 +55,7 @@ void s::MapsManager::read_directory(const std::string pattern, std::vector<std::
 	if ((hFind = FindFirstFile(pattern.c_str(), &data)) != INVALID_HANDLE_VALUE) {
 		do {
 			v.push_back(data.cFileName);
-		}
-		while (FindNextFile(hFind, &data) != 0);
+		} while (FindNextFile(hFind, &data) != 0);
 		FindClose(hFind);
 	}
 }

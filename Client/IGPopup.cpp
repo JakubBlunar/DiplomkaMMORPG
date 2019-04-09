@@ -1,4 +1,4 @@
-#include "IGPopup.h"
+﻿#include "IGPopup.h"
 #include "Game.h"
 #include "SceneManager.h"
 
@@ -14,8 +14,8 @@ IGPopup::IGPopup(std::string title, std::string text, sf::Vector2f size, std::st
 }
 
 IGPopup::IGPopup(std::string title, std::string text, sf::Vector2f size, std::string buttonText,
-                 std::function<void()> onButtonClick = []() {
-                 }) {
+	std::function<void()> onButtonClick = []() {
+}) {
 	this->title = title;
 	this->text = text;
 	this->buttonText = buttonText;
@@ -37,7 +37,7 @@ void IGPopup::render(Game* g, IGManager* manager) {
 	ImGui::SetNextWindowFocus();
 
 	if (ImGui::BeginPopupModal("popup", &visible,
-	                           ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove)) {
+		ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove)) {
 		ImGui::PushItemWidth(-1);
 
 		ImGui::SetWindowFontScale(0.2f);

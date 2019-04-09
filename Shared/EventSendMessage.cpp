@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "EventSendMessage.h"
 
 
@@ -24,7 +24,8 @@ bool EventSendMessage::loadFromPacket(sf::Packet* p) {
 				return true;
 			}
 			return false;
-		} else if (messageType == MessageType::COMBAT_LOG) {
+		}
+		else if (messageType == MessageType::COMBAT_LOG) {
 			sf::Uint8 numEntityType;
 			if (*p >> playerId >> targetId >> numEntityType >> combatPopup) {
 				entityType = static_cast<EntityType>(numEntityType);
@@ -46,7 +47,8 @@ sf::Packet* EventSendMessage::toPacket() {
 				return p;
 			}
 			throw e;
-		} else if(messageType == MessageType::COMBAT_LOG) {
+		}
+		else if (messageType == MessageType::COMBAT_LOG) {
 			if (*p << playerId << targetId << static_cast<sf::Uint8>(entityType) << combatPopup) {
 				return p;
 			}

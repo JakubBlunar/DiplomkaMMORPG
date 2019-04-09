@@ -1,4 +1,4 @@
-/*
+﻿/*
 ** $Id: linit.c,v 1.39.1.1 2017/04/19 17:20:42 roberto Exp $
 ** Initialization of libraries for lua.c and other clients
 ** See Copyright Notice in lua.h
@@ -57,12 +57,11 @@ static const luaL_Reg loadedlibs[] = {
 };
 
 
-LUALIB_API void luaL_openlibs (lua_State *L) {
-  const luaL_Reg *lib;
-  /* "require" functions from 'loadedlibs' and set results to global table */
-  for (lib = loadedlibs; lib->func; lib++) {
-    luaL_requiref(L, lib->name, lib->func, 1);
-    lua_pop(L, 1);  /* remove lib */
-  }
+LUALIB_API void luaL_openlibs(lua_State *L) {
+	const luaL_Reg *lib;
+	/* "require" functions from 'loadedlibs' and set results to global table */
+	for (lib = loadedlibs; lib->func; lib++) {
+		luaL_requiref(L, lib->name, lib->func, 1);
+		lua_pop(L, 1);  /* remove lib */
+	}
 }
-

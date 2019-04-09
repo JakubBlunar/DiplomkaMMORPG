@@ -1,4 +1,4 @@
-#ifndef AUTH_MANAGER_H
+﻿#ifndef AUTH_MANAGER_H
 #define AUTH_MANAGER_H
 
 #include "EventLoginRequest.h"

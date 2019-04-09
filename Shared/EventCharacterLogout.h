@@ -1,4 +1,4 @@
-#ifndef EVENT_CHARACTER_LOGOUT
+﻿#ifndef EVENT_CHARACTER_LOGOUT
 #define EVENT_CHARACTER_LOGOUT
 
 #include "GameEvent.h"

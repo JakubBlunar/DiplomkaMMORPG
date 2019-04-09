@@ -1,4 +1,4 @@
-#ifndef EVENT_NPC_MOVEMENT_CHANGE
+﻿#ifndef EVENT_NPC_MOVEMENT_CHANGE
 #define EVENT_NPC_MOVEMENT_CHANGE
 
 #include "GameEvent.h"

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "NpcEvent.h"
 
 namespace s {

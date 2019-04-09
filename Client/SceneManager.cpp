@@ -1,4 +1,4 @@
-#include "SceneManager.h"
+﻿#include "SceneManager.h"
 #include "LoginScene.h"
 #include "Scene.h"
 #include "GamePlayScene.h"
@@ -6,7 +6,7 @@
 #include <iostream>
 
 
-SceneManager::SceneManager(Game *g): sceneToChange(nullptr) {
+SceneManager::SceneManager(Game *g) : sceneToChange(nullptr) {
 	LoginScene* logS = new LoginScene(SceneType::LOGIN, g);
 	scenes.insert(std::pair<SceneType, Scene*>(SceneType::LOGIN, logS));
 	actualScene = logS;
@@ -35,7 +35,8 @@ void SceneManager::changeScene(SceneType sceneType) {
 	if (exists != scenes.end()) {
 		if (actualScene->canChange) {
 			switchScene(exists->second);
-		} else {
+		}
+		else {
 			sceneToChange = exists->second;
 		}
 	}
@@ -71,5 +72,3 @@ void SceneManager::switchScene(Scene* scene) {
 	actualScene = scene;
 	scene->afterChange();
 }
-
-

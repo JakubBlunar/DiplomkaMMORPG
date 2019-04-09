@@ -1,7 +1,7 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "Astar.h"
 
-Astar::Astar(MapGrid* grid): current(nullptr), start(nullptr), end(nullptr) {
+Astar::Astar(MapGrid* grid) : current(nullptr), start(nullptr), end(nullptr) {
 	this->grid = grid;
 }
 
@@ -27,9 +27,9 @@ int Astar::findPath(sf::Vector2f from, sf::Vector2f to)
 	end = nullptr;
 
 	bool found = false;
-	for (int i = fromX; i < fromX + 1; i++ ) {
+	for (int i = fromX; i < fromX + 1; i++) {
 		for (int j = fromY; j < fromY + 1; j++) {
-		;	MapGridSpot * temp = grid->grid->get(i, j);
+			;	MapGridSpot * temp = grid->grid->get(i, j);
 			if (!found && temp && !temp->isWall()) {
 				start = temp;
 				found = true;
@@ -37,10 +37,10 @@ int Astar::findPath(sf::Vector2f from, sf::Vector2f to)
 			}
 		}
 	}
-	
+
 	end = grid->grid->get(toX, toY);
 
-	if(!start || !end || start->isWall() || end->isWall()) {
+	if (!start || !end || start->isWall() || end->isWall()) {
 		return -1;
 	}
 
@@ -54,18 +54,18 @@ int Astar::findPath(sf::Vector2f from, sf::Vector2f to)
 		steps++;
 	}
 
-    MapGridSpot* temp = current;
+	MapGridSpot* temp = current;
 
 	path.clear();
-	
+
 	path.push_front(sf::Vector2f((float)temp->positionX, (float)temp->positionY));
-    while (temp->previous) {
-        path.push_front(sf::Vector2f((float)temp->previous->positionX, (float)temp->previous->positionY));
-        temp = temp->previous;
-    }
+	while (temp->previous) {
+		path.push_front(sf::Vector2f((float)temp->previous->positionX, (float)temp->previous->positionY));
+		temp = temp->previous;
+	}
 	path.push_front(from);
 
-	if(res == 1) {
+	if (res == 1) {
 		return 1;
 	}
 	return -1;
@@ -75,18 +75,18 @@ int Astar::step()
 {
 	int openSetSize = openSet.size();
 	if (openSetSize > 0 && current != end) {
-		
+
 		current = openSet.begin()->second;
-       
+
 		for (auto spotPair : openSet)
 		{
 			if (spotPair.second->f < current->f) {
-                current = spotPair.second;
-            }
+				current = spotPair.second;
+			}
 		}
 
-        openSet.erase(current->id);
-        closedSet.insert(std::make_pair(current->id, current));
+		openSet.erase(current->id);
+		closedSet.insert(std::make_pair(current->id, current));
 
 		std::list<MapGridSpot*> neighbours = current->neighbours;
 		for (MapGridSpot* neighbour : neighbours)
@@ -94,35 +94,37 @@ int Astar::step()
 			bool newPath = false;
 
 			auto found = closedSet.find(neighbour->id);
-            if (found == closedSet.end() && !neighbour->isWall()) {
-                float tempG = current->g + 1;
+			if (found == closedSet.end() && !neighbour->isWall()) {
+				float tempG = current->g + 1;
 				auto openSetFound = openSet.find(neighbour->id);
-                if (openSetFound != openSet.end()) {
-                    if (tempG < neighbour->g) {
-                        neighbour->g = tempG;
-                        newPath = true;
-                    }
-                } else {
-                    neighbour->g = tempG;
-                    newPath = true;
-                    openSet.insert(std::make_pair(neighbour->id, neighbour));
-                }
+				if (openSetFound != openSet.end()) {
+					if (tempG < neighbour->g) {
+						neighbour->g = tempG;
+						newPath = true;
+					}
+				}
+				else {
+					neighbour->g = tempG;
+					newPath = true;
+					openSet.insert(std::make_pair(neighbour->id, neighbour));
+				}
 
-                if (newPath) {
-                    neighbour->h = heuristic(neighbour, end);
-                    neighbour->f = neighbour->g + neighbour->h;
-                    neighbour->previous = current;
-                }
-            }
+				if (newPath) {
+					neighbour->h = heuristic(neighbour, end);
+					neighbour->f = neighbour->g + neighbour->h;
+					neighbour->previous = current;
+				}
+			}
 		}
-    } else {
-        if (current == end) {
-            return 1;
-        } 
-        return -1;
-    }
+	}
+	else {
+		if (current == end) {
+			return 1;
+		}
+		return -1;
+	}
 
-    return 0;
+	return 0;
 }
 
 float Astar::heuristic(MapGridSpot * a, MapGridSpot * b) const {

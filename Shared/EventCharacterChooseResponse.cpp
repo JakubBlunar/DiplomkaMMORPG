@@ -1,8 +1,8 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "EventCharacterChooseResponse.h"
 
 
-EventCharacterChooseResponse::EventCharacterChooseResponse(): success(false) {
+EventCharacterChooseResponse::EventCharacterChooseResponse() : success(false) {
 	id = CHARACTER_CHOOSE_RESPONSE;
 }
 

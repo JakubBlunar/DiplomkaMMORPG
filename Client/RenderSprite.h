@@ -1,4 +1,4 @@
-#ifndef RENDER_SPRITE_H
+﻿#ifndef RENDER_SPRITE_H
 #define RENDER_SPRITE_H
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics.hpp>

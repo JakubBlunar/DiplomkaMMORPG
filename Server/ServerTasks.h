@@ -1,4 +1,4 @@
-#ifndef TASKS_H
+﻿#ifndef TASKS_H
 #define TASKS_H
 
 #include <SFML/System/Thread.hpp>

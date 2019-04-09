@@ -1,8 +1,8 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "EventLearnSpell.h"
 
 
-EventLearnSpell::EventLearnSpell(): spellId(0), success(false) {
+EventLearnSpell::EventLearnSpell() : spellId(0), success(false) {
 	id = LEARN_SPELL;
 }
 
@@ -13,7 +13,7 @@ EventLearnSpell::~EventLearnSpell()
 }
 
 bool EventLearnSpell::loadFromPacket(sf::Packet* p) {
-	if(*p >> spellId >> success) {
+	if (*p >> spellId >> success) {
 		return true;
 	}
 	return false;
@@ -26,4 +26,3 @@ sf::Packet* EventLearnSpell::toPacket() {
 	}
 	throw "Cannot convert to packet";
 }
-

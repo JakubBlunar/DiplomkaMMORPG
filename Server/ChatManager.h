@@ -1,4 +1,4 @@
-#ifndef S_CHAT_MANAGER_H
+﻿#ifndef S_CHAT_MANAGER_H
 #define S_CHAT_MANAGER_H
 
 #include "Manager.h"

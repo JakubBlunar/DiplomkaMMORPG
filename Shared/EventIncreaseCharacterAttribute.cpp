@@ -1,8 +1,8 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "EventIncreaseCharacterAttribute.h"
 
 
-EventIncreaseCharacterAttribute::EventIncreaseCharacterAttribute(): playerId(0), attribute() {}
+EventIncreaseCharacterAttribute::EventIncreaseCharacterAttribute() : playerId(0), attribute() {}
 
 EventIncreaseCharacterAttribute::EventIncreaseCharacterAttribute(int playerId, EntityAttributeType attribute) {
 	this->playerId = playerId;
@@ -16,7 +16,7 @@ EventIncreaseCharacterAttribute::~EventIncreaseCharacterAttribute()
 
 bool EventIncreaseCharacterAttribute::loadFromPacket(sf::Packet* p) {
 	sf::Uint8 attributeNum;
-	if (*p >> playerId >> attributeNum ) {
+	if (*p >> playerId >> attributeNum) {
 		attribute = static_cast<EntityAttributeType>(attributeNum);
 		return true;
 	}
@@ -30,4 +30,3 @@ sf::Packet* EventIncreaseCharacterAttribute::toPacket() {
 	}
 	throw "Cannot convert to packet";
 }
-

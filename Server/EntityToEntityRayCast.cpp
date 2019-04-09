@@ -1,11 +1,11 @@
-#include "EntityToEntityRayCast.h"
+﻿#include "EntityToEntityRayCast.h"
 
 #include <Box2D/Box2D.h>
 #include "Npc.h"
 
 
 s::EntityToEntityRayCast::
-EntityToEntityRayCast(Entity* startEntity, Entity* endEntity):
+EntityToEntityRayCast(Entity* startEntity, Entity* endEntity) :
 	closestEntityDistance(999999999.f) {
 	this->startEntity = startEntity;
 	this->endEntity = endEntity;
@@ -16,7 +16,7 @@ EntityToEntityRayCast(Entity* startEntity, Entity* endEntity):
 s::EntityToEntityRayCast::~EntityToEntityRayCast() {}
 
 float32 s::EntityToEntityRayCast::ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal,
-                                                float32 fraction) {
+	float32 fraction) {
 	b2Body* body = fixture->GetBody();
 
 	if (fraction < 0) {

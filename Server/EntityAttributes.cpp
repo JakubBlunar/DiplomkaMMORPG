@@ -1,4 +1,4 @@
-#include "EntityAttributes.h"
+﻿#include "EntityAttributes.h"
 
 
 
@@ -13,7 +13,7 @@ s::EntityAttributes::EntityAttributes()
 
 float s::EntityAttributes::getAttribute(EntityAttributeType type, bool withBonus = false) const {
 	int index = attributeTypeToInt(type);
-	if(withBonus) {
+	if (withBonus) {
 		return attributes[index] + attributeBonuses[index];
 	}
 	return attributes[index];
@@ -28,7 +28,7 @@ float s::EntityAttributes::getAttributeBonusByIndex(int index) const {
 }
 
 float s::EntityAttributes::getAttributeBonus(EntityAttributeType type) const {
-	return attributeBonuses[attributeTypeToInt(type)]; 
+	return attributeBonuses[attributeTypeToInt(type)];
 }
 
 void s::EntityAttributes::setAttributeBonusByIndex(int index, float value) {
@@ -77,15 +77,14 @@ void s::EntityAttributes::recalcMaxMana()
 
 int s::EntityAttributes::recalcLevel()
 {
-	float experience = getAttribute(EntityAttributeType::EXPERIENCE); 
+	float experience = getAttribute(EntityAttributeType::EXPERIENCE);
 	float temp;
 	int level = 0;
 
 	do {
 		level++;
 		temp = getXpForLevel(level + 1);
-	}
-	while(temp < experience);
+	} while (temp < experience);
 
 	setAttribute(EntityAttributeType::LEVEL, (float)level);
 	return level;

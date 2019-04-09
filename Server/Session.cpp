@@ -1,8 +1,8 @@
-#include "Session.h"
+﻿#include "Session.h"
 #include "Account.h"
 
 
-s::Session::Session(): socket(nullptr) {
+s::Session::Session() : socket(nullptr) {
 }
 
 

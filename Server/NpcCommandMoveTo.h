@@ -1,4 +1,4 @@
-#ifndef NPC_COMMAND_MOVE_TO_H
+﻿#ifndef NPC_COMMAND_MOVE_TO_H
 #define NPC_COMMAND_MOVE_TO_H
 
 #include "NpcCommand.h"

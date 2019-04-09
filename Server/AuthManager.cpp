@@ -1,4 +1,4 @@
-#include "AuthManager.h"
+﻿#include "AuthManager.h"
 #include "Server.h"
 #include "EventLoginResponse.h"
 #include <spdlog/spdlog.h>
@@ -127,12 +127,12 @@ void s::AuthManager::handleEvent(EventCharacterChoose* event, s::Session* player
 
 			if (!account->isBot) {
 				character = std::find_if(account->characters->begin(), account->characters->end(),
-				                         [event](s::Character* character)-> bool {
-					                         if (character->id == event->characterId) {
-						                         return true;
-					                         }
-					                         return false;
-				                         });
+					[event](s::Character* character)-> bool {
+					if (character->id == event->characterId) {
+						return true;
+					}
+					return false;
+				});
 			}
 			else {
 				character = account->characters->begin();
@@ -146,7 +146,7 @@ void s::AuthManager::handleEvent(EventCharacterChoose* event, s::Session* player
 					ch->setAccount(playerSession->getAccount());
 					playerSession->getAccount()->setCharacter(ch);
 					ch->position.setMap(m);
-					
+
 
 					m->addCharacter(ch);
 					json resData;

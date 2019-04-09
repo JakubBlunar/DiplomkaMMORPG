@@ -1,4 +1,4 @@
-#ifndef MAP_GRID_SPOT_H
+﻿#ifndef MAP_GRID_SPOT_H
 #define MAP_GRID_SPOT_H
 #include <list>
 

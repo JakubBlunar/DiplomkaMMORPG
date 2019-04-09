@@ -1,4 +1,4 @@
-#ifndef IG_CASTING_BAR_H
+﻿#ifndef IG_CASTING_BAR_H
 #define IG_CASTING_BAR_H
 
 #include "IGWindow.h"

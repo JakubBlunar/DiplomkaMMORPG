@@ -1,4 +1,4 @@
-#ifndef S_NPC_HOLDER_H
+﻿#ifndef S_NPC_HOLDER_H
 #define S_NPC_HOLDER_H
 
 #include "json.hpp"
@@ -6,7 +6,7 @@
 using json = nlohmann::json;
 
 namespace CryptoPP {
-    
+
 }
 
 
@@ -25,7 +25,7 @@ namespace s {
 			return &instance;
 		}
 
-		Npc* createNpc(int type); 
+		Npc* createNpc(int type);
 
 		void read_directory(std::string pattern, std::vector<std::string>& v) const;
 	private:

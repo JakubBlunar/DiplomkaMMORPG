@@ -1,4 +1,4 @@
-#ifndef ANIMATEDSPRITE_H
+﻿#ifndef ANIMATEDSPRITE_H
 #define ANIMATEDSPRITE_H
 
 #include <SFML/Graphics/RenderTarget.hpp>

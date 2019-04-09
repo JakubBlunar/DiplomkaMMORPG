@@ -1,4 +1,4 @@
-#ifndef FIELD_H
+﻿#ifndef FIELD_H
 #define FIELD_H
 
 #include <vector>
@@ -11,7 +11,7 @@ public:
 	~Field();
 
 	void init();
-	void addLayer(RenderSprite* sprite); 
+	void addLayer(RenderSprite* sprite);
 	std::vector<RenderSprite*>* getLayers();
 };
 

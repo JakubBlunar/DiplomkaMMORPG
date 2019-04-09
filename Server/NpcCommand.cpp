@@ -1,10 +1,10 @@
-#include "NpcCommand.h"
+﻿#include "NpcCommand.h"
 #include "Npc.h"
 #include "../Server/EventDispatcher.h"
 #include "NpcEventNpcIsIdle.h"
 
 
-s::NpcCommand::NpcCommand(): finished(false) {
+s::NpcCommand::NpcCommand() : finished(false) {
 	maxDuration = sf::seconds(1000000);
 	finishedEventDispatched = false;
 	server = nullptr;
@@ -13,7 +13,7 @@ s::NpcCommand::NpcCommand(): finished(false) {
 
 s::NpcCommand::~NpcCommand()
 {
-	
+
 }
 
 bool s::NpcCommand::isFinished() const
@@ -42,14 +42,14 @@ void s::NpcCommand::dispatchFinishEvent(NpcEvent* e) {
 	EventId eventId = e->getId();
 	switch (eventId) {
 		case NPC_IS_IDLE: {
-			EventDispatcher<NpcEventNpcIsIdle>::dispatchEvent((NpcEventNpcIsIdle*) e, server);
+			EventDispatcher<NpcEventNpcIsIdle>::dispatchEvent((NpcEventNpcIsIdle*)e, server);
 		}
 		default:
 			break;
 	}
 }
 
-s::NpcCommand::NpcCommand(sf::Time maxDuration, Server* s): finished(false) {
+s::NpcCommand::NpcCommand(sf::Time maxDuration, Server* s) : finished(false) {
 	this->maxDuration = maxDuration;
 	server = s;
 	finishedEventDispatched = false;

@@ -1,4 +1,4 @@
-#include "Animation.h"
+﻿#include "Animation.h"
 
 Animation::Animation() : texture(nullptr), frameTime(sf::seconds(5000000000.f)) {
 

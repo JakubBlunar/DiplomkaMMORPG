@@ -1,4 +1,4 @@
-#ifndef S_ENTITY_H
+﻿#ifndef S_ENTITY_H
 #define S_ENTITY_H
 
 #include "../Shared/EntityConstants.h"
@@ -10,7 +10,7 @@ namespace s {
 
 	class Entity {
 	protected:
-		Entity(): entityType() {} ;
+		Entity() : entityType() {};
 		EntityType entityType;
 
 		sf::Mutex mutex;

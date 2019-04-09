@@ -1,4 +1,4 @@
-#include "PacketManager.h"
+﻿#include "PacketManager.h"
 #include <SFML/Network/SocketSelector.hpp>
 #include <iostream>
 #include "EventId.h"
@@ -83,138 +83,145 @@ void PacketManager::startRecieve() {
 
 				EventId pt = static_cast<EventId>(packetType);
 				switch (pt) {
-				case EventId::LATENCY:
-					int id;
-					if (packet >> id) {
-						statistics.packetRecieve(id);
+					case EventId::LATENCY:
+						int id;
+						if (packet >> id) {
+							statistics.packetRecieve(id);
+						}
+						break;
+					case LOGINRESPONSE:
+						e = new EventLoginResponse();
+						if (e->loadFromPacket(&packet)) {
+							EventDispatcher<EventLoginResponse>::dispatchEvent(e);
+						}
+						else {
+							game->print("Error while parsing packet " + std::to_string(pt));
+						}
+						break;
+					case CHARACTER_CHOOSE_RESPONSE:
+						e = new EventCharacterChooseResponse();
+						if (e->loadFromPacket(&packet)) {
+							EventDispatcher<EventCharacterChooseResponse>::dispatchEvent(e);
+						}
+						else {
+							game->print("Error while parsing packet " + std::to_string(pt));
+						}
+						break;
+					case CHARACTER_MAP_JOIN:
+						e = new EventCharacterMapJoin();
+						if (e->loadFromPacket(&packet)) {
+							EventDispatcher<EventCharacterMapJoin>::dispatchEvent(e);
+						}
+						else {
+							game->print("Error while parsing packet " + std::to_string(pt));
+						}
+						break;
+					case CHARACTER_MAP_LEAVE:
+						e = new EventCharacterMapLeave();
+						if (e->loadFromPacket(&packet)) {
+							EventDispatcher<EventCharacterMapLeave>::dispatchEvent(e);
+						}
+						else {
+							game->print("Error while parsing packet " + std::to_string(pt));
+						}
+						break;
+					case MOVEMENT:
+						e = new EventMovementChange();
+						if (e->loadFromPacket(&packet)) {
+							EventDispatcher<EventMovementChange>::dispatchEvent(e);
+						}
+						else {
+							game->print("Error while parsing packet " + std::to_string(pt));
+						}
+						break;
+					case NPC_MOVEMENT_CHANGE:
+						e = new EventNpcMovementChange();
+						if (e->loadFromPacket(&packet)) {
+							EventDispatcher<EventNpcMovementChange>::dispatchEvent(e);
+						}
+						else {
+							game->print("Error while parsing packet " + std::to_string(pt));
+						}
+						break;
+					case NPCS_MOVEMENT_CHANGE:
+						e = new EventNpcsMovementChange();
+						if (e->loadFromPacket(&packet)) {
+							EventDispatcher<EventNpcsMovementChange>::dispatchEvent(e);
+						}
+						else {
+							game->print("Error while parsing packet " + std::to_string(pt));
+						}
+						break;
+					case ATTRIBUTES_CHANGED:
+						e = new EventAttributesChanged();
+						if (e->loadFromPacket(&packet)) {
+							EventDispatcher<EventAttributesChanged>::dispatchEvent(e);
+						}
+						else {
+							game->print("Error while parsing packet " + std::to_string(pt));
+						}
+						break;
+					case NPC_STATUS_CHANGED:
+						e = new EventNpcStatusChanged();
+						if (e->loadFromPacket(&packet)) {
+							EventDispatcher<EventNpcStatusChanged>::dispatchEvent(e);
+						}
+						else {
+							game->print("Error while parsing packet " + std::to_string(pt));
+						}
+						break;
+					case SPELL_CAST_RESULT:
+						e = new EventSpellCastResult();
+						if (e->loadFromPacket(&packet)) {
+							EventDispatcher<EventSpellCastResult>::dispatchEvent(e);
+						}
+						else {
+							game->print("Error while parsing packet " + std::to_string(pt));
+						}
+						break;
+					case SEND_MESSAGE: {
+						e = new EventSendMessage();
+						if (e->loadFromPacket(&packet)) {
+							EventDispatcher<EventSendMessage>::dispatchEvent(e);
+						}
+						else {
+							game->print("Error while parsing packet " + std::to_string(pt));
+						}
+						break;
 					}
-					break;
-				case LOGINRESPONSE:
-					e = new EventLoginResponse();
-					if (e->loadFromPacket(&packet)) {
-						EventDispatcher<EventLoginResponse>::dispatchEvent(e);
+					case FREE_SPELL_TO_LEARN: {
+						e = new EventFreeSpellToLearn();
+						if (e->loadFromPacket(&packet)) {
+							EventDispatcher<EventFreeSpellToLearn>::dispatchEvent(e);
+						}
+						else {
+							game->print("Error while parsing packet " + std::to_string(pt));
+						}
+						break;
 					}
-					else {
-						game->print("Error while parsing packet " + std::to_string(pt));
+					case LEARN_SPELL: {
+						e = new EventLearnSpell();
+						if (e->loadFromPacket(&packet)) {
+							EventDispatcher<EventLearnSpell>::dispatchEvent(e);
+						}
+						else {
+							game->print("Error while parsing packet " + std::to_string(pt));
+						}
+						break;
 					}
-					break;
-				case CHARACTER_CHOOSE_RESPONSE:
-					e = new EventCharacterChooseResponse();
-					if (e->loadFromPacket(&packet)) {
-						EventDispatcher<EventCharacterChooseResponse>::dispatchEvent(e);
+					case NPC_POSITION_CHANGE: {
+						e = new EventNpcPositionChange();
+						if (e->loadFromPacket(&packet)) {
+							EventDispatcher<EventNpcPositionChange>::dispatchEvent(e);
+						}
+						else {
+							game->print("Error while parsing packet " + std::to_string(pt));
+						}
+						break;
 					}
-					else {
-						game->print("Error while parsing packet " + std::to_string(pt));
-					}
-					break;
-				case CHARACTER_MAP_JOIN:
-					e = new EventCharacterMapJoin();
-					if (e->loadFromPacket(&packet)) {
-						EventDispatcher<EventCharacterMapJoin>::dispatchEvent(e);
-					}
-					else {
-						game->print("Error while parsing packet " + std::to_string(pt));
-					}
-					break;
-				case CHARACTER_MAP_LEAVE:
-					e = new EventCharacterMapLeave();
-					if (e->loadFromPacket(&packet)) {
-						EventDispatcher<EventCharacterMapLeave>::dispatchEvent(e);
-					}
-					else {
-						game->print("Error while parsing packet " + std::to_string(pt));
-					}
-					break;
-				case MOVEMENT:
-					e = new EventMovementChange();
-					if (e->loadFromPacket(&packet)) {
-						EventDispatcher<EventMovementChange>::dispatchEvent(e);
-					}
-					else {
-						game->print("Error while parsing packet " + std::to_string(pt));
-					}
-					break;
-				case NPC_MOVEMENT_CHANGE:
-					e = new EventNpcMovementChange();
-					if (e->loadFromPacket(&packet)) {
-						EventDispatcher<EventNpcMovementChange>::dispatchEvent(e);
-					}
-					else {
-						game->print("Error while parsing packet " + std::to_string(pt));
-					}
-					break;
-				case NPCS_MOVEMENT_CHANGE:
-					e = new EventNpcsMovementChange();
-					if (e->loadFromPacket(&packet)) {
-						EventDispatcher<EventNpcsMovementChange>::dispatchEvent(e);
-					}
-					else {
-						game->print("Error while parsing packet " + std::to_string(pt));
-					}
-					break;
-				case ATTRIBUTES_CHANGED:
-					e = new EventAttributesChanged();
-					if (e->loadFromPacket(&packet)) {
-						EventDispatcher<EventAttributesChanged>::dispatchEvent(e);
-					} else {
-						game->print("Error while parsing packet " + std::to_string(pt));
-					}
-					break;
-				case NPC_STATUS_CHANGED:
-					e = new EventNpcStatusChanged();
-					if (e->loadFromPacket(&packet)) {
-						EventDispatcher<EventNpcStatusChanged>::dispatchEvent(e);
-					} else {
-						game->print("Error while parsing packet " + std::to_string(pt));
-					}
-					break;
-				case SPELL_CAST_RESULT: 
-					e = new EventSpellCastResult();
-					if (e->loadFromPacket(&packet)) {
-						EventDispatcher<EventSpellCastResult>::dispatchEvent(e);
-					} else {
-						game->print("Error while parsing packet " + std::to_string(pt));
-					}
-					break;
-				case SEND_MESSAGE: {
-					e = new EventSendMessage();
-					if (e->loadFromPacket(&packet)) {
-						EventDispatcher<EventSendMessage>::dispatchEvent(e);
-					} else {
-						game->print("Error while parsing packet " + std::to_string(pt));
-					}
-					break;
-				}
-				case FREE_SPELL_TO_LEARN: {
-					e = new EventFreeSpellToLearn();
-					if (e->loadFromPacket(&packet)) {
-						EventDispatcher<EventFreeSpellToLearn>::dispatchEvent(e);
-					} else {
-						game->print("Error while parsing packet " + std::to_string(pt));
-					}
-					break;
-				}
-				case LEARN_SPELL: {
-					e = new EventLearnSpell();
-					if (e->loadFromPacket(&packet)) {
-						EventDispatcher<EventLearnSpell>::dispatchEvent(e);
-					} else {
-						game->print("Error while parsing packet " + std::to_string(pt));
-					}
-					break;
-				}
-				case NPC_POSITION_CHANGE: {
-					e = new EventNpcPositionChange();
-					if (e->loadFromPacket(&packet)) {
-						EventDispatcher<EventNpcPositionChange>::dispatchEvent(e);
-					} else {
-						game->print("Error while parsing packet " + std::to_string(pt));
-					}
-					break;
-				}
-				default:
-					game->print("Unknown packet type " + std::to_string(pt));
-					break;
+					default:
+						game->print("Unknown packet type " + std::to_string(pt));
+						break;
 				}
 			}
 

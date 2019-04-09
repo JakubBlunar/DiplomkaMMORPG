@@ -1,4 +1,4 @@
-#ifndef CHARACTER_H
+﻿#ifndef CHARACTER_H
 #define CHARACTER_H
 
 #include <string>

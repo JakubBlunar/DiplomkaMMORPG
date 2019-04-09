@@ -1,4 +1,4 @@
-#ifndef ENTITY_H
+﻿#ifndef ENTITY_H
 #define ENTITY_H
 
 #include <SFML/Graphics.hpp>
@@ -14,7 +14,7 @@ class Map;
 struct EntityPopupMessage {
 	sf::Time appear;
 	std::string message;
-}; 
+};
 
 class Entity : public Subscriber {
 public:
@@ -51,7 +51,7 @@ protected:
 	sf::Uint32 id;
 	bool removed;
 
-	
+
 
 	sf::Mutex mutex;
 

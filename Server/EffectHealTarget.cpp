@@ -1,4 +1,4 @@
-#include "EffectHealTarget.h"
+﻿#include "EffectHealTarget.h"
 #include <utility>
 #include "Random.h"
 #include "Character.h"
@@ -11,7 +11,7 @@
 #include "ChatConstants.h"
 #include "EventSendMessage.h"
 
-s::EffectHealTarget::EffectHealTarget(SpellInfo spellInfo, float modifier): Effect(std::move(spellInfo)) {
+s::EffectHealTarget::EffectHealTarget(SpellInfo spellInfo, float modifier) : Effect(std::move(spellInfo)) {
 	this->modifier = modifier;
 	name = "Healing";
 }
@@ -68,7 +68,7 @@ void s::EffectHealTarget::castHealing(Character* caster, Character* target) cons
 }
 
 void s::EffectHealTarget::castHealing(Character* caster, Npc* target) const {
-	if(!target->isAlive()) return;
+	if (!target->isAlive()) return;
 
 	Random* random = Random::instance();
 
@@ -162,7 +162,7 @@ void s::EffectHealTarget::castHealing(Npc* caster, Character* target) const {
 void s::EffectHealTarget::castHealing(Npc* caster, Npc* target) const {
 	Random* random = Random::instance();
 
-	if(!target->isAlive()) return;
+	if (!target->isAlive()) return;
 
 	sf::Vector2f healRange;
 	if (spellInfo.type == SpellType::MELLE) {

@@ -1,8 +1,8 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "EventCharacterChoose.h"
 
 
-EventCharacterChoose::EventCharacterChoose(): characterId(0) {
+EventCharacterChoose::EventCharacterChoose() : characterId(0) {
 	id = CHARACTER_CHOOSE;
 }
 

@@ -1,4 +1,4 @@
-#ifndef IMGUIMANAGER_H
+﻿#ifndef IMGUIMANAGER_H
 #define IMGUIMANAGER_H
 #include <string>
 #include <map>

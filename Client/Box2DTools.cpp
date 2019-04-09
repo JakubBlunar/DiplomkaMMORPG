@@ -1,4 +1,4 @@
-#include "Box2DTools.h"
+﻿#include "Box2DTools.h"
 #include <Box2D/Dynamics/b2Body.h>
 #include <Box2D/Box2D.h>
 #include "Globals.h"
@@ -113,7 +113,7 @@ void Box2DTools::addCircle(b2BodyType bodyType, float x, float y, float radius, 
 
 	bdCircle->CreateFixture(&fixtureDef);
 
-	
+
 }
 
 void Box2DTools::addStaticCircle(float x, float y, Entity* entity, Map* map) {

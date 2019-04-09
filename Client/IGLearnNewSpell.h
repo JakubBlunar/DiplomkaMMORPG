@@ -1,4 +1,4 @@
-#ifndef IG_LEARN_NEW_SPELL_H
+﻿#ifndef IG_LEARN_NEW_SPELL_H
 #define IG_LEARN_NEW_SPELL_H
 
 #include "IGWindow.h"

@@ -1,4 +1,4 @@
-#include "IGHelp.h"
+﻿#include "IGHelp.h"
 #include "Game.h"
 
 
@@ -30,7 +30,7 @@ void IGHelp::render(Game* g, IGManager* manager) {
 	ImGui::SameLine();
 
 
-	const char* items[] = {"Info", "Controls",};
+	const char* items[] = { "Info", "Controls", };
 
 	ImGui::BeginChild("Menu", ImVec2(120, -1), true);
 

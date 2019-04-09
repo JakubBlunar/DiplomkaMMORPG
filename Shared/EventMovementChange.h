@@ -1,4 +1,4 @@
-#ifndef EVENT_MOVEMENT_CHANGED
+﻿#ifndef EVENT_MOVEMENT_CHANGED
 #define EVENT_MOVEMENT_CHANGED
 
 #include "GameEvent.h"

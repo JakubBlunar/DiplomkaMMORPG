@@ -1,4 +1,4 @@
-#ifndef BOT_MANAGER_H
+﻿#ifndef BOT_MANAGER_H
 #define BOT_MANAGER_H
 
 #include "IDManager.h"
@@ -11,7 +11,7 @@ namespace s {
 	class Account;
 	class Character;
 
-	class BotManager: public Manager
+	class BotManager : public Manager
 	{
 		IDManager<sf::Int32> idCharacterManager;
 		IDManager<sf::Int32> idAccountManager;

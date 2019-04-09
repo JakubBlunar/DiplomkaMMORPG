@@ -1,4 +1,4 @@
-#ifndef EVENT_PLAYER_START_CAST_SPELL
+﻿#ifndef EVENT_PLAYER_START_CAST_SPELL
 #define EVENT_PLAYER_START_CAST_SPELL
 
 #include "GameEvent.h"
@@ -22,4 +22,3 @@ public:
 };
 
 #endif
-

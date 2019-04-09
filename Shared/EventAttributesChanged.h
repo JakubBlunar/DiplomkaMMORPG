@@ -1,4 +1,4 @@
-#ifndef EVENT_NPC_ATTRIBUTES_CHANGED
+﻿#ifndef EVENT_NPC_ATTRIBUTES_CHANGED
 #define EVENT_NPC_ATTRIBUTES_CHANGED
 
 #include "GameEvent.h"
@@ -8,7 +8,7 @@
 class EventAttributesChanged :
 	public GameEvent
 {
-	
+
 public:
 	EventAttributesChanged();
 	~EventAttributesChanged();

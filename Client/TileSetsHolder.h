@@ -1,4 +1,4 @@
-#ifndef TILESET_HOLDER_H
+﻿#ifndef TILESET_HOLDER_H
 #define TILESET_HOLDER_H
 
 #include <string>

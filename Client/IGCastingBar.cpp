@@ -1,9 +1,9 @@
-#include "IGCastingBar.h"
+﻿#include "IGCastingBar.h"
 #include "Spell.h"
 #include "Player.h"
 #include "Game.h"
 
-IGCastingBar::IGCastingBar(): player(nullptr) {
+IGCastingBar::IGCastingBar() : player(nullptr) {
 	size = sf::Vector2f(200.f, 38.f);
 }
 
@@ -13,7 +13,7 @@ IGCastingBar::~IGCastingBar()
 }
 
 void IGCastingBar::render(Game* g, IGManager* manager) {
-	if(!player) return;
+	if (!player) return;
 
 	SpellInfo* spell = player->getCastingSpell();
 	if (!spell)
@@ -27,7 +27,7 @@ void IGCastingBar::render(Game* g, IGManager* manager) {
 
 
 	if (!ImGui::Begin("castingBar", &visible,
-	                  ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBringToFrontOnFocus)) {
+		ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBringToFrontOnFocus)) {
 		focused = false;
 		ImGui::End();
 		return;
@@ -37,7 +37,7 @@ void IGCastingBar::render(Game* g, IGManager* manager) {
 
 
 	ImGui::PushItemWidth(-1);
-	
+
 	sf::Time a = actualTime - startCastingTime;
 	sf::Time b = spell->castingTime;
 
@@ -49,9 +49,9 @@ void IGCastingBar::render(Game* g, IGManager* manager) {
 	if (perc > 1) {
 		perc = 1;
 	}
-	std::string text = convertFloatToString(a.asSeconds(), 2) + "/" + convertFloatToString(b.asSeconds(), 2) + " ("+ convertFloatToString(perc * 100, 0)+"%)";
-	
-	ImGui::ProgressBar(perc, ImVec2(-1,0), text.c_str());
+	std::string text = convertFloatToString(a.asSeconds(), 2) + "/" + convertFloatToString(b.asSeconds(), 2) + " (" + convertFloatToString(perc * 100, 0) + "%)";
+
+	ImGui::ProgressBar(perc, ImVec2(-1, 0), text.c_str());
 
 
 	ImGui::PopItemWidth();

@@ -1,4 +1,4 @@
-#include "BotGame.h"
+﻿#include "BotGame.h"
 
 #define NOMINMAX
 #include <windows.h>
@@ -23,10 +23,10 @@
 
 
 BotGame::BotGame() {
-	
+
 }
 BotGame::~BotGame() {
-	
+
 }
 
 void BotGame::run() {
@@ -70,7 +70,7 @@ void BotGame::update(sf::Time elapsedTime) {
 	}
 
 	bool isConsoleWindowFocussed = (GetConsoleWindow() == GetForegroundWindow());
-	if(isConsoleWindowFocussed && GetAsyncKeyState(VK_ESCAPE)) {
+	if (isConsoleWindowFocussed && GetAsyncKeyState(VK_ESCAPE)) {
 		EventCharacterLogout e;
 
 		Player* player = account->getPlayerEntity();
@@ -81,7 +81,7 @@ void BotGame::update(sf::Time elapsedTime) {
 			packet_manager->sendPacket(p);
 			delete p;
 		}
-		
+
 		running = false;
 	}
 
@@ -90,7 +90,7 @@ void BotGame::update(sf::Time elapsedTime) {
 void BotGame::render() {}
 
 void BotGame::afterStart() {
-	
+
 	print("BOT INITED");
 
 	EventLoginRequest* req = new EventLoginRequest("bot", "");
@@ -101,22 +101,22 @@ void BotGame::afterStart() {
 
 void BotGame::botUpdatePlayer()
 {
-	if(!gameMap) return;
+	if (!gameMap) return;
 
 	Player* p = gameMap->getPlayer();
-	if(!p) {
+	if (!p) {
 		return;
 	}
 
-	if(!botCommand || botCommand->isFinished()) {
+	if (!botCommand || botCommand->isFinished()) {
 		delete botCommand;
 		Random* random = Random::instance();
 
-		float x = random->randomUniformFloat(200 , 1200);
+		float x = random->randomUniformFloat(200, 1200);
 		float y = random->randomUniformFloat(200, 1200);
-		sf::Vector2f position = sf::Vector2f(x, y); 
+		sf::Vector2f position = sf::Vector2f(x, y);
 
-		BotCommandMoveTo* newCommand = new BotCommandMoveTo(position, p, gameMap, this,  sf::seconds(30));
+		BotCommandMoveTo* newCommand = new BotCommandMoveTo(position, p, gameMap, this, sf::seconds(30));
 		newCommand->init();
 
 		botCommand = newCommand;

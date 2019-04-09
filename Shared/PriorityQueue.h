@@ -1,4 +1,4 @@
-#ifndef PRIORITY_QUEUE_H
+﻿#ifndef PRIORITY_QUEUE_H
 #define PRIORITY_QUEUE_H
 
 #include <queue>
@@ -12,7 +12,7 @@ template<
 class PriorityQueue : public std::priority_queue<T, Container, Compare> {
 public:
 	typedef typename
-	std::priority_queue<
+		std::priority_queue<
 		T,
 		Container,
 		Compare>::container_type::const_iterator const_iterator;

@@ -1,4 +1,4 @@
-#include "NpcLuaConnector.h"
+﻿#include "NpcLuaConnector.h"
 #include "Npc.h"
 #include "NpcCommandStay.h"
 #include "NpcCommandMoveTo.h"
@@ -19,12 +19,12 @@ void s::NpcLuaConnector::connect() {
 	npc->lock();
 	npc->luaState["npc"] = npc;
 	npc->luaState.new_usertype<Npc>("Npc",
-	                                "getSpawnId", &Npc::getSpawnId,
-	                                "getAttribute", &Npc::getAttribute
-	);
+		"getSpawnId", &Npc::getSpawnId,
+		"getAttribute", &Npc::getAttribute
+		);
 
 	npc->luaState.set_function("sendNpcToRandomPositionInLocation", &NpcLuaConnector::sendNpcToRandomPositionInLocation,
-	                           this);
+		this);
 	npc->luaState.set_function("sendNpcToPosition", &NpcLuaConnector::sendNpcToPosition, this);
 	npc->luaState.set_function("makeNpcStay", &NpcLuaConnector::makeNpcStay, this);
 	npc->luaState.set_function("castRandomSpell", &NpcLuaConnector::castRandomSpell, this);
@@ -57,14 +57,14 @@ void s::NpcLuaConnector::sendNpcToRandomPositionInLocation(float maxCommandDurat
 	NpcCommand* previousCommand = npc->getNpcCommand();
 	if (l) {
 		NpcCommandMoveTo* commandMoveToRandom = new NpcCommandMoveTo(l->generateRandomPoint(), npc,
-		                                                             npc->position.getMap(), npc->getServer(),
-		                                                             sf::seconds(maxCommandDuration));
+			npc->position.getMap(), npc->getServer(),
+			sf::seconds(maxCommandDuration));
 		commandMoveToRandom->init();
 		npc->setNpcCommand(commandMoveToRandom);
 	}
 	else {
 		npc->setNpcCommand(new NpcCommandStay(npc, npc->position.getMap(), npc->getServer(),
-		                                      sf::seconds(maxCommandDuration)));
+			sf::seconds(maxCommandDuration)));
 	}
 	delete previousCommand;
 	npc->unlock();
@@ -76,13 +76,13 @@ void s::NpcLuaConnector::sendNpcToPosition(float x, float y, float maxCommandDur
 	NpcCommand* previousCommand = npc->getNpcCommand();
 	if (l) {
 		NpcCommandMoveTo* commandMoveToRandom = new NpcCommandMoveTo(sf::Vector2f(x, y), npc, npc->position.getMap(),
-		                                                             npc->getServer(), sf::seconds(maxCommandDuration));
+			npc->getServer(), sf::seconds(maxCommandDuration));
 		commandMoveToRandom->init();
 		npc->setNpcCommand(commandMoveToRandom);
 	}
 	else {
 		npc->setNpcCommand(new NpcCommandStay(npc, npc->position.getMap(), npc->getServer(),
-		                                      sf::seconds(maxCommandDuration)));
+			sf::seconds(maxCommandDuration)));
 	}
 	delete previousCommand;
 	npc->unlock();
@@ -92,14 +92,14 @@ void s::NpcLuaConnector::makeNpcStay(float duration) const {
 	npc->lock();
 	NpcCommand* previousCommand = npc->getNpcCommand();
 	NpcCommandStay* commandStay = new NpcCommandStay(npc, npc->position.getMap(), npc->getServer(),
-	                                                 sf::seconds(duration));
+		sf::seconds(duration));
 	npc->setNpcCommand(commandStay);
 	delete previousCommand;
 	npc->unlock();
 }
 
 void s::NpcLuaConnector::castRandomSpell() const {
-	
+
 	std::map<int, SpellInfo*>* availableSpells = npc->spells.getAvailableSpells();
 	SpellInfo* found = nullptr;
 	for (auto it = availableSpells->begin(); it != availableSpells->end(); ++it) {
@@ -142,7 +142,7 @@ void s::NpcLuaConnector::castSpell(int spellType, bool onSelf) const {
 		}
 	}
 
-	
+
 	if (spell) {
 		npc->getServer()->spellManager.handleNpcCast(npc, spell);
 		return;
@@ -176,14 +176,14 @@ void s::NpcLuaConnector::goToSpawnPosition(float maxCommandDuration) const {
 	sf::Vector2f spawnPosition = npc->getSpawnPosition();
 	if (spawnPosition.x > 5 && spawnPosition.y > 5) {
 		NpcCommandMoveTo* commandMoveToSpawn = new NpcCommandMoveTo(spawnPosition, npc,
-		                                                             npc->position.getMap(), npc->getServer(),
-		                                                             sf::seconds(maxCommandDuration));
+			npc->position.getMap(), npc->getServer(),
+			sf::seconds(maxCommandDuration));
 		commandMoveToSpawn->init();
 		npc->setNpcCommand(commandMoveToSpawn);
 	}
 	else {
 		npc->setNpcCommand(new NpcCommandStay(npc, npc->position.getMap(), npc->getServer(),
-		                                      sf::seconds(maxCommandDuration)));
+			sf::seconds(maxCommandDuration)));
 	}
 	delete previousCommand;
 	npc->unlock();

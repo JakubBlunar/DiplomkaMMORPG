@@ -1,4 +1,4 @@
-#include "Location.h"
+﻿#include "Location.h"
 #include "Box2D/Box2D.h"
 #include "Random.h"
 #include "Spawn.h"
@@ -22,7 +22,7 @@ s::Location::Location(int id, b2Vec2* vertices, int verticesCount, sf::Vector2f 
 	shape = new b2PolygonShape();
 	shape->Set(this->vertices, this->verticesCount);
 	transform.Set(b2Vec2(0, 0), 0);
-	shape->ComputeAABB(&rect, transform,  1);
+	shape->ComputeAABB(&rect, transform, 1);
 }
 
 
@@ -33,7 +33,7 @@ s::Location::~Location()
 }
 
 sf::Vector2f s::Location::generateRandomPoint() const {
-	if(!shape) {
+	if (!shape) {
 		throw "Not exist shape";
 	}
 
@@ -43,7 +43,7 @@ sf::Vector2f s::Location::generateRandomPoint() const {
 	do {
 		point.x = rand->randomUniformFloat(rect.lowerBound.x, rect.upperBound.x);
 		point.y = rand->randomUniformFloat(rect.lowerBound.y, rect.upperBound.y);
-	} while(!shape->TestPoint(transform, point));
+	} while (!shape->TestPoint(transform, point));
 
 	return sf::Vector2f(point.x, point.y);
 }
@@ -97,7 +97,8 @@ void s::Location::checkNpcRespawn(Npc* npc, sf::Time serverTime, Server* s) cons
 			posChanged.velX = 0;
 			posChanged.velY = 0;
 			map->sendEventToAllPlayers(&posChanged);
-		} else {
+		}
+		else {
 			sf::Vector2f spawnPosition = generateRandomPoint();
 			npc->position.setPosition(spawnPosition);
 			npc->setMovement(0, 0);
@@ -132,7 +133,7 @@ void s::Location::checkNpcRespawn(Npc* npc, sf::Time serverTime, Server* s) cons
 		map->sendEventToAllPlayers(&statusChange);
 
 		NpcEventNpcIsIdle* e = new NpcEventNpcIsIdle(npc);
-		EventDispatcher<NpcEventNpcIsIdle>::dispatchEvent(e, s) ;
+		EventDispatcher<NpcEventNpcIsIdle>::dispatchEvent(e, s);
 		spdlog::get("log")->trace("Npc resurect :{}", npc->getSpawnId());
 	}
 }

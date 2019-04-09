@@ -1,4 +1,4 @@
-#include "Npc.h"
+﻿#include "Npc.h"
 #include "Globals.h"
 #include "JsonLoader.h"
 #include "ResourceHolder.h"
@@ -13,7 +13,7 @@
 
 #include "Box2D/Box2D.h"
 
-Npc::Npc(): Entity(-1), npcState(NpcState::IDLE), lastServerPosition() {
+Npc::Npc() : Entity(-1), npcState(NpcState::IDLE), lastServerPosition() {
 	type = -1;
 
 	positionComponent = new PositionComponent();
@@ -40,9 +40,9 @@ Npc::~Npc()
 void Npc::handleEvent(GameEvent* event) {
 	switch (event->getId()) {
 		case NPC_MOVEMENT_CHANGE: {
-			EventNpcMovementChange* temp = (EventNpcMovementChange*) event;
+			EventNpcMovementChange* temp = (EventNpcMovementChange*)event;
 
-			if(temp->spawnId != (int)id)
+			if (temp->spawnId != (int)id)
 				return;
 
 			lastServerPosition.velocityX = temp->velX;
@@ -57,7 +57,7 @@ void Npc::handleEvent(GameEvent* event) {
 					body->SetTransform(b2Vec2(temp->x * PIXTOMET, temp->y * PIXTOMET), body->GetAngle());
 				}
 			}
-			
+
 			/*
 			positionComponent->setPosition(sf::Vector2f(temp->x, temp->y));
 			positionComponent->setSpeed(temp->speed);
@@ -72,7 +72,7 @@ void Npc::handleEvent(GameEvent* event) {
 			break;
 		}
 		case NPCS_MOVEMENT_CHANGE: {
-			EventNpcsMovementChange* temp = (EventNpcsMovementChange*) event;
+			EventNpcsMovementChange* temp = (EventNpcsMovementChange*)event;
 			auto found = temp->npcsMovements.find(id);
 			if (found == temp->npcsMovements.end()) {
 				return;
@@ -90,28 +90,28 @@ void Npc::handleEvent(GameEvent* event) {
 			break;
 		}
 		case NPC_STATUS_CHANGED: {
-			EventNpcStatusChanged* temp = (EventNpcStatusChanged*) event;
-			if(temp->spawnId != (int)id)
+			EventNpcStatusChanged* temp = (EventNpcStatusChanged*)event;
+			if (temp->spawnId != (int)id)
 				return;
 
 			npcState = temp->npcState;
 			break;
 		}
 		case ATTRIBUTES_CHANGED: {
-			EventAttributesChanged* temp = (EventAttributesChanged*) event;
-			if (temp->entityType != NPC) 
+			EventAttributesChanged* temp = (EventAttributesChanged*)event;
+			if (temp->entityType != NPC)
 				return;
 
 			if (temp->spawnId != (int)id)
 				return;
 
-			for (auto change: temp->changes) {
+			for (auto change : temp->changes) {
 				attributesComponent->setAttribute(change.first, change.second);
 			}
 			break;
 		}
 		default:
-		break;
+			break;
 	}
 }
 
@@ -195,29 +195,29 @@ void Npc::updateMovementAnimation()
 	{
 		renderComponent->changeAnimation("up");
 		renderComponent->getCurrentAnimation()->setLooped(true);
-		if(body)
+		if (body)
 			body->SetTransform(b2Vec2(position.x * PIXTOMET, position.y * PIXTOMET), 180 * DEGTORAD);
 	}
 	else if (movement.x == 0 && movement.y > 0) //down
 	{
 		renderComponent->changeAnimation("down");
 		renderComponent->getCurrentAnimation()->setLooped(true);
-		if(body)
+		if (body)
 			body->SetTransform(b2Vec2(position.x * PIXTOMET, position.y * PIXTOMET), 0);
-		
+
 	}
 	else if (movement.x < 0 && movement.y == 0) //left
 	{
 		renderComponent->changeAnimation("left");
 		renderComponent->getCurrentAnimation()->setLooped(true);
-		if(body)
+		if (body)
 			body->SetTransform(b2Vec2(position.x * PIXTOMET, position.y * PIXTOMET), 90 * DEGTORAD);
 	}
 	else if (movement.x > 0 && movement.y == 0) {
 		renderComponent->changeAnimation("right");
 		renderComponent->getCurrentAnimation()->setLooped(true);
-		if(body)
-			body->SetTransform(b2Vec2(position.x * PIXTOMET, position.y * PIXTOMET), 270 * DEGTORAD);	
+		if (body)
+			body->SetTransform(b2Vec2(position.x * PIXTOMET, position.y * PIXTOMET), 270 * DEGTORAD);
 	}
 	else if (movement.x > 0) {
 		renderComponent->changeAnimation("right");
@@ -300,10 +300,11 @@ void Npc::loadFromJson(json serverData)
 
 	if (jsonData.find("disableAutoattack") != jsonData.end()) {
 		autoattack = false;
-	} else {
+	}
+	else {
 		autoattack = true;
 	}
-	
+
 	subscribe();
 }
 
@@ -312,7 +313,7 @@ NpcState Npc::getState() const {
 }
 
 bool Npc::isHostile(Entity* entity) const {
-	return entity->getType() == EntityType::PLAYER ? true: false;
+	return entity->getType() == EntityType::PLAYER ? true : false;
 }
 
 void Npc::subscribe() {

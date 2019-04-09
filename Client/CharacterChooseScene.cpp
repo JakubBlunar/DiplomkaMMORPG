@@ -1,4 +1,4 @@
-#include "CharacterChooseScene.h"
+﻿#include "CharacterChooseScene.h"
 #include "IGAvailableCharacters.h"
 #include "SceneManager.h"
 #include "EventCharacterChooseResponse.h"
@@ -9,8 +9,8 @@ CharacterChooseScene::CharacterChooseScene(SceneType sceneType, Game* g) : Scene
 	windowManager->addWindow("selectCharacter", selectCharactersWindow);
 	windowManager->openAll();
 
-	background.load("bg2.png", sf::Vector2i(1360, 768), sf::Vector2i(0,0));
-	background.setPosition(0,0);
+	background.load("bg2.png", sf::Vector2i(1360, 768), sf::Vector2i(0, 0));
+	background.setPosition(0, 0);
 
 	EventDispatcher<EventCharacterChooseResponse>::addSubscriber(this);
 }
@@ -34,9 +34,9 @@ void CharacterChooseScene::render() {
 }
 
 void CharacterChooseScene::handleEvent(GameEvent* event) {
-	switch(event->getId()) {
+	switch (event->getId()) {
 		case CHARACTER_CHOOSE_RESPONSE: {
-			EventCharacterChooseResponse* e = (EventCharacterChooseResponse*) event;
+			EventCharacterChooseResponse* e = (EventCharacterChooseResponse*)event;
 
 			if (e->success) {
 				json response = json::parse(e->characterData);

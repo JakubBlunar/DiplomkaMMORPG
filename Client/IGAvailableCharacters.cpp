@@ -1,4 +1,4 @@
-#include "IGAvailableCharacters.h"
+﻿#include "IGAvailableCharacters.h"
 #include "JsonLoader.h"
 #include "Game.h"
 #include "imgui-SFML.h"
@@ -38,8 +38,8 @@ void IGAvailableCharacters::render(Game* g, IGManager* manager) {
 	const sf::Texture* texture = sprite->getTexture();
 
 	if (ImGui::Begin("chooseCharacter", &visible,
-	                 ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar |
-	                 ImGuiWindowFlags_NoScrollbar)) {
+		ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar |
+		ImGuiWindowFlags_NoScrollbar)) {
 		ImGui::SetWindowFontScale(0.5);
 		ImGui::Text("Choose your character");
 
@@ -66,8 +66,8 @@ void IGAvailableCharacters::render(Game* g, IGManager* manager) {
 				int id = data["id"].get<int>();
 
 				if (ImGui::BeginChild(childName.c_str(), sf::Vector2f(windowSize.x * 0.23f, 100), false,
-				                      ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar |
-				                      ImGuiWindowFlags_AlwaysAutoResize)) {
+					ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar |
+					ImGuiWindowFlags_AlwaysAutoResize)) {
 					ImGui::SetWindowFontScale(0.1f);
 					ImGui::NewLine();
 					ImGui::Image(*sprite);

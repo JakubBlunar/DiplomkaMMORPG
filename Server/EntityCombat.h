@@ -1,4 +1,4 @@
-#ifndef S_ENTITY_COMBAT
+﻿#ifndef S_ENTITY_COMBAT
 #define S_ENTITY_COMBAT
 
 #include <set>

@@ -1,4 +1,4 @@
-#ifndef MAP_GRID_H
+﻿#ifndef MAP_GRID_H
 #define MAP_GRID_H
 
 #include "Matrix.h"
@@ -8,7 +8,7 @@
 
 class Camera;
 
-class MapGrid: public ObjectPoolItem
+class MapGrid : public ObjectPoolItem
 {
 	int rows, cols, width, height;
 	int positionMargin = 24;

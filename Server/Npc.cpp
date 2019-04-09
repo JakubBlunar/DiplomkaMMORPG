@@ -1,4 +1,4 @@
-#include "Npc.h"
+﻿#include "Npc.h"
 #include "JsonLoader.h"
 #include "ServerGlobals.h"
 #include "EventNpcMovementChange.h"
@@ -7,7 +7,7 @@
 #include "EventNpcStatusChanged.h"
 #include "NpcCommandCombat.h"
 
-s::Npc::Npc(): command(nullptr), luaConnector(this) {
+s::Npc::Npc() : command(nullptr), luaConnector(this) {
 	name = "";
 	spawnId = -1;
 	type = 0;
@@ -18,7 +18,7 @@ s::Npc::Npc(): command(nullptr), luaConnector(this) {
 	entityType = EntityType::NPC;
 
 	luaState.open_libraries(sol::lib::base, sol::lib::package, sol::lib::io, sol::lib::string, sol::lib::os,
-	                        sol::lib::math);
+		sol::lib::math);
 	luaState.script("math.randomseed(os.time())");
 }
 
@@ -220,7 +220,7 @@ void s::Npc::setMovement(sf::Vector2f movement, NpcUpdateEvents* npcUpdateEvents
 					npcUpdateEvents->npcsMovementChange = new EventNpcsMovementChange();
 				}
 				npcUpdateEvents->npcsMovementChange->addNpcInfo(spawnId, actualPosition.x, actualPosition.y,
-				                                                actualMovement.x, actualMovement.y);
+					actualMovement.x, actualMovement.y);
 			}
 		}
 	}
@@ -317,4 +317,3 @@ void s::Npc::lock() {
 void s::Npc::unlock() {
 	mutex.unlock();
 }
-

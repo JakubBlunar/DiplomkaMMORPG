@@ -1,4 +1,4 @@
-#ifndef RANDOM_H
+﻿#ifndef RANDOM_H
 #define RANDOM_H
 #include <random>
 
@@ -22,7 +22,7 @@ private:
 	~Random();
 
 	std::random_device rd;
-    std::mt19937 seed;
+	std::mt19937 seed;
 
 
 };

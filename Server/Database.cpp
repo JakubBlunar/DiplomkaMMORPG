@@ -1,11 +1,11 @@
-#include "Database.h"
+﻿#include "Database.h"
 #include "ServerSettings.h"
 #include <iostream>
 #include <spdlog/spdlog.h>
 
 s::Database* s::Database::s_instance = 0;
 
-s::Database::Database(s::ServerSettings* settings):
+s::Database::Database(s::ServerSettings* settings) :
 	conn(mysql_init(nullptr)) {
 
 	const char* url = settings->dbHost.c_str();

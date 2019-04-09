@@ -1,4 +1,4 @@
-#include "AttributesComponent.h"
+﻿#include "AttributesComponent.h"
 #include "EntityConstants.h"
 
 
@@ -16,7 +16,7 @@ AttributesComponent::~AttributesComponent()
 }
 
 void AttributesComponent::update(sf::Time elapsedTime, Entity* entity, Map* map) {
-	
+
 }
 
 ComponentType AttributesComponent::getType() {

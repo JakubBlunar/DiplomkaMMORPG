@@ -1,4 +1,4 @@
-#include "BotCommandMoveTo.h"
+﻿#include "BotCommandMoveTo.h"
 #include <SFML/System/Vector2.hpp>
 #include "MapGrid.h"
 #include "Map.h"
@@ -7,7 +7,7 @@
 #include "BotGame.h"
 #include "Globals.h"
 
-BotCommandMoveTo::BotCommandMoveTo(sf::Vector2f position, Player* p, Map* m, BotGame *g, sf::Time maxDuration): BotCommand(maxDuration)
+BotCommandMoveTo::BotCommandMoveTo(sf::Vector2f position, Player* p, Map* m, BotGame *g, sf::Time maxDuration) : BotCommand(maxDuration)
 {
 	endPosition = position;
 	player = p;
@@ -30,10 +30,10 @@ void BotCommandMoveTo::update(sf::Time elapsedTime, BotGame* g) {
 	b2Vec2 pos = player->getBody()->GetPosition();
 	sf::Vector2f start = sf::Vector2f(pos.x * METTOPIX, pos.y * METTOPIX);
 
-	if(!path.empty()) {
+	if (!path.empty()) {
 		sf::Vector2f finish = path.front();
 		float distance = sqrt(pow(start.x - finish.x, 2) + pow(start.y - finish.y, 2));
-		
+
 		if (distance < 25) {
 			path.pop_front();
 			return;
@@ -41,11 +41,11 @@ void BotCommandMoveTo::update(sf::Time elapsedTime, BotGame* g) {
 
 		sf::Vector2f direction = sf::Vector2f(0, 0);
 
-		if (start.x < finish.x && (finish.x - start.x) > 8 ) {
+		if (start.x < finish.x && (finish.x - start.x) > 8) {
 			direction.x = 1;
 		}
 
-		if(start.x > finish.x && (start.x - finish.x) > 8) {
+		if (start.x > finish.x && (start.x - finish.x) > 8) {
 			direction.x = -1;
 		}
 
@@ -53,18 +53,19 @@ void BotCommandMoveTo::update(sf::Time elapsedTime, BotGame* g) {
 			direction.y = 1;
 		}
 
-		if(start.y > finish.y && (start.y - finish.y) > 8) {
+		if (start.y > finish.y && (start.y - finish.y) > 8) {
 			direction.y = -1;
 		}
 
 		player->setMovementDirection(direction, g);
-	} else {
-		if(!finished)
+	}
+	else {
+		if (!finished)
 			finished = true;
 
 		player->setMovementDirection(sf::Vector2f(0, 0), g);
 	}
-	
+
 
 }
 
@@ -74,12 +75,13 @@ void BotCommandMoveTo::init()
 	MapGrid* mapGrid = map->getGrid();
 
 	sf::Vector2f pathFindingFrom = player->getPosition();
-	
+
 	Astar astar(mapGrid);
-	int res = astar.findPath(pathFindingFrom, endPosition); 
+	int res = astar.findPath(pathFindingFrom, endPosition);
 	if (res == 1) {
 		path = astar.path;
-	} else {
+	}
+	else {
 		finished = true;
-	}	
+	}
 }

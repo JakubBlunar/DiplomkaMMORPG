@@ -1,4 +1,4 @@
-#include "IGGameMenu.h"
+﻿#include "IGGameMenu.h"
 #include "Game.h"
 #include "EventCharacterLogout.h"
 #include "SceneManager.h"
@@ -16,7 +16,7 @@ void IGGameMenu::render(Game* g, IGManager* manager) {
 	ImGui::SetNextWindowPos(position);
 
 	if (!ImGui::Begin("GameMenu", &visible,
-	                  ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove)) {
+		ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove)) {
 		focused = false;
 		ImGui::End();
 		return;
@@ -60,7 +60,7 @@ void IGGameMenu::render(Game* g, IGManager* manager) {
 	}
 
 	if (ImGui::BeginPopupModal("LogoutCharacterPrompt", &open,
-	                           ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize)) {
+		ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize)) {
 		ImGui::SetWindowFontScale(0.2f);
 		ImGui::Text("Do you really wish to logout?");
 		ImGui::NewLine();

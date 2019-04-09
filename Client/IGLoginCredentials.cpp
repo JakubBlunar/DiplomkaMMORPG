@@ -1,4 +1,4 @@
-#include "IGLoginCredentials.h"
+﻿#include "IGLoginCredentials.h"
 #include "Game.h"
 #include "EventDispatcher.h"
 #include "IGManager.h"
@@ -20,7 +20,7 @@ void IGLoginCredentials::render(Game* game, IGManager* manager) {
 	ImGui::SetNextWindowPos(position);
 
 	if (!ImGui::Begin("Login", &visible,
-	                  ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove)) {
+		ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove)) {
 		focused = false;
 		ImGui::End();
 		return;

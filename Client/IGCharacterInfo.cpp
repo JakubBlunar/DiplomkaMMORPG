@@ -1,4 +1,4 @@
-#include "IGCharacterInfo.h"
+﻿#include "IGCharacterInfo.h"
 #include "ImGuiFonts.h"
 #include "Game.h"
 #include "EventIncreaseCharacterAttribute.h"
@@ -16,7 +16,7 @@ IGCharacterInfo::~IGCharacterInfo()
 void IGCharacterInfo::render(Game* g, IGManager* manager) {
 	if (!player) return;
 
-	
+
 
 	ImGui::PushFont(g->fonts.getFont(ImGuiFonts::PRODIGY_TINY, 16));
 
@@ -36,7 +36,7 @@ void IGCharacterInfo::render(Game* g, IGManager* manager) {
 	ImGui::TextWrapped(player->getName().c_str());
 	float playerLevel = attributes->getAttribute(EntityAttributeType::LEVEL);
 	std::string level = "Level: " + convertFloatToString(playerLevel, 0);
-	level += " ("+ convertFloatToString(attributes->getAttribute(EntityAttributeType::EXPERIENCE), 0) + " / " + std::to_string(attributes->getXpForLevel((int)playerLevel + 1))+")";
+	level += " (" + convertFloatToString(attributes->getAttribute(EntityAttributeType::EXPERIENCE), 0) + " / " + std::to_string(attributes->getXpForLevel((int)playerLevel + 1)) + ")";
 	ImGui::Text(level.c_str());
 
 	ImGui::Separator();
@@ -113,5 +113,3 @@ void IGCharacterInfo::increaseAttribute(EntityAttributeType attribute, Game* g) 
 	g->packet_manager->sendPacket(p);
 	delete p;
 }
-
-

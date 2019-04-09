@@ -1,4 +1,4 @@
-#ifndef EVENT_AUTOATTACK_PLAYER
+﻿#ifndef EVENT_AUTOATTACK_PLAYER
 #define EVENT_AUTOATTACK_PLAYER
 
 #include "GameEvent.h"

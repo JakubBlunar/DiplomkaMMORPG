@@ -1,4 +1,4 @@
-#ifndef S_SPELL_EVENT_EXECUTE
+﻿#ifndef S_SPELL_EVENT_EXECUTE
 #define S_SPELL_EVENT_EXECUTE
 
 #include "SpellEvent.h"
@@ -13,7 +13,7 @@ namespace s {
 	{
 		Character* character;
 
-	
+
 
 	public:
 		SpellEventCharacterExecute();

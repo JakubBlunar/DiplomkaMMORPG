@@ -1,4 +1,4 @@
-#ifndef EVENT_NPC_ATTRIBUTES_BONUSES_CHANGED
+﻿#ifndef EVENT_NPC_ATTRIBUTES_BONUSES_CHANGED
 #define EVENT_NPC_ATTRIBUTES_BONUSES_CHANGED
 
 #include "GameEvent.h"
@@ -8,7 +8,7 @@
 class EventAttributeBonusesChanged :
 	public GameEvent
 {
-	
+
 public:
 	EventAttributeBonusesChanged();
 	~EventAttributeBonusesChanged();

@@ -1,4 +1,4 @@
-#include "SpellManager.h"
+﻿#include "SpellManager.h"
 #include "Utils.h"
 #include "SpellHolder.h"
 #include "Character.h"
@@ -10,7 +10,7 @@
 #include "EventSpellCastResult.h"
 #include "SpellEventNpcExecute.h"
 
-s::SpellManager::SpellManager(): spellIds(0, 214748364), effectIds(0, 214748364) {
+s::SpellManager::SpellManager() : spellIds(0, 214748364), effectIds(0, 214748364) {
 	dynamic = true;
 	spellHolder = SpellHolder::instance();
 	runningThreads = 0;
@@ -102,8 +102,8 @@ void s::SpellManager::handleEvent(EventPlayerStartCastSpell* event, s::Session* 
 				if (character->id == event->entityId) {
 					e->targetCharacter = character;
 					break;
-				} 
-				
+				}
+
 				if (character->id != event->entityId) {
 					Character* targetCharacter = characterMap->getCharacterById(event->entityId);
 					if (targetCharacter) {
@@ -161,7 +161,7 @@ void s::SpellManager::handleEvent(EventPlayerStartCastSpell* event, s::Session* 
 			delete error;
 			return;
 		}
-		
+
 		eventQueueMutex.lock();
 		eventQueue.push(e);
 		eventQueueMutex.unlock();
@@ -170,7 +170,7 @@ void s::SpellManager::handleEvent(EventPlayerStartCastSpell* event, s::Session* 
 }
 
 void s::SpellManager::handleNpcCast(Npc* npc, SpellInfo* spellInfo) {
-	
+
 	try {
 		sf::Time eventCastEndTime = npc->getServer()->getServerTime() + spellInfo->castingTime;
 
@@ -182,7 +182,7 @@ void s::SpellManager::handleNpcCast(Npc* npc, SpellInfo* spellInfo) {
 		EntityType targetType = npc->combat.target->getEntityType();
 		switch (targetType) {
 			case EntityType::PLAYER: {
-				Character* character = (Character*) npc->combat.target;
+				Character* character = (Character*)npc->combat.target;
 				e->targetCharacter = character;
 				e->spellTarget = SpellTarget::PLAYER;
 				if (character->attributes.getAttribute(EntityAttributeType::HP, true) <= 0) {
@@ -196,7 +196,7 @@ void s::SpellManager::handleNpcCast(Npc* npc, SpellInfo* spellInfo) {
 				return;
 			}
 		}
-		
+
 		npc->spells.setCastingSpell(e);
 		eventQueueMutex.lock();
 		eventQueue.push(e);
@@ -207,7 +207,7 @@ void s::SpellManager::handleNpcCast(Npc* npc, SpellInfo* spellInfo) {
 }
 
 void s::SpellManager::queueEvent(SpellEvent* spellEvent) {
-		eventQueueMutex.lock();
-		eventQueue.push(spellEvent);
-		eventQueueMutex.unlock();
+	eventQueueMutex.lock();
+	eventQueue.push(spellEvent);
+	eventQueueMutex.unlock();
 }

@@ -1,4 +1,4 @@
-#ifndef NPC_COMMAND_H
+﻿#ifndef NPC_COMMAND_H
 #define NPC_COMMAND_H
 
 #include <SFML/System/Time.hpp>

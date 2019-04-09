@@ -1,4 +1,4 @@
-#ifndef LOGIN_SCENE_H
+﻿#ifndef LOGIN_SCENE_H
 #define LOGIN_SCENE_H
 
 #include "Scene.h"

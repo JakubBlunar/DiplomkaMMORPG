@@ -1,4 +1,4 @@
-#ifndef SPELL_CONSTANTS_H
+﻿#ifndef SPELL_CONSTANTS_H
 #define SPELL_CONSTANTS_H
 
 
@@ -14,13 +14,13 @@ enum class SpellType {
 	MAGIC = 1
 };
 
-enum class SpellTargetRestriction: sf::Uint16 {
-	SELF= (1 << 0),
+enum class SpellTargetRestriction : sf::Uint16 {
+	SELF = (1 << 0),
 	FRIENDLY = (1 << 1),
 	ENEMY = (1 << 2),
 };
 
-enum class SpellCastResultCode: sf::Uint8 {
+enum class SpellCastResultCode : sf::Uint8 {
 	SUCCESS = 0,
 	OUT_OF_RANGE = 1,
 	CANT_SEE_TARGET = 2,

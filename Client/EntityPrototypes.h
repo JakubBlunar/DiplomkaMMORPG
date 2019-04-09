@@ -1,4 +1,4 @@
-#ifndef ENTITY_PROTOTYPES_H
+﻿#ifndef ENTITY_PROTOTYPES_H
 #define ENTITY_PROTOTYPES_H
 
 #include "json.hpp"

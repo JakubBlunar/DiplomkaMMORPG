@@ -1,8 +1,8 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "EventPlayerStartCastSpell.h"
 
 
-EventPlayerStartCastSpell::EventPlayerStartCastSpell(): spellId(0), startCastTimestamp(0), target(), entityId(0) {
+EventPlayerStartCastSpell::EventPlayerStartCastSpell() : spellId(0), startCastTimestamp(0), target(), entityId(0) {
 	id = PLAYER_START_CAST_SPELL;
 }
 

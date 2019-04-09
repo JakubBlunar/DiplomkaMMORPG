@@ -1,4 +1,4 @@
-#include "CharacterManager.h"
+﻿#include "CharacterManager.h"
 #include "Character.h"
 #include "Session.h"
 #include "Account.h"
@@ -11,7 +11,7 @@
 #include "EventFreeSpellToLearn.h"
 #include "Database.h"
 
-s::CharacterManager::CharacterManager(): server(nullptr) {}
+s::CharacterManager::CharacterManager() : server(nullptr) {}
 
 s::CharacterManager::~CharacterManager() {}
 
@@ -46,13 +46,13 @@ void s::CharacterManager::handleEvent(EventIncreaseCharacterAttribute* event, Se
 		case EntityAttributeType::STAMINA: {
 			character->attributes.recalcMaxHealth();
 			changeEvent->setChange(EntityAttributeType::BASE_HP,
-			                       character->attributes.getAttribute(EntityAttributeType::BASE_HP, true));
+				character->attributes.getAttribute(EntityAttributeType::BASE_HP, true));
 			break;
 		}
 		case EntityAttributeType::INTELECT: {
 			character->attributes.recalcMaxMana();
 			changeEvent->setChange(EntityAttributeType::BASE_MP,
-			                       character->attributes.getAttribute(EntityAttributeType::BASE_MP, true));
+				character->attributes.getAttribute(EntityAttributeType::BASE_MP, true));
 			break;
 		}
 		default: break;
@@ -90,7 +90,7 @@ void s::CharacterManager::handleEvent(EventLearnSpell* event, Session* playerSes
 		bool success = Database::i()->executeModify(query) > 0;
 		if (!success) {
 			throw "Cannot save into database";
-		} 
+		}
 
 		std::vector<SpellInfo*>* spellsToChoice = getFreeSpellsForLearn(character);
 		if (spellsToChoice && !spellsToChoice->empty()) {
@@ -150,7 +150,7 @@ void s::CharacterManager::handleNpcKill(Character* character, Npc* npc) const {
 	eventAttributesChanged->entityType = PLAYER;
 	eventAttributesChanged->setChange(EntityAttributeType::EXPERIENCE, newExperience);
 
-	Session* playerSession =  character->getAccount()->getSession();
+	Session* playerSession = character->getAccount()->getSession();
 
 	float actualLevel = character->attributes.getAttribute(EntityAttributeType::LEVEL, true);
 	if (actualLevel > characterLevel) {

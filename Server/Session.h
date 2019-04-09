@@ -1,4 +1,4 @@
-#ifndef SESSION_H
+﻿#ifndef SESSION_H
 #define SESSION_H
 
 #include "SFML\Network.hpp"
@@ -12,7 +12,7 @@ namespace s {
 	class Session {
 		Account* account = nullptr;
 		sf::Mutex sessionLock;
-		sf::TcpSocket* socket;		
+		sf::TcpSocket* socket;
 	public:
 		Session();
 		~Session();

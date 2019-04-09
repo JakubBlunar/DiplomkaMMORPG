@@ -1,4 +1,4 @@
-#include "EntityCombat.h"
+﻿#include "EntityCombat.h"
 
 
 
@@ -36,7 +36,7 @@ void s::EntityCombat::removeAttackingNpc(Npc* npc) {
 }
 
 void s::EntityCombat::reset() {
-	startCombatPosition = sf::Vector2f(-1,-1);
+	startCombatPosition = sf::Vector2f(-1, -1);
 	attackingCharacters.clear();
 	attackingNpcs.clear();
 	target = nullptr;

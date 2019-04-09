@@ -1,4 +1,4 @@
-#include "IGEntityInfo.h"
+﻿#include "IGEntityInfo.h"
 #include "Entity.h"
 #include "Npc.h"
 #include "Player.h"
@@ -44,15 +44,15 @@ void IGEntityInfo::render(Game * g, IGManager * manager)
 
 
 	if (!ImGui::Begin(id.c_str(), &visible,
-	                   ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove)) {
+		ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove)) {
 		focused = false;
 		ImGui::End();
 		return;
 	}
 
 	ImGui::PushItemWidth(-1);
-	
-	AttributesComponent* attributes = (AttributesComponent*) entity->getComponent(ComponentType::ATTRIBUTES);
+
+	AttributesComponent* attributes = (AttributesComponent*)entity->getComponent(ComponentType::ATTRIBUTES);
 
 	ImFont* font = g->fonts.getFont(ImGuiFonts::PRODIGY_TINY, 14);
 	ImGui::PushFont(font);
@@ -61,12 +61,12 @@ void IGEntityInfo::render(Game * g, IGManager * manager)
 	if (npc != nullptr) {
 		type = "N";
 	}
-	if(player != nullptr) {
+	if (player != nullptr) {
 		type = "P";
 	}
 
 	float level = attributes->getAttribute(EntityAttributeType::LEVEL);
-	std::string head = convertFloatToString(level, 0) + " " + entity->getName() + "("+ type +")";
+	std::string head = convertFloatToString(level, 0) + " " + entity->getName() + "(" + type + ")";
 
 	ImGui::Text(head.c_str());
 
@@ -78,19 +78,19 @@ void IGEntityInfo::render(Game * g, IGManager * manager)
 	float hpPerc = 0;
 	if (maxHp > 0) {
 		hpPerc = hp / maxHp;
-	} 
+	}
 
 	float mpPerc = 0;
-	if(maxMp > 0) {
+	if (maxMp > 0) {
 		mpPerc = mp / maxMp;
 	}
 
-	std::string text = "HP: " + convertFloatToString(hp, 0) + "/" + convertFloatToString(maxHp, 0) + " ("+ convertFloatToString(hpPerc * 100, 0)+"%)";
-	ImGui::ProgressBar(hpPerc, ImVec2(-1,0), text.c_str());
+	std::string text = "HP: " + convertFloatToString(hp, 0) + "/" + convertFloatToString(maxHp, 0) + " (" + convertFloatToString(hpPerc * 100, 0) + "%)";
+	ImGui::ProgressBar(hpPerc, ImVec2(-1, 0), text.c_str());
 
 	if (maxMp > 0) {
-		text = "MP: " + convertFloatToString(mp, 0) + "/" + convertFloatToString(maxMp, 0) + " ("+ convertFloatToString(mpPerc * 100, 0)+"%)";
-		ImGui::ProgressBar(mpPerc, ImVec2(-1,0), text.c_str());
+		text = "MP: " + convertFloatToString(mp, 0) + "/" + convertFloatToString(maxMp, 0) + " (" + convertFloatToString(mpPerc * 100, 0) + "%)";
+		ImGui::ProgressBar(mpPerc, ImVec2(-1, 0), text.c_str());
 	}
 	ImGui::PopFont();
 
@@ -102,4 +102,3 @@ void IGEntityInfo::render(Game * g, IGManager * manager)
 
 	g->getMap()->mapLock.unlock();
 }
-

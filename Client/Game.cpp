@@ -1,4 +1,4 @@
-#include "Game.h"
+﻿#include "Game.h"
 #include <imgui.h>
 #include <imgui-SFML.h>
 #include "PacketManager.h"
@@ -12,9 +12,9 @@
 
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 
-Game::Game():
+Game::Game() :
 	mStatisticsNumFrames(0) {
-	
+
 	this->packet_manager = new PacketManager(this);
 	this->sceneManager = new SceneManager(this);
 
@@ -32,7 +32,7 @@ void Game::run() {
 	EntityPrototypes::instance()->init();
 
 	window = new sf::RenderWindow(sf::VideoMode(1360, 768), "SFML Application", sf::Style::Resize | sf::Style::Close),
-	window->setFramerateLimit(60);
+		window->setFramerateLimit(60);
 	window->setVerticalSyncEnabled(true);
 	ImGui::SFML::Init(*window, false);
 
@@ -47,7 +47,7 @@ void Game::run() {
 	recieveThread = new sf::Thread(&PacketManager::startRecieve, packet_manager);
 	recieveThread->launch();
 
-	
+
 	gameTime.restart();
 	afterStart();
 
@@ -60,7 +60,7 @@ void Game::run() {
 			timeSinceLastUpdate -= TimePerFrame;
 			processEvents();
 		}
-		
+
 		update(elapsedTime);
 
 		ImGui::SFML::Update(*window, timeSinceLastUpdate);
@@ -119,51 +119,51 @@ void Game::processEvents() {
 		}*/
 
 		switch (event.type) {
-		case sf::Event::KeyPressed: {
-			sf::Keyboard::Key key = event.key.code;
-			if (pressedKeys.find(key) == pressedKeys.end()) {
-				sceneManager->onKeyPress(key);
-				pressedKeys.insert(key);
+			case sf::Event::KeyPressed: {
+				sf::Keyboard::Key key = event.key.code;
+				if (pressedKeys.find(key) == pressedKeys.end()) {
+					sceneManager->onKeyPress(key);
+					pressedKeys.insert(key);
+				}
+				if (key == sf::Keyboard::F1) {
+					debugInfo = true;
+				}
+				break;
 			}
-			if (key == sf::Keyboard::F1) {
-				debugInfo = true;
+			case sf::Event::KeyReleased: {
+				sf::Keyboard::Key key = event.key.code;
+				sceneManager->onKeyRelease(key);
+				pressedKeys.erase(key);
+				if (key == sf::Keyboard::F1) {
+					debugInfo = false;
+				}
+				break;
 			}
-			break;
-		}
-		case sf::Event::KeyReleased: {
-			sf::Keyboard::Key key = event.key.code;
-			sceneManager->onKeyRelease(key);
-			pressedKeys.erase(key);
-			if (key == sf::Keyboard::F1) {
-				debugInfo = false;
+			case sf::Event::MouseButtonPressed: {
+				sf::Mouse::Button button = event.mouseButton.button;
+				if (pressedButtons.find(button) == pressedButtons.end() && window) {
+					sf::Vector2i position = sf::Vector2i(event.mouseButton.x, event.mouseButton.y);
+					sceneManager->onClick(button, window->mapPixelToCoords(position));
+					pressedButtons.insert(button);
+				}
+				break;
 			}
-			break;
-		}
-		case sf::Event::MouseButtonPressed: {
-			sf::Mouse::Button button = event.mouseButton.button;
-			if (pressedButtons.find(button) == pressedButtons.end() && window) {
-				sf::Vector2i position = sf::Vector2i(event.mouseButton.x, event.mouseButton.y);
-				sceneManager->onClick(button, window->mapPixelToCoords(position));
-				pressedButtons.insert(button);
+			case sf::Event::MouseButtonReleased: {
+				pressedButtons.erase(event.mouseButton.button);
+				break;
 			}
-			break;
-		}
-		case sf::Event::MouseButtonReleased: {
-			pressedButtons.erase(event.mouseButton.button);
-			break;
-		}
-		case sf::Event::Resized:
-			window->setView(*camera.getView());
-			break;
-		case sf::Event::MouseWheelScrolled:
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl)) {
-				camera.adjustScale(event.mouseWheelScroll.delta * -0.02f, this);
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt)) {
-				camera.adjustRotation(event.mouseWheelScroll.delta * 10.f, this);
-			}
-			break;
-		default: ;
+			case sf::Event::Resized:
+				window->setView(*camera.getView());
+				break;
+			case sf::Event::MouseWheelScrolled:
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl)) {
+					camera.adjustScale(event.mouseWheelScroll.delta * -0.02f, this);
+				}
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt)) {
+					camera.adjustRotation(event.mouseWheelScroll.delta * 10.f, this);
+				}
+				break;
+			default:;
 		}
 	}
 }
@@ -180,7 +180,7 @@ void Game::update(sf::Time elapsedTime) {
 void Game::render() {
 	window->clear();
 
-	if(window->hasFocus()) {
+	if (window->hasFocus()) {
 		sceneManager->render();
 	}
 

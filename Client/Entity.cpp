@@ -1,8 +1,8 @@
-#include "Entity.h"
+﻿#include "Entity.h"
 #include "PositionComponent.h"
 #include "RenderComponent.h"
 
-Entity::Entity(sf::Uint32 id): body(nullptr) {
+Entity::Entity(sf::Uint32 id) : body(nullptr) {
 	this->id = id;
 }
 
@@ -26,7 +26,7 @@ Component* Entity::getComponent(ComponentType type) const {
 
 void Entity::setBody(b2Body* body) {
 	this->body = body;
-	if(this->body) {
+	if (this->body) {
 		this->body->SetUserData(this);
 	}
 }

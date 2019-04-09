@@ -1,4 +1,4 @@
-#include "TextFileLoader.h"
+﻿#include "TextFileLoader.h"
 #include <fstream>
 #include <SFML/System/Lock.hpp>
 
@@ -18,11 +18,11 @@ std::string s::TextFileLoader::loadFile(std::string filename) {
 	if (found == loadedFiles.end()) {
 		std::ifstream ifs("Data/" + filename);
 		if (ifs.is_open()) {
-			 std::string content{std::istreambuf_iterator<char>(ifs) , std::istreambuf_iterator<char>()};
+			std::string content{ std::istreambuf_iterator<char>(ifs) , std::istreambuf_iterator<char>() };
 
 			loadedFiles.insert(std::make_pair(filename, content));
 			return content;
-		} 
+		}
 		throw filename + " not exists";
 	}
 

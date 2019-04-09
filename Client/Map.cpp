@@ -1,4 +1,4 @@
-#include "Map.h"
+﻿#include "Map.h"
 #include "Game.h"
 #include "Globals.h"
 #include "b2GLDraw.h"
@@ -147,7 +147,7 @@ std::vector<Entity*>* Map::getEntities() {
 void Map::handleEvent(GameEvent* event) {
 	switch (event->getId()) {
 		case SEND_MESSAGE: {
-			EventSendMessage* e = (EventSendMessage*) event;
+			EventSendMessage* e = (EventSendMessage*)event;
 
 			if (e->entityType == EntityType::PLAYER) {
 				Player* p = getPlayerById(e->targetId);
@@ -206,7 +206,7 @@ void Map::handleEvent(GameEvent* event) {
 		}
 		case NPC_POSITION_CHANGE: {
 			EventNpcPositionChange* e = (EventNpcPositionChange*)event;
-		
+
 			auto npc = npcs.at(e->npcId);
 			if (npc == nullptr) {
 				return;
@@ -309,10 +309,10 @@ void Map::handleEvent(GameEvent* event) {
 				}
 			}
 
+		}
+		default:
+			break;
 	}
-default:
-	break;
-}
 
 }
 
@@ -327,10 +327,10 @@ void Map::addPlayer(Player* player) {
 	sf::Vector2f position = player->getPosition();
 	sf::Vector2f size = player->getSize();
 	Box2DTools::addCircle(b2_dynamicBody, position.x, position.y, size.x, player, this, player->getEntityCategory(),
-	                      player->getCollisionMask());
+		player->getCollisionMask());
 
 	b2Body* playerBody = player->getBody();
-	
+
 	/*
 	float radius = 32 * PIXTOMET;
 	b2Vec2 vertices[8];
@@ -387,17 +387,17 @@ void Map::addGameObject(GameObject* gameObject) {
 		return;
 	}
 
-	
+
 	sf::Vector2f position = po->getPosition();
 	sf::Vector2f size = po->getSize();
 	BodyType bodyType = po->getBodyType();
 	if (bodyType == BodyType::RECTANGLE) {
 		Box2DTools::addBox(b2_kinematicBody, position.x, position.y, size.x, size.y, gameObject, this,
-		                   gameObject->getEntityCategory(), gameObject->getCollisionMask());
+			gameObject->getEntityCategory(), gameObject->getCollisionMask());
 	}
 	else {
 		Box2DTools::addCircle(b2_kinematicBody, position.x, position.y, size.x, gameObject, this,
-		                      gameObject->getEntityCategory(), gameObject->getCollisionMask());
+			gameObject->getEntityCategory(), gameObject->getCollisionMask());
 	}
 	entities.push_back(gameObject);
 }
@@ -408,18 +408,18 @@ void Map::addCollider(Collider* collider) {
 		return;
 	}
 
-	
+
 	sf::Vector2f position = po->getPosition();
 	sf::Vector2f size = po->getSize();
 	BodyType bodyType = po->getBodyType();
 	if (bodyType == BodyType::RECTANGLE) {
 		Box2DTools::addBox(b2_staticBody, position.x, position.y, size.x, size.y, collider, this,
-		                   collider->getEntityCategory(), collider->getCollisionMask());
+			collider->getEntityCategory(), collider->getCollisionMask());
 	}
 	else {
 		Box2DTools::addCircle(b2_staticBody, position.x, position.y, size.x, collider, this,
-		                      collider->getEntityCategory(),
-		                      collider->getCollisionMask());
+			collider->getEntityCategory(),
+			collider->getCollisionMask());
 	}
 	entities.push_back(collider);
 }
@@ -435,7 +435,7 @@ void Map::addNpc(Npc* npc) {
 	sf::Vector2f position = npc->getPosition();
 	sf::Vector2f size = npc->getSize();
 	Box2DTools::addCircle(b2_dynamicBody, position.x, position.y, size.x, npc, this, npc->getEntityCategory(),
-	                      npc->getCollisionMask());
+		npc->getCollisionMask());
 
 	entities.push_back(npc);
 	npcs.insert(std::make_pair(npc->getId(), npc));
@@ -462,11 +462,11 @@ void Map::addSpell(Spell* spell) {
 	BodyType bodyType = po->getBodyType();
 	if (bodyType == BodyType::RECTANGLE) {
 		Box2DTools::addBox(b2_kinematicBody, position.x, position.y, size.x, size.y, spell, this,
-		                   spell->getEntityCategory(), spell->getCollisionMask());
+			spell->getEntityCategory(), spell->getCollisionMask());
 	}
 	else {
 		Box2DTools::addCircle(b2_kinematicBody, position.x, position.y, size.x, spell, this,
-		                      spell->getEntityCategory(), spell->getCollisionMask());
+			spell->getEntityCategory(), spell->getCollisionMask());
 	}
 
 	entities.push_back(spell);
@@ -499,7 +499,8 @@ void Map::loadFromFile(int id) {
 	json mapProperties = mapData["properties"].get<json::object_t>();
 	if (mapProperties.find("disablePvp") != mapProperties.end()) {
 		pvp = false;
-	} else {
+	}
+	else {
 		pvp = true;
 	}
 
@@ -553,7 +554,7 @@ void Map::loadFromFile(int id) {
 		int firstgid = (int)jsonTileset["firstgid"].get<json::number_integer_t>();
 		std::string path = jsonTileset["source"].get<json::string_t>();
 
-		std::vector<std::string> splittedPath = Utils::splitPath(path, {'/'});
+		std::vector<std::string> splittedPath = Utils::splitPath(path, { '/' });
 		path = Utils::removeExtension(splittedPath.back());
 
 		TileSet tileSet = TileSetsHolder::instance()->getTileSet(path);
@@ -579,7 +580,7 @@ void Map::loadFromFile(int id) {
 
 			int counter = 0;
 			for (json::iterator fieldValueIterator = data.begin(); fieldValueIterator != data.end(); fieldValueIterator
-			     ++) {
+				++) {
 				int value = *fieldValueIterator;
 				if (value > 0) {
 					int x = counter % width;
@@ -593,8 +594,8 @@ void Map::loadFromFile(int id) {
 					int tilesetIdOffset = 0;
 
 					for (std::map<int, TileSet>::iterator tilesetIterator = tilesets.begin(); tilesetIterator !=
-					     tilesets.end();
-					     tilesetIterator++) {
+						tilesets.end();
+						tilesetIterator++) {
 						if (tilesetIdOffset <= value) {
 							if (value < tilesetIterator->first) {
 								break;
@@ -611,7 +612,7 @@ void Map::loadFromFile(int id) {
 
 						RenderSprite* sprite = new RenderSprite();
 						sprite->load(foundTileSet.path, sf::Vector2i((int)FIELD_SIZE, (int)FIELD_SIZE),
-						             sf::Vector2i(tileX * (int)FIELD_SIZE, tileY * (int)FIELD_SIZE));
+							sf::Vector2i(tileX * (int)FIELD_SIZE, tileY * (int)FIELD_SIZE));
 
 						fields->get(x, y)->addLayer(sprite);
 					}
@@ -625,7 +626,7 @@ void Map::loadFromFile(int id) {
 			json gameObjects = layer["objects"].get<json::array_t>();
 
 			for (json::iterator gameObjectIterator = gameObjects.begin(); gameObjectIterator != gameObjects.end();
-			     gameObjectIterator++) {
+				gameObjectIterator++) {
 				json gameObject = *gameObjectIterator;
 
 				if (gameObject.count("point") && gameObject["point"].get<json::boolean_t>()) {
@@ -640,7 +641,7 @@ void Map::loadFromFile(int id) {
 
 						if (po->getBodyType() == BodyType::CIRCLE) {
 							grid->setWall(sf::Vector2f(positionX - po->getSize().x / 2, positionY - po->getSize().x / 2),
-							              sf::Vector2f(po->getSize().x, po->getSize().x));
+								sf::Vector2f(po->getSize().x, po->getSize().x));
 						}
 
 						if (po->getBodyType() == BodyType::RECTANGLE) {

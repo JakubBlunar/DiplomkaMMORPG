@@ -1,4 +1,4 @@
-#include "GameObject.h"
+﻿#include "GameObject.h"
 #include "PositionComponent.h"
 #include "Globals.h"
 #include "JsonLoader.h"
@@ -54,7 +54,7 @@ void GameObject::loadFromJson(const std::string& file) {
 		int height = (int)render["height"].get<json::number_integer_t>();
 		int renderOffsetX = (int)render["renderOffsetX"].get<json::number_integer_t>();
 		int renderOffsetY = (int)render["renderOffsetY"].get<json::number_integer_t>();
-	
+
 
 
 		std::string textureFile = render["texture"].get<json::string_t>();

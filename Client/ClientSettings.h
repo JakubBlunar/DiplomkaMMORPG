@@ -1,4 +1,4 @@
-#ifndef CLIENT_SETTINGS_H
+﻿#ifndef CLIENT_SETTINGS_H
 #define CLIENT_SETTINGS_H
 
 #include <string>

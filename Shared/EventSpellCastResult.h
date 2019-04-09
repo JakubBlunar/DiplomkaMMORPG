@@ -1,4 +1,4 @@
-#ifndef EVENT_SPELL_CAST_RESULT_H
+﻿#ifndef EVENT_SPELL_CAST_RESULT_H
 #define EVENT_SPELL_CAST_RESULT_H
 
 #include "GameEvent.h"

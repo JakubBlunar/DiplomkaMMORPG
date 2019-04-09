@@ -1,4 +1,4 @@
-// EventId.h - Contains declarations of event types
+﻿// EventId.h - Contains declarations of event types
 
 #ifndef EVENT_ID_H
 #define EVENT_ID_H
@@ -24,7 +24,7 @@ enum EventId {
 	NPC_IS_IDLE = 18,
 	ATTRIBUTES_BONUSES_CHANGES = 19,
 	PLAYER_START_CAST_SPELL = 20,
-	SPELL_CAST_RESULT= 21,
+	SPELL_CAST_RESULT = 21,
 	SEND_MESSAGE = 22,
 	INCREASE_CHARACTER_ATTRIBUTE = 23,
 	NPC_COMBAT_DECIDE = 24,

@@ -1,4 +1,4 @@
-#ifndef MAPS_MANAGER_H
+﻿#ifndef MAPS_MANAGER_H
 #define MAPS_MANAGER_H
 
 #include "Manager.h"

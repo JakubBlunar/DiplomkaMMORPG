@@ -1,4 +1,4 @@
-#ifndef SUBSCRIBER_H
+﻿#ifndef SUBSCRIBER_H
 #define SUBSCRIBER_H
 
 

@@ -1,4 +1,4 @@
-#ifndef S_NPC_H
+﻿#ifndef S_NPC_H
 #define S_NPC_H
 #include <string>
 #include <SFML/System/Vector2.hpp>
@@ -107,7 +107,7 @@ namespace s {
 			delayedDecision = time;
 		}
 
-		
+
 
 		sf::Vector2f getPosition() const override;
 

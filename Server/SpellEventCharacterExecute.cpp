@@ -1,4 +1,4 @@
-#include "SpellEventCharacterExecute.h"
+﻿#include "SpellEventCharacterExecute.h"
 #include <spdlog/spdlog.h>
 #include "Character.h"
 #include "EventSpellCastResult.h"
@@ -10,9 +10,9 @@
 #include "SpellEventApplyEffects.h"
 #include "Account.h"
 
-s::SpellEventCharacterExecute::SpellEventCharacterExecute(): character(nullptr), spellTarget(),
-                                                             targetCharacter(nullptr),
-                                                             targetNpc(nullptr) {}
+s::SpellEventCharacterExecute::SpellEventCharacterExecute() : character(nullptr), spellTarget(),
+targetCharacter(nullptr),
+targetNpc(nullptr) {}
 
 
 s::SpellEventCharacterExecute::~SpellEventCharacterExecute() {}
@@ -114,7 +114,7 @@ void s::SpellEventCharacterExecute::execute(Server* s) {
 		delete e;
 		return;
 	}
-	
+
 
 	spdlog::get("log")->info("Casting spell {}: {}", character->name, spellInfo->name);
 	if (targetEntity) {
@@ -138,7 +138,7 @@ void s::SpellEventCharacterExecute::execute(Server* s) {
 
 	character->spells.setCooldown(spellInfo->id, serverTime + spellInfo->cooldownTime);
 	character->attributes.setAttribute(EntityAttributeType::MP, actualMana - spellInfo->manaCost);
-	
+
 
 	switch (spellTarget) {
 		case SpellTarget::POSITION: {
@@ -154,7 +154,8 @@ void s::SpellEventCharacterExecute::execute(Server* s) {
 			targetNpc->lock();
 			if (!targetNpc->combat.hasCombat()) {
 				targetNpc->startCombat(character);
-			} else {
+			}
+			else {
 				targetNpc->combat.setAttackingCharacter(character);
 			}
 			targetNpc->unlock();

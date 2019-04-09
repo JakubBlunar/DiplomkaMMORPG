@@ -1,4 +1,4 @@
-#include "SpellHolder.h"
+﻿#include "SpellHolder.h"
 
 #define NOMINMAX
 #include <windows.h>
@@ -10,14 +10,14 @@
 #include "MovableSpell.h"
 #include "JsonLoader.h"
 
-s::SpellHolder::SpellHolder():
+s::SpellHolder::SpellHolder() :
 	idManager(0, 214748364) {
 	prototypes.clear();
-	
+
 }
 
 s::SpellHolder::~SpellHolder() {
-	
+
 }
 
 void s::SpellHolder::init(Server* server)
@@ -46,9 +46,9 @@ void s::SpellHolder::init(Server* server)
 		si->cooldownTime = sf::milliseconds((int)jsonData["cooldown"].get<json::number_integer_t>());
 		si->cooldownTime = sf::milliseconds((int)jsonData["cooldown"].get<json::number_integer_t>());
 		si->globalCooldownTime = sf::milliseconds((int)jsonData["gCooldown"].get<json::number_integer_t>());
-		si->maxRange =  (float)jsonData["maxRange"].get<json::number_float_t>();
-		si->type = (SpellType) jsonData["type"].get<json::number_integer_t>();
-		si->levelNeeded = (int) jsonData["levelNeeded"].get<json::number_integer_t>();
+		si->maxRange = (float)jsonData["maxRange"].get<json::number_float_t>();
+		si->type = (SpellType)jsonData["type"].get<json::number_integer_t>();
+		si->levelNeeded = (int)jsonData["levelNeeded"].get<json::number_integer_t>();
 		si->targetRestriction = static_cast<SpellTargetRestriction>(jsonData["targetRestriction"].get<json::number_integer_t>());
 
 		spellInfos.insert(std::make_pair(si->id, si));
@@ -58,15 +58,17 @@ void s::SpellHolder::init(Server* server)
 			std::vector<SpellInfo*>* container = new std::vector<SpellInfo*>();
 			container->push_back(si);
 			spellInfoByLevel.insert(std::make_pair(si->levelNeeded, container));
-		} else {
+		}
+		else {
 			foundVector->second->push_back(si);
 		}
-		
+
 		Spell* spell;
 		if (jsonData.find("entityAnimation") != jsonData.end()) {
 			spell = new MovableSpell();
 			si->spellCategory = EntityType::MOVABLE_SPELL;
-		} else {
+		}
+		else {
 			spell = new Spell();
 			si->spellCategory = EntityType::SPELL;
 		}
@@ -116,7 +118,7 @@ s::MovableSpell* s::SpellHolder::createMovableSpell(int type)
 	if (found != prototypes.end()) {
 		if (dynamic_cast<MovableSpell*>(found->second) == nullptr) {
 			spdlog::get("log")->critical("Spell with type {} is not movable", type);
-			throw "Spell with type" + std::to_string(type) + "is not movable"; 
+			throw "Spell with type" + std::to_string(type) + "is not movable";
 		}
 
 		MovableSpell* spell = (MovableSpell*)found->second->clone();
@@ -156,8 +158,7 @@ void s::SpellHolder::read_directory(std::string pattern, std::vector<std::string
 	if ((hFind = FindFirstFile(pattern.c_str(), &data)) != INVALID_HANDLE_VALUE) {
 		do {
 			v.push_back(data.cFileName);
-		}
-		while (FindNextFile(hFind, &data) != 0);
+		} while (FindNextFile(hFind, &data) != 0);
 		FindClose(hFind);
 	}
 }

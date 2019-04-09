@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "EventFreeSpellToLearn.h"
 
 
@@ -13,13 +13,14 @@ EventFreeSpellToLearn::~EventFreeSpellToLearn()
 }
 
 bool EventFreeSpellToLearn::loadFromPacket(sf::Packet* p) {
-	int count; 
+	int count;
 	if (*p >> count) {
 		for (int i = 0; i < count; i++) {
 			int spellId;
-			if(*p >> spellId) {
+			if (*p >> spellId) {
 				spellIds.push_back(spellId);
-			} else return false;
+			}
+			else return false;
 		}
 		return true;
 	}
@@ -29,10 +30,10 @@ bool EventFreeSpellToLearn::loadFromPacket(sf::Packet* p) {
 sf::Packet* EventFreeSpellToLearn::toPacket() {
 	sf::Packet* p = new sf::Packet();
 
-	int count = spellIds.size(); 
+	int count = spellIds.size();
 	if (*p << id << count) {
 		for (int spellId : spellIds) {
-			if(*p << spellId) continue;
+			if (*p << spellId) continue;
 			throw "Could not load packet";
 		}
 		return p;

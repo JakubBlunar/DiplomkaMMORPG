@@ -1,4 +1,4 @@
-#include "Spawn.h"
+﻿#include "Spawn.h"
 #include "Location.h"
 #include <spdlog/spdlog.h>
 #include "Random.h"
@@ -25,7 +25,7 @@ void s::Spawn::init(Server *s)
 	spawnedNpcs.reserve(maxSpawnedNpcs);
 
 	try {
-		for (int i = 0; i < maxSpawnedNpcs; i++) {	
+		for (int i = 0; i < maxSpawnedNpcs; i++) {
 			Npc* npc = s->npcManager.createNpc(npcType);
 			spawnedNpcs.push_back(npc);
 
@@ -39,12 +39,14 @@ void s::Spawn::init(Server *s)
 			if (false) {
 				npc->setDeadTimestamp(sf::seconds(s->getServerTime().asSeconds() - npc->getRespawnTime().asSeconds() * Random::instance()->randomUniformFloat(0.1f, 0.9f)));
 				npc->setNpcState(NpcState::DEAD);
-			} else {
+			}
+			else {
 				NpcEventNpcIsIdle* e = new NpcEventNpcIsIdle(npc);
 				EventDispatcher<NpcEventNpcIsIdle>::dispatchEvent(e, s);
-			}	
+			}
 		}
-	} catch(...) {
+	}
+	catch (...) {
 		spawnedNpcs.clear();
 		spdlog::get("log")->error("Initing spawn failed! NpcType:{}", npcType);
 	}

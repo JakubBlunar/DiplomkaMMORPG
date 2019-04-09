@@ -1,4 +1,4 @@
-#ifndef MATRIX_H
+﻿#ifndef MATRIX_H
 #define MATRIX_H
 
 #include <vector>
@@ -22,8 +22,8 @@ private:
 template <typename T>
 Matrix<T>::Matrix(int rows, int cols)
 	: rows(rows),
-	  cols(cols),
-	  data(rows * cols) {
+	cols(cols),
+	data(rows * cols) {
 
 }
 

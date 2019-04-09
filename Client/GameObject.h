@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Entity.h"
 #include "PositionComponent.h"
 #include "RenderComponent.h"

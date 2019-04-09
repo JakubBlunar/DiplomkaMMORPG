@@ -1,4 +1,4 @@
-#ifndef RENDER_COMPONENT_H
+﻿#ifndef RENDER_COMPONENT_H
 #define RENDER_COMPONENT_H
 
 #include "Component.h"
@@ -27,7 +27,7 @@ public:
 	};
 
 	std::string getCurrentAnimationName() const {
-		return currentAnimationName;	
+		return currentAnimationName;
 	}
 
 	AnimatedSprite* getCurrentAnimation() const;

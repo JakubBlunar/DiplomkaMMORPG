@@ -1,4 +1,4 @@
-#ifndef COLLIDER_H
+﻿#ifndef COLLIDER_H
 #define COLLIDER_H
 
 #include "Entity.h"

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "EventNpcPositionChange.h"
 
 
@@ -23,7 +23,7 @@ bool EventNpcPositionChange::loadFromPacket(sf::Packet * p)
 sf::Packet * EventNpcPositionChange::toPacket()
 {
 	sf::Packet* p = new sf::Packet();
-	if(*p << id << npcId << positionX << positionY << velX << velY) {
+	if (*p << id << npcId << positionX << positionY << velX << velY) {
 		return p;
 	}
 	throw "Cannot convert to packet";

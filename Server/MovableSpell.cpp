@@ -1,4 +1,4 @@
-#include "MovableSpell.h"
+﻿#include "MovableSpell.h"
 #include "ServerGlobals.h"
 #include "Box2D/Box2D.h"
 #include "EntityPosition.h"
@@ -7,7 +7,7 @@
 #include "SpellEventApplyEffects.h"
 #include "Effect.h"
 
-s::MovableSpell::MovableSpell(): speed(0) {
+s::MovableSpell::MovableSpell() : speed(0) {
 	entityType = EntityType::MOVABLE_SPELL;
 }
 
@@ -53,15 +53,15 @@ s::Spell* s::MovableSpell::clone() const {
 	MovableSpell* clone = new MovableSpell();
 
 	EntityPosition* clonedPosition = &clone->position;
-	clonedPosition->setMovement(sf::Vector2f(0,0));
+	clonedPosition->setMovement(sf::Vector2f(0, 0));
 	clonedPosition->setBody(nullptr);
-	clonedPosition->setLastMovement(sf::Vector2f(0,0));
+	clonedPosition->setLastMovement(sf::Vector2f(0, 0));
 	clonedPosition->setLocation(nullptr);
 	clonedPosition->setMap(nullptr);
 	clonedPosition->setMapId(0);
-	clonedPosition->setPosition(sf::Vector2f(0,0));
+	clonedPosition->setPosition(sf::Vector2f(0, 0));
 	clonedPosition->setSize(position.getSize());
-	
+
 
 	for (Effect* const effect : effects) {
 		clone->addEffect(effect->clone());
@@ -81,7 +81,7 @@ void s::MovableSpell::loadFromJson(json data) {
 	int height = (int)animationData["height"].get<json::number_integer_t>();
 	position.setSize(sf::Vector2i(width, height));
 
-	speed = (float) data["spellSpeed"].get<float_t>();
+	speed = (float)data["spellSpeed"].get<float_t>();
 
 	Spell::loadFromJson(data);
 }

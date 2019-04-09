@@ -1,4 +1,4 @@
-#ifndef CHAT_CONSTANTS_H
+﻿#ifndef CHAT_CONSTANTS_H
 #define CHAT_CONSTANTS_H
 
 #include "SFML/System.hpp"
@@ -23,7 +23,7 @@ public:
 
 
 	static std::string formatLogForAttributeChange(EntityAttributeType attribute, std::string casterName,
-	                                        std::string targetName, float change) {
+		std::string targetName, float change) {
 		switch (attribute) {
 			case EntityAttributeType::HP: {
 				if (change > 0) {

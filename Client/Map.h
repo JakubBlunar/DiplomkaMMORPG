@@ -1,4 +1,4 @@
-#ifndef MAP_H
+﻿#ifndef MAP_H
 #define MAP_H
 
 #include <Box2D/Dynamics/b2World.h>
@@ -38,7 +38,7 @@ class Map : public Subscriber {
 	MapGrid* grid;
 
 	bool pvp;
-	
+
 public:
 	Map(Game* g);
 	~Map();

@@ -1,4 +1,4 @@
-#ifndef SPELL_EVENT_APPLY_EFFECTS_H
+﻿#ifndef SPELL_EVENT_APPLY_EFFECTS_H
 #define SPELL_EVENT_APPLY_EFFECTS_H
 
 #include "SpellEvent.h"

@@ -1,4 +1,4 @@
-#ifndef NPCS_MOVEMENT_CHANGE_H
+﻿#ifndef NPCS_MOVEMENT_CHANGE_H
 #define NPCS_MOVEMENT_CHANGE_H
 
 #include "GameEvent.h"

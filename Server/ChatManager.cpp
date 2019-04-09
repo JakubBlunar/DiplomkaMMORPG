@@ -1,4 +1,4 @@
-#include "ChatManager.h"
+﻿#include "ChatManager.h"
 
 #include "spdlog/fmt/fmt.h"
 
@@ -21,7 +21,7 @@ s::ChatManager::~ChatManager()
 void s::ChatManager::handleEvent(EventCharacterChoose* event, s::Session* playerSession, s::Server* s) const {
 	std::string welcomeMessage = s->serverSettings->welcomeMessage;
 	Character* character = playerSession->getAccount()->getCharacter();
-	
+
 	EventSendMessage e;
 	e.message = fmt::format(welcomeMessage, character->name);
 	e.messageType = MessageType::SERVER_ANNOUNCEMENT;
@@ -44,4 +44,3 @@ void s::ChatManager::handleEvent(EventSendMessage* event, s::Session* playerSess
 
 	character->position.getMap()->sendEventToAllPlayers(e);
 }
-

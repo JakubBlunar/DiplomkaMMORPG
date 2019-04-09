@@ -1,21 +1,21 @@
-#include "BotManager.h"
+﻿#include "BotManager.h"
 #include "Account.h"
 #include <spdlog/spdlog.h>
 #include "Character.h"
 
-s::BotManager::BotManager():
+s::BotManager::BotManager() :
 	idCharacterManager(214728364, 214748364),
 	idAccountManager(214728364, 214748364)
 {
 	dynamic = false;
 }
 s::BotManager::~BotManager() {
-	
+
 }
 
 s::Account* s::BotManager::createBotAccount() {
 	Account* account = new Account();
-	
+
 	account->id = idAccountManager.getId();
 	account->email = "email" + std::to_string(account->id) + "@bot.com";
 	account->login = "bot" + std::to_string(account->id);
@@ -41,18 +41,20 @@ s::Character* s::BotManager::createBotCharacter() {
 	c->isBot = true;
 	c->position.setPosition(sf::Vector2f(100, 100));
 	c->position.setMapId(1);
-	c->position.setMovement(sf::Vector2f(0,0));
+	c->position.setMovement(sf::Vector2f(0, 0));
 	c->attributes.setAttribute(EntityAttributeType::SPEED, 30.f);
 
 	if (rand() % 100 < 49) {
 		c->type = CharacterType::MALE_KNIGHT;
-	} else {
+	}
+	else {
 		c->type = CharacterType::FEMALE_KNIGHT;
 	}
 
 	if (rand() % 100 < 49) {
 		c->faction = CharacterFaction::LIGHT;
-	} else {
+	}
+	else {
 		c->faction = CharacterFaction::DARK;
 	}
 

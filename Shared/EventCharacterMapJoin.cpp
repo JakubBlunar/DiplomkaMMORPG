@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "EventCharacterMapJoin.h"
 
 
@@ -29,4 +29,3 @@ sf::Packet* EventCharacterMapJoin::toPacket() {
 std::string EventCharacterMapJoin::toString() const {
 	return "Event character map join" + std::to_string(mapId) + ", " + characterData;
 }
-

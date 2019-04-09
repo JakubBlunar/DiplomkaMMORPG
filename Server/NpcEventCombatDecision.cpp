@@ -1,4 +1,4 @@
-#include "NpcEventCombatDecision.h"
+﻿#include "NpcEventCombatDecision.h"
 #include "Npc.h"
 
 

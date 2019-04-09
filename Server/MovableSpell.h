@@ -1,4 +1,4 @@
-#ifndef S_MOVING_SPELL_H
+﻿#ifndef S_MOVING_SPELL_H
 #define S_MOVING_SPELL_H
 
 #include "Spell.h"

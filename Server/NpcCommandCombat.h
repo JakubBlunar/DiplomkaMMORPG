@@ -1,4 +1,4 @@
-#ifndef S_NPC_COMMAND_COMBAT
+﻿#ifndef S_NPC_COMMAND_COMBAT
 #define S_NPC_COMMAND_COMBAT
 
 #include "NpcCommand.h"

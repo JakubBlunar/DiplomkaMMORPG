@@ -1,4 +1,4 @@
-#include "EffectModifyAttributes.h"
+﻿#include "EffectModifyAttributes.h"
 #include "JsonLoader.h"
 #include <iostream>
 #include <spdlog/spdlog.h>
@@ -9,8 +9,8 @@
 #include "Account.h"
 
 
-s::EffectModifyAttributes::EffectModifyAttributes(SpellInfo spellInfo): s::Effect(std::move(spellInfo)), caster(nullptr),
-                                                                        target(nullptr) {}
+s::EffectModifyAttributes::EffectModifyAttributes(SpellInfo spellInfo) : s::Effect(std::move(spellInfo)), caster(nullptr),
+target(nullptr) {}
 
 
 s::EffectModifyAttributes::~EffectModifyAttributes()
@@ -23,25 +23,25 @@ void s::EffectModifyAttributes::apply(Entity* caster, Entity* target) {
 
 	spdlog::get("log")->info("applying effects of {}", name);
 	if (!casterModify.empty()) {
-		switch(caster->getEntityType()) {
+		switch (caster->getEntityType()) {
 			case EntityType::PLAYER:
-				modifyCharacterAttributes((Character*) caster, &casterModify);
-			break;
+				modifyCharacterAttributes((Character*)caster, &casterModify);
+				break;
 			case EntityType::NPC:
-				modifyNpcAttributes((Npc*) caster, &casterModify);
-			break;
+				modifyNpcAttributes((Npc*)caster, &casterModify);
+				break;
 			default: break;
 		}
 	}
 
 	if (!targetModify.empty()) {
-		switch(target->getEntityType()) {
+		switch (target->getEntityType()) {
 			case EntityType::PLAYER:
-				modifyCharacterAttributes((Character*) target, &targetModify);
-			break;
+				modifyCharacterAttributes((Character*)target, &targetModify);
+				break;
 			case EntityType::NPC:
-				modifyNpcAttributes((Npc*) target, &targetModify);
-			break;
+				modifyNpcAttributes((Npc*)target, &targetModify);
+				break;
 			default: break;
 		}
 	}
@@ -77,7 +77,7 @@ void s::EffectModifyAttributes::loadFromJson(json jsonData) {
 		json targetAttributes = jsonData["target"].get<json::object_t>();
 		for (auto& el : targetAttributes.items()) {
 			EntityAttributeType attribute = static_cast<EntityAttributeType>(std::stoi(el.key()));
-			float value = (float) el.value().get<json::number_float_t>();
+			float value = (float)el.value().get<json::number_float_t>();
 			addTargetModify(attribute, value);
 		}
 	}
@@ -86,7 +86,7 @@ void s::EffectModifyAttributes::loadFromJson(json jsonData) {
 		json casterAttributes = jsonData["caster"].get<json::object_t>();
 		for (auto& el : casterAttributes.items()) {
 			EntityAttributeType attribute = static_cast<EntityAttributeType>(std::stoi(el.key()));
-			float value = (float) el.value().get<json::number_float_t>();
+			float value = (float)el.value().get<json::number_float_t>();
 			addCasterModify(attribute, value);
 		}
 	}
@@ -99,7 +99,7 @@ void s::EffectModifyAttributes::loadFromFile(std::string filename) {
 
 void s::EffectModifyAttributes::modifyCharacterAttributes(Character* character,
 	std::map<EntityAttributeType, float>* modifiers) const {
-	
+
 	EventAttributesChanged* e = new EventAttributesChanged();
 	e->entityType = PLAYER;
 	e->spawnId = character->id;
@@ -118,18 +118,20 @@ void s::EffectModifyAttributes::modifyCharacterAttributes(Character* character,
 
 	std::string casterName;
 	if (caster->getEntityType() == EntityType::PLAYER) {
-		Character* character = (Character*) caster;
+		Character* character = (Character*)caster;
 		casterName = character->name;
-	} else if (caster->getEntityType() == EntityType::NPC) {
-		Npc* npc = (Npc*) caster;
+	}
+	else if (caster->getEntityType() == EntityType::NPC) {
+		Npc* npc = (Npc*)caster;
 		casterName = npc->getName();
-	} else
+	}
+	else
 		casterName = "Someone";
 
 	std::string log;
 
 	for (auto && modifier : *modifiers) {
-		log += ChatUtils::formatLogForAttributeChange(modifier.first, casterName, character->name , modifier.second) + "\n";
+		log += ChatUtils::formatLogForAttributeChange(modifier.first, casterName, character->name, modifier.second) + "\n";
 	}
 
 	EventSendMessage logEvent;
@@ -148,7 +150,7 @@ void s::EffectModifyAttributes::modifyCharacterAttributes(Character* character,
 void s::EffectModifyAttributes::modifyNpcAttributes(Npc* npc, std::map<EntityAttributeType, float>* modifiers) {
 	if (!npc->isAlive())
 		return;
-	
+
 	EventAttributesChanged* e = new EventAttributesChanged();
 	e->entityType = NPC;
 	e->spawnId = npc->getSpawnId();
@@ -164,7 +166,7 @@ void s::EffectModifyAttributes::modifyNpcAttributes(Npc* npc, std::map<EntityAtt
 	npc->position.getMap()->sendEventToAllPlayers(e);
 
 	if (caster->getEntityType() == EntityType::PLAYER) {
-		Character* character = (Character*) caster;
+		Character* character = (Character*)caster;
 		std::string log;
 
 		for (auto && modifier : *modifiers) {
@@ -186,4 +188,3 @@ void s::EffectModifyAttributes::modifyNpcAttributes(Npc* npc, std::map<EntityAtt
 		server->npcManager.npcDied(npc, caster);
 	}
 }
-

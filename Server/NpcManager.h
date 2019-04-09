@@ -1,4 +1,4 @@
-#ifndef NPC_MANAGER_H
+﻿#ifndef NPC_MANAGER_H
 #define NPC_MANAGER_H
 
 #include <SFML/System/Mutex.hpp>
@@ -22,7 +22,7 @@ namespace s {
 	class Server;
 	class Session;
 	class Entity;
-	
+
 
 	struct NpcUpdateEvents {
 		EventNpcsMovementChange* npcsMovementChange;

@@ -1,9 +1,9 @@
-#include "NpcCommandStay.h"
+﻿#include "NpcCommandStay.h"
 #include "Npc.h"
 #include "NpcEventNpcIsIdle.h"
 
 
-s::NpcCommandStay::NpcCommandStay(Npc* npc, Map* m, Server* s, sf::Time duration): NpcCommand(duration, s) {
+s::NpcCommandStay::NpcCommandStay(Npc* npc, Map* m, Server* s, sf::Time duration) : NpcCommand(duration, s) {
 	this->npc = npc;
 	this->map = m;
 	this->server = s;

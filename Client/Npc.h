@@ -1,4 +1,4 @@
-#ifndef NPC_H
+﻿#ifndef NPC_H
 #define NPC_H
 
 #include "Entity.h"
@@ -49,7 +49,7 @@ public:
 	NpcState getState() const;
 
 	bool isHostile(Entity* entity) const;
-	
+
 	bool autoAttackPlayer() const {
 		return autoattack;
 	}

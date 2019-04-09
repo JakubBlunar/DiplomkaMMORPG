@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "EventNpcMovementChange.h"
 
 
@@ -23,4 +23,3 @@ sf::Packet* EventNpcMovementChange::toPacket() {
 std::string EventNpcMovementChange::toString() const {
 	return "Npc movement change" + std::to_string(spawnId);
 }
-

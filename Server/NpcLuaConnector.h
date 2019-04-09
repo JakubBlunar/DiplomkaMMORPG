@@ -1,4 +1,4 @@
-#ifndef S_NPC_LUA_CONNECTOR_H
+﻿#ifndef S_NPC_LUA_CONNECTOR_H
 #define S_NPC_LUA_CONNECTOR_H
 #include "Lua/sol.hpp"
 

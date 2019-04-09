@@ -1,4 +1,4 @@
-#include "GamePlayScene.h"
+﻿#include "GamePlayScene.h"
 #include "IGGameMenu.h"
 #include "Camera.h"
 #include "Globals.h"
@@ -86,7 +86,7 @@ void GamePlayScene::update(sf::Time elapsedTime) {
 	Entity* target = player->getTarget();
 	map->mapLock.lock();
 	if (target && target->getType() == EntityType::NPC) {
-		Npc* npc = (Npc*) target;
+		Npc* npc = (Npc*)target;
 		if (npc->getAttributesComponent()->getAttribute(EntityAttributeType::HP) <= 0) {
 			player->setTarget(nullptr);
 			targetInfoWindow->setEntity(nullptr);
@@ -224,7 +224,7 @@ void GamePlayScene::render() {
 				sf::Time gameTime = game->getGameTime();
 				int pop = 0;
 
-				for (EntityPopupMessage* mess: entity->messages)
+				for (EntityPopupMessage* mess : entity->messages)
 				{
 					sf::Time visible = gameTime - mess->appear;
 					if (visible.asMilliseconds() > length) {
@@ -281,7 +281,8 @@ void GamePlayScene::onKeyPress(sf::Keyboard::Key key) {
 		case sf::Keyboard::C: {
 			if (characterInfoWindow->isOpened()) {
 				windowManager->close("CharacterInfo");
-			} else {
+			}
+			else {
 				windowManager->open("CharacterInfo");
 			}
 			break;
@@ -289,7 +290,8 @@ void GamePlayScene::onKeyPress(sf::Keyboard::Key key) {
 		case sf::Keyboard::X: {
 			if (console->isOpened()) {
 				windowManager->close("Console");
-			} else {
+			}
+			else {
 				windowManager->open("Console");
 			}
 			break;
@@ -439,8 +441,9 @@ void GamePlayScene::onClick(sf::Mouse::Button event, sf::Vector2f position) {
 					windowManager->open("TargetInfo");
 					found = true;
 				}
-			} else if(type == EntityType::NPC) {
-				Npc* npc = (Npc*) entity;
+			}
+			else if (type == EntityType::NPC) {
+				Npc* npc = (Npc*)entity;
 				if (npc->getState() != NpcState::DEAD && entity->containsPoint(position)) {
 					targetInfoWindow->setEntity(entity);
 					player->setTarget(entity);
@@ -463,7 +466,7 @@ void GamePlayScene::onClick(sf::Mouse::Button event, sf::Vector2f position) {
 void GamePlayScene::handleEvent(GameEvent* event) {
 	switch (event->getId()) {
 		case FREE_SPELL_TO_LEARN: {
-			EventFreeSpellToLearn* e = (EventFreeSpellToLearn*) event;
+			EventFreeSpellToLearn* e = (EventFreeSpellToLearn*)event;
 			if (e->spellIds.empty()) return;
 
 			std::vector<SpellInfo*>* spells = new std::vector<SpellInfo*>();
@@ -476,7 +479,8 @@ void GamePlayScene::handleEvent(GameEvent* event) {
 
 			if (spells->empty()) {
 				delete spells;
-			} else {
+			}
+			else {
 				learnNewSpellWindow->setSpells(spells);
 				windowManager->open("LearnNewSpell");
 			}
@@ -488,7 +492,8 @@ void GamePlayScene::handleEvent(GameEvent* event) {
 				SpellInfo * si = EntityPrototypes::instance()->getSpellInfo(e->spellId);
 				player->addSpell(si);
 				learnNewSpellWindow->setSpells(nullptr);
-			} else {
+			}
+			else {
 				windowManager->open("LearnNewSpell");
 			}
 			break;

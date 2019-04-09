@@ -1,4 +1,4 @@
-#include "AnimatedSprite.h"
+﻿#include "AnimatedSprite.h"
 
 AnimatedSprite::AnimatedSprite(sf::Time frameTime, bool paused, bool looped) :
 	animation(nullptr), frameTime(frameTime), currentFrame(0), isPaused(paused), isLooping(looped), texture(nullptr) {

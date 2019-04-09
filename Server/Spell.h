@@ -1,4 +1,4 @@
-#ifndef S_SPELL_H
+﻿#ifndef S_SPELL_H
 #define S_SPELL_H
 
 #include "Entity.h"

@@ -1,4 +1,4 @@
-#ifndef IG_AVAILABLE_CHARACTERS_H
+﻿#ifndef IG_AVAILABLE_CHARACTERS_H
 #define IG_AVAILABLE_CHARACTERS_H
 
 #include "IGWindow.h"

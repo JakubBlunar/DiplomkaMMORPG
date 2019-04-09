@@ -1,4 +1,4 @@
-#ifndef TEXT_FILE_LOADER_H
+﻿#ifndef TEXT_FILE_LOADER_H
 #define TEXT_FILE_LOADER_H
 
 #include <string>

@@ -1,4 +1,4 @@
-#include "NpcHolder.h"
+﻿#include "NpcHolder.h"
 
 #define NOMINMAX
 #include <windows.h>
@@ -8,14 +8,14 @@
 #include <spdlog/spdlog.h>
 
 
-s::NpcHolder::NpcHolder():
+s::NpcHolder::NpcHolder() :
 	idManager(0, 214748364) {
 	npcPrototypes.clear();
-	
+
 }
 
 s::NpcHolder::~NpcHolder() {
-	
+
 }
 
 void s::NpcHolder::init()
@@ -83,8 +83,7 @@ void s::NpcHolder::read_directory(std::string pattern, std::vector<std::string>&
 	if ((hFind = FindFirstFile(pattern.c_str(), &data)) != INVALID_HANDLE_VALUE) {
 		do {
 			v.push_back(data.cFileName);
-		}
-		while (FindNextFile(hFind, &data) != 0);
+		} while (FindNextFile(hFind, &data) != 0);
 		FindClose(hFind);
 	}
 }

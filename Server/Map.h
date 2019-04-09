@@ -1,4 +1,4 @@
-#ifndef SERVER_MAP_H
+﻿#ifndef SERVER_MAP_H
 #define SERVER_MAP_H
 #include "Character.h"
 #include <Box2D/Dynamics/b2World.h>

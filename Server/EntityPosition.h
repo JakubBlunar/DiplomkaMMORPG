@@ -1,4 +1,4 @@
-#ifndef ENTITY_POSITION_H
+﻿#ifndef ENTITY_POSITION_H
 #define ENTITY_POSITION_H
 
 #include <SFML/System/Vector2.hpp>

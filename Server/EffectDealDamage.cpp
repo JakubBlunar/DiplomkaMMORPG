@@ -1,4 +1,4 @@
-#include "EffectDealDamage.h"
+﻿#include "EffectDealDamage.h"
 #include <utility>
 #include "Random.h"
 #include "Character.h"
@@ -9,7 +9,7 @@
 #include "Npc.h"
 #include "EventSendMessage.h"
 
-s::EffectDealDamage::EffectDealDamage(SpellInfo spellInfo, float modifier): Effect(std::move(spellInfo)) {
+s::EffectDealDamage::EffectDealDamage(SpellInfo spellInfo, float modifier) : Effect(std::move(spellInfo)) {
 	this->modifier = modifier;
 	name = "Damage";
 }
@@ -65,7 +65,7 @@ void s::EffectDealDamage::dealDamage(Character* caster, Character* target) const
 	logEvent.messageType = MessageType::COMBAT_LOG;
 	logEvent.playerId = -1;
 	logEvent.time = Utils::getActualUtcTime();
-	
+
 	logEvent.entityType = EntityType::PLAYER;
 	logEvent.targetId = target->id;
 	logEvent.combatPopup = "-" + ChatUtils::floatToString(dmg, 0) + "hp";
@@ -240,7 +240,7 @@ void s::EffectDealDamage::dealDamage(Npc* caster, Npc* target) const {
 	e->entityType = NPC;
 	e->spawnId = target->getSpawnId();
 	e->setChange(EntityAttributeType::HP, newHp);
-	
+
 	target->position.getMap()->sendEventToAllPlayers(e);
 
 	if (newHp <= 0) {
@@ -254,16 +254,18 @@ void s::EffectDealDamage::dealDamage(Npc* caster, Npc* target) const {
 void s::EffectDealDamage::apply(Entity* caster, Entity* target) {
 	if (caster->getEntityType() == EntityType::PLAYER) {
 		if (target->getEntityType() == EntityType::PLAYER) {
-			dealDamage((Character*) caster, (Character*) target);
-		} else {
-			dealDamage((Character*) caster, (Npc*) target);
+			dealDamage((Character*)caster, (Character*)target);
+		}
+		else {
+			dealDamage((Character*)caster, (Npc*)target);
 		}
 	}
 	else if (caster->getEntityType() == EntityType::NPC) {
 		if (target->getEntityType() == EntityType::PLAYER) {
-			dealDamage((Npc*) caster, (Character*) target);
-		} else {
-			dealDamage((Npc*) caster, (Npc*) target);
+			dealDamage((Npc*)caster, (Character*)target);
+		}
+		else {
+			dealDamage((Npc*)caster, (Npc*)target);
 		}
 	}
 }

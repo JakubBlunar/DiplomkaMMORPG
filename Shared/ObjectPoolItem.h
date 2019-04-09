@@ -1,4 +1,4 @@
-#ifndef OBJECT_POOL_ITEM
+﻿#ifndef OBJECT_POOL_ITEM
 #define OBJECT_POOL_ITEM
 
 class ObjectPoolItem {

@@ -1,8 +1,8 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "EventNpcStatusChanged.h"
 
 
-EventNpcStatusChanged::EventNpcStatusChanged(): spawnId(0), npcState(NpcState::IDLE) {
+EventNpcStatusChanged::EventNpcStatusChanged() : spawnId(0), npcState(NpcState::IDLE) {
 	id = NPC_STATUS_CHANGED;
 }
 
@@ -23,8 +23,9 @@ bool EventNpcStatusChanged::loadFromPacket(sf::Packet* p) {
 sf::Packet* EventNpcStatusChanged::toPacket() {
 	sf::Packet* p = new sf::Packet();
 	if (*p << id << spawnId << static_cast<sf::Uint8>(npcState)) {
-		
-	} else {
+
+	}
+	else {
 		throw "Error converting event to packet";
 	}
 	return p;

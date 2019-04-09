@@ -1,4 +1,4 @@
-#ifndef SPELL_H
+﻿#ifndef SPELL_H
 #define SPELL_H
 
 #include "Entity.h"
@@ -29,7 +29,7 @@ struct SpellCooldown {
 	sf::Time cooldownTo;
 };
 
-class Spell: public Entity {
+class Spell : public Entity {
 	PositionComponent* positionComponent;
 	RenderComponent* renderComponent;
 

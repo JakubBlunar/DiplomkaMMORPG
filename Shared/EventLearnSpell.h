@@ -1,4 +1,4 @@
-#ifndef EVENT_LEARN_SPELL
+﻿#ifndef EVENT_LEARN_SPELL
 #define EVENT_LEARN_SPELL
 
 #include "GameEvent.h"

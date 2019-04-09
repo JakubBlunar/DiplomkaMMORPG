@@ -1,4 +1,4 @@
-#include "Scene.h"
+﻿#include "Scene.h"
 #include "ResourceHolder.h"
 
 Scene::Scene(SceneType sceneType, Game* g) {

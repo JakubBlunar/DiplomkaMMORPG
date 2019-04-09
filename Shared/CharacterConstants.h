@@ -1,4 +1,4 @@
-#ifndef CHARACTER_CONSTANTS_H
+﻿#ifndef CHARACTER_CONSTANTS_H
 #define CHARACTER_CONSTANTS_H
 
 enum class CharacterType {

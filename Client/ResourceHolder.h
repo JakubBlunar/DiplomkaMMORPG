@@ -1,4 +1,4 @@
-#ifndef RESOURCE_HOLDER_H
+﻿#ifndef RESOURCE_HOLDER_H
 #define RESOURCE_HOLDER_H
 
 #include <string>
