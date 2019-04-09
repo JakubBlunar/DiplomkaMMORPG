@@ -235,43 +235,6 @@ void s::NpcManager::eventExecutionThread(NpcEvent* npcEvent, int index) {
 		spdlog::get("log")->error("Lua script failed, npc {}, Exception: {}", npc->getType(), what);
 	}
 
-	/*
-	sol::protected_function_result scriptResult = npc->luaState.script(npc->npc_script);
-	if (!scriptResult.valid()) {
-		sol::error err = scriptResult;
-		std::string what = err.what();
-		spdlog::get("log")->error("Lua script failed, npc {}, Exception: {}", npc->getType(), what);
-		npc->setNpcCommand(new NpcCommandStay(npc, npc->position.getMap(), server,  sf::seconds(20)));
-	} else {
-		sol::table result = npc->luaState["resultEvents"];
-
-		result.for_each([&](sol::object const& key, sol::object const& value) {
-			int newEventId = key.as<int>();
-			sol::table eventData = value.as<sol::table>();
-
-			switch (newEventId) {
-				case 0: {//stay param duration
-					NpcCommandStay* commandStay = new NpcCommandStay(npc, npc->position.getMap(), server,  sf::seconds(eventData["duration"]));
-					npc->setNpcCommand(commandStay);
-					break;
-				}
-				case 1: { // move to random params maxDuration
-					Location * l = npc->position.getLocation();
-					if (l) {
-						NpcCommandMoveTo* commandMoveToRandom = new NpcCommandMoveTo(l->generateRandomPoint(), npc, npc->position.getMap(), server,  sf::seconds(eventData["maxDuration"]));
-						commandMoveToRandom->init();
-						npc->setNpcCommand(commandMoveToRandom);
-					} else {
-						npc->setNpcCommand(new NpcCommandStay(npc, npc->position.getMap(), server,  sf::seconds(eventData["maxDuration"])));
-					}
-					break;
-				}
-				default:
-				break;
-			}
-		});
-	}
-	*/
 
 
 	//creates handler for new thread that will wait into end of current thread and then replace it with new thread
