@@ -15,6 +15,7 @@
 #include "Utils.h"
 #include "EventAttributesChanged.h"
 #include "EventAutoattackPlayer.h"
+#include "EventCharacterPositionChanged.h"
 
 
 Player::Player(bool playerControlled) : Entity(0) {
@@ -35,11 +36,13 @@ Player::Player(bool playerControlled) : Entity(0) {
 
 	EventDispatcher<EventMovementChange>::addSubscriber(this);
 	EventDispatcher<EventAttributesChanged>::addSubscriber(this);
+	EventDispatcher<EventCharacterPositionChanged>::addSubscriber(this);
 }
 
 Player::~Player() {
 	EventDispatcher<EventMovementChange>::removeSubscriber(this);
 	EventDispatcher<EventAttributesChanged>::removeSubscriber(this);
+	EventDispatcher<EventCharacterPositionChanged>::removeSubscriber(this);
 	components.clear();
 
 	delete positionComponent;
@@ -88,6 +91,24 @@ void Player::handleEvent(GameEvent* event) {
 
 			for (auto change : temp->changes) {
 				attributesComponent->setAttribute(change.first, change.second);
+			}
+			break;
+		}
+		case EventId::CHARACTER_POSITION_CHANGE: {
+			EventCharacterPositionChanged* temp = (EventCharacterPositionChanged*)event;
+			if (map) {
+				map->mapLock.lock();
+				body->SetLinearVelocity(b2Vec2(0, 0));
+				body->SetTransform(b2Vec2(temp->positionX * PIXTOMET, temp->positionY * PIXTOMET), 0);
+				positionComponent->setPosition(sf::Vector2f(temp->positionX, temp->positionY));
+				MovementData md;
+				md.velocityX = 0;
+				md.velocityY = 0;
+				md.x = temp->positionX;
+				md.velocityY = temp->positionY;
+				lastServerPosition = md;
+				positionComponent->setMovementDirection(sf::Vector2f(0, 0), attributesComponent->getAttribute(EntityAttributeType::SPEED));
+				map->mapLock.unlock();
 			}
 			break;
 		}

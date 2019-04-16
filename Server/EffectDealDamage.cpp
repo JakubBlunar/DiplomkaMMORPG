@@ -8,6 +8,7 @@
 #include "Map.h"
 #include "Npc.h"
 #include "EventSendMessage.h"
+#include "EntityCombat.h"
 
 s::EffectDealDamage::EffectDealDamage(SpellInfo spellInfo, float modifier) : Effect(std::move(spellInfo)) {
 	this->modifier = modifier;
@@ -145,6 +146,7 @@ void s::EffectDealDamage::dealDamage(Character* caster, Npc* target) const {
 void s::EffectDealDamage::dealDamage(Npc* caster, Character* target) const {
 	Random* random = Random::instance();
 
+
 	bool miss = random->randomUniformFloat(0, 1) < target->attributes.getAttribute(
 		EntityAttributeType::DODGE_CHANCE, true);
 	if (miss) {
@@ -178,9 +180,6 @@ void s::EffectDealDamage::dealDamage(Npc* caster, Character* target) const {
 
 	float actualHp = target->attributes.getAttribute(EntityAttributeType::HP, true);
 	float newHp = actualHp - dmg;
-	if (newHp < 1) {
-		newHp = 1;
-	}
 	target->attributes.setAttribute(EntityAttributeType::HP, newHp);
 
 	EventAttributesChanged* e = new EventAttributesChanged();
@@ -204,6 +203,10 @@ void s::EffectDealDamage::dealDamage(Npc* caster, Character* target) const {
 	delete p;
 
 	target->position.getMap()->sendEventToAllPlayers(e);
+
+	if (target->attributes.getAttribute(EntityAttributeType::HP, true) <= 0) {
+		server->characterManager.characterDied(target, caster);
+	}
 }
 
 void s::EffectDealDamage::dealDamage(Npc* caster, Npc* target) const {

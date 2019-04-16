@@ -24,6 +24,7 @@ namespace s {
 		void handleEvent(EventIncreaseCharacterAttribute* event, Session* playerSession, Server* s) const;
 		void handleEvent(EventLearnSpell* event, Session* playerSession, Server* s) const;
 		void handleNpcKill(Character* character, Npc* npc) const;
+		void characterDied(Character* character, Npc* npc);
 
 		std::vector<SpellInfo*>* getFreeSpellsForLearn(Character* character) const;
 

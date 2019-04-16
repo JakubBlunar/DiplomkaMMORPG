@@ -167,7 +167,6 @@ s::Character* s::Character::getCharacterById(int characterId) {
 	character->attributes.setAttribute(EntityAttributeType::MP,
 		character->attributes.getAttribute(EntityAttributeType::BASE_MP, false));
 
-
 	std::string spellsQuery = "SELECT spellType FROM character_spells WHERE characterId=" +
 		std::to_string(character->id) + " ORDER BY spellType ASC;";
 	MYSQL_RES* resSpells = Database::i()->executeQuery(spellsQuery);

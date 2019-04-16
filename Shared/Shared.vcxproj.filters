@@ -159,6 +159,12 @@
     <ClInclude Include="EventNpcPositionChange.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EventCharacterPositionChanged.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -248,8 +254,11 @@
     <ClCompile Include="EventAutoattackPlayer.cpp">
       <Filter>Source Files\Events</Filter>
     </ClCompile>
+    <ClCompile Include="EventCharacterPositionChanged.cpp">
+      <Filter>Source Files\Events</Filter>
+    </ClCompile>
     <ClCompile Include="EventNpcPositionChange.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Events</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

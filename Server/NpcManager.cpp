@@ -194,6 +194,40 @@ void s::NpcManager::npcDied(Npc* npc, Entity* caster) {
 
 }
 
+void s::NpcManager::removeCombat(Npc * npc, Character* character)
+{
+	npc->combat.removeAttackingCharacter(character);
+
+	if (npc->combat.attackingCharacters.empty()) {
+		npc->setMovement(sf::Vector2f(0, 0), nullptr);
+		npc->combat.reset();
+
+		EventAttributesChanged* resetAttributesEvent = new EventAttributesChanged();
+		resetAttributesEvent->entityType = NPC;
+		resetAttributesEvent->spawnId = npc->getSpawnId();
+
+		float newHp = npc->getAttribute(EntityAttributeType::BASE_HP, true);
+		float newMana = npc->getAttribute(EntityAttributeType::BASE_MP, true);
+		resetAttributesEvent->setChange(EntityAttributeType::HP, newHp);
+		resetAttributesEvent->setChange(EntityAttributeType::MP, newMana);
+		npc->attributes.setAttribute(EntityAttributeType::HP, newHp);
+		npc->attributes.setAttribute(EntityAttributeType::MP, newMana);
+
+		npc->setNpcState(NpcState::IDLE);
+		EventNpcStatusChanged* statusChangedEvent = new EventNpcStatusChanged();
+		statusChangedEvent->npcState = NpcState::IDLE;
+		statusChangedEvent->spawnId = npc->getSpawnId();
+
+		npc->position.getMap()->sendEventToAllPlayers(statusChangedEvent);
+		npc->position.getMap()->sendEventToAllPlayers(resetAttributesEvent);
+
+		NpcCommand* c = npc->getNpcCommand();
+		npc->setNpcCommand(nullptr);
+		NpcEventNpcIsIdle * iddleEvent = new NpcEventNpcIsIdle(npc);
+		EventDispatcher<NpcEventNpcIsIdle>::dispatchEvent(iddleEvent, server);
+	}
+}
+
 void s::NpcManager::executeEvent(NpcEvent* npcEvent, int index) {
 	sf::Thread* t = new sf::Thread(std::bind(&NpcManager::eventExecutionThread, this, npcEvent, index));
 

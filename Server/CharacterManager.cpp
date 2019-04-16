@@ -10,6 +10,10 @@
 #include "EventLearnSpell.h"
 #include "EventFreeSpellToLearn.h"
 #include "Database.h"
+#include "NpcEventNpcIsIdle.h"
+#include "EventDispatcher.h"
+#include "EventNpcStatusChanged.h"
+#include "EventCharacterPositionChanged.h"
 
 s::CharacterManager::CharacterManager() : server(nullptr) {}
 
@@ -194,6 +198,51 @@ void s::CharacterManager::handleNpcKill(Character* character, Npc* npc) const {
 	playerSession->sendPacket(p);
 
 	delete eventAttributesChanged;
+}
+
+void s::CharacterManager::characterDied(Character * character, Npc* npc)
+{
+	for (Npc* npc : character->combat.attackingNpcs) {
+		server->npcManager.removeCombat(npc, character);
+	}
+	character->combat.reset();
+
+
+	EventSendMessage mess;
+	mess.messageType = MessageType::COMBAT_LOG;
+	mess.message = "You have died.";
+	mess.time = Utils::getActualUtcTime();
+
+	sf::Packet* p = mess.toPacket();
+	character->getAccount()->getSession()->sendPacket(p);
+	delete p;
+
+	Map* map = character->position.getMap();
+
+	float hp = character->attributes.getAttribute(EntityAttributeType::BASE_HP, true);
+	float mp = character->attributes.getAttribute(EntityAttributeType::BASE_MP, true);
+	character->attributes.setAttribute(EntityAttributeType::HP, hp);
+	character->attributes.setAttribute(EntityAttributeType::MP, mp);
+
+
+	EventAttributesChanged che;
+	che.entityType = EntityCategory::PLAYER;
+	che.spawnId = character->id;
+	che.setChange(EntityAttributeType::HP, hp);
+	che.setChange(EntityAttributeType::MP, mp);
+
+	map->sendEventToAllPlayers(&che);
+
+	map->lock.lock();
+	character->position.setPosition(map->respawn);
+	map->lock.unlock();
+
+	EventCharacterPositionChanged e;
+	e.characterId = character->id;
+	e.positionX = map->respawn.x;
+	e.positionY = map->respawn.y;
+	map->sendEventToAllPlayers(&e);
+
 }
 
 std::vector<s::SpellInfo*>* s::CharacterManager::getFreeSpellsForLearn(Character* character) const {

@@ -7,7 +7,8 @@
 #include "Npc.h"
 #include "Utils.h"
 #include "Account.h"
-
+#include "CharacterManager.h"
+#include "Server.h"
 
 s::EffectModifyAttributes::EffectModifyAttributes(SpellInfo spellInfo) : s::Effect(std::move(spellInfo)), caster(nullptr),
 target(nullptr) {}
@@ -108,10 +109,6 @@ void s::EffectModifyAttributes::modifyCharacterAttributes(Character* character,
 		float actual = character->attributes.getAttribute(modifier.first, true);
 		float newValue = actual + modifier.second;
 
-		if (modifier.first == EntityAttributeType::HP && newValue < 1) {
-			newValue = 1;
-		}
-
 		character->attributes.setAttribute(modifier.first, newValue);
 		e->setChange(modifier.first, newValue);
 	}
@@ -145,6 +142,10 @@ void s::EffectModifyAttributes::modifyCharacterAttributes(Character* character,
 	delete p;
 
 	character->position.getMap()->sendEventToAllPlayers(e);
+
+	if (character->attributes.getAttribute(EntityAttributeType::HP, true) <= 0 && caster->getEntityType() == EntityType::NPC) {
+		server->characterManager.characterDied(character, (Npc*)caster);
+	}
 }
 
 void s::EffectModifyAttributes::modifyNpcAttributes(Npc* npc, std::map<EntityAttributeType, float>* modifiers) {

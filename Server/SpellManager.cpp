@@ -197,8 +197,8 @@ void s::SpellManager::handleNpcCast(Npc* npc, SpellInfo* spellInfo) {
 			}
 		}
 
-		npc->spells.setCastingSpell(e);
 		eventQueueMutex.lock();
+		npc->spells.setCastingSpell(e);
 		eventQueue.push(e);
 		eventQueueMutex.unlock();
 	}

@@ -200,6 +200,10 @@ void s::Map::loadFromJson(std::string path, Server* s) {
 	width = (int)mapData["width"].get<json::number_integer_t>();
 	height = (int)mapData["height"].get<json::number_integer_t>();
 
+	int spawnX = (int)mapProperties["spawnX"].get<json::number_integer_t>();
+	int spawnY = (int)mapProperties["spawnY"].get<json::number_integer_t>();
+	respawn = sf::Vector2f(spawnX, spawnY);
+
 	//mapGrid = new MapGrid(width * (int)FIELD_SIZE, height * (int)FIELD_SIZE);
 
 	world = new b2World(b2Vec2(0.f, 0.f));

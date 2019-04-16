@@ -25,7 +25,6 @@ namespace s {
 
 		std::vector<Npc*> npcs;
 		int width, height;
-		sf::Mutex lock;
 
 		std::map<int, s::Location*> locations;
 
@@ -36,6 +35,7 @@ namespace s {
 	public:
 		Map();
 		~Map();
+		sf::Mutex lock;
 
 		int getId() const;
 
@@ -72,6 +72,9 @@ namespace s {
 		Npc* getNpcBySpawnId(int id);
 
 		EntityToEntityRayCast* makeRayCast(Entity* startEntity, Entity* endEntity);
+
+		sf::Vector2f respawn;
+
 
 	};
 

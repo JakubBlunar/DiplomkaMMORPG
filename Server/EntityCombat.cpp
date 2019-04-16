@@ -1,5 +1,5 @@
 ﻿#include "EntityCombat.h"
-
+#include "Character.h"
 
 
 s::EntityCombat::EntityCombat()
@@ -21,6 +21,14 @@ void s::EntityCombat::setAttackingCharacter(Character* character) {
 
 void s::EntityCombat::removeAttackingCharacter(Character* character) {
 	attackingCharacters.erase(character);
+	if (target == character) {
+		if (!attackingCharacters.empty()) {
+			target = *attackingCharacters.begin();
+		}
+		else {
+			target = nullptr;
+		}
+	}
 }
 
 void s::EntityCombat::setAttackingNpc(Npc* npc) {

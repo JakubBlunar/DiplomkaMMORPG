@@ -32,50 +32,56 @@ void s::NpcCommandCombat::update(sf::Time elapsedTime, NpcUpdateEvents* npcUpdat
 		}
 	}
 
-	b2Body* body = npc->position.getBody();
-	b2Body* targetBody = target->getBody();
-
 	bool endCombat = false;
-	b2Vec2 startCombatPosition;
-	startCombatPosition.x = npc->combat.startCombatPosition.x * PIXTOMET;
-	startCombatPosition.y = npc->combat.startCombatPosition.y * PIXTOMET;
+	if (target) {
 
-	if (targetBody) {
-		b2Vec2 actualPosition = body->GetPosition();
-		b2Vec2 targetPosition = targetBody->GetPosition();
-		b2Vec2 velocity = targetPosition - actualPosition;
+		b2Body* body = npc->position.getBody();
+		b2Body* targetBody = target->getBody();
+
+		b2Vec2 startCombatPosition;
+		startCombatPosition.x = npc->combat.startCombatPosition.x * PIXTOMET;
+		startCombatPosition.y = npc->combat.startCombatPosition.y * PIXTOMET;
+
+		if (targetBody) {
+			b2Vec2 actualPosition = body->GetPosition();
+			b2Vec2 targetPosition = targetBody->GetPosition();
+			b2Vec2 velocity = targetPosition - actualPosition;
 
 
-		double distance = b2DistanceSquared(actualPosition, targetPosition);
-		if (distance * METTOPIX < 50) {
-			velocity = b2Vec2(0, 0);
+			double distance = b2DistanceSquared(actualPosition, targetPosition);
+			if (distance * METTOPIX < 50) {
+				velocity = b2Vec2(0, 0);
+			}
+
+			if (distance > 500) {
+				endCombat = true;
+				velocity = b2Vec2(0, 0);
+			}
+
+			double distanceFromStartCombat = b2DistanceSquared(startCombatPosition, targetPosition);
+			if (distanceFromStartCombat > 800) {
+				endCombat = true;
+				velocity = b2Vec2(0, 0);
+			}
+
+			if (npc->isThinking() || npc->spells.isCasting()) {
+				velocity = b2Vec2(0, 0);
+			}
+
+			velocity.Normalize();
+			velocity *= npc->attributes.getAttribute(EntityAttributeType::SPEED, true) * PIXTOMET;
+			body->SetLinearVelocity(velocity);
 		}
 
-		if (distance > 500) {
+		npc->position.setPosition(sf::Vector2f(body->GetPosition().x * METTOPIX, body->GetPosition().y * METTOPIX));
+		npc->setMovement(sf::Vector2f(body->GetLinearVelocity().x * METTOPIX, body->GetLinearVelocity().y * METTOPIX),
+			nullptr);
+
+		if (!target->getBody()) {
 			endCombat = true;
-			velocity = b2Vec2(0, 0);
 		}
-
-		double distanceFromStartCombat = b2DistanceSquared(startCombatPosition, targetPosition);
-		if (distanceFromStartCombat > 800) {
-			endCombat = true;
-			velocity = b2Vec2(0, 0);
-		}
-
-		if (npc->isThinking() || npc->spells.isCasting()) {
-			velocity = b2Vec2(0, 0);
-		}
-
-		velocity.Normalize();
-		velocity *= npc->attributes.getAttribute(EntityAttributeType::SPEED, true) * PIXTOMET;
-		body->SetLinearVelocity(velocity);
 	}
-
-	npc->position.setPosition(sf::Vector2f(body->GetPosition().x * METTOPIX, body->GetPosition().y * METTOPIX));
-	npc->setMovement(sf::Vector2f(body->GetLinearVelocity().x * METTOPIX, body->GetLinearVelocity().y * METTOPIX),
-		nullptr);
-
-	if (!target->getBody()) {
+	else {
 		endCombat = true;
 	}
 

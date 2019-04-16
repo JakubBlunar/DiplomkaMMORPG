@@ -22,6 +22,7 @@ namespace s {
 	class Server;
 	class Session;
 	class Entity;
+	class Character;
 
 
 	struct NpcUpdateEvents {
@@ -57,6 +58,7 @@ namespace s {
 		void handleEvent(EventAutoattackPlayer* e, Session* playerSession, Server* server);
 
 		void npcDied(Npc* npc, Entity* caster);
+		void removeCombat(Npc* npc, Character* character);
 
 		void executeEvent(NpcEvent* npcEvent, int index);
 		void threadEnded(NpcEvent* npcEvent, int index);
